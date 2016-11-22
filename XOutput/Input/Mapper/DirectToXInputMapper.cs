@@ -67,11 +67,13 @@ namespace XOutput.Input.Mapper
         /// <returns></returns>
         public MapperData<DirectInputTypes> GetMapping(XInputTypes? type)
         {
-            if(!type.HasValue || mappings.ContainsKey(type.Value))
+            if (!type.HasValue)
+                return null;
+            if(!mappings.ContainsKey(type.Value))
             {
-                return mappings[type.Value];
+                mappings[type.Value] = new MapperData<DirectInputTypes>();
             }
-            return null;
+            return mappings[type.Value];
         }
 
         /// <summary>

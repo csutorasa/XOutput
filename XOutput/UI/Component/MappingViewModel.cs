@@ -81,14 +81,17 @@ namespace XOutput.UI.Component
         public MappingViewModel(MapperData<DirectInputTypes> mapperData)
         {
             this.mapperData = mapperData;
-            _min = (decimal)mapperData.MinValue * 100;
-            _max = (decimal)mapperData.MaxValue * 100;
             foreach (var directInput in DirectInputHelper.GetAll())
             {
                 DirectInputs.Add(directInput);
             }
-            if (mapperData.InputType.HasValue)
-                _selectedDirectInput = mapperData.InputType.Value;
+            if (mapperData != null)
+            {
+                _min = (decimal)mapperData.MinValue * 100;
+                _max = (decimal)mapperData.MaxValue * 100;
+                if (mapperData.InputType.HasValue)
+                    _selectedDirectInput = mapperData.InputType.Value;
+            }
         }
     }
 }

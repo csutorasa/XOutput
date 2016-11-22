@@ -24,6 +24,13 @@ namespace XOutput.Input.Mapper
         /// Maximum value
         /// </summary>
         public double MaxValue { get; set; }
+
+        public MapperData()
+        {
+            InputType = default(T);
+            MaxValue = 0;
+            MaxValue = 100;
+        }
         
         /// <summary>
         /// Gets the value based on minimum and maximum values.

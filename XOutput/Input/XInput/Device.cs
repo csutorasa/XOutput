@@ -76,10 +76,13 @@ namespace XOutput.Input.XInput
             foreach(var type in (XInputTypes[])Enum.GetValues(typeof(XInputTypes)))
             {
                 var mapping = mapper.GetMapping(type);
-                double value = 0;
-                if (mapping.InputType != null)
-                    value = source.Get(mapping.InputType.Value);
-                values[type] = mapping.GetValue(value);
+                if (mapping != null)
+                {
+                    double value = 0;
+                    if (mapping.InputType != null)
+                        value = source.Get(mapping.InputType.Value);
+                    values[type] = mapping.GetValue(value);
+                }
             }
             dPad = source.GetDPad();
             InputChanged?.Invoke();
