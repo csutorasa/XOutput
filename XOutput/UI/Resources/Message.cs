@@ -9,7 +9,7 @@ namespace XOutput.UI.Resources
     public static class Message
     {
         public static string About { get { return "About"; } }
-        public static string AboutContent { get { return "Created by:"; } }
+        public static string AboutContent { get { return "Created by: https://github.com/csutorasa"; } }
         public static string Information { get { return "Information"; } }
         public static string SaveSettings { get { return "Successfully saved settings to {0}."; } }
         public static string LoadSettings { get { return "Successfully loaded settings from {0}."; } }
