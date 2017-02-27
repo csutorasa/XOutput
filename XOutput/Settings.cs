@@ -31,19 +31,22 @@ namespace XOutput
                     if (string.IsNullOrEmpty(device))
                         continue;
                     var newLineIndex = device.IndexOf(Environment.NewLine);
-                    var guid = new Guid(device.Substring(0, newLineIndex));
+                    var id = device.Substring(0, newLineIndex);
                     var mapperText = device.Substring(newLineIndex + 1);
-                    settings.mappers[guid] = DirectToXInputMapper.Parse(mapperText);
+                    if(id == "Keyboard")
+                        settings.mappers[id] = KeyboardToXInputMapper.Parse(mapperText);
+                    else
+                        settings.mappers[id] = DirectToXInputMapper.Parse(mapperText);
                 }
             }
             return settings;
         }
         
-        private Dictionary<Guid, DirectToXInputMapper> mappers;
+        private Dictionary<string, InputMapperBase> mappers;
 
         private Settings()
         {
-            mappers = new Dictionary<Guid, DirectToXInputMapper>();
+            mappers = new Dictionary<string, InputMapperBase>();
         }
 
         /// <summary>
@@ -67,11 +70,18 @@ namespace XOutput
         /// </summary>
         /// <param name="id">DeviceID</param>
         /// <returns></returns>
-        public DirectToXInputMapper GetMapper(Guid id)
+        public InputMapperBase GetMapper(string id)
         {
             if(!mappers.ContainsKey(id))
             {
-                mappers[id] = new DirectToXInputMapper();
+                if (id == "Keyboard")
+                {
+                    mappers[id] = new KeyboardToXInputMapper();
+                }
+                else
+                {
+                    mappers[id] = new DirectToXInputMapper();
+                }
             }
             return mappers[id];
         }

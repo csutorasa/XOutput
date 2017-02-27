@@ -29,17 +29,30 @@ namespace XOutput.UI.View
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string GameControllersSettings = "joy.cpl";
+        private readonly MainWindowViewModel viewModel;
         private const string SettingsFilePath = "settings.txt";
-        private readonly MainWindowViewModel viewModel = new MainWindowViewModel();
-        private readonly DispatcherTimer timer = new DispatcherTimer();
-        private readonly Devices manager = new Devices();
-        private Settings settings;
+        private const string GameControllersSettings = "joy.cpl";
 
         public MainWindow()
         {
+            viewModel = new MainWindowViewModel(Log);
             DataContext = viewModel;
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                viewModel.LoadSettings(SettingsFilePath);
+                Log(string.Format(Message.LoadSettings, SettingsFilePath));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format(ErrorMessage.LoadSettingsError, SettingsFilePath, ex.Message), ErrorMessage.Warning);
+                Log(string.Format(ErrorMessage.LoadSettingsError, SettingsFilePath, ex.Message));
+            }
+            viewModel.RefreshGameControllers();
         }
 
         public void Log(string msg)
@@ -47,28 +60,9 @@ namespace XOutput.UI.View
             Dispatcher.BeginInvoke(new Action(() => logBox.AppendText(msg + Environment.NewLine)));
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                settings = Settings.Load(SettingsFilePath);
-                Log(string.Format(Message.LoadSettings, SettingsFilePath));
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(string.Format(ErrorMessage.LoadSettingsError, SettingsFilePath, ex.Message), ErrorMessage.Warning);
-                Log(string.Format(ErrorMessage.LoadSettingsError, SettingsFilePath, ex.Message));
-            }
-            refreshGameControllers();
-
-            timer.Interval = TimeSpan.FromMilliseconds(10000);
-            timer.Tick += (object sender1, EventArgs e1) => { refreshGameControllers(); };
-            timer.Start();
-        }
-
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            refreshGameControllers();
+            viewModel.RefreshGameControllers();
         }
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
@@ -83,38 +77,13 @@ namespace XOutput.UI.View
         {
             try
             {
-                settings.Save(SettingsFilePath);
+                viewModel.SaveSettings(SettingsFilePath);
                 Log(string.Format(Message.SaveSettings, SettingsFilePath));
             }
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format(ErrorMessage.SaveSettingsError, SettingsFilePath, ex.Message), ErrorMessage.Warning);
                 Log(string.Format(ErrorMessage.SaveSettingsError, SettingsFilePath, ex.Message));
-            }
-        }
-
-        private void refreshGameControllers()
-        {
-            List<DirectDevice> devices = manager.GetInputDevices();
-            foreach(var controllerView in viewModel.Controllers.ToList())
-            {
-                var controller = (controllerView.DataContext as ControllerViewModel).Controller;
-                if (!devices.Any(x => x.ToString() == controller.DirectInput.ToString()))
-                {
-                    controller.Dispose();
-                    viewModel.Controllers.Remove(controllerView);
-                    Log(string.Format(Message.ControllerDisconnected, controller.DisplayName));
-                }
-            }
-            foreach (var device in devices)
-            {
-                if (!viewModel.Controllers.Any(x => (x.DataContext as ControllerViewModel).Controller.ToString() == device.ToString()))
-                {
-                    DirectToXInputMapper mapper = settings.GetMapper(device.Id);
-                    GameController controller = new GameController(device, mapper);
-                    viewModel.Controllers.Add(new ControllerView(controller, Log));
-                    Log(string.Format(Message.ControllerConnected, controller.DisplayName));
-                }
             }
         }
 
@@ -125,10 +94,10 @@ namespace XOutput.UI.View
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            timer.Stop();
-            foreach (var controller in viewModel.Controllers.ToList())
+            viewModel.Dispose();
+            foreach (var controller in viewModel.Model.Controllers.Select(x => (x.DataContext as ControllerViewModel).Controller))
             {
-                (controller.DataContext as ControllerViewModel).Controller.Dispose();
+                controller.Dispose();
             }
         }
     }

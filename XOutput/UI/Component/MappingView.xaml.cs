@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using XOutput.Input;
 using XOutput.Input.DirectInput;
 using XOutput.Input.Mapper;
 using XOutput.Input.XInput;
@@ -25,9 +26,9 @@ namespace XOutput.UI.Component
     public partial class MappingView : UserControl
     {
         protected readonly MappingViewModel viewModel;
-        public MappingView(XInputTypes type, MapperData<DirectInputTypes> mapper)
+        public MappingView(IInputDevice device, XInputTypes type, MapperData mapper)
         {
-            viewModel = new MappingViewModel(mapper);
+            viewModel = new MappingViewModel(device, mapper);
             viewModel.XInputType = type;
             DataContext = viewModel;
             InitializeComponent();

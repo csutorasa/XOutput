@@ -64,9 +64,8 @@ namespace XOutput.UI.Component
                         Value = Minimum.Value;
                     else if (Maximum.HasValue)
                         Value = Maximum.Value;
-                    else
-                        Value = Value;
                 }
+                Text = decimal.Round(Value.Value).ToString();
             }
             base.OnTextChanged(e);
         }

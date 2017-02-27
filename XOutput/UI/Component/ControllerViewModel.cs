@@ -7,7 +7,7 @@ using XOutput.Input;
 
 namespace XOutput.UI.Component
 {
-    public class ControllerViewModel : ViewModelBase
+    public class ControllerViewModel : ModelBase
     {
         private GameController _controller;
         public GameController Controller

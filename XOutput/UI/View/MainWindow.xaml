@@ -27,7 +27,7 @@
             </MenuItem>
         </Menu>
         <GroupBox Grid.Row="1" Header="Game controllers" Margin="0,0,0,5">
-            <ItemsControl ItemsSource="{Binding Controllers}"/>
+            <ItemsControl ItemsSource="{Binding Model.Controllers}"/>
         </GroupBox>
         <GridSplitter Grid.Row="2" Height="3" HorizontalAlignment="Stretch"/>
         <GroupBox Grid.Row="3" Header="Log">

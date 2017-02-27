@@ -39,7 +39,7 @@ namespace XOutput.UI.Component
         }
         private void Open_Click(object sender, RoutedEventArgs e)
         {
-            var controllerSettingsWindow = new ControllerSettings(viewModel.Controller);
+            var controllerSettingsWindow = new ControllerSettings(new ControllerSettingsViewModel(viewModel.Controller));
             controllerSettingsWindow.ShowDialog();
         }
 

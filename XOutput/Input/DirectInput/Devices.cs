@@ -40,20 +40,23 @@ namespace XOutput.Input.DirectInput
         /// <returns>List of devices</returns>
         public List<DirectDevice> GetInputDevices()
         {
-            var gameControllers = new List<DirectDevice>();
+            var directDevices = new List<DirectDevice>();
             var deviceInstances = directInput.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly);
             foreach(var deviceInstance in deviceInstances)
             {
                 var joystick = new Joystick(directInput, deviceInstance.InstanceGuid);
 
-                if (joystick.Information.ProductGuid.ToString() ==  EMULATED_ID || (joystick.Capabilities.AxesCount < 1 && joystick.Capabilities.ButtonCount < 1))
+                if (joystick.Information.ProductGuid.ToString() == EMULATED_ID || (joystick.Capabilities.AxesCount < 1 && joystick.Capabilities.ButtonCount < 1))
+                {
+                    joystick.Dispose();
                     continue;
+                }
 
                 joystick.Properties.BufferSize = 128;
 
-                gameControllers.Add(new DirectDevice(deviceInstance, joystick));
+                directDevices.Add(new DirectDevice(deviceInstance, joystick));
             }
-            return gameControllers;
+            return directDevices;
         }
     }
 }

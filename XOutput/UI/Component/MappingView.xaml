@@ -14,7 +14,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Margin="2" Content="{Binding XInputType}"/>
-        <ComboBox Grid.Column="1" Margin="2" ItemsSource="{Binding DirectInputs}" SelectedItem="{Binding SelectedDirectInput, Mode=TwoWay}"/>
+        <ComboBox Grid.Column="1" Margin="2" ItemsSource="{Binding Inputs}" SelectedItem="{Binding SelectedInput, Mode=TwoWay}"/>
         <DockPanel Grid.Column="2" Margin="2">
             <Label>Min:</Label>
             <local:NumericTextBox Height="20" Minimum="0" Maximum="100" Value="{Binding Min, Mode=TwoWay}"/>

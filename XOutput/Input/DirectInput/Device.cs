@@ -4,43 +4,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using XOutput.Input;
 
 namespace XOutput.Input.DirectInput
 {
     /// <summary>
     /// Device that contains data for a DirectInput device
     /// </summary>
-    public sealed class DirectDevice : IDisposable
+    public sealed class DirectDevice : IInputDevice
     {
-        /// <summary>
-        /// This event is invoked if the data from the device was updated
-        /// </summary>
         public event Action InputChanged;
-        /// <summary>
-        /// The friendly display name of the controller
-        /// </summary>
-        public string DisplayName { get { return deviceInstance.ProductName; } }
         /// <summary>
         /// The GUID of the controller
         /// </summary>
         public Guid Id { get { return deviceInstance.ProductGuid; } }
-        /// <summary>
-        /// If the controller has DPad
-        /// </summary>
+        public string DisplayName { get { return deviceInstance.ProductName; } }
+        public bool Connected { get { return connected; } }
         public bool HasDPad { get { return joystick.Capabilities.PovCount > 0; } }
-        /// <summary>
-        /// If the controller has axes
-        /// </summary>
         public bool HasAxes { get { return joystick.Capabilities.AxesCount > 0; } }
-        /// <summary>
-        /// If the controller has buttons
-        /// </summary>
         public int ButtonCount { get { return joystick.Capabilities.ButtonCount; } }
-        
+
         private readonly DeviceInstance deviceInstance;
         private readonly Joystick joystick;
-        
+        private bool connected = false;
+        private Thread inputRefresher;
+        private bool disposed = false;
+
         /// <summary>
         /// 
         /// </summary>
@@ -51,6 +42,7 @@ namespace XOutput.Input.DirectInput
             this.deviceInstance = deviceInstance;
             this.joystick = joystick;
             joystick.Acquire();
+            connected = true;
         }
 
         ~DirectDevice()
@@ -63,7 +55,14 @@ namespace XOutput.Input.DirectInput
         /// </summary>
         public void Dispose()
         {
-            joystick.Dispose();
+            if (!disposed)
+            {
+                disposed = true;
+                connected = false;
+                if (inputRefresher != null)
+                    inputRefresher.Abort();
+                joystick.Dispose();
+            }
         }
 
         /// <summary>
@@ -74,27 +73,50 @@ namespace XOutput.Input.DirectInput
         {
             return DisplayName + "(" + Id + ")";
         }
+
+        public void StartCapturing()
+        {
+            if(inputRefresher == null && !disposed)
+            {
+                inputRefresher = new Thread(() => {
+                    try
+                    {
+                        while (true)
+                        {
+                            connected = RefreshInput();
+                            Thread.Sleep(1);
+                        }
+                    }
+                    catch (ThreadAbortException) { }
+                });
+                inputRefresher.IsBackground = true;
+                inputRefresher.Start();
+            }
+        }
         
         /// <summary>
         /// Gets the current state of the DPad.
         /// </summary>
         /// <returns></returns>
-        public DPadDirection GetDPad()
+        public DPadDirection DPad
         {
-            JoystickState state = joystick.GetCurrentState();
-            switch (state.GetPointOfViewControllers()[0])
+            get
             {
-                case -1: return DPadDirection.None;
-                case 0: return DPadDirection.Up;
-                case 4500: return DPadDirection.Up | DPadDirection.Right;
-                case 9000: return DPadDirection.Right;
-                case 13500: return DPadDirection.Down | DPadDirection.Right;
-                case 18000: return DPadDirection.Down;
-                case 22500: return DPadDirection.Down | DPadDirection.Left;
-                case 27000: return DPadDirection.Left;
-                case 31500: return DPadDirection.Up | DPadDirection.Left;
-                default:
-                    throw new ArgumentException();
+                JoystickState state = joystick.GetCurrentState();
+                switch (state.GetPointOfViewControllers()[0])
+                {
+                    case -1: return DPadDirection.None;
+                    case 0: return DPadDirection.Up;
+                    case 4500: return DPadDirection.Up | DPadDirection.Right;
+                    case 9000: return DPadDirection.Right;
+                    case 13500: return DPadDirection.Down | DPadDirection.Right;
+                    case 18000: return DPadDirection.Down;
+                    case 22500: return DPadDirection.Down | DPadDirection.Left;
+                    case 27000: return DPadDirection.Left;
+                    case 31500: return DPadDirection.Up | DPadDirection.Left;
+                    default:
+                        throw new ArgumentException();
+                }
             }
         }
 
@@ -103,27 +125,19 @@ namespace XOutput.Input.DirectInput
         /// </summary>
         /// <param name="inputType">Type of input</param>
         /// <returns>Value</returns>
-        public double Get(DirectInputTypes inputType)
+        public double Get(Enum inputType)
         {
+            if (!(inputType is DirectInputTypes))
+                throw new ArgumentException();
             if (inputType.IsAxis())
             {
-                return (GetAxisValue(inputType - DirectInputTypes.Axis1 + 1)) / (double)ushort.MaxValue;
+                return (GetAxisValue((DirectInputTypes)inputType - DirectInputTypes.Axis1 + 1)) / (double)ushort.MaxValue;
             }
             if (inputType.IsButton())
             {
-                return GetButtonValue(inputType - DirectInputTypes.Button1 + 1) ? 1d : 0d;
+                return GetButtonValue((DirectInputTypes)inputType - DirectInputTypes.Button1 + 1) ? 1d : 0d;
             }
             return 0;
-        }
-
-        /// <summary>
-        /// Gets the current boolean value of the inputTpye.
-        /// </summary>
-        /// <param name="inputType">Type of input</param>
-        /// <returns>Value</returns>
-        public bool GetBool(DirectInputTypes inputType)
-        {
-            return Get(inputType) > 0.5;
         }
 
         /// <summary>
@@ -132,12 +146,16 @@ namespace XOutput.Input.DirectInput
         /// <returns></returns>
         public bool RefreshInput()
         {
-            Result result = joystick.Poll();
-            if (result.IsSuccess)
+            if (!disposed)
             {
-                InputChanged?.Invoke();
+                Result result = joystick.Poll();
+                if (result.IsSuccess)
+                {
+                    InputChanged?.Invoke();
+                }
+                return result.IsSuccess;
             }
-            return result.IsSuccess;
+            return false;
         }
 
         /// <summary>
@@ -180,6 +198,21 @@ namespace XOutput.Input.DirectInput
             if (button < 1)
                 throw new ArgumentException();
             return state.GetButtons()[button - 1];
+        }
+
+        public IEnumerable<Enum> GetButtons()
+        {
+            return ((DirectInputTypes[])Enum.GetValues(typeof(DirectInputTypes)))
+                .Select(x => (Enum)x)
+                .Where(b => b.IsButton())
+                .Take(ButtonCount);
+        }
+
+        public IEnumerable<Enum> GetAxes()
+        {
+            return ((DirectInputTypes[])Enum.GetValues(typeof(DirectInputTypes)))
+                .Select(x => (Enum)x)
+                .Where(b => b.IsAxis());
         }
     }
 }

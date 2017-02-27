@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Converters="clr-namespace:XOutput.UI.Converters"
         xmlns:local="clr-namespace:XOutput"
         mc:Ignorable="d"
         Title="{Binding Title}" Width="800" Height="800" MinWidth="800"
@@ -10,8 +11,9 @@
         Closed="Window_Closed">
     <Window.Resources>
         <ItemsPanelTemplate x:Key="VerticalStackPanel">
-            <StackPanel Orientation="Vertical"/>
+            <StackPanel Orientation="Vertical" Focusable="False"/>
         </ItemsPanelTemplate>
+        <Converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
     </Window.Resources>
     
     <Grid>
@@ -22,45 +24,51 @@
         </Grid.ColumnDefinitions>
         <!--Direct Input-->
         <GroupBox Header="DirectInput">
-            <StackPanel>
-                <GroupBox Header="Axes">
-                    <ItemsControl ItemsSource="{Binding DirectInputAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
-                </GroupBox>
-                <GroupBox Header="DPad">
-                    <Label Content="{Binding DirectDPadText}"/>
-                </GroupBox>
-                <GroupBox Header="Buttons">
-                    <ItemsControl ItemsSource="{Binding DirectInputButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
-                </GroupBox>
-            </StackPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <GroupBox Header="Axes">
+                        <ItemsControl ItemsSource="{Binding Model.InputAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
+                    </GroupBox>
+                    <GroupBox Header="DPad">
+                        <Label Content="{Binding Model.DPadText}"/>
+                    </GroupBox>
+                    <GroupBox Header="Buttons">
+                        <ItemsControl ItemsSource="{Binding Model.InputButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
         </GroupBox>
         <!--Mapping-->
         <GroupBox Header="Mapping" Grid.Column="1">
-            <StackPanel>
-                <GroupBox Header="Axes">
-                    <ItemsControl ItemsSource="{Binding MapperAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
-                </GroupBox>
-                <GroupBox Header="DPad">
-                    <Label Content="{Binding MapperDPadText}"/>
-                </GroupBox>
-                <GroupBox Header="Buttons">
-                    <ItemsControl ItemsSource="{Binding MapperButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
-                </GroupBox>
-            </StackPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <GroupBox Header="Axes">
+                        <ItemsControl ItemsSource="{Binding Model.MapperAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
+                    </GroupBox>
+                    <GroupBox Header="DPad">
+                        <Label Content="{Binding Model.MapperDPadText}"/>
+                    </GroupBox>
+                    <GroupBox Header="Buttons">
+                        <ItemsControl ItemsSource="{Binding Model.MapperButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
         </GroupBox>
         <!--XInput-->
         <GroupBox Header="XInput" Grid.Column="2">
-            <StackPanel>
-                <GroupBox Header="Axes">
-                    <ItemsControl ItemsSource="{Binding XInputAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
-                </GroupBox>
-                <GroupBox Header="DPad">
-                    <Label Content="{Binding XDPadText}"/>
-                </GroupBox>
-                <GroupBox Header="Buttons">
-                    <ItemsControl ItemsSource="{Binding XInputButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
-                </GroupBox>
-            </StackPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <GroupBox Header="Axes">
+                        <ItemsControl ItemsSource="{Binding Model.XInputAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
+                    </GroupBox>
+                    <GroupBox Header="DPad">
+                        <Label Content="{Binding Model.XDPadText}"/>
+                    </GroupBox>
+                    <GroupBox Header="Buttons">
+                        <ItemsControl ItemsSource="{Binding Model.XInputButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
         </GroupBox>
     </Grid>
 </Window>

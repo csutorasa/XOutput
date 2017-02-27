@@ -4,78 +4,114 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Input;
+using XOutput.Input.XInput;
 using XOutput.UI.Component;
 
 namespace XOutput.UI.View
 {
-    public class ControllerSettingsViewModel : ViewModelBase
+    public class ControllerSettingsViewModel
     {
-        private readonly ObservableCollection<AxisView> directInputAxisViews = new ObservableCollection<AxisView>();
-        public ObservableCollection<AxisView> DirectInputAxisViews { get { return directInputAxisViews; } }
-        private readonly ObservableCollection<ButtonView> directInputButtonViews = new ObservableCollection<ButtonView>();
-        public ObservableCollection<ButtonView> DirectInputButtonViews { get { return directInputButtonViews; } }
+        private readonly ControllerSettingsModel model = new ControllerSettingsModel();
 
-        private readonly ObservableCollection<MappingView> mapperAxisViews = new ObservableCollection<MappingView>();
-        public ObservableCollection<MappingView> MapperAxisViews { get { return mapperAxisViews; } }
-        private readonly ObservableCollection<MappingView> mapperButtonViews = new ObservableCollection<MappingView>();
-        public ObservableCollection<MappingView> MapperButtonViews { get { return mapperButtonViews; } }
+        public ControllerSettingsModel Model { get { return model; } }
+        public bool IsConrtollerConnected { get { return controller.InputDevice.Connected; } }
 
-        private readonly ObservableCollection<AxisView> xInputAxisViews = new ObservableCollection<AxisView>();
-        public ObservableCollection<AxisView> XInputAxisViews { get { return xInputAxisViews; } }
-        private readonly ObservableCollection<ButtonView> xInputButtonViews = new ObservableCollection<ButtonView>();
-        public ObservableCollection<ButtonView> XInputButtonViews { get { return xInputButtonViews; } }
+        private readonly GameController controller;
 
-        private string _directDPadText;
-        public string DirectDPadText
+        public ControllerSettingsViewModel(GameController controller)
         {
-            get { return _directDPadText; }
-            set
+            this.controller = controller;
+            Model.Title = controller.DisplayName;
+            createInputControls();
+            createMappingControls();
+            createXInputControls();
+        }
+
+
+        private void createInputControls()
+        {
+            foreach (var buttonInput in controller.InputDevice.GetButtons())
             {
-                if (_directDPadText != value)
+                var inputButtonView = new ButtonView(buttonInput);
+                Model.InputButtonViews.Add(inputButtonView);
+            }
+            if (controller.InputDevice.HasAxes)
+            {
+                foreach (var axisInput in controller.InputDevice.GetAxes())
                 {
-                    _directDPadText = value;
-                    OnPropertyChanged(nameof(DirectDPadText));
+                    var inputAxisView = new AxisView(axisInput);
+                    Model.InputAxisViews.Add(inputAxisView);
                 }
             }
         }
-        private string _xDPadText;
-        public string XDPadText
+        public void updateInputControls()
         {
-            get { return _xDPadText; }
-            set
+            foreach (var axisView in Model.InputAxisViews)
             {
-                if (_xDPadText != value)
-                {
-                    _xDPadText = value;
-                    OnPropertyChanged(nameof(XDPadText));
-                }
+                axisView.Value = (int)(controller.InputDevice.Get(axisView.Type) * 1000);
+            }
+            foreach (var buttonView in Model.InputButtonViews)
+            {
+                buttonView.Value = controller.InputDevice.Get(buttonView.Type) > 0.5;
+            }
+            if (controller.InputDevice.HasDPad)
+            {
+                Model.DPadText = controller.InputDevice.DPad.ToString();
+            }
+            else
+            {
+                Model.DPadText = "This device has no DPad";
             }
         }
-        private string _mapperDPadText;
-        public string MapperDPadText
+
+
+        private void createMappingControls()
         {
-            get { return _mapperDPadText; }
-            set
+            foreach (var xInputType in XInputHelper.GetButtons())
             {
-                if (_mapperDPadText != value)
-                {
-                    _mapperDPadText = value;
-                    OnPropertyChanged(nameof(MapperDPadText));
-                }
+                var mappingView = new MappingView(controller.InputDevice, xInputType, controller.Mapper.GetMapping(xInputType));
+                Model.MapperButtonViews.Add(mappingView);
+            }
+            foreach (var xInputType in XInputHelper.GetAxes())
+            {
+                var mappingView = new MappingView(controller.InputDevice, xInputType, controller.Mapper.GetMapping(xInputType));
+                Model.MapperAxisViews.Add(mappingView);
+            }
+            if (controller.InputDevice.HasDPad)
+            {
+                Model.MapperDPadText = "DPad is automatically mapped";
+            }
+            else
+            {
+                Model.MapperDPadText = "This device has no DPad";
             }
         }
-        private string _title;
-        public string Title
+
+        private void createXInputControls()
         {
-            get { return _title; }
-            set
+            foreach (var buttonInput in XInputHelper.GetButtons())
             {
-                if (_title != value)
-                {
-                    _title = value;
-                    OnPropertyChanged(nameof(Title));
-                }
+                var inputButtonView = new ButtonView(buttonInput);
+                Model.XInputButtonViews.Add(inputButtonView);
             }
+            foreach (var axisInput in XInputHelper.GetAxes())
+            {
+                var inputAxisView = new AxisView(axisInput);
+                Model.XInputAxisViews.Add(inputAxisView);
+            }
+        }
+        public void updateXInputControls()
+        {
+            foreach (var axisView in Model.XInputAxisViews)
+            {
+                axisView.Value = (int)(controller.XInput.Get((XInputTypes)axisView.Type) * 1000);
+            }
+            foreach (var buttonView in Model.XInputButtonViews)
+            {
+                buttonView.Value = controller.XInput.Get((XInputTypes)buttonView.Type) > 0.5;
+            }
+            Model.XDPadText = controller.XInput.GetDPad().ToString();
         }
     }
 }

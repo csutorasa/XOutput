@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 namespace XOutput.Input.Mapper
 {
     /// <summary>
-    /// Contains mapping data for Direct to X input conversion.
+    /// Contains mapping data to X input conversion.
     /// </summary>
-    /// <typeparam name="T">Type of the from data</typeparam>
-    public class MapperData<T> where T : struct
+    public class MapperData
     {
         /// <summary>
         /// From data type
         /// </summary>
-        public T? InputType { get; set; }
+        public Enum InputType { get; set; }
         /// <summary>
         /// Minimum value
         /// </summary>
@@ -27,8 +26,8 @@ namespace XOutput.Input.Mapper
 
         public MapperData()
         {
-            InputType = default(T);
-            MaxValue = 0;
+            InputType = null;
+            MinValue = 0;
             MaxValue = 100;
         }
         

@@ -59,7 +59,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Input\Controllers.cs" />
+    <Compile Include="Input\IInputDevice.cs" />
+    <Compile Include="Input\InputHelper.cs" />
+    <Compile Include="Input\Keyboard\Keyboard.cs" />
+    <Compile Include="Input\Mapper\KeyboardToXInputMapper.cs" />
+    <Compile Include="Input\Mapper\InputMapperBase.cs" />
     <Compile Include="Input\XInput\NativeInterface.cs" />
+    <Compile Include="UI\Converters\BoolInverterConverter.cs" />
     <Compile Include="UI\Converters\BoolToBrushConverter.cs" />
     <Compile Include="Input\DirectInput\InputTypes.cs" />
     <Compile Include="Input\DPadDirection.cs" />
@@ -74,7 +80,7 @@
     <Compile Include="UI\Component\MappingViewModel.cs" />
     <Compile Include="UI\Resources\ErrorMessage.cs" />
     <Compile Include="UI\Resources\Message.cs" />
-    <Compile Include="UI\ViewModelBase.cs" />
+    <Compile Include="UI\ModelBase.cs" />
     <Compile Include="UI\Component\AxisView.xaml.cs">
       <DependentUpon>AxisView.xaml</DependentUpon>
     </Compile>
@@ -95,6 +101,8 @@
     <Compile Include="UI\Component\MappingView.xaml.cs">
       <DependentUpon>MappingView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\View\ControllerSettingsModel.cs" />
+    <Compile Include="UI\View\MainWindowModel.cs" />
     <Compile Include="UI\View\MainWindowViewModel.cs" />
     <Page Include="UI\Component\AxisView.xaml">
       <SubType>Designer</SubType>

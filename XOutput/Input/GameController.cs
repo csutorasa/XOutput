@@ -12,23 +12,23 @@ namespace XOutput.Input
 {
     public class GameController : IDisposable
     {
-        public DirectDevice DirectInput { get { return directInput; } }
+        public IInputDevice InputDevice { get { return inputDevice; } }
         public XDevice XInput { get { return xInput; } }
-        public DirectToXInputMapper Mapper { get { return mapper; } }
-        public string DisplayName { get { return directInput.DisplayName; } }
+        public InputMapperBase Mapper { get { return mapper; } }
+        public string DisplayName { get { return inputDevice.DisplayName; } }
         public int ControllerCount { get { return controllerCount; } }
 
         private static readonly Controllers controllers = new Controllers();
-        protected readonly DirectDevice directInput;
-        protected readonly DirectToXInputMapper mapper;
+        protected readonly IInputDevice inputDevice;
+        protected readonly InputMapperBase mapper;
         protected readonly XDevice xInput;
         protected readonly ScpDevice scpDevice;
         protected Thread thread;
         protected bool running;
         private int controllerCount = 0;
-        public GameController(DirectDevice directInput, DirectToXInputMapper mapper)
+        public GameController(IInputDevice directInput, InputMapperBase mapper)
         {
-            this.directInput = directInput;
+            this.inputDevice = directInput;
             this.mapper = mapper;
             scpDevice = new ScpDevice();
             xInput = new XDevice(directInput, mapper);
@@ -41,12 +41,12 @@ namespace XOutput.Input
         public void Dispose()
         {
             Stop();
-            directInput.Dispose();
+            inputDevice.Dispose();
             scpDevice.Dispose();
         }
         public override string ToString()
         {
-            return directInput.ToString();
+            return inputDevice.ToString();
         }
 
         public int Start(Action onStop = null)
@@ -62,11 +62,14 @@ namespace XOutput.Input
                 {
                     try
                     {
+                        XInput.InputChanged += () =>
+                        {
+                            if (!scpDevice.Report(controllerCount, XInput.GetBinary()))
+                                running = false;
+                        };
                         while (running)
                         {
-                            directInput.RefreshInput();
-                            if (!scpDevice.Report(controllerCount, XInput.GetBinary())) break;
-                            Thread.Sleep(1);
+                            Thread.Sleep(100);
                         }
                     }
                     finally
@@ -76,6 +79,7 @@ namespace XOutput.Input
                     }
                 });
                 running = true;
+                thread.IsBackground = true;
                 thread.Start();
             }
             else

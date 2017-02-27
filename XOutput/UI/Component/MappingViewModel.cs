@@ -4,13 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Input;
 using XOutput.Input.DirectInput;
 using XOutput.Input.Mapper;
 using XOutput.Input.XInput;
 
 namespace XOutput.UI.Component
 {
-    public class MappingViewModel : ViewModelBase
+    public class MappingViewModel : ModelBase
     {
 
         private XInputTypes _xInputType;
@@ -27,19 +28,19 @@ namespace XOutput.UI.Component
             }
         }
 
-        private ObservableCollection<DirectInputTypes> _directInputs = new ObservableCollection<DirectInputTypes>();
-        public ObservableCollection<DirectInputTypes> DirectInputs { get { return _directInputs; } }
-        private DirectInputTypes _selectedDirectInput;
-        public DirectInputTypes SelectedDirectInput
+        private ObservableCollection<Enum> inputs = new ObservableCollection<Enum>();
+        public ObservableCollection<Enum> Inputs { get { return inputs; } }
+        private Enum _selectedInput;
+        public Enum SelectedInput
         {
-            get { return _selectedDirectInput; }
+            get { return _selectedInput; }
             set
             {
-                if (_selectedDirectInput != value)
+                if (_selectedInput != value)
                 {
-                    _selectedDirectInput = value;
-                    mapperData.InputType = _selectedDirectInput;
-                    OnPropertyChanged(nameof(SelectedDirectInput));
+                    _selectedInput = value;
+                    mapperData.InputType = _selectedInput;
+                    OnPropertyChanged(nameof(SelectedInput));
                 }
             }
         }
@@ -76,21 +77,26 @@ namespace XOutput.UI.Component
             }
         }
 
-        private MapperData<DirectInputTypes> mapperData;
+        private MapperData mapperData;
 
-        public MappingViewModel(MapperData<DirectInputTypes> mapperData)
+        public MappingViewModel(IInputDevice device, MapperData mapperData)
         {
             this.mapperData = mapperData;
-            foreach (var directInput in DirectInputHelper.GetAll())
+            foreach (var directInput in device.GetButtons())
             {
-                DirectInputs.Add(directInput);
+                Inputs.Add(directInput);
+            }
+            foreach (var directInput in device.GetAxes())
+            {
+                Inputs.Add(directInput);
             }
             if (mapperData != null)
             {
                 _min = (decimal)mapperData.MinValue * 100;
                 _max = (decimal)mapperData.MaxValue * 100;
-                if (mapperData.InputType.HasValue)
-                    _selectedDirectInput = mapperData.InputType.Value;
+                if (mapperData.InputType == null)
+                    mapperData.InputType = device.GetButtons().FirstOrDefault();
+                _selectedInput = mapperData.InputType;
             }
         }
     }

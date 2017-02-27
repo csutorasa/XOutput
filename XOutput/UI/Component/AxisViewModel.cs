@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XOutput.UI.Component
 {
-    public class AxisViewModel : ViewModelBase
+    public class AxisViewModel : ModelBase
     {
         public Enum Type { get; set; }
 

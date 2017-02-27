@@ -3,24 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using XOutput.Input.DirectInput;
 using XOutput.Input.XInput;
 
 namespace XOutput.Input.Mapper
 {
-    /// <summary>
-    /// Converts DirectInput into XInput
-    /// </summary>
-    public sealed class DirectToXInputMapper : InputMapperBase
+    public class KeyboardToXInputMapper : InputMapperBase
     {
         /// <summary>
         /// Gets a new mapper from string value.
         /// </summary>
         /// <param name="text">Serialized mapper</param>
         /// <returns></returns>
-        public static DirectToXInputMapper Parse(string text)
+        public static KeyboardToXInputMapper Parse(string text)
         {
-            DirectToXInputMapper mapper = new DirectToXInputMapper();
+            KeyboardToXInputMapper mapper = new KeyboardToXInputMapper();
 
             foreach (var line in text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None))
             {
@@ -32,9 +30,9 @@ namespace XOutput.Input.Mapper
                     throw new ArgumentException("Invalid text: " + text);
                 }
                 var key = (XInputTypes)Enum.Parse(typeof(XInputTypes), values[0]);
-                DirectInputTypes? input = null;
+                Key? input = null;
                 if (!string.IsNullOrEmpty(values[1]))
-                    input = (DirectInputTypes)Enum.Parse(typeof(DirectInputTypes), values[1]);
+                    input = (Key)Enum.Parse(typeof(Key), values[1]);
                 var min = double.Parse(values[2]) / 100;
                 var max = double.Parse(values[3]) / 100;
                 mapper.SetMapping(key, new MapperData { InputType = input, MinValue = min, MaxValue = max });

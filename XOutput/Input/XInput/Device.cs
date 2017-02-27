@@ -18,8 +18,8 @@ namespace XOutput.Input.XInput
         public event Action InputChanged;
 
         private readonly Dictionary<XInputTypes, double> values = new Dictionary<XInputTypes, double>();
-        private readonly DirectDevice source;
-        private readonly Mapper.DirectToXInputMapper mapper;
+        private readonly IInputDevice source;
+        private readonly Mapper.InputMapperBase mapper;
         private DPadDirection dPad = DPadDirection.None;
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace XOutput.Input.XInput
         /// </summary>
         /// <param name="source">Direct input device</param>
         /// <param name="mapper">DirectInput to XInput mapper</param>
-        public XDevice(DirectDevice source, Mapper.DirectToXInputMapper mapper)
+        public XDevice(IInputDevice source, Mapper.InputMapperBase mapper)
         {
             this.source = source;
             this.mapper = mapper;
@@ -58,16 +58,6 @@ namespace XOutput.Input.XInput
         }
 
         /// <summary>
-        /// Gets the current boolean value of the inputTpye.
-        /// </summary>
-        /// <param name="inputType">Type of input</param>
-        /// <returns>Value</returns>
-        public bool GetBool(XInputTypes inputType)
-        {
-            return Get(inputType) > 0.5;
-        }
-
-        /// <summary>
         /// Refreshes the current state.
         /// </summary>
         /// <returns></returns>
@@ -80,11 +70,15 @@ namespace XOutput.Input.XInput
                 {
                     double value = 0;
                     if (mapping.InputType != null)
-                        value = source.Get(mapping.InputType.Value);
+                        value = source.Get(mapping.InputType);
                     values[type] = mapping.GetValue(value);
                 }
+                else
+                {
+
+                }
             }
-            dPad = source.GetDPad();
+            dPad = source.DPad;
             InputChanged?.Invoke();
             return true;
         }
@@ -139,6 +133,10 @@ namespace XOutput.Input.XInput
             report[13] = (byte)((ry >> 8) & 0xFF);
 
             return report;
+        }
+        private bool GetBool(XInputTypes inputType)
+        {
+            return Get(inputType) > 0.5;
         }
     }
 }
