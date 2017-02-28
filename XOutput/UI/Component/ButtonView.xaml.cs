@@ -25,11 +25,11 @@ namespace XOutput.UI.Component
         public bool Value { get { return viewModel.Value; }  set { viewModel.Value = value; } }
         public Enum Type { get { return viewModel.Type; } }
 
-        protected readonly ButtonViewModel viewModel;
+        protected readonly ButtonModel viewModel;
 
         public ButtonView(Enum type)
         {
-            viewModel = new ButtonViewModel();
+            viewModel = new ButtonModel();
             viewModel.Type = type;
             viewModel.Label = type.ToString();
             DataContext = viewModel;

@@ -11,7 +11,7 @@ using XOutput.Input.XInput;
 
 namespace XOutput.UI.Component
 {
-    public class MappingViewModel : ModelBase
+    public class MappingModel : ModelBase
     {
 
         private XInputTypes _xInputType;
@@ -30,48 +30,40 @@ namespace XOutput.UI.Component
 
         private ObservableCollection<Enum> inputs = new ObservableCollection<Enum>();
         public ObservableCollection<Enum> Inputs { get { return inputs; } }
-        private Enum _selectedInput;
         public Enum SelectedInput
         {
-            get { return _selectedInput; }
+            get { return mapperData.InputType; }
             set
             {
-                if (_selectedInput != value)
+                if (mapperData.InputType != value)
                 {
-                    _selectedInput = value;
-                    mapperData.InputType = _selectedInput;
+                    mapperData.InputType = value;
                     OnPropertyChanged(nameof(SelectedInput));
                 }
             }
         }
-
-        private decimal? _min;
+        
         public decimal? Min
         {
-            get { return _min; }
+            get { return (decimal)mapperData.MinValue * 100; }
             set
             {
-                if (_min != value)
+                if ((decimal)mapperData.MinValue != value)
                 {
-                    _min = value;
-                    if(_min.HasValue)
-                        mapperData.MinValue = (double)_min / 100;
+                    mapperData.MinValue = (double)(value ?? 0) / 100;
                     OnPropertyChanged(nameof(Min));
                 }
             }
         }
-
-        private decimal? _max;
+        
         public decimal? Max
         {
-            get { return _max; }
+            get { return (decimal)mapperData.MaxValue * 100; }
             set
             {
-                if (_max != value)
+                if ((decimal)mapperData.MaxValue != value)
                 {
-                    _max = value;
-                    if (_max.HasValue)
-                        mapperData.MaxValue = (double)_max / 100;
+                    mapperData.MaxValue = (double)(value ?? 100) / 100;
                     OnPropertyChanged(nameof(Max));
                 }
             }
@@ -79,7 +71,7 @@ namespace XOutput.UI.Component
 
         private MapperData mapperData;
 
-        public MappingViewModel(IInputDevice device, MapperData mapperData)
+        public MappingModel(IInputDevice device, MapperData mapperData)
         {
             this.mapperData = mapperData;
             foreach (var directInput in device.GetButtons())
@@ -92,12 +84,17 @@ namespace XOutput.UI.Component
             }
             if (mapperData != null)
             {
-                _min = (decimal)mapperData.MinValue * 100;
-                _max = (decimal)mapperData.MaxValue * 100;
                 if (mapperData.InputType == null)
                     mapperData.InputType = device.GetButtons().FirstOrDefault();
-                _selectedInput = mapperData.InputType;
             }
+        }
+
+        public void Refresh()
+        {
+            OnPropertyChanged(nameof(XInputType));
+            OnPropertyChanged(nameof(SelectedInput));
+            OnPropertyChanged(nameof(Min));
+            OnPropertyChanged(nameof(Max));
         }
     }
 }

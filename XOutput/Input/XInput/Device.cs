@@ -134,7 +134,7 @@ namespace XOutput.Input.XInput
 
             return report;
         }
-        private bool GetBool(XInputTypes inputType)
+        public bool GetBool(XInputTypes inputType)
         {
             return Get(inputType) > 0.5;
         }

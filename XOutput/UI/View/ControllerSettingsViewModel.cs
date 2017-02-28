@@ -28,7 +28,6 @@ namespace XOutput.UI.View
             createXInputControls();
         }
 
-
         private void createInputControls()
         {
             foreach (var buttonInput in controller.InputDevice.GetButtons())
@@ -64,7 +63,6 @@ namespace XOutput.UI.View
                 Model.DPadText = "This device has no DPad";
             }
         }
-
 
         private void createMappingControls()
         {
@@ -109,9 +107,18 @@ namespace XOutput.UI.View
             }
             foreach (var buttonView in Model.XInputButtonViews)
             {
-                buttonView.Value = controller.XInput.Get((XInputTypes)buttonView.Type) > 0.5;
+                buttonView.Value = controller.XInput.GetBool((XInputTypes)buttonView.Type);
             }
             Model.XDPadText = controller.XInput.GetDPad().ToString();
+        }
+
+        public void AutoConfigure()
+        {
+            new AutoConfigureWindow(controller).ShowDialog();
+            foreach(var view in model.MapperAxisViews.Concat(model.MapperButtonViews))
+            {
+                view.Refresh();
+            }
         }
     }
 }

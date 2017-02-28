@@ -74,10 +74,10 @@
     <Compile Include="Input\Mapper\MapperData.cs" />
     <Compile Include="Input\XInput\ScpDevice.cs" />
     <Compile Include="UI\Component\NumericTextBox.cs" />
-    <Compile Include="UI\Component\AxisViewModel.cs" />
-    <Compile Include="UI\Component\ControllerViewModel.cs" />
-    <Compile Include="UI\Component\ButtonViewModel.cs" />
-    <Compile Include="UI\Component\MappingViewModel.cs" />
+    <Compile Include="UI\Component\AxisModel.cs" />
+    <Compile Include="UI\Component\ControllerModel.cs" />
+    <Compile Include="UI\Component\ButtonModel.cs" />
+    <Compile Include="UI\Component\MappingModel.cs" />
     <Compile Include="UI\Resources\ErrorMessage.cs" />
     <Compile Include="UI\Resources\Message.cs" />
     <Compile Include="UI\ModelBase.cs" />
@@ -86,6 +86,9 @@
     </Compile>
     <Compile Include="UI\Component\ButtonView.xaml.cs">
       <DependentUpon>ButtonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\View\AutoConfigureWindow.xaml.cs">
+      <DependentUpon>AutoConfigureWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\View\ControllerSettings.xaml.cs">
       <DependentUpon>ControllerSettings.xaml</DependentUpon>
@@ -101,6 +104,7 @@
     <Compile Include="UI\Component\MappingView.xaml.cs">
       <DependentUpon>MappingView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\View\AutoConfigureModel.cs" />
     <Compile Include="UI\View\ControllerSettingsModel.cs" />
     <Compile Include="UI\View\MainWindowModel.cs" />
     <Compile Include="UI\View\MainWindowViewModel.cs" />
@@ -109,6 +113,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Component\ButtonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\View\AutoConfigureWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

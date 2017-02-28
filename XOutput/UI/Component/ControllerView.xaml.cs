@@ -25,13 +25,13 @@ namespace XOutput.UI.Component
     /// </summary>
     public partial class ControllerView : UserControl
     {
-        protected readonly ControllerViewModel viewModel;
+        protected readonly ControllerModel viewModel;
         private readonly Action<string> log;
 
         public ControllerView(GameController controller, Action<string> log = null)
         {
             this.log = log;
-            viewModel = new ControllerViewModel();
+            viewModel = new ControllerModel();
             viewModel.Controller = controller;
             viewModel.ButtonText = "Start";
             DataContext = viewModel;

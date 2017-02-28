@@ -51,6 +51,7 @@
                     <GroupBox Header="Buttons">
                         <ItemsControl ItemsSource="{Binding Model.MapperButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
+                    <Button Margin="10" Padding="3" Click="AutoConfigure_Click">Auto configure</Button>
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>

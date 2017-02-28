@@ -25,13 +25,18 @@ namespace XOutput.UI.Component
     /// </summary>
     public partial class MappingView : UserControl
     {
-        protected readonly MappingViewModel viewModel;
+        protected readonly MappingModel viewModel;
         public MappingView(IInputDevice device, XInputTypes type, MapperData mapper)
         {
-            viewModel = new MappingViewModel(device, mapper);
+            viewModel = new MappingModel(device, mapper);
             viewModel.XInputType = type;
             DataContext = viewModel;
             InitializeComponent();
+        }
+
+        public void Refresh()
+        {
+            viewModel.Refresh();
         }
     }
 }

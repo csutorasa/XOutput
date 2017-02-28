@@ -16,11 +16,13 @@
         <Label Grid.Column="0" Margin="2" Content="{Binding XInputType}"/>
         <ComboBox Grid.Column="1" Margin="2" ItemsSource="{Binding Inputs}" SelectedItem="{Binding SelectedInput, Mode=TwoWay}"/>
         <DockPanel Grid.Column="2" Margin="2">
-            <Label>Min:</Label>
+            <Label DockPanel.Dock="Left">Min:</Label>
+            <Label DockPanel.Dock="Right">%</Label>
             <local:NumericTextBox Height="20" Minimum="0" Maximum="100" Value="{Binding Min, Mode=TwoWay}"/>
         </DockPanel>
         <DockPanel Grid.Column="3" Margin="2">
-            <Label>Max:</Label>
+            <Label DockPanel.Dock="Left">Max:</Label>
+            <Label DockPanel.Dock="Right">%</Label>
             <local:NumericTextBox Height="20" Minimum="0" Maximum="100" Value="{Binding Max, Mode=TwoWay}"/>
         </DockPanel>
     </Grid>

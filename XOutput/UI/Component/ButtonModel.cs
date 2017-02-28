@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XOutput.UI.Component
 {
-    public class ButtonViewModel : ModelBase
+    public class ButtonModel : ModelBase
     {
         public Enum Type { get; set; }
 

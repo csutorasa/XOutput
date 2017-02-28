@@ -53,6 +53,7 @@ namespace XOutput.UI.View
                 Log(string.Format(ErrorMessage.LoadSettingsError, SettingsFilePath, ex.Message));
             }
             viewModel.RefreshGameControllers();
+            viewModel.AddKeyboard();
         }
 
         public void Log(string msg)
@@ -95,7 +96,7 @@ namespace XOutput.UI.View
         private void Window_Closed(object sender, EventArgs e)
         {
             viewModel.Dispose();
-            foreach (var controller in viewModel.Model.Controllers.Select(x => (x.DataContext as ControllerViewModel).Controller))
+            foreach (var controller in viewModel.Model.Controllers.Select(x => (x.DataContext as ControllerModel).Controller))
             {
                 controller.Dispose();
             }

@@ -47,9 +47,12 @@ namespace XOutput.UI.View
         public void LoadSettings(string settingsFilePath)
         {
             settings = Settings.Load(settingsFilePath);
-            Model.Controllers.Add(new ControllerView(new GameController(new Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard"))));
         }
 
+        public void AddKeyboard()
+        {
+            Model.Controllers.Add(new ControllerView(new GameController(new Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard"))));
+        }
         public void SaveSettings(string settingsFilePath)
         {
             settings.Save(settingsFilePath);
@@ -61,7 +64,7 @@ namespace XOutput.UI.View
 
             foreach (var controllerView in Model.Controllers.ToList())
             {
-                var controller = (controllerView.DataContext as ControllerViewModel).Controller;
+                var controller = (controllerView.DataContext as ControllerModel).Controller;
                 if (controller.InputDevice is DirectDevice && !devices.Any(x => x.ToString() == controller.InputDevice.ToString()))
                 {
                     controller.Dispose();
@@ -71,7 +74,7 @@ namespace XOutput.UI.View
             }
             foreach (var device in devices)
             {
-                if (!Model.Controllers.Any(x => (x.DataContext as ControllerViewModel).Controller.ToString() == device.ToString()))
+                if (!Model.Controllers.Any(x => (x.DataContext as ControllerModel).Controller.ToString() == device.ToString()))
                 {
                     InputMapperBase mapper = settings.GetMapper(device.Id.ToString());
                     GameController controller = new GameController(device, mapper);

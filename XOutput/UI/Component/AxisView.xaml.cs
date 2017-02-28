@@ -25,11 +25,11 @@ namespace XOutput.UI.Component
         public int Value { get { return viewModel.Value; } set { viewModel.Value = value; } }
         public Enum Type { get { return viewModel.Type; } }
 
-        protected readonly AxisViewModel viewModel;
+        protected readonly AxisModel viewModel;
 
         public AxisView(Enum type, int max = 1000)
         {
-            viewModel = new AxisViewModel();
+            viewModel = new AxisModel();
             viewModel.Type = type;
             viewModel.Label = type.ToString();
             viewModel.Max = max;
