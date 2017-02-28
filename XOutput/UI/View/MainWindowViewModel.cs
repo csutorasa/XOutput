@@ -46,7 +46,15 @@ namespace XOutput.UI.View
 
         public void LoadSettings(string settingsFilePath)
         {
-            settings = Settings.Load(settingsFilePath);
+            try
+            {
+                settings = Settings.Load(settingsFilePath);
+            }
+            catch
+            {
+                settings = new Settings();
+                throw;
+            }
         }
 
         public void AddKeyboard()

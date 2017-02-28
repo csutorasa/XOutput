@@ -14,32 +14,17 @@ namespace XOutput.Input.Mapper
     public sealed class DirectToXInputMapper : InputMapperBase
     {
         /// <summary>
-        /// Gets a new mapper from string value.
+        /// Gets a new mapper from dictionary.
         /// </summary>
-        /// <param name="text">Serialized mapper</param>
+        /// <param name="data">Serialized mapper</param>
         /// <returns></returns>
-        public static DirectToXInputMapper Parse(string text)
+        public static DirectToXInputMapper Parse(Dictionary<string, string> data)
         {
             DirectToXInputMapper mapper = new DirectToXInputMapper();
-
-            foreach (var line in text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None))
+            foreach(var mapping in FromDictionary(data, typeof(DirectInputTypes)))
             {
-                if (string.IsNullOrEmpty(line))
-                    continue;
-                var values = line.Split(';');
-                if (values.Length != 4)
-                {
-                    throw new ArgumentException("Invalid text: " + text);
-                }
-                var key = (XInputTypes)Enum.Parse(typeof(XInputTypes), values[0]);
-                DirectInputTypes? input = null;
-                if (!string.IsNullOrEmpty(values[1]))
-                    input = (DirectInputTypes)Enum.Parse(typeof(DirectInputTypes), values[1]);
-                var min = double.Parse(values[2]) / 100;
-                var max = double.Parse(values[3]) / 100;
-                mapper.SetMapping(key, new MapperData { InputType = input, MinValue = min, MaxValue = max });
+                mapper.mappings.Add(mapping.Key, mapping.Value);
             }
-
             return mapper;
         }
 

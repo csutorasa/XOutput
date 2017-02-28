@@ -25,18 +25,14 @@ namespace XOutput
             if (File.Exists(filePath))
             {
                 var text = File.ReadAllText(filePath);
-                var devices = text.Split('#');
-                foreach(var device in devices)
+                IniData ini = IniData.Deserialize(text);
+                foreach(var device in ini.Content)
                 {
-                    if (string.IsNullOrEmpty(device))
-                        continue;
-                    var newLineIndex = device.IndexOf(Environment.NewLine);
-                    var id = device.Substring(0, newLineIndex);
-                    var mapperText = device.Substring(newLineIndex + 1);
+                    var id = device.Key;
                     if(id == "Keyboard")
-                        settings.mappers[id] = KeyboardToXInputMapper.Parse(mapperText);
+                        settings.mappers[id] = KeyboardToXInputMapper.Parse(device.Value);
                     else
-                        settings.mappers[id] = DirectToXInputMapper.Parse(mapperText);
+                        settings.mappers[id] = DirectToXInputMapper.Parse(device.Value);
                 }
             }
             return settings;
@@ -44,7 +40,7 @@ namespace XOutput
         
         private Dictionary<string, InputMapperBase> mappers;
 
-        private Settings()
+        public Settings()
         {
             mappers = new Dictionary<string, InputMapperBase>();
         }
@@ -55,14 +51,12 @@ namespace XOutput
         /// <param name="filePath">Filepath of the settings file</param>
         public void Save(string filePath)
         {
-            StringBuilder sb = new StringBuilder();
+            IniData ini = new IniData();
             foreach(var mapper in mappers)
             {
-                sb.Append("#");
-                sb.AppendLine(mapper.Key.ToString());
-                sb.AppendLine(mapper.Value.ToString());
+                ini.AddSection(mapper.Key, mapper.Value.ToDictionary());
             }
-            File.WriteAllText(filePath, sb.ToString());
+            File.WriteAllText(filePath, ini.Serialize());
         }
 
         /// <summary>
