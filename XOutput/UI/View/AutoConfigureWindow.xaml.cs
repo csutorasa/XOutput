@@ -53,7 +53,7 @@ namespace XOutput.UI.View
             inputTypes = controller.InputDevice.GetButtons().Concat(controller.InputDevice.GetAxes()).ToArray();
             foreach (var type in inputTypes)
             {
-                lastReadValues.Add(type, controller.InputDevice.Get(type));
+                lastReadValues[type] = controller.InputDevice.Get(type);
             }
             controller.InputDevice.InputChanged += readValues;
             startReading();
