@@ -32,10 +32,21 @@ namespace XOutput.Input.XInput
 
     public static class XInputHelper
     {
-        public static IEnumerable<XInputTypes> GetAll()
+        private readonly static XInputTypes[] all;
+        private readonly static XInputTypes[] buttons;
+        private readonly static XInputTypes[] axes;
+
+        static XInputHelper()
         {
-            return (XInputTypes[])Enum.GetValues(typeof(XInputTypes));
+            all = (XInputTypes[])Enum.GetValues(typeof(XInputTypes));
+            buttons = all.Where(type => type.IsButton()).ToArray();
+            axes = all.Where(type => type.IsAxis()).ToArray();
         }
+
+        public static IEnumerable<XInputTypes> Values { get { return all; } }
+        public static IEnumerable<XInputTypes> Buttons { get { return buttons; } }
+        public static IEnumerable<XInputTypes> Axes { get { return axes; } }
+        
         public static bool IsButton(this XInputTypes input)
         {
             switch (input)
@@ -56,11 +67,6 @@ namespace XOutput.Input.XInput
                     return false;
             }
         }
-        public static IEnumerable<XInputTypes> GetButtons()
-        {
-            XInputTypes[] outputTypes = (XInputTypes[])Enum.GetValues(typeof(XInputTypes));
-            return outputTypes.Where(type => type.IsButton());
-        }
 
         public static bool IsAxis(this XInputTypes input)
         {
@@ -76,11 +82,6 @@ namespace XOutput.Input.XInput
                 default:
                     return false;
             }
-        }
-        public static IEnumerable<XInputTypes> GetAxes()
-        {
-            XInputTypes[] outputTypes = (XInputTypes[])Enum.GetValues(typeof(XInputTypes));
-            return outputTypes.Where(type => type.IsAxis());
         }
     }
 }

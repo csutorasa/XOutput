@@ -49,7 +49,7 @@ namespace XOutput.UI.View
         {
             timer.Tick += (object sender1, EventArgs e1) => startReading();
             timer.Interval = TimeSpan.FromMilliseconds(ResetInterval);
-            xInputTypes = XInputHelper.GetAll().ToArray();
+            xInputTypes = XInputHelper.Values.ToArray();
             inputTypes = controller.InputDevice.GetButtons().Concat(controller.InputDevice.GetAxes()).ToArray();
             foreach (var type in inputTypes)
             {

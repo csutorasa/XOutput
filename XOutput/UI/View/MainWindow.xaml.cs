@@ -52,8 +52,16 @@ namespace XOutput.UI.View
                 MessageBox.Show(string.Format(ErrorMessage.LoadSettingsError, SettingsFilePath, ex.Message), ErrorMessage.Warning);
                 Log(string.Format(ErrorMessage.LoadSettingsError, SettingsFilePath, ex.Message));
             }
-            viewModel.RefreshGameControllers();
-            viewModel.AddKeyboard();
+            try
+            {
+                viewModel.RefreshGameControllers();
+                viewModel.AddKeyboard();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(string.Format(ErrorMessage.SCPNotInstalledError, ex.Message), ErrorMessage.Warning);
+                Log(string.Format(Message.ScpDownload));
+            }
         }
 
         public void Log(string msg)

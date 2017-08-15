@@ -42,7 +42,7 @@ namespace XOutput.Input
         {
             Stop();
             inputDevice.Dispose();
-            scpDevice.Dispose();
+            scpDevice?.Dispose();
         }
         public override string ToString()
         {
@@ -92,9 +92,8 @@ namespace XOutput.Input
         public void Stop()
         {
             running = false;
-            if (thread != null)
-                thread.Abort();
-            scpDevice.Unplug(controllerCount);
+            thread?.Abort();
+            scpDevice?.Unplug(controllerCount);
             resetId();
         }
 

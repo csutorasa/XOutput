@@ -17,5 +17,6 @@ namespace XOutput.UI.Resources
         public static string ControllerDisconnected { get { return "{0} is disconnected."; } }
         public static string EmulationStarted { get { return "{0} is emulated as controller #{1}."; } }
         public static string EmulationStopped { get { return "{0} is no longer emulated."; } }
+        public static string ScpDownload { get { return "ScpToolkit is mandatory to use this application." + Environment.NewLine + "It can be downloaded from: https://github.com/nefarius/ScpToolkit/releases/latest"; } }
     }
 }

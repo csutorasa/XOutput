@@ -66,12 +66,12 @@ namespace XOutput.UI.View
 
         private void createMappingControls()
         {
-            foreach (var xInputType in XInputHelper.GetButtons())
+            foreach (var xInputType in XInputHelper.Buttons)
             {
                 var mappingView = new MappingView(controller.InputDevice, xInputType, controller.Mapper.GetMapping(xInputType));
                 Model.MapperButtonViews.Add(mappingView);
             }
-            foreach (var xInputType in XInputHelper.GetAxes())
+            foreach (var xInputType in XInputHelper.Axes)
             {
                 var mappingView = new MappingView(controller.InputDevice, xInputType, controller.Mapper.GetMapping(xInputType));
                 Model.MapperAxisViews.Add(mappingView);
@@ -88,12 +88,12 @@ namespace XOutput.UI.View
 
         private void createXInputControls()
         {
-            foreach (var buttonInput in XInputHelper.GetButtons())
+            foreach (var buttonInput in XInputHelper.Buttons)
             {
                 var inputButtonView = new ButtonView(buttonInput);
                 Model.XInputButtonViews.Add(inputButtonView);
             }
-            foreach (var axisInput in XInputHelper.GetAxes())
+            foreach (var axisInput in XInputHelper.Axes)
             {
                 var inputAxisView = new AxisView(axisInput);
                 Model.XInputAxisViews.Add(inputAxisView);
