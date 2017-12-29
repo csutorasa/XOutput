@@ -38,7 +38,7 @@ namespace XOutput.Input.DirectInput
         /// Gets the current available DirectInput devices.
         /// </summary>
         /// <returns>List of devices</returns>
-        public List<DirectDevice> GetInputDevices()
+        public IEnumerable<DirectDevice> GetInputDevices()
         {
             var directDevices = new List<DirectDevice>();
             var deviceInstances = directInput.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly);

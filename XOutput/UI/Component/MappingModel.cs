@@ -8,8 +8,9 @@ using XOutput.Input;
 using XOutput.Input.DirectInput;
 using XOutput.Input.Mapper;
 using XOutput.Input.XInput;
+using XOutput.UI.View;
 
-namespace XOutput.UI.Component
+namespace XOutput.UI
 {
     public class MappingModel : ModelBase
     {
@@ -28,8 +29,9 @@ namespace XOutput.UI.Component
             }
         }
 
-        private ObservableCollection<Enum> inputs = new ObservableCollection<Enum>();
+        private readonly ObservableCollection<Enum> inputs = new ObservableCollection<Enum>();
         public ObservableCollection<Enum> Inputs { get { return inputs; } }
+
         public Enum SelectedInput
         {
             get { return mapperData.InputType; }
@@ -69,24 +71,11 @@ namespace XOutput.UI.Component
             }
         }
 
-        private MapperData mapperData;
+        private readonly MapperData mapperData;
 
-        public MappingModel(IInputDevice device, MapperData mapperData)
+        public MappingModel(MapperData mapperData)
         {
             this.mapperData = mapperData;
-            foreach (var directInput in device.GetButtons())
-            {
-                Inputs.Add(directInput);
-            }
-            foreach (var directInput in device.GetAxes())
-            {
-                Inputs.Add(directInput);
-            }
-            if (mapperData != null)
-            {
-                if (mapperData.InputType == null)
-                    mapperData.InputType = device.GetButtons().FirstOrDefault();
-            }
         }
 
         public void Refresh()

@@ -12,11 +12,10 @@
     </UserControl.Resources>
     <Grid Height="30">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="75"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="25"/>
         </Grid.ColumnDefinitions>
         <Label Content="{Binding Label}"/>
-        <Ellipse Grid.Column="2" Fill="{Binding Value, Converter={StaticResource BoolToBrushConverter}}" Width="20" Height="20"></Ellipse>
+        <Ellipse Grid.Column="1" Fill="{Binding Value, Converter={StaticResource BoolToBrushConverter}}" Width="20" Height="20"></Ellipse>
     </Grid>
 </UserControl>

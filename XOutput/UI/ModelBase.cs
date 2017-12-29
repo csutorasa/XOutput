@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace XOutput.UI
 {
-    public class ModelBase : INotifyPropertyChanged
+    public abstract class ModelBase : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;

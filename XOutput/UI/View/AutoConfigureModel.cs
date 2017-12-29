@@ -28,5 +28,23 @@ namespace XOutput.UI.View
             get { return maxType; }
             set { if (maxType != value) { maxType = value; OnPropertyChanged(nameof(MaxType)); } }
         }
+        private double minValue;
+        public double MinValue
+        {
+            get { return minValue; }
+            set { if (minValue != value) { minValue = value; OnPropertyChanged(nameof(MinValue)); } }
+        }
+        private double maxValue;
+        public double MaxValue
+        {
+            get { return maxValue; }
+            set { if (maxValue != value) { maxValue = value; OnPropertyChanged(nameof(MaxValue)); } }
+        }
+        private bool invert;
+        public bool Invert
+        {
+            get { return invert; }
+            set { if (invert != value) { invert = value; OnPropertyChanged(nameof(Invert)); } }
+        }
     }
 }

@@ -10,11 +10,8 @@ using XOutput.UI.Component;
 
 namespace XOutput.UI.View
 {
-    public class ControllerSettingsViewModel
+    public class ControllerSettingsViewModel : ViewModelBase<ControllerSettingsModel>
     {
-        private readonly ControllerSettingsModel model = new ControllerSettingsModel();
-
-        public ControllerSettingsModel Model { get { return model; } }
         public bool IsConrtollerConnected { get { return controller.InputDevice.Connected; } }
 
         private readonly GameController controller;
@@ -22,6 +19,7 @@ namespace XOutput.UI.View
         public ControllerSettingsViewModel(GameController controller)
         {
             this.controller = controller;
+            model = new ControllerSettingsModel();
             Model.Title = controller.DisplayName;
             createInputControls();
             createMappingControls();
@@ -68,21 +66,21 @@ namespace XOutput.UI.View
         {
             foreach (var xInputType in XInputHelper.Buttons)
             {
-                var mappingView = new MappingView(controller.InputDevice, xInputType, controller.Mapper.GetMapping(xInputType));
+                var mappingView = new MappingView(controller, xInputType);
                 Model.MapperButtonViews.Add(mappingView);
             }
             foreach (var xInputType in XInputHelper.Axes)
             {
-                var mappingView = new MappingView(controller.InputDevice, xInputType, controller.Mapper.GetMapping(xInputType));
+                var mappingView = new MappingView(controller, xInputType);
                 Model.MapperAxisViews.Add(mappingView);
             }
             if (controller.InputDevice.HasDPad)
             {
-                Model.MapperDPadText = "DPad is automatically mapped";
+                Model.MapperDPadText = "AutomaticDPad";
             }
             else
             {
-                Model.MapperDPadText = "This device has no DPad";
+                Model.MapperDPadText = "NoDPad";
             }
         }
 
@@ -110,15 +108,6 @@ namespace XOutput.UI.View
                 buttonView.Value = controller.XInput.GetBool((XInputTypes)buttonView.Type);
             }
             Model.XDPadText = controller.XInput.GetDPad().ToString();
-        }
-
-        public void AutoConfigure()
-        {
-            new AutoConfigureWindow(controller).ShowDialog();
-            foreach(var view in model.MapperAxisViews.Concat(model.MapperButtonViews))
-            {
-                view.Refresh();
-            }
         }
     }
 }

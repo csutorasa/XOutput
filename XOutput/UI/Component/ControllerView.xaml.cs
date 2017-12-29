@@ -25,46 +25,22 @@ namespace XOutput.UI.Component
     /// </summary>
     public partial class ControllerView : UserControl
     {
-        protected readonly ControllerModel viewModel;
-        private readonly Action<string> log;
+        protected readonly ControllerViewModel viewModel;
 
         public ControllerView(GameController controller, Action<string> log = null)
         {
-            this.log = log;
-            viewModel = new ControllerModel();
-            viewModel.Controller = controller;
-            viewModel.ButtonText = "Start";
+            viewModel = new ControllerViewModel(controller, log);
             DataContext = viewModel;
             InitializeComponent();
         }
         private void Open_Click(object sender, RoutedEventArgs e)
         {
-            var controllerSettingsWindow = new ControllerSettings(new ControllerSettingsViewModel(viewModel.Controller));
-            controllerSettingsWindow.ShowDialog();
+            viewModel.Edit();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (!viewModel.Started)
-            {
-                int controllerCount = 0;
-                controllerCount = viewModel.Controller.Start(() =>
-                    {
-                        viewModel.ButtonText = "Start";
-                        log?.Invoke(string.Format(Message.EmulationStopped, viewModel.Controller.DisplayName));
-                        viewModel.Started = false;
-                    });
-                if (controllerCount != 0)
-                {
-                    viewModel.ButtonText = "Stop";
-                    log?.Invoke(string.Format(Message.EmulationStarted, viewModel.Controller.DisplayName, controllerCount));
-                }
-                viewModel.Started = controllerCount != 0;
-            }
-            else
-            {
-                viewModel.Controller.Stop();
-            }
+            viewModel.StartStop();
         }
     }
 }

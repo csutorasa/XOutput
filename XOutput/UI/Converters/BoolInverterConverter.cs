@@ -10,13 +10,12 @@ using System.Windows.Media;
 namespace XOutput.UI.Converters
 {
     /// <summary>
-    /// Converts a boolean value to brush.
-    /// Cannot be used backwards.
+    /// Inverts a boolean value.
     /// </summary>
     public class BoolInverterConverter : IValueConverter
     {
         /// <summary>
-        /// Converts the bool value. Returns light green(true) or light gray(false).
+        /// Inverts the bool value.
         /// </summary>
         /// <param name="value">Boolean value to convert</param>
         /// <param name="targetType">Ignored</param>
@@ -25,35 +24,31 @@ namespace XOutput.UI.Converters
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool? b = value as bool?;
-            if (b == null)
-            {
-                throw new ArgumentException();
-            }
-            else
-            {
-                return !b;
-            }
+            return Invert(value as bool?);
         }
 
         /// <summary>
-        /// Intentionally not implemented.
+        /// Inverts the bool value.
         /// </summary>
-        /// <param name="value">Ignored</param>
+        /// <param name="value">Boolean value to convert</param>
         /// <param name="targetType">Ignored</param>
         /// <param name="parameter">Ignored</param>
         /// <param name="culture">Ignored</param>
         /// <returns></returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool? b = value as bool?;
-            if (b == null)
+            return Invert(value as bool?);
+        }
+
+        protected bool Invert(bool? b)
+        {
+            if (b.HasValue)
             {
-                throw new ArgumentException();
+                return !(b.Value);
             }
             else
             {
-                return !b;
+                throw new ArgumentException();
             }
         }
     }

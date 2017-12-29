@@ -97,8 +97,10 @@ namespace XOutput
             string line;
             string sectionHeader = null;
             Dictionary<string, string> data = new Dictionary<string, string>();
-            while((line = sr.ReadLine()) != null)
+            for(int linecount = 1; (line = sr.ReadLine()) != null; linecount++)
             {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
                 line = removeComment(line);
                 if (string.IsNullOrWhiteSpace(line))
                     continue;

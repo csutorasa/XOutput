@@ -63,10 +63,5 @@ namespace XOutput.UI.View
 
             viewModel.updateXInputControls();
         }
-
-        private void AutoConfigure_Click(object sender, RoutedEventArgs e)
-        {
-            viewModel.AutoConfigure();
-        }
     }
 }

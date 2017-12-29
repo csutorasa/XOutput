@@ -66,6 +66,14 @@
     <Compile Include="Input\Mapper\KeyboardToXInputMapper.cs" />
     <Compile Include="Input\Mapper\InputMapperBase.cs" />
     <Compile Include="Input\XInput\NativeInterface.cs" />
+    <Compile Include="UI\Converters\NotNullToBoolConverter.cs" />
+    <Compile Include="UI\LanguageModel.cs" />
+    <Compile Include="LanguageManager.cs" />
+    <Compile Include="UI\Component\ControllerViewModel.cs" />
+    <Compile Include="UI\Component\MappingViewModel.cs" />
+    <Compile Include="UI\Converters\EnumerableNotEmptyToVisibilityConverter.cs" />
+    <Compile Include="UI\Converters\DynamicLanguageConverter.cs" />
+    <Compile Include="UI\Converters\LanguageConverter.cs" />
     <Compile Include="UI\Converters\BoolInverterConverter.cs" />
     <Compile Include="UI\Converters\BoolToBrushConverter.cs" />
     <Compile Include="Input\DirectInput\InputTypes.cs" />
@@ -79,6 +87,7 @@
     <Compile Include="UI\Component\ControllerModel.cs" />
     <Compile Include="UI\Component\ButtonModel.cs" />
     <Compile Include="UI\Component\MappingModel.cs" />
+    <Compile Include="UI\ViewModelBase.cs" />
     <Compile Include="UI\Resources\ErrorMessage.cs" />
     <Compile Include="UI\Resources\Message.cs" />
     <Compile Include="UI\ModelBase.cs" />
@@ -107,8 +116,9 @@
     </Compile>
     <Compile Include="UI\View\AutoConfigureModel.cs" />
     <Compile Include="UI\View\ControllerSettingsModel.cs" />
-    <Compile Include="UI\View\MainWindowModel.cs" />
-    <Compile Include="UI\View\MainWindowViewModel.cs" />
+    <Compile Include="UI\View\AutoConfigureViewModel.cs" />
+    <Compile Include="UI\MainWindowModel.cs" />
+    <Compile Include="UI\MainWindowViewModel.cs" />
     <Page Include="UI\Component\AxisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -125,7 +135,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\View\MainWindow.xaml">
+    <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -134,7 +144,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\View\ControllerSettingsViewModel.cs" />
-    <Compile Include="UI\View\MainWindow.xaml.cs">
+    <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -174,7 +184,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\languages.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

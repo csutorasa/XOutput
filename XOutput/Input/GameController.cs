@@ -19,6 +19,7 @@ namespace XOutput.Input
         public int ControllerCount { get { return controllerCount; } }
 
         private static readonly Controllers controllers = new Controllers();
+
         protected readonly IInputDevice inputDevice;
         protected readonly InputMapperBase mapper;
         protected readonly XDevice xInput;

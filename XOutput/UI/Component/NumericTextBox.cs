@@ -11,7 +11,6 @@ namespace XOutput.UI.Component
 {
     public class NumericTextBox : TextBox
     {
-
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(decimal?), typeof(NumericTextBox));
         public decimal? Minimum
         {
@@ -29,6 +28,11 @@ namespace XOutput.UI.Component
         {
             get { return (decimal?)GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
+        }
+
+        public NumericTextBox()
+        {
+            MinWidth = 30;
         }
 
         protected static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

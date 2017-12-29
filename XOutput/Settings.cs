@@ -26,13 +26,24 @@ namespace XOutput
             {
                 var text = File.ReadAllText(filePath);
                 IniData ini = IniData.Deserialize(text);
-                foreach(var device in ini.Content)
+                foreach(var section in ini.Content)
                 {
-                    var id = device.Key;
-                    if(id == "Keyboard")
-                        settings.mappers[id] = KeyboardToXInputMapper.Parse(device.Value);
+                    var id = section.Key;
+                    if (id == "General")
+                    {
+                        if (section.Value.ContainsKey("Language"))
+                        {
+                            LanguageManager.getInstance().Language = section.Value["Language"];
+                        }
+                    }
+                    else if (id == "Keyboard")
+                    {
+                        settings.mappers[id] = KeyboardToXInputMapper.Parse(section.Value);
+                    }
                     else
-                        settings.mappers[id] = DirectToXInputMapper.Parse(device.Value);
+                    {
+                        settings.mappers[id] = DirectToXInputMapper.Parse(section.Value);
+                    }
                 }
             }
             return settings;
@@ -56,6 +67,9 @@ namespace XOutput
             {
                 ini.AddSection(mapper.Key, mapper.Value.ToDictionary());
             }
+            Dictionary<string, string> generalSettings = new Dictionary<string, string>();
+            generalSettings["Language"] = LanguageManager.getInstance().Language;
+            ini.AddSection("General", generalSettings);
             File.WriteAllText(filePath, ini.Serialize());
         }
 

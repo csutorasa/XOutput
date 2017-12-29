@@ -3,25 +3,40 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Converters="clr-namespace:XOutput.UI.Converters"
         xmlns:local="clr-namespace:XOutput.UI.View"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
-        Closed="Window_Closed"
-        Title="AutoConfigure" Height="120" Width="500" ResizeMode="CanMinimize">
+        Title="AutoConfigure" Height="200" Width="600" ResizeMode="CanMinimize">
+    <Window.Resources>
+        <Converters:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
+        <Converters:LanguageConverter x:Key="LanguageConverter"/>
+    </Window.Resources>
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="60"/>
-            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="120"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Content="{Binding Model.LabelText}"/>
         <Label VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Content="{Binding Model.MaxType}"/>
-        <CheckBox Margin="5 0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding Model.IsAuto}">Auto accept</CheckBox>
-        <Button Margin="5 0" Padding="10" Grid.Row="1" Grid.Column="1" Click="Next_Click">Next</Button>
-        <Button Margin="5 0" Padding="10" Grid.Row="1" Grid.Column="2" Click="Finish_Click">Finish</Button>
+        <Label VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='MinimumValue'}"/>
+        <Label VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="{Binding Model.MinValue}"/>
+        <Label VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='MaximumValue'}"/>
+        <Label VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Content="{Binding Model.MaxValue}"/>
+        <CheckBox Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="0" IsChecked="{Binding Model.Invert}" VerticalAlignment="Center" VerticalContentAlignment="Center">
+            <TextBlock Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Invert'}" VerticalAlignment="Center"/>
+        </CheckBox>
+        <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="1" Click="Save_Click"
+                IsEnabled="{Binding Model.MaxType, Converter={StaticResource NotNullToBoolConverter}}" 
+                Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Save'}"/>
+        <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="2" Click="Cancel_Click"
+                Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Cancel'}" />
     </Grid>
 </Window>
