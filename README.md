@@ -3,7 +3,7 @@
 XOutput is a software that can convert DirectInput into XInput. DirectInput data is read and sent to a virtual XInput (Xbox 360 Controller) device. XInput is the new standard game controller input on windows, and DirectInput can no longer be used with Universal Windows Platform softwares, but with this tool you can use DirectInput devices as well. 
 
 # How to install
-* Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md)
+* Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
 * Download the [latest release](https://github.com/csutorasa/XOutput/releases/latest) with SlimDX.dll included
 
 # How to use
