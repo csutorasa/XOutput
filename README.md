@@ -19,13 +19,17 @@ You can choose configure to configure your output mapping. You need to press the
 
 After selecting the input the minimum and the maximum value can be configured. Some examples are shown below:
 
-| Minimum | Maximum | Effect                                    |
-|---------|---------|-------------------------------------------|
-| 0       | 100     | Axis is mapped as is                      |
-| 100     | 0       | Axis is reverted                          |
-| 0       | 50      | Lower half of the axis                    |
-| 100     | 50      | Upper half of the axis reverted           |
-| 50      | 50      | Axis is always centered, input is ignored |
+| Minimum | Maximum | Effect                                            |
+|---------|---------|---------------------------------------------------|
+| 0       | 100     | Axis is mapped as is                              |
+| 100     | 0       | Axis is reverted                                  |
+| 0       | 50      | Lower half of the axis                            |
+| 0       | 50      | Upper half of the axis                            |
+| 50      | 0       | Lower half of the axis reverted                   |
+| 100     | 50      | Upper half of the axis reverted                   |
+| 50      | 50      | Axis is always at the lower end, input is ignored |
+| 0       | 0       | Axis is always centered, input is ignored         |
+| 100     | 100     | Axis is always at the upper end, input is ignored |
 
 After these you can close the configuration window. You can save the settings in the File menu.
 
