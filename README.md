@@ -24,7 +24,7 @@ After selecting the input the minimum and the maximum value can be configured. S
 | 0       | 100     | Axis is mapped as is                              |
 | 100     | 0       | Axis is reverted                                  |
 | 0       | 50      | Lower half of the axis                            |
-| 0       | 50      | Upper half of the axis                            |
+| 50      | 100     | Upper half of the axis                            |
 | 50      | 0       | Lower half of the axis reverted                   |
 | 100     | 50      | Upper half of the axis reverted                   |
 | 0       | 0       | Axis is always at the lower end, input is ignored |
