@@ -10,35 +10,12 @@ namespace XOutput.Input.Keyboard
 {
     public class Keyboard : IInputDevice
     {
-        public int ButtonCount
-        {
-            get { return Enum.GetValues(typeof(Key)).Length; }
-        }
-
-        public string DisplayName
-        {
-            get { return "Keyboard"; }
-        }
-
-        public bool Connected
-        {
-            get { return true; }
-        }
-
-        public bool HasAxes
-        {
-            get { return false; }
-        }
-
-        public bool HasDPad
-        {
-            get { return false; }
-        }
-
-        public DPadDirection DPad
-        {
-            get { return DPadDirection.None; }
-        }
+        public int ButtonCount => Enum.GetValues(typeof(Key)).Length;
+        public string DisplayName => "Keyboard";
+        public bool Connected => true;
+        public bool HasAxes => false;
+        public bool HasDPad => false;
+        public DPadDirection DPad => DPadDirection.None;
 
         public event Action InputChanged;
         private Thread inputRefresher;

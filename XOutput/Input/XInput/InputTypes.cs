@@ -43,9 +43,9 @@ namespace XOutput.Input.XInput
             axes = all.Where(type => type.IsAxis()).ToArray();
         }
 
-        public static IEnumerable<XInputTypes> Values { get { return all; } }
-        public static IEnumerable<XInputTypes> Buttons { get { return buttons; } }
-        public static IEnumerable<XInputTypes> Axes { get { return axes; } }
+        public static IEnumerable<XInputTypes> Values => all;
+        public static IEnumerable<XInputTypes> Buttons => buttons;
+        public static IEnumerable<XInputTypes> Axes => axes;
         
         public static bool IsButton(this XInputTypes input)
         {
