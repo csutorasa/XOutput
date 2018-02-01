@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using XOutput.Input;
 using XOutput.UI.Component;
 
 namespace XOutput.UI.Component
@@ -20,20 +21,20 @@ namespace XOutput.UI.Component
     /// <summary>
     /// Interaction logic for ButtonView.xaml
     /// </summary>
-    public partial class ButtonView : UserControl
+    public partial class ButtonView : UserControl, IUpdatableView
     {
-        public bool Value { get { return viewModel.Value; }  set { viewModel.Value = value; } }
-        public Enum Type { get { return viewModel.Type; } }
-
-        protected readonly ButtonModel viewModel;
+        protected readonly ButtonViewModel viewModel;
 
         public ButtonView(Enum type)
         {
-            viewModel = new ButtonModel();
-            viewModel.Type = type;
-            viewModel.Label = type.ToString();
+            viewModel = new ButtonViewModel(type);
             DataContext = viewModel;
             InitializeComponent();
+        }
+
+        public void updateValues(IDevice device)
+        {
+            viewModel.updateValues(device);
         }
     }
 }

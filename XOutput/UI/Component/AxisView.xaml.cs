@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using XOutput.Input;
 using XOutput.UI.Component;
 
 namespace XOutput.UI.Component
@@ -20,21 +21,20 @@ namespace XOutput.UI.Component
     /// <summary>
     /// Interaction logic for AxisView.xaml
     /// </summary>
-    public partial class AxisView : UserControl
+    public partial class AxisView : UserControl, IUpdatableView
     {
-        public int Value { get { return viewModel.Value; } set { viewModel.Value = value; } }
-        public Enum Type { get { return viewModel.Type; } }
+        protected readonly AxisViewModel viewModel;
 
-        protected readonly AxisModel viewModel;
-
-        public AxisView(Enum type, int max = 1000)
+        public AxisView(Enum type)
         {
-            viewModel = new AxisModel();
-            viewModel.Type = type;
-            viewModel.Label = type.ToString();
-            viewModel.Max = max;
+            viewModel = new AxisViewModel(type, 1000);
             DataContext = viewModel;
             InitializeComponent();
+        }
+
+        public void updateValues(IDevice device)
+        {
+            viewModel.updateValues(device);
         }
     }
 }

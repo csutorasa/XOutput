@@ -30,15 +30,13 @@ namespace XOutput.UI.View
         {
             foreach (var buttonInput in controller.InputDevice.GetButtons())
             {
-                var inputButtonView = new ButtonView(buttonInput);
-                Model.InputButtonViews.Add(inputButtonView);
+                Model.InputButtonViews.Add(new ButtonView(buttonInput));
             }
             if (controller.InputDevice.HasAxes)
             {
                 foreach (var axisInput in controller.InputDevice.GetAxes())
                 {
-                    var inputAxisView = new AxisView(axisInput);
-                    Model.InputAxisViews.Add(inputAxisView);
+                    Model.InputAxisViews.Add(new AxisView(axisInput));
                 }
             }
         }
@@ -46,11 +44,11 @@ namespace XOutput.UI.View
         {
             foreach (var axisView in Model.InputAxisViews)
             {
-                axisView.Value = (int)(controller.InputDevice.Get(axisView.Type) * 1000);
+                axisView.updateValues(controller.InputDevice);
             }
             foreach (var buttonView in Model.InputButtonViews)
             {
-                buttonView.Value = controller.InputDevice.Get(buttonView.Type) > 0.5;
+                buttonView.updateValues(controller.InputDevice);
             }
             if (controller.InputDevice.HasDPad)
             {
@@ -66,13 +64,11 @@ namespace XOutput.UI.View
         {
             foreach (var xInputType in XInputHelper.Buttons)
             {
-                var mappingView = new MappingView(controller, xInputType);
-                Model.MapperButtonViews.Add(mappingView);
+                Model.MapperButtonViews.Add(new MappingView(controller, xInputType));
             }
             foreach (var xInputType in XInputHelper.Axes)
             {
-                var mappingView = new MappingView(controller, xInputType);
-                Model.MapperAxisViews.Add(mappingView);
+                Model.MapperAxisViews.Add(new MappingView(controller, xInputType));
             }
             if (controller.InputDevice.HasDPad)
             {
@@ -88,24 +84,22 @@ namespace XOutput.UI.View
         {
             foreach (var buttonInput in XInputHelper.Buttons)
             {
-                var inputButtonView = new ButtonView(buttonInput);
-                Model.XInputButtonViews.Add(inputButtonView);
+                Model.XInputButtonViews.Add(new ButtonView(buttonInput));
             }
-            foreach (var axisInput in XInputHelper.Axes)
-            {
-                var inputAxisView = new AxisView(axisInput);
-                Model.XInputAxisViews.Add(inputAxisView);
-            }
+            Model.XInputAxisViews.Add(new Axis2DView(XInputTypes.LX, XInputTypes.LY));
+            Model.XInputAxisViews.Add(new Axis2DView(XInputTypes.RX, XInputTypes.RY));
+            Model.XInputAxisViews.Add(new AxisView(XInputTypes.L2));
+            Model.XInputAxisViews.Add(new AxisView(XInputTypes.R2));
         }
         public void updateXInputControls()
         {
             foreach (var axisView in Model.XInputAxisViews)
             {
-                axisView.Value = (int)(controller.XInput.Get((XInputTypes)axisView.Type) * 1000);
+                axisView.updateValues(controller.XInput);
             }
             foreach (var buttonView in Model.XInputButtonViews)
             {
-                buttonView.Value = controller.XInput.GetBool((XInputTypes)buttonView.Type);
+                buttonView.updateValues(controller.XInput);
             }
             Model.XDPadText = controller.XInput.GetDPad().ToString();
         }
