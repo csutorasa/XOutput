@@ -40,8 +40,10 @@
         <GroupBox Grid.Row="3" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Output'}">
             <TextBox x:Name="logBox" TextWrapping="Wrap" IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         </GroupBox>
-        <StackPanel Grid.Row="4" Orientation="Horizontal">
-            <Button Click="Refresh_Click" Width="150" Margin="10" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceRefresh'}" />
-        </StackPanel>
+        <DockPanel Grid.Row="4">
+            <Button Click="Refresh_Click" Width="150" Margin="10" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceRefresh'}" DockPanel.Dock="Left"/>
+            <Button Click="Save_Click" Width="150" Margin="10" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveConfiguration'}" DockPanel.Dock="Right"/>
+            <Grid/>
+        </DockPanel>
     </Grid>
 </Window>
