@@ -12,11 +12,11 @@ namespace XOutput.Input
 {
     public class GameController : IDisposable
     {
-        public IInputDevice InputDevice { get { return inputDevice; } }
-        public XDevice XInput { get { return xInput; } }
-        public InputMapperBase Mapper { get { return mapper; } }
-        public string DisplayName { get { return inputDevice.DisplayName; } }
-        public int ControllerCount { get { return controllerCount; } }
+        public IInputDevice InputDevice => inputDevice;
+        public XDevice XInput => xInput;
+        public InputMapperBase Mapper => mapper;
+        public string DisplayName => inputDevice.DisplayName;
+        public int ControllerCount => controllerCount;
 
         private static readonly Controllers controllers = new Controllers();
 

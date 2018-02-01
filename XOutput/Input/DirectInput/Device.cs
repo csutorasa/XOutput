@@ -19,12 +19,12 @@ namespace XOutput.Input.DirectInput
         /// <summary>
         /// The GUID of the controller
         /// </summary>
-        public Guid Id { get { return deviceInstance.ProductGuid; } }
-        public string DisplayName { get { return deviceInstance.ProductName; } }
-        public bool Connected { get { return connected; } }
-        public bool HasDPad { get { return joystick.Capabilities.PovCount > 0; } }
-        public bool HasAxes { get { return joystick.Capabilities.AxesCount > 0; } }
-        public int ButtonCount { get { return joystick.Capabilities.ButtonCount; } }
+        public Guid Id => deviceInstance.ProductGuid;
+        public string DisplayName => deviceInstance.ProductName;
+        public bool Connected => connected;
+        public bool HasDPad => joystick.Capabilities.PovCount > 0;
+        public bool HasAxes => joystick.Capabilities.AxesCount > 0;
+        public int ButtonCount => joystick.Capabilities.ButtonCount;
 
         private readonly DeviceInstance deviceInstance;
         private readonly Joystick joystick;

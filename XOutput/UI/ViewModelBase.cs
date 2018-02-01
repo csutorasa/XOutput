@@ -16,8 +16,8 @@ namespace XOutput.UI
 {
     public abstract class ViewModelBase<T> where T: ModelBase
     {
-        public LanguageModel LanguageModel { get { return LanguageModel.getInstance(); } }
+        public LanguageModel LanguageModel => LanguageModel.getInstance();
         protected T model;
-        public T Model { get { return model; } }
+        public T Model => model;
     }
 }
