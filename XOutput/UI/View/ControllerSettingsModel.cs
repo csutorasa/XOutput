@@ -10,20 +10,20 @@ namespace XOutput.UI.View
 {
     public class ControllerSettingsModel : ModelBase
     {
-        private readonly ObservableCollection<AxisView> inputAxisViews = new ObservableCollection<AxisView>();
-        public ObservableCollection<AxisView> InputAxisViews { get { return inputAxisViews; } }
-        private readonly ObservableCollection<ButtonView> inputButtonViews = new ObservableCollection<ButtonView>();
-        public ObservableCollection<ButtonView> InputButtonViews { get { return inputButtonViews; } }
+        private readonly ObservableCollection<IUpdatableView> inputAxisViews = new ObservableCollection<IUpdatableView>();
+        public ObservableCollection<IUpdatableView> InputAxisViews => inputAxisViews;
+        private readonly ObservableCollection<IUpdatableView> inputButtonViews = new ObservableCollection<IUpdatableView>();
+        public ObservableCollection<IUpdatableView> InputButtonViews => inputButtonViews;
 
         private readonly ObservableCollection<MappingView> mapperAxisViews = new ObservableCollection<MappingView>();
-        public ObservableCollection<MappingView> MapperAxisViews { get { return mapperAxisViews; } }
+        public ObservableCollection<MappingView> MapperAxisViews => mapperAxisViews;
         private readonly ObservableCollection<MappingView> mapperButtonViews = new ObservableCollection<MappingView>();
-        public ObservableCollection<MappingView> MapperButtonViews { get { return mapperButtonViews; } }
+        public ObservableCollection<MappingView> MapperButtonViews => mapperButtonViews;
 
-        private readonly ObservableCollection<AxisView> xInputAxisViews = new ObservableCollection<AxisView>();
-        public ObservableCollection<AxisView> XInputAxisViews { get { return xInputAxisViews; } }
-        private readonly ObservableCollection<ButtonView> xInputButtonViews = new ObservableCollection<ButtonView>();
-        public ObservableCollection<ButtonView> XInputButtonViews { get { return xInputButtonViews; } }
+        private readonly ObservableCollection<IUpdatableView> xInputAxisViews = new ObservableCollection<IUpdatableView>();
+        public ObservableCollection<IUpdatableView> XInputAxisViews => xInputAxisViews;
+        private readonly ObservableCollection<IUpdatableView> xInputButtonViews = new ObservableCollection<IUpdatableView>();
+        public ObservableCollection<IUpdatableView> XInputButtonViews => xInputButtonViews;
 
         private string _DPadText;
         public string DPadText

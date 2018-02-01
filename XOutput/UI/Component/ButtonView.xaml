@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Converters="clr-namespace:XOutput.UI.Converters"
-             xmlns:local="clr-namespace:XOutput.UI.View"
+             xmlns:local="clr-namespace:XOutput.UI.Component"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=local:ButtonViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="30" d:DesignWidth="300">
     <UserControl.Resources>
         <Converters:BoolToBrushConverter x:Key="BoolToBrushConverter"></Converters:BoolToBrushConverter>
@@ -15,7 +16,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="25"/>
         </Grid.ColumnDefinitions>
-        <Label Content="{Binding Label}"/>
-        <Ellipse Grid.Column="1" Fill="{Binding Value, Converter={StaticResource BoolToBrushConverter}}" Width="20" Height="20"></Ellipse>
+        <Label Content="{Binding Model.Label}"/>
+        <Ellipse Grid.Column="1" Fill="{Binding Model.Value, Converter={StaticResource BoolToBrushConverter}}" Width="20" Height="20"></Ellipse>
     </Grid>
 </UserControl>

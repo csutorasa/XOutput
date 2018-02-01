@@ -3,15 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:XOutput.UI.View"
+             xmlns:local="clr-namespace:XOutput.UI.Component"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=local:AxisViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="30" d:DesignWidth="150">
     <Grid Height="30">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="{Binding Label}"/>
-        <ProgressBar Grid.Column="1" Height="5" Value="{Binding Value}" Maximum="{Binding Max}"></ProgressBar>
+        <Label Content="{Binding Model.Label}"/>
+        <ProgressBar Grid.Column="1" Height="6" Value="{Binding Model.Value}" Maximum="{Binding Model.Max}"></ProgressBar>
     </Grid>
 </UserControl>
