@@ -22,12 +22,15 @@ namespace XOutput.UI.Converters
         /// </summary>
         /// <param name="value">List to check</param>
         /// <param name="targetType">Ignored</param>
-        /// <param name="parameter">Ignored</param>
+        /// <param name="parameter">Invert</param>
         /// <param name="culture">Ignored</param>
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (value as IEnumerable).Cast<object>().Any() ? Visibility.Visible : Visibility.Collapsed;
+            var testValue = (value as IEnumerable).Cast<object>().Any();
+            if (parameter is string && (string)parameter == "invert")
+                testValue = !testValue;
+            return testValue ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

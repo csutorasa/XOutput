@@ -27,7 +27,13 @@ namespace XOutput.Input.XInput
         RX,
         RY,
         L2,
-        R2
+        R2,
+
+        // DPAD
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
     }
 
     public static class XInputHelper
@@ -35,18 +41,21 @@ namespace XOutput.Input.XInput
         private readonly static XInputTypes[] all;
         private readonly static XInputTypes[] buttons;
         private readonly static XInputTypes[] axes;
+        private readonly static XInputTypes[] dPad;
 
         static XInputHelper()
         {
             all = (XInputTypes[])Enum.GetValues(typeof(XInputTypes));
             buttons = all.Where(type => type.IsButton()).ToArray();
             axes = all.Where(type => type.IsAxis()).ToArray();
+            dPad = all.Where(type => type.IsDPad()).ToArray();
         }
 
         public static IEnumerable<XInputTypes> Values => all;
         public static IEnumerable<XInputTypes> Buttons => buttons;
         public static IEnumerable<XInputTypes> Axes => axes;
-        
+        public static IEnumerable<XInputTypes> DPad => dPad;
+
         public static bool IsButton(this XInputTypes input)
         {
             switch (input)
@@ -78,6 +87,20 @@ namespace XOutput.Input.XInput
                 case XInputTypes.RY:
                 case XInputTypes.L2:
                 case XInputTypes.R2:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsDPad(this XInputTypes input)
+        {
+            switch (input)
+            {
+                case XInputTypes.LEFT:
+                case XInputTypes.RIGHT:
+                case XInputTypes.UP:
+                case XInputTypes.DOWN:
                     return true;
                 default:
                     return false;

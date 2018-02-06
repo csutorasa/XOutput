@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Converters="clr-namespace:XOutput.UI.Converters"
-        xmlns:local="clr-namespace:XOutput"
+        xmlns:local="clr-namespace:XOutput.UI.View"
         mc:Ignorable="d"
         Title="{Binding Model.Title}" Width="950" Height="800" MinWidth="950"
+        d:DataContext="{d:DesignInstance Type=local:AutoConfigureViewModel, IsDesignTimeCreatable=False}"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
     <Window.Resources>
@@ -29,11 +30,13 @@
         <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DirectInput'}">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Axes'}" Visibility="{Binding Model.InputAxisViews, Converter={StaticResource EnumerableNotEmptyToVisibilityConverter}}">
+                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Axes'}" 
+                              Visibility="{Binding Model.InputAxisViews, Converter={StaticResource EnumerableNotEmptyToVisibilityConverter}}">
                         <ItemsControl ItemsSource="{Binding Model.InputAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
                     </GroupBox>
-                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}">
-                        <Label Content="{Binding Model.DPadText}"/>
+                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}" 
+                              Visibility="{Binding Model.InputDPadViews, Converter={StaticResource EnumerableNotEmptyToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding Model.InputDPadViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
                     </GroupBox>
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Buttons'}">
                         <ItemsControl ItemsSource="{Binding Model.InputButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
@@ -49,13 +52,13 @@
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Axes'}">
                         <ItemsControl ItemsSource="{Binding Model.MapperAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
-                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}">
-                        <Label>
-                            <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
-                                <Binding Path="LanguageModel.Data"/>
-                                <Binding Path="Model.MapperDPadText"/>
-                            </MultiBinding>
-                        </Label>
+                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}"
+                              Visibility="{Binding Model.MapperDPadViews, Converter={StaticResource EnumerableNotEmptyToVisibilityConverter}, ConverterParameter=invert}">
+                        <Label Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AutomaticDPad'}"/>
+                    </GroupBox>
+                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}"
+                              Visibility="{Binding Model.MapperDPadViews, Converter={StaticResource EnumerableNotEmptyToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding Model.MapperDPadViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Buttons'}">
                         <ItemsControl ItemsSource="{Binding Model.MapperButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
@@ -72,7 +75,7 @@
                         <ItemsControl ItemsSource="{Binding Model.XInputAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}">
-                        <Label Content="{Binding Model.XDPadText}"/>
+                        <ItemsControl ItemsSource="{Binding Model.XInputDPadViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Buttons'}">
                         <ItemsControl ItemsSource="{Binding Model.XInputButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>

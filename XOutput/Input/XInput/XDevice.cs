@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XOutput.Input.DirectInput;
+using XOutput.Input.Mapper;
 
 namespace XOutput.Input.XInput
 {
@@ -19,10 +20,10 @@ namespace XOutput.Input.XInput
 
         private readonly Dictionary<XInputTypes, double> values = new Dictionary<XInputTypes, double>();
         private readonly IInputDevice source;
-        private readonly Mapper.InputMapperBase mapper;
+        private readonly InputMapperBase mapper;
         private DPadDirection dPad = DPadDirection.None;
 
-        public DPadDirection DPad => throw new NotImplementedException();
+        public DPadDirection DPad => dPad;
 
         /// <summary>
         /// 
@@ -34,15 +35,6 @@ namespace XOutput.Input.XInput
             this.source = source;
             this.mapper = mapper;
             source.InputChanged += () => RefreshInput();
-        }
-
-        /// <summary>
-        /// Gets the current state of the DPad.
-        /// </summary>
-        /// <returns></returns>
-        public DPadDirection GetDPad()
-        {
-            return dPad;
         }
 
         /// <summary>
@@ -65,7 +57,7 @@ namespace XOutput.Input.XInput
         /// <returns></returns>
         public bool RefreshInput()
         {
-            foreach(var type in (XInputTypes[])Enum.GetValues(typeof(XInputTypes)))
+            foreach(var type in XInputHelper.Values)
             {
                 var mapping = mapper.GetMapping(type);
                 if (mapping != null)
@@ -75,12 +67,15 @@ namespace XOutput.Input.XInput
                         value = source.Get(mapping.InputType);
                     values[type] = mapping.GetValue(value);
                 }
-                else
-                {
-
-                }
             }
-            dPad = source.DPad;
+            if(source.HasDPad)
+            {
+                dPad = source.DPad;
+            }
+            else
+            {
+                dPad = DPadHelper.GetDirection(GetBool(XInputTypes.UP), GetBool(XInputTypes.DOWN), GetBool(XInputTypes.LEFT), GetBool(XInputTypes.RIGHT));
+            }
             InputChanged?.Invoke();
             return true;
         }
@@ -96,10 +91,10 @@ namespace XOutput.Input.XInput
             report[1] = 20; // Message length
 
             // Buttons
-            if (GetDPad().HasFlag(DPadDirection.Up)) report[2] |= 1 << 0;
-            if (GetDPad().HasFlag(DPadDirection.Down)) report[2] |= 1 << 1;
-            if (GetDPad().HasFlag(DPadDirection.Left)) report[2] |= 1 << 2;
-            if (GetDPad().HasFlag(DPadDirection.Right)) report[2] |= 1 << 3;
+            if (DPad.HasFlag(DPadDirection.Up)) report[2] |= 1 << 0;
+            if (DPad.HasFlag(DPadDirection.Down)) report[2] |= 1 << 1;
+            if (DPad.HasFlag(DPadDirection.Left)) report[2] |= 1 << 2;
+            if (DPad.HasFlag(DPadDirection.Right)) report[2] |= 1 << 3;
             if (GetBool(XInputTypes.Start)) report[2] |= 1 << 4;
             if (GetBool(XInputTypes.Back)) report[2] |= 1 << 5;
             if (GetBool(XInputTypes.L3)) report[2] |= 1 << 6;
@@ -136,6 +131,7 @@ namespace XOutput.Input.XInput
 
             return report;
         }
+
         public bool GetBool(XInputTypes inputType)
         {
             return Get(inputType) > 0.5;
@@ -143,7 +139,9 @@ namespace XOutput.Input.XInput
 
         public double Get(Enum inputType)
         {
-            return Get((XInputTypes)inputType);
+            if(inputType is XInputTypes)
+                return Get((XInputTypes)inputType);
+            throw new ArgumentException();
         }
 
         public IEnumerable<Enum> GetButtons()
