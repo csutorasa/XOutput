@@ -39,6 +39,10 @@ namespace XOutput.UI.View
                     Model.InputAxisViews.Add(new AxisView(axisInput));
                 }
             }
+            if (controller.InputDevice.HasDPad)
+            {
+                Model.InputDPadViews.Add(new DPadView());
+            }
         }
         public void updateInputControls()
         {
@@ -52,11 +56,10 @@ namespace XOutput.UI.View
             }
             if (controller.InputDevice.HasDPad)
             {
-                Model.DPadText = controller.InputDevice.DPad.ToString();
-            }
-            else
-            {
-                Model.DPadText = "This device has no DPad";
+                foreach (var dPadView in Model.InputDPadViews)
+                {
+                    dPadView.updateValues(controller.InputDevice);
+                }
             }
         }
 
@@ -66,17 +69,16 @@ namespace XOutput.UI.View
             {
                 Model.MapperButtonViews.Add(new MappingView(controller, xInputType));
             }
+            if (!controller.InputDevice.HasDPad)
+            {
+                foreach (var xInputType in XInputHelper.DPad)
+                {
+                    Model.MapperDPadViews.Add(new MappingView(controller, xInputType));
+                }
+            }
             foreach (var xInputType in XInputHelper.Axes)
             {
                 Model.MapperAxisViews.Add(new MappingView(controller, xInputType));
-            }
-            if (controller.InputDevice.HasDPad)
-            {
-                Model.MapperDPadText = "AutomaticDPad";
-            }
-            else
-            {
-                Model.MapperDPadText = "NoDPad";
             }
         }
 
@@ -86,6 +88,7 @@ namespace XOutput.UI.View
             {
                 Model.XInputButtonViews.Add(new ButtonView(buttonInput));
             }
+            Model.XInputDPadViews.Add(new DPadView());
             Model.XInputAxisViews.Add(new Axis2DView(XInputTypes.LX, XInputTypes.LY));
             Model.XInputAxisViews.Add(new Axis2DView(XInputTypes.RX, XInputTypes.RY));
             Model.XInputAxisViews.Add(new AxisView(XInputTypes.L2));
@@ -101,7 +104,10 @@ namespace XOutput.UI.View
             {
                 buttonView.updateValues(controller.XInput);
             }
-            Model.XDPadText = controller.XInput.GetDPad().ToString();
+            foreach (var dPadView in Model.XInputDPadViews)
+            {
+                dPadView.updateValues(controller.XInput);
+            }
         }
     }
 }

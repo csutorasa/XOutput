@@ -67,10 +67,15 @@
     <Compile Include="Input\Mapper\KeyboardToXInputMapper.cs" />
     <Compile Include="Input\Mapper\InputMapperBase.cs" />
     <Compile Include="Input\XInput\NativeInterface.cs" />
+    <Compile Include="UI\Component\DPadModel.cs" />
+    <Compile Include="UI\Component\DPadView.xaml.cs">
+      <DependentUpon>DPadView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Component\Axis2DView.xaml.cs">
       <DependentUpon>Axis2DView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Component\Axis2DModel.cs" />
+    <Compile Include="UI\Component\DPadViewModel.cs" />
     <Compile Include="UI\Component\ButtonViewModel.cs" />
     <Compile Include="UI\Component\AxisViewModel.cs" />
     <Compile Include="UI\Component\Axis2DViewModel.cs" />
@@ -128,6 +133,10 @@
     <Compile Include="UI\View\AutoConfigureViewModel.cs" />
     <Compile Include="UI\MainWindowModel.cs" />
     <Compile Include="UI\MainWindowViewModel.cs" />
+    <Page Include="UI\Component\DPadView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI\Component\Axis2DView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

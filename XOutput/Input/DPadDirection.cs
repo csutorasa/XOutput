@@ -18,4 +18,38 @@ namespace XOutput
         Down = 1 << 2,
         Right = 1 << 3
     }
+
+    public static class DPadHelper
+    {
+        private static DPadDirection[] values = ((DPadDirection[])Enum.GetValues(typeof(DPadDirection))).Where(d => d != DPadDirection.None).ToArray();
+
+        public static DPadDirection[] GetValues()
+        {
+            return values;
+        }
+
+        public static DPadDirection GetDirection(bool up, bool down, bool left, bool right)
+        {
+            DPadDirection value = DPadDirection.None;
+            if(up)
+            {
+                value |= DPadDirection.Up;
+            }
+            else if(down)
+            {
+                value |= DPadDirection.Down;
+            }
+
+            if (right)
+            {
+                value |= DPadDirection.Right;
+            }
+            else if (left)
+            {
+                value |= DPadDirection.Left;
+            }
+
+            return value;
+        }
+    }
 }

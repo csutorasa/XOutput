@@ -6,6 +6,7 @@
         xmlns:Converters="clr-namespace:XOutput.UI.Converters"
         xmlns:local="clr-namespace:XOutput.UI.View"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:AutoConfigureViewModel, IsDesignTimeCreatable=False}"
         Loaded="Window_Loaded"
         Title="AutoConfigure" Height="200" Width="600" ResizeMode="CanMinimize">
     <Window.Resources>
