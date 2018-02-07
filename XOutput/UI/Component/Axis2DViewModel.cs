@@ -29,7 +29,7 @@ namespace XOutput.UI.Component
         public void updateValues(IDevice device)
         {
             model.ValueX = (int)(device.Get(model.TypeX) * model.MaxX);
-            model.ValueY = (int)(device.Get(model.TypeY) * model.MaxY);
+            model.ValueY = (int)(model.MaxY - device.Get(model.TypeY) * model.MaxY);
         }
     }
 }
