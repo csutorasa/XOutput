@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using XOutput.UI.Component;
 
 namespace XOutput.UI.View
@@ -40,11 +41,31 @@ namespace XOutput.UI.View
             get { return maxValue; }
             set { if (maxValue != value) { maxValue = value; OnPropertyChanged(nameof(MaxValue)); } }
         }
-        private bool invert;
-        public bool Invert
+        private Visibility centerVisibility;
+        public Visibility CenterVisibility
         {
-            get { return invert; }
-            set { if (invert != value) { invert = value; OnPropertyChanged(nameof(Invert)); } }
+            get { return centerVisibility; }
+            set
+            {
+                if (centerVisibility != value)
+                {
+                    centerVisibility = value;
+                    OnPropertyChanged(nameof(CenterVisibility));
+                }
+            }
+        }
+        private Visibility buttonsVisibility;
+        public Visibility ButtonsVisibility
+        {
+            get { return buttonsVisibility; }
+            set
+            {
+                if (buttonsVisibility != value)
+                {
+                    buttonsVisibility = value;
+                    OnPropertyChanged(nameof(ButtonsVisibility));
+                }
+            }
         }
     }
 }

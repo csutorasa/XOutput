@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper.cs" />
     <Compile Include="IniData.cs" />
     <Compile Include="Input\Controllers.cs" />
     <Compile Include="Input\IDevice.cs" />
@@ -117,7 +118,7 @@
     <Compile Include="UI\View\ControllerSettings.xaml.cs">
       <DependentUpon>ControllerSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Input\DirectInput\Device.cs" />
+    <Compile Include="Input\DirectInput\DirectDevice.cs" />
     <Compile Include="Input\DirectInput\Devices.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Input\XInput\XDevice.cs" />

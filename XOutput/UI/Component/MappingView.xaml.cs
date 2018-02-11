@@ -35,13 +35,18 @@ namespace XOutput.UI.Component
 
         public void Refresh()
         {
-            viewModel.Model.Refresh();
+            viewModel.Refresh();
         }
 
         private void Configure_Click(object sender, RoutedEventArgs e)
         {
             viewModel.Configure();
             Refresh();
+        }
+
+        private void Invert_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.Invert();
         }
     }
 }

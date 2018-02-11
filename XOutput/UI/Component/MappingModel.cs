@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using XOutput.Input;
 using XOutput.Input.DirectInput;
 using XOutput.Input.Mapper;
@@ -14,6 +15,7 @@ namespace XOutput.UI
 {
     public class MappingModel : ModelBase
     {
+        public event Action<Enum> SelectedInputChanged;
 
         private XInputTypes _xInputType;
         public XInputTypes XInputType
@@ -32,15 +34,17 @@ namespace XOutput.UI
         private readonly ObservableCollection<Enum> inputs = new ObservableCollection<Enum>();
         public ObservableCollection<Enum> Inputs { get { return inputs; } }
 
+        private Enum selectedInput;
         public Enum SelectedInput
         {
-            get { return mapperData.InputType; }
+            get { return selectedInput; }
             set
             {
-                if (mapperData.InputType != value)
+                if (selectedInput != value)
                 {
-                    mapperData.InputType = value;
+                    selectedInput = value;
                     OnPropertyChanged(nameof(SelectedInput));
+                    SelectedInputChanged?.Invoke(value);
                 }
             }
         }
@@ -70,6 +74,22 @@ namespace XOutput.UI
                 }
             }
         }
+
+        private Visibility configVisibility;
+        public Visibility ConfigVisibility
+        {
+            get { return configVisibility; }
+            set
+            {
+                if (configVisibility != value)
+                {
+                    configVisibility = value;
+                    OnPropertyChanged(nameof(ConfigVisibility));
+                }
+            }
+        }
+
+        public MapperData MapperData => mapperData;
 
         private readonly MapperData mapperData;
 

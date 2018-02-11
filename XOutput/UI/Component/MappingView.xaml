@@ -6,7 +6,8 @@
              xmlns:Converters="clr-namespace:XOutput.UI.Converters"
              xmlns:local="clr-namespace:XOutput.UI.Component"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="400">
+             d:DataContext="{d:DesignInstance Type=local:MappingViewModel, IsDesignTimeCreatable=False}"
+             d:DesignHeight="30" d:DesignWidth="490">
     <UserControl.Resources>
         <Converters:LanguageConverter x:Key="LanguageConverter"/>
     </UserControl.Resources>
@@ -14,22 +15,29 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="60"/>
             <ColumnDefinition Width="*" MinWidth="70"/>
-            <ColumnDefinition Width="*" MinWidth="90"/>
-            <ColumnDefinition Width="*" MinWidth="90"/>
+            <ColumnDefinition Width="3*" MinWidth="270"/>
             <ColumnDefinition Width="*" MinWidth="90"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Margin="2" Content="{Binding Model.XInputType}"/>
         <ComboBox Grid.Column="1" Margin="2" ItemsSource="{Binding Model.Inputs}" SelectedItem="{Binding Model.SelectedInput, Mode=TwoWay}"/>
-        <DockPanel Grid.Column="2" Margin="2">
-            <Label DockPanel.Dock="Left">Min:</Label>
-            <Label DockPanel.Dock="Right">%</Label>
-            <local:NumericTextBox Height="20" Minimum="0" Maximum="100" Value="{Binding Model.Min, Mode=TwoWay}"/>
-        </DockPanel>
-        <DockPanel Grid.Column="3" Margin="2">
-            <Label DockPanel.Dock="Left">Max:</Label>
-            <Label DockPanel.Dock="Right">%</Label>
-            <local:NumericTextBox Height="20" Minimum="0" Maximum="100" Value="{Binding Model.Max, Mode=TwoWay}"/>
-        </DockPanel>
+        <Grid Grid.Column="2" Visibility="{Binding Model.ConfigVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="90"/>
+                <ColumnDefinition Width="*" MinWidth="90"/>
+                <ColumnDefinition Width="*" MinWidth="90"/>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0" Margin="2">
+                <Label DockPanel.Dock="Left">Min:</Label>
+                <Label DockPanel.Dock="Right">%</Label>
+                <local:NumericTextBox Height="20" Minimum="0" Maximum="100" Value="{Binding Model.Min, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel Grid.Column="1" Margin="2">
+                <Label DockPanel.Dock="Left">Max:</Label>
+                <Label DockPanel.Dock="Right">%</Label>
+                <local:NumericTextBox Height="20" Minimum="0" Maximum="100" Value="{Binding Model.Max, Mode=TwoWay}"/>
+            </DockPanel>
+            <Button Grid.Column="2" Margin="2" Click="Invert_Click" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Invert'}"/>
+        </Grid>
         <Button Grid.Column="4" Margin="2" Click="Configure_Click" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Configure'}"/>
     </Grid>
 </UserControl>

@@ -25,10 +25,13 @@ namespace XOutput.UI.View
     public partial class AutoConfigureWindow : Window
     {
         private readonly AutoConfigureViewModel viewModel;
+        private readonly DispatcherTimer timer = new DispatcherTimer();
+        private readonly bool timed;
 
-        public AutoConfigureWindow(GameController controller, XInputTypes valueToRead)
+        public AutoConfigureWindow(GameController controller, params XInputTypes[] valuesToRead)
         {
-            viewModel = new AutoConfigureViewModel(controller, valueToRead);
+            viewModel = new AutoConfigureViewModel(controller, valuesToRead);
+            timed = valuesToRead.Length > 1;
             DataContext = viewModel;
             InitializeComponent();
         }
@@ -36,17 +39,55 @@ namespace XOutput.UI.View
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             viewModel.Initialize();
+            if (timed)
+            {
+                timer.Interval = TimeSpan.FromSeconds(3);
+                timer.Tick += Timer_Tick;
+                timer.Start();
+            }
         }
-        
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (!viewModel.SaveValues())
+            {
+                Close();
+            }
+        }
+
+        private void Center_Click(object sender, RoutedEventArgs e)
+        {
+            if (!viewModel.SaveCenterValues())
+            {
+                Close();
+            }
+        }
+
+        private void Disable_Click(object sender, RoutedEventArgs e)
+        {
+            if(!viewModel.SaveDisableValues())
+            {
+                Close();
+            }
+        }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.SaveValues();
-            Close();
+            if(!viewModel.SaveValues())
+            {
+                Close();
+            }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            timer.Tick -= Timer_Tick;
+            viewModel.Close();
         }
     }
 }
