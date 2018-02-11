@@ -30,9 +30,9 @@ namespace XOutput.UI.View
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly ControllerSettingsViewModel viewModel;
 
-        public ControllerSettings(ControllerSettingsViewModel viewModel)
+        public ControllerSettings(GameController controller)
         {
-            this.viewModel = viewModel;
+            viewModel = new ControllerSettingsViewModel(controller);
             DataContext = viewModel;
             InitializeComponent();
         }
@@ -62,6 +62,11 @@ namespace XOutput.UI.View
             viewModel.updateInputControls();
 
             viewModel.updateXInputControls();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.ConfigureAll();
         }
     }
 }

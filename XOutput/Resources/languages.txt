@@ -26,6 +26,9 @@ SaveConfiguration=Save configuration
 Save=Save
 Cancel=Cancel
 Configure=Configure
+ConfigureAll=Configure All
+Disable=Disable
+Center=Center
 
 [Hungarian]
 FileMenu=Fájl
@@ -55,3 +58,6 @@ SaveConfiguration=Beállítások mentése
 Save=Mentés
 Cancel=Mégse
 Configure=Konfigurálás
+ConfigureAll=Összes konfigurálása
+Disable=Kikapcsol
+Center=Közép

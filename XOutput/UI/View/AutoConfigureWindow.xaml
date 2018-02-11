@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:AutoConfigureViewModel, IsDesignTimeCreatable=False}"
         Loaded="Window_Loaded"
-        Title="AutoConfigure" Height="200" Width="600" ResizeMode="CanMinimize">
+        Closed="Window_Closed"
+        Title="AutoConfigure" Height="200" Width="520" ResizeMode="CanMinimize">
     <Window.Resources>
         <Converters:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
         <Converters:LanguageConverter x:Key="LanguageConverter"/>
@@ -16,8 +17,7 @@
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -26,18 +26,28 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Content="{Binding Model.LabelText}"/>
-        <Label VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Content="{Binding Model.MaxType}"/>
+        <Label VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Content="{Binding Model.MaxType}"/>
         <Label VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='MinimumValue'}"/>
-        <Label VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="{Binding Model.MinValue}"/>
+        <Label VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Content="{Binding Model.MinValue}"/>
         <Label VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='MaximumValue'}"/>
-        <Label VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Content="{Binding Model.MaxValue}"/>
-        <CheckBox Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="0" IsChecked="{Binding Model.Invert}" VerticalAlignment="Center" VerticalContentAlignment="Center">
-            <TextBlock Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Invert'}" VerticalAlignment="Center"/>
-        </CheckBox>
-        <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="1" Click="Save_Click"
+        <Label VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Content="{Binding Model.MaxValue}"/>
+        <Grid Grid.Row="3" Grid.ColumnSpan="2" Visibility="{Binding Model.ButtonsVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="0" Click="Center_Click"
+                Visibility="{Binding Model.CenterVisibility}"
+                Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Center'}"/>
+            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="1" Click="Disable_Click"
+                Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Disable'}"/>
+            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="2" Click="Save_Click"
                 IsEnabled="{Binding Model.MaxType, Converter={StaticResource NotNullToBoolConverter}}" 
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Save'}"/>
-        <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="2" Click="Cancel_Click"
+            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="3" Click="Cancel_Click"
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Cancel'}" />
+        </Grid>
     </Grid>
 </Window>

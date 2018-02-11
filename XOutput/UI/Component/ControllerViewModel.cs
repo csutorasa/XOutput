@@ -27,7 +27,7 @@ namespace XOutput.UI.Component
 
         public void Edit()
         {
-            var controllerSettingsWindow = new ControllerSettings(new ControllerSettingsViewModel(Model.Controller));
+            var controllerSettingsWindow = new ControllerSettings(Model.Controller);
             controllerSettingsWindow.ShowDialog();
         }
 

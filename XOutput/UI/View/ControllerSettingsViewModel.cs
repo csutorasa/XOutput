@@ -26,6 +26,20 @@ namespace XOutput.UI.View
             createXInputControls();
         }
 
+        public void ConfigureAll()
+        {
+            IEnumerable<XInputTypes> types = XInputHelper.Values;
+            if (controller.InputDevice.HasDPad)
+            {
+                types = types.Where(t => !t.IsDPad());
+            }
+            new AutoConfigureWindow(controller, types.ToArray()).ShowDialog();
+            foreach(var v in Model.MapperAxisViews.Concat(Model.MapperButtonViews).Concat(Model.MapperDPadViews))
+            {
+                v.Refresh();
+            }
+        }
+
         private void createInputControls()
         {
             foreach (var buttonInput in controller.InputDevice.GetButtons())

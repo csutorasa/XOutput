@@ -6,7 +6,7 @@
         xmlns:Converters="clr-namespace:XOutput.UI.Converters"
         xmlns:local="clr-namespace:XOutput.UI.View"
         mc:Ignorable="d"
-        Title="{Binding Model.Title}" Width="950" Height="800" MinWidth="950"
+        Title="{Binding Model.Title}" Width="1010" Height="800" MinWidth="1010"
         d:DataContext="{d:DesignInstance Type=local:AutoConfigureViewModel, IsDesignTimeCreatable=False}"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
@@ -23,7 +23,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="200"/>
-            <ColumnDefinition Width="2*" MinWidth="500"/>
+            <ColumnDefinition Width="2*" MinWidth="590"/>
             <ColumnDefinition Width="*" MinWidth="200"/>
         </Grid.ColumnDefinitions>
         <!--Direct Input-->
@@ -63,6 +63,7 @@
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Buttons'}">
                         <ItemsControl ItemsSource="{Binding Model.MapperButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
+                    <Button Height="30" Margin="5" Click="Button_Click" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ConfigureAll'}"/>
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>

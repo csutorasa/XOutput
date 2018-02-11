@@ -28,7 +28,7 @@ namespace XOutput.Input.Mapper
         {
             InputType = null;
             MinValue = 0;
-            MaxValue = 1;
+            MaxValue = 0;
         }
         
         /// <summary>
