@@ -5,17 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using XOutput.Input.XInput;
 using XOutput.UI.Component;
 
 namespace XOutput.UI.View
 {
     public class AutoConfigureModel : ModelBase
     {
-        private string labelText;
-        public string LabelText
+        private XInputTypes xInput;
+        public XInputTypes XInput
         {
-            get { return labelText; }
-            set { if (labelText != value) { labelText = value; OnPropertyChanged(nameof(LabelText)); } }
+            get { return xInput; }
+            set { if (xInput != value) { xInput = value; OnPropertyChanged(nameof(XInput)); } }
         }
         private bool isAuto = true;
         public bool IsAuto
@@ -64,6 +65,45 @@ namespace XOutput.UI.View
                 {
                     buttonsVisibility = value;
                     OnPropertyChanged(nameof(ButtonsVisibility));
+                }
+            }
+        }
+        private double timerMaxValue;
+        public double TimerMaxValue
+        {
+            get { return timerMaxValue; }
+            set
+            {
+                if (timerMaxValue != value)
+                {
+                    timerMaxValue = value;
+                    OnPropertyChanged(nameof(TimerMaxValue));
+                }
+            }
+        }
+        private double timerValue;
+        public double TimerValue
+        {
+            get { return timerValue; }
+            set
+            {
+                if (timerValue != value)
+                {
+                    timerValue = value;
+                    OnPropertyChanged(nameof(TimerValue));
+                }
+            }
+        }
+        private Visibility timerVisibility;
+        public Visibility TimerVisibility
+        {
+            get { return timerVisibility; }
+            set
+            {
+                if (timerVisibility != value)
+                {
+                    timerVisibility = value;
+                    OnPropertyChanged(nameof(TimerVisibility));
                 }
             }
         }

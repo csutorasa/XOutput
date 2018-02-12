@@ -9,10 +9,11 @@
         d:DataContext="{d:DesignInstance Type=local:AutoConfigureViewModel, IsDesignTimeCreatable=False}"
         Loaded="Window_Loaded"
         Closed="Window_Closed"
-        Title="AutoConfigure" Height="200" Width="520" ResizeMode="CanMinimize">
+        Title="AutoConfigure" Height="200" Width="550" ResizeMode="CanMinimize">
     <Window.Resources>
         <Converters:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
         <Converters:LanguageConverter x:Key="LanguageConverter"/>
+        <Converters:DynamicLanguageConverter x:Key="DynamicLanguageConverter"/>
     </Window.Resources>
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
@@ -20,18 +21,39 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Content="{Binding Model.LabelText}"/>
-        <Label VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Content="{Binding Model.MaxType}"/>
-        <Label VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='MinimumValue'}"/>
-        <Label VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Content="{Binding Model.MinValue}"/>
-        <Label VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='MaximumValue'}"/>
-        <Label VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Content="{Binding Model.MaxValue}"/>
-        <Grid Grid.Row="3" Grid.ColumnSpan="2" Visibility="{Binding Model.ButtonsVisibility}">
+        <ProgressBar Visibility="{Binding Model.TimerVisibility}" Minimum="0" Value="{Binding Model.TimerValue}" Maximum="{Binding Model.TimerMaxValue}" Grid.ColumnSpan="2"
+                     Width="200" Margin="5 0 0 0"/>
+
+        <StackPanel VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <Label Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='WaitingForInputFor'}" Margin="0 0 -5 0"/>
+            <Label>
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                        <Binding Path="LanguageModel.Data" />
+                        <Binding Path="Model.XInput" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+        </StackPanel>
+        <Label VerticalAlignment="Center" Grid.Row="1" Grid.Column="1">
+            <Label.Content>
+                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                    <Binding Path="LanguageModel.Data" />
+                    <Binding Path="Model.MaxType" />
+                </MultiBinding>
+            </Label.Content>
+        </Label>
+        <Label VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='MinimumValue'}"/>
+        <Label VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Content="{Binding Model.MinValue}"/>
+        <Label VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='MaximumValue'}"/>
+        <Label VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" Content="{Binding Model.MaxValue}"/>
+        <Grid Grid.Row="4" Grid.ColumnSpan="2" Visibility="{Binding Model.ButtonsVisibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
