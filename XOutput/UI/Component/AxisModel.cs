@@ -8,18 +8,16 @@ namespace XOutput.UI.Component
 {
     public class AxisModel : ModelBase
     {
-        public Enum Type { get; set; }
-
-        private string _label;
-        public string Label
+        private Enum type;
+        public Enum Type
         {
-            get { return _label; }
+            get { return type; }
             set
             {
-                if (_label != value)
+                if (type != value)
                 {
-                    _label = value;
-                    OnPropertyChanged(nameof(Label));
+                    type = value;
+                    OnPropertyChanged(nameof(Type));
                 }
             }
         }

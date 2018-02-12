@@ -19,7 +19,6 @@ namespace XOutput.UI.Component
         {
             model = new ButtonModel();
             model.Type = type;
-            model.Label = type.ToString();
         }
         
         public void updateValues(IDevice device)

@@ -10,6 +10,16 @@
              d:DesignHeight="30" d:DesignWidth="490">
     <UserControl.Resources>
         <Converters:LanguageConverter x:Key="LanguageConverter"/>
+        <Converters:DynamicLanguageConverter x:Key="DynamicLanguageConverter"/>
+        <DataTemplate x:Key="InputComboTemplate" DataType="ItemTemplate">
+            <Label>
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                        <Binding Path="LanguageModel.Data" BindsDirectlyToSource="true" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -19,7 +29,20 @@
             <ColumnDefinition Width="*" MinWidth="90"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Margin="2" Content="{Binding Model.XInputType}"/>
-        <ComboBox Grid.Column="1" Margin="2" ItemsSource="{Binding Model.Inputs}" SelectedItem="{Binding Model.SelectedInput, Mode=TwoWay}"/>
+        <ComboBox Grid.Column="1" Margin="2" ItemsSource="{Binding Model.Inputs}" SelectedItem="{Binding Model.SelectedInput, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                                <Binding Path="DataContext.LanguageModel.Data" RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=ComboBox}" />
+                                <Binding Path="" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <Grid Grid.Column="2" Visibility="{Binding Model.ConfigVisibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" MinWidth="90"/>

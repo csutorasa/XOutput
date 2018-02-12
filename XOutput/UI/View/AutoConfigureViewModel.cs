@@ -14,11 +14,15 @@ namespace XOutput.UI.View
 {
     public class AutoConfigureViewModel : ViewModelBase<AutoConfigureModel>
     {
+        private const int WAIT_TIME = 5000;
+        private const int SHORT_AXIS_WAIT_TIME = 3000;
+        private const int SHORT_WAIT_TIME = 1000;
         private readonly Dictionary<Enum, double> referenceValues = new Dictionary<Enum, double>();
         private readonly GameController controller;
         private readonly XInputTypes[] valuesToRead;
         private XInputTypes xInputType;
         private Enum[] inputTypes;
+        private DateTime lastTime;
 
         public AutoConfigureViewModel(GameController controller, XInputTypes[] valuesToRead)
         {
@@ -27,6 +31,7 @@ namespace XOutput.UI.View
             xInputType = valuesToRead.First();
             model = new AutoConfigureModel();
             Model.ButtonsVisibility = valuesToRead.Length > 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+            Model.TimerVisibility = valuesToRead.Length <= 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
             inputTypes = controller.InputDevice.GetButtons().Concat(controller.InputDevice.GetAxes()).ToArray();
             Model.CenterVisibility = xInputType.IsAxis() ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
         }
@@ -35,7 +40,8 @@ namespace XOutput.UI.View
         {
             readReferenceValues();
             controller.InputDevice.InputChanged += readValues;
-            Model.LabelText = $"Waiting for input for XInput.{xInputType}";
+            Model.XInput = xInputType;
+            SetTime(false);
         }
 
         protected void readReferenceValues()
@@ -118,19 +124,41 @@ namespace XOutput.UI.View
             }
         }
 
+        public bool IncreaseTime()
+        {
+            Model.TimerValue += DateTime.Now.Subtract(lastTime).TotalMilliseconds;
+            lastTime = DateTime.Now;
+            return Model.TimerValue > Model.TimerMaxValue;
+        }
+
         public void Close()
         {
             controller.InputDevice.InputChanged -= readValues;
+        }
+
+        protected void SetTime(bool shortTime)
+        {
+            Model.TimerValue = 0;
+            if(shortTime)
+            {
+                Model.TimerMaxValue = xInputType.IsAxis() ? SHORT_AXIS_WAIT_TIME : SHORT_WAIT_TIME;
+            }
+            else
+            {
+                Model.TimerMaxValue = WAIT_TIME;
+            }
+            lastTime = DateTime.Now;
         }
 
         protected bool next()
         {
             Model.MaxType = null;
             int index = Array.IndexOf(valuesToRead, xInputType);
-            if(index + 1 < valuesToRead.Length)
+            SetTime(false);
+            if (index + 1 < valuesToRead.Length)
             {
                 xInputType = valuesToRead[index + 1];
-                Model.LabelText = $"Waiting for input for XInput.{xInputType}";
+                Model.XInput = xInputType;
                 return true;
             }
             return false;
@@ -141,10 +169,17 @@ namespace XOutput.UI.View
             double current = controller.InputDevice.Get(Model.MaxType);
 
             double min = Math.Min(current, Model.MinValue / 100);
-            Model.MinValue = Math.Round(min * 100);
+            double minValue = Math.Round(min * 100);
 
             double max = Math.Max(current, Model.MaxValue / 100);
-            Model.MaxValue = Math.Round(max * 100);
+            double maxValue = Math.Round(max * 100);
+
+            if (!Helper.DoubleEquals(minValue, Model.MinValue) || !Helper.DoubleEquals(maxValue, Model.MaxValue))
+            {
+                Model.MinValue = minValue;
+                Model.MaxValue = maxValue;
+                SetTime(true);
+            }
         }
 
         private void calculateStartValues()
@@ -157,6 +192,8 @@ namespace XOutput.UI.View
 
             double max = Math.Max(current, reference);
             Model.MaxValue = Math.Round(max * 100);
+
+            SetTime(true);
         }
     }
 }

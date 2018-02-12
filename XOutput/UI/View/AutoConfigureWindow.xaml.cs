@@ -41,7 +41,7 @@ namespace XOutput.UI.View
             viewModel.Initialize();
             if (timed)
             {
-                timer.Interval = TimeSpan.FromSeconds(3);
+                timer.Interval = TimeSpan.FromMilliseconds(25);
                 timer.Tick += Timer_Tick;
                 timer.Start();
             }
@@ -49,9 +49,12 @@ namespace XOutput.UI.View
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (!viewModel.SaveValues())
+            if(viewModel.IncreaseTime())
             {
-                Close();
+                if (!viewModel.SaveValues())
+                {
+                    Close();
+                }
             }
         }
 

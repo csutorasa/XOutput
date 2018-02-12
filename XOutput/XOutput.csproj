@@ -91,7 +91,7 @@
     <Compile Include="UI\Converters\LanguageConverter.cs" />
     <Compile Include="UI\Converters\BoolInverterConverter.cs" />
     <Compile Include="UI\Converters\BoolToBrushConverter.cs" />
-    <Compile Include="Input\DirectInput\InputTypes.cs" />
+    <Compile Include="Input\DirectInput\DirectInputTypes.cs" />
     <Compile Include="Input\DPadDirection.cs" />
     <Compile Include="Input\Mapper\DirectToXInputMapper.cs" />
     <Compile Include="Input\GameController.cs" />

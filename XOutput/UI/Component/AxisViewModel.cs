@@ -19,7 +19,6 @@ namespace XOutput.UI.Component
         {
             model = new AxisModel();
             model.Type = type;
-            model.Label = type.ToString();
             model.Max = max;
         }
         
