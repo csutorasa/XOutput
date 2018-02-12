@@ -28,7 +28,14 @@
             <ColumnDefinition Width="3*" MinWidth="270"/>
             <ColumnDefinition Width="*" MinWidth="90"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Column="0" Margin="2" Content="{Binding Model.XInputType}"/>
+        <Label Grid.Column="0" Margin="2">
+            <Label.Content>
+                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                    <Binding Path="LanguageModel.Data" />
+                    <Binding Path="Model.XInputType" />
+                </MultiBinding>
+            </Label.Content>
+        </Label>
         <ComboBox Grid.Column="1" Margin="2" ItemsSource="{Binding Model.Inputs}" SelectedItem="{Binding Model.SelectedInput, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
