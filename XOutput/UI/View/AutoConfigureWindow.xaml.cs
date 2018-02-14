@@ -58,14 +58,6 @@ namespace XOutput.UI.View
             }
         }
 
-        private void Center_Click(object sender, RoutedEventArgs e)
-        {
-            if (!viewModel.SaveCenterValues())
-            {
-                Close();
-            }
-        }
-
         private void Disable_Click(object sender, RoutedEventArgs e)
         {
             if(!viewModel.SaveDisableValues())

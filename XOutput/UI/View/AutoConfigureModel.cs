@@ -42,19 +42,6 @@ namespace XOutput.UI.View
             get { return maxValue; }
             set { if (maxValue != value) { maxValue = value; OnPropertyChanged(nameof(MaxValue)); } }
         }
-        private Visibility centerVisibility;
-        public Visibility CenterVisibility
-        {
-            get { return centerVisibility; }
-            set
-            {
-                if (centerVisibility != value)
-                {
-                    centerVisibility = value;
-                    OnPropertyChanged(nameof(CenterVisibility));
-                }
-            }
-        }
         private Visibility buttonsVisibility;
         public Visibility ButtonsVisibility
         {

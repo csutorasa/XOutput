@@ -33,7 +33,6 @@ namespace XOutput.UI.View
             Model.ButtonsVisibility = valuesToRead.Length > 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
             Model.TimerVisibility = valuesToRead.Length <= 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
             inputTypes = controller.InputDevice.Buttons.Concat(controller.InputDevice.Axes).ToArray();
-            Model.CenterVisibility = xInputType.IsAxis() ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
         }
 
         public void Initialize()
@@ -83,18 +82,6 @@ namespace XOutput.UI.View
                 calculateValues();
             }
         }
-        
-        public bool SaveCenterValues()
-        {
-            MapperData md = controller.Mapper.GetMapping(xInputType);
-            if (md.InputType == null)
-            {
-                md.InputType = inputTypes.First();
-            }
-            md.MinValue = 0.5;
-            md.MaxValue = 0.5;
-            return next();
-        }
 
         public bool SaveDisableValues()
         {
@@ -103,8 +90,8 @@ namespace XOutput.UI.View
             {
                 md.InputType = inputTypes.First();
             }
-            md.MinValue = 0;
-            md.MaxValue = 0;
+            md.MinValue = Model.XInput.GetDisableValue();
+            md.MaxValue = Model.XInput.GetDisableValue();
             return next();
         }
 

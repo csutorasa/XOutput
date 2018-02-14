@@ -91,6 +91,20 @@ namespace XOutput.Input.XInput
                     return false;
             }
         }
+
+        public double GetDisableValue(XInputTypes input)
+        {
+            switch (input)
+            {
+                case XInputTypes.LX:
+                case XInputTypes.LY:
+                case XInputTypes.RX:
+                case XInputTypes.RY:
+                    return 0.5;
+                default:
+                    return 0;
+            }
+        }
     }
 
     public static class XInputExtension
@@ -108,6 +122,11 @@ namespace XOutput.Input.XInput
         public static bool IsDPad(this XInputTypes input)
         {
             return XInputHelper.Instance.IsDPad(input);
+        }
+
+        public static double GetDisableValue(this XInputTypes input)
+        {
+            return XInputHelper.Instance.GetDisableValue(input);
         }
     }
 }

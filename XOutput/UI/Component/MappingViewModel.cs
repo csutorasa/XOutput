@@ -14,8 +14,7 @@ namespace XOutput.UI.Component
 {
     enum MappingTypes
     {
-        Disabled,
-        Centered
+        Disabled
     }
 
     public class MappingViewModel : ViewModelBase<MappingModel>
@@ -29,10 +28,6 @@ namespace XOutput.UI.Component
             model = new MappingModel(mapperData);
             Model.XInputType = inputType;
             var device = controller.InputDevice;
-            if (inputType.IsAxis())
-            {
-                Model.Inputs.Add(MappingTypes.Centered);
-            }
             Model.Inputs.Add(MappingTypes.Disabled);
             foreach (var directInput in device.Buttons)
             {
@@ -74,14 +69,9 @@ namespace XOutput.UI.Component
 
         protected void SetSelected(MapperData mapperData)
         {
-            if (Helper.DoubleEquals(mapperData.MinValue, 0) && Helper.DoubleEquals(mapperData.MaxValue, 0))
+            if (Helper.DoubleEquals(mapperData.MinValue, Model.XInputType.GetDisableValue()) && Helper.DoubleEquals(mapperData.MaxValue, Model.XInputType.GetDisableValue()))
             {
                 Model.SelectedInput = MappingTypes.Disabled;
-                Model.ConfigVisibility = System.Windows.Visibility.Collapsed;
-            }
-            else if (Helper.DoubleEquals(mapperData.MinValue, 0.5) && Helper.DoubleEquals(mapperData.MaxValue, 0.5))
-            {
-                Model.SelectedInput = MappingTypes.Centered;
                 Model.ConfigVisibility = System.Windows.Visibility.Collapsed;
             }
             else
@@ -95,14 +85,8 @@ namespace XOutput.UI.Component
         {
             if (type.Equals(MappingTypes.Disabled))
             {
-                Model.Min = 0;
-                Model.Max = 0;
-                Model.ConfigVisibility = System.Windows.Visibility.Collapsed;
-            }
-            else if (type.Equals(MappingTypes.Centered))
-            {
-                Model.Min = 50;
-                Model.Max = 50;
+                Model.Min = (decimal)(100 * Model.XInputType.GetDisableValue());
+                Model.Max = (decimal)(100 * Model.XInputType.GetDisableValue());
                 Model.ConfigVisibility = System.Windows.Visibility.Collapsed;
             }
             else
