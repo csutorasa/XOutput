@@ -92,6 +92,11 @@ namespace XOutput.Input.XInput
             }
         }
 
+        public override bool IsSlider(XInputTypes type)
+        {
+            return false;
+        }
+
         public double GetDisableValue(XInputTypes input)
         {
             switch (input)
@@ -122,6 +127,11 @@ namespace XOutput.Input.XInput
         public static bool IsDPad(this XInputTypes input)
         {
             return XInputHelper.Instance.IsDPad(input);
+        }
+
+        public static bool IsSlider(this XInputTypes input)
+        {
+            return XInputHelper.Instance.IsSlider(input);
         }
 
         public static double GetDisableValue(this XInputTypes input)

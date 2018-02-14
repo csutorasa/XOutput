@@ -26,5 +26,10 @@ namespace XOutput.Input.Keyboard
         {
             return false;
         }
+
+        public override bool IsSlider(Key type)
+        {
+            return false;
+        }
     }
 }

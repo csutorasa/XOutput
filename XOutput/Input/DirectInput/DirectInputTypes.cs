@@ -36,7 +36,11 @@ namespace XOutput.Input.DirectInput
         Button17,
         Button18,
         Button19,
-        Button20
+        Button20,
+
+        // Sliders
+        Slider1,
+        Slider2,
     }
 
     public class DirectInputHelper : AbstractInputHelper<DirectInputTypes>
@@ -93,6 +97,18 @@ namespace XOutput.Input.DirectInput
         public override bool IsDPad(DirectInputTypes type)
         {
             return false;
+        }
+
+        public override bool IsSlider(DirectInputTypes type)
+        {
+            switch (type)
+            {
+                case DirectInputTypes.Slider1:
+                case DirectInputTypes.Slider2:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

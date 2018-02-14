@@ -16,9 +16,9 @@ namespace XOutput.Input.Keyboard
         public bool HasDPad => false;
         public DPadDirection DPad => DPadDirection.None;
 
-        public IEnumerable<Enum> Buttons => throw new NotImplementedException();
-
+        public IEnumerable<Enum> Buttons => buttons;
         public IEnumerable<Enum> Axes => new Enum[0];
+        public IEnumerable<Enum> Sliders => new Enum[0];
 
         public event Action InputChanged;
         

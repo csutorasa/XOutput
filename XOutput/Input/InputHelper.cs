@@ -18,6 +18,7 @@ namespace XOutput.Input
         bool IsButton(T type);
         bool IsAxis(T type);
         bool IsDPad(T type);
+        bool IsSlider(T type);
     }
 
     public abstract class AbstractInputHelper<T> : InputHelper<T> where T : struct, IConvertible
@@ -26,11 +27,13 @@ namespace XOutput.Input
         public IEnumerable<T> Buttons => buttons;
         public IEnumerable<T> Axes => axes;
         public IEnumerable<T> DPad => dPad;
+        public IEnumerable<T> Sliders => sliders;
 
         private readonly IEnumerable<T> values;
         private readonly IEnumerable<T> buttons;
         private readonly IEnumerable<T> axes;
         private readonly IEnumerable<T> dPad;
+        private readonly IEnumerable<T> sliders;
 
         public AbstractInputHelper()
         {
@@ -42,10 +45,12 @@ namespace XOutput.Input
             buttons = values.Where(v => IsButton(v)).ToArray();
             axes = values.Where(v => IsAxis(v)).ToArray();
             dPad = values.Where(v => IsDPad(v)).ToArray();
+            sliders = values.Where(v => IsSlider(v)).ToArray();
         }
 
         public abstract bool IsAxis(T type);
         public abstract bool IsButton(T type);
         public abstract bool IsDPad(T type);
+        public abstract bool IsSlider(T type);
     }
 }

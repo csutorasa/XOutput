@@ -25,6 +25,7 @@ namespace XOutput.Input.DirectInput
         public bool HasDPad => joystick.Capabilities.PovCount > 0;
         public IEnumerable<Enum> Buttons => buttons;
         public IEnumerable<Enum> Axes => axes;
+        public IEnumerable<Enum> Sliders => sliders;
 
         public DPadDirection DPad
         {
@@ -52,6 +53,7 @@ namespace XOutput.Input.DirectInput
         private readonly Joystick joystick;
         private readonly Enum[] buttons;
         private readonly Enum[] axes;
+        private readonly Enum[] sliders;
         private bool connected = false;
         private Thread inputRefresher;
         private bool disposed = false;
@@ -67,6 +69,7 @@ namespace XOutput.Input.DirectInput
             this.joystick = joystick;
             buttons = DirectInputHelper.Instance.Buttons.Take(joystick.Capabilities.ButtonCount).OfType<Enum>().ToArray();
             axes = getAxes();
+            sliders = getSliders();
 
             joystick.Acquire();
             connected = true;
@@ -133,11 +136,15 @@ namespace XOutput.Input.DirectInput
             var type = (DirectInputTypes)inputType;
             if (DirectInputHelper.Instance.IsAxis(type))
             {
-                return (GetAxisValue((DirectInputTypes)inputType - DirectInputTypes.Axis1 + 1)) / (double)ushort.MaxValue;
+                return (GetAxisValue(type - DirectInputTypes.Axis1 + 1)) / (double)ushort.MaxValue;
             }
             if (DirectInputHelper.Instance.IsButton(type))
             {
-                return GetButtonValue((DirectInputTypes)inputType - DirectInputTypes.Button1 + 1) ? 1d : 0d;
+                return GetButtonValue(type - DirectInputTypes.Button1 + 1) ? 1d : 0d;
+            }
+            if (DirectInputHelper.Instance.IsSlider(type))
+            {
+                return GetSliderValue(type - DirectInputTypes.Slider1 + 1) / (double)ushort.MaxValue;
             }
             return 0;
         }
@@ -202,23 +209,35 @@ namespace XOutput.Input.DirectInput
             return state.GetButtons()[button - 1];
         }
 
+        /// <summary>
+        /// Gets the current value of a slider.
+        /// </summary>
+        /// <param name="button">Slider index</param>
+        /// <returns>Value</returns>
+        private int GetSliderValue(int slider)
+        {
+            var state = joystick.GetCurrentState();
+            if (slider < 1)
+                throw new ArgumentException();
+            return state.GetSliders()[slider - 1];
+        }
+
         private Enum[] getAxes()
         {
-            return joystick.GetObjects().Where(o => (o.ObjectType & ObjectDeviceType.Axis) != 0)
-                .Select(o => o.Name)
-                .Select(n =>
+            return joystick.GetObjects(ObjectDeviceType.Axis)
+                .Select(o =>
                 {
-                    if (n == "X" || n == "X Axis")
+                    if (o.ObjectTypeGuid == ObjectGuid.XAxis)
                         return DirectInputTypes.Axis1;
-                    if (n == "Y" || n == "Y Axis")
+                    if (o.ObjectTypeGuid == ObjectGuid.YAxis)
                         return DirectInputTypes.Axis2;
-                    if (n == "Z" || n == "Z Axis")
+                    if (o.ObjectTypeGuid == ObjectGuid.ZAxis)
                         return DirectInputTypes.Axis3;
-                    if (n == "X Rotation")
+                    if (o.ObjectTypeGuid == ObjectGuid.RotationalXAxis)
                         return DirectInputTypes.Axis4;
-                    if (n == "Y Rotation")
+                    if (o.ObjectTypeGuid == ObjectGuid.RotationalYAxis)
                         return DirectInputTypes.Axis5;
-                    if (n == "Z Rotation")
+                    if (o.ObjectTypeGuid == ObjectGuid.RotationalZAxis)
                         return DirectInputTypes.Axis6;
                     return (DirectInputTypes?)null;
                 })
@@ -226,6 +245,12 @@ namespace XOutput.Input.DirectInput
                 .OrderBy(a => (int)a)
                 .OfType<Enum>()
                 .ToArray();
+        }
+
+        private Enum[] getSliders()
+        {
+            int slidersCount = joystick.GetObjects().Where(o => o.ObjectTypeGuid == ObjectGuid.Slider).Count();
+            return DirectInputHelper.Instance.Sliders.Take(slidersCount).OfType<Enum>().ToArray();
         }
     }
 }
