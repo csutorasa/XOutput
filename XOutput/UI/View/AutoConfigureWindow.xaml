@@ -60,9 +60,6 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="0" Click="Center_Click"
-                Visibility="{Binding Model.CenterVisibility}"
-                Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Center'}"/>
             <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="1" Click="Disable_Click"
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Disable'}"/>
             <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="2" Click="Save_Click"
