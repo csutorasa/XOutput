@@ -21,6 +21,7 @@ namespace XOutput.Input.XInput
         public DPadDirection DPad => dPad;
         public IEnumerable<Enum> Buttons => XInputHelper.Instance.Buttons.OfType<Enum>();
         public IEnumerable<Enum> Axes => XInputHelper.Instance.Axes.OfType<Enum>();
+        public IEnumerable<Enum> Sliders => new Enum[0];
 
         private readonly Dictionary<XInputTypes, double> values = new Dictionary<XInputTypes, double>();
         private readonly IInputDevice source;

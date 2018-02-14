@@ -28,6 +28,11 @@ namespace XOutput.Input
         /// <returns></returns>
         IEnumerable<Enum> Axes { get; }
         /// <summary>
+        /// Gets all Enum values that represent slider
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<Enum> Sliders { get; }
+        /// <summary>
         /// Gets the current state of the inputTpye.
         /// </summary>
         /// <param name="inputType">Type of input</param>

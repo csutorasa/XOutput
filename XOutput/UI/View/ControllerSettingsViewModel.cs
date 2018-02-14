@@ -50,6 +50,10 @@ namespace XOutput.UI.View
             {
                 Model.InputAxisViews.Add(new AxisView(axisInput));
             }
+            foreach (var sliderInput in controller.InputDevice.Sliders)
+            {
+                Model.InputAxisViews.Add(new AxisView(sliderInput));
+            }
             if (controller.InputDevice.HasDPad)
             {
                 Model.InputDPadViews.Add(new DPadView());
