@@ -8,68 +8,44 @@ using XOutput.Input.DirectInput;
 
 namespace XOutput.Input
 {
-    public static class InputHelper
+    public interface InputHelper<T> where T : struct, IConvertible
     {
-        public static bool IsButton(this Enum input)
+        IEnumerable<T> Values { get; }
+        IEnumerable<T> Buttons { get; }
+        IEnumerable<T> Axes { get; }
+        IEnumerable<T> DPad { get; }
+
+        bool IsButton(T type);
+        bool IsAxis(T type);
+        bool IsDPad(T type);
+    }
+
+    public abstract class AbstractInputHelper<T> : InputHelper<T> where T : struct, IConvertible
+    {
+        public IEnumerable<T> Values => values;
+        public IEnumerable<T> Buttons => buttons;
+        public IEnumerable<T> Axes => axes;
+        public IEnumerable<T> DPad => dPad;
+
+        private readonly IEnumerable<T> values;
+        private readonly IEnumerable<T> buttons;
+        private readonly IEnumerable<T> axes;
+        private readonly IEnumerable<T> dPad;
+
+        public AbstractInputHelper()
         {
-            if (input is Key)
+            if(!typeof(T).IsEnum)
             {
-                return true;
+                throw new ArgumentException("Type must be enum", nameof(T));
             }
-            else if (input is DirectInputTypes)
-            {
-                switch ((DirectInputTypes)input)
-                {
-                    case DirectInputTypes.Button1:
-                    case DirectInputTypes.Button2:
-                    case DirectInputTypes.Button3:
-                    case DirectInputTypes.Button4:
-                    case DirectInputTypes.Button5:
-                    case DirectInputTypes.Button6:
-                    case DirectInputTypes.Button7:
-                    case DirectInputTypes.Button8:
-                    case DirectInputTypes.Button9:
-                    case DirectInputTypes.Button10:
-                    case DirectInputTypes.Button11:
-                    case DirectInputTypes.Button12:
-                    case DirectInputTypes.Button13:
-                    case DirectInputTypes.Button14:
-                    case DirectInputTypes.Button15:
-                    case DirectInputTypes.Button16:
-                    case DirectInputTypes.Button17:
-                    case DirectInputTypes.Button18:
-                    case DirectInputTypes.Button19:
-                    case DirectInputTypes.Button20:
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-            throw new ArgumentException();
+            values = (T[])Enum.GetValues(typeof(T));
+            buttons = values.Where(v => IsButton(v)).ToArray();
+            axes = values.Where(v => IsAxis(v)).ToArray();
+            dPad = values.Where(v => IsDPad(v)).ToArray();
         }
 
-        public static bool IsAxis(this Enum input)
-        {
-            if (input is Key)
-            {
-                return true;
-            }
-            else if (input is DirectInputTypes)
-            {
-                switch ((DirectInputTypes)input)
-                {
-                    case DirectInputTypes.Axis1:
-                    case DirectInputTypes.Axis2:
-                    case DirectInputTypes.Axis3:
-                    case DirectInputTypes.Axis4:
-                    case DirectInputTypes.Axis5:
-                    case DirectInputTypes.Axis6:
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-            throw new ArgumentException();
-        }
+        public abstract bool IsAxis(T type);
+        public abstract bool IsButton(T type);
+        public abstract bool IsDPad(T type);
     }
 }

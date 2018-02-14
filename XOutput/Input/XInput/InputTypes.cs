@@ -36,27 +36,12 @@ namespace XOutput.Input.XInput
         RIGHT,
     }
 
-    public static class XInputHelper
+    public class XInputHelper : AbstractInputHelper<XInputTypes>
     {
-        private readonly static XInputTypes[] all;
-        private readonly static XInputTypes[] buttons;
-        private readonly static XInputTypes[] axes;
-        private readonly static XInputTypes[] dPad;
+        public static readonly XInputHelper instance = new XInputHelper();
+        public static XInputHelper Instance => instance;
 
-        static XInputHelper()
-        {
-            all = (XInputTypes[])Enum.GetValues(typeof(XInputTypes));
-            buttons = all.Where(type => type.IsButton()).ToArray();
-            axes = all.Where(type => type.IsAxis()).ToArray();
-            dPad = all.Where(type => type.IsDPad()).ToArray();
-        }
-
-        public static IEnumerable<XInputTypes> Values => all;
-        public static IEnumerable<XInputTypes> Buttons => buttons;
-        public static IEnumerable<XInputTypes> Axes => axes;
-        public static IEnumerable<XInputTypes> DPad => dPad;
-
-        public static bool IsButton(this XInputTypes input)
+        public override bool IsButton(XInputTypes input)
         {
             switch (input)
             {
@@ -77,7 +62,7 @@ namespace XOutput.Input.XInput
             }
         }
 
-        public static bool IsAxis(this XInputTypes input)
+        public override bool IsAxis(XInputTypes input)
         {
             switch (input)
             {
@@ -93,7 +78,7 @@ namespace XOutput.Input.XInput
             }
         }
 
-        public static bool IsDPad(this XInputTypes input)
+        public override bool IsDPad(XInputTypes input)
         {
             switch (input)
             {
@@ -105,6 +90,24 @@ namespace XOutput.Input.XInput
                 default:
                     return false;
             }
+        }
+    }
+
+    public static class XInputExtension
+    {
+        public static bool IsButton(this XInputTypes input)
+        {
+            return XInputHelper.Instance.IsButton(input);
+        }
+
+        public static bool IsAxis(this XInputTypes input)
+        {
+            return XInputHelper.Instance.IsAxis(input);
+        }
+
+        public static bool IsDPad(this XInputTypes input)
+        {
+            return XInputHelper.Instance.IsDPad(input);
         }
     }
 }

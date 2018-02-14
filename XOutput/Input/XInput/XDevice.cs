@@ -18,12 +18,14 @@ namespace XOutput.Input.XInput
         /// </summary>
         public event Action InputChanged;
 
+        public DPadDirection DPad => dPad;
+        public IEnumerable<Enum> Buttons => XInputHelper.Instance.Buttons.OfType<Enum>();
+        public IEnumerable<Enum> Axes => XInputHelper.Instance.Axes.OfType<Enum>();
+
         private readonly Dictionary<XInputTypes, double> values = new Dictionary<XInputTypes, double>();
         private readonly IInputDevice source;
         private readonly InputMapperBase mapper;
         private DPadDirection dPad = DPadDirection.None;
-
-        public DPadDirection DPad => dPad;
 
         /// <summary>
         /// 
@@ -57,7 +59,7 @@ namespace XOutput.Input.XInput
         /// <returns></returns>
         public bool RefreshInput()
         {
-            foreach(var type in XInputHelper.Values)
+            foreach(var type in XInputHelper.Instance.Values)
             {
                 var mapping = mapper.GetMapping(type);
                 if (mapping != null)
@@ -142,16 +144,6 @@ namespace XOutput.Input.XInput
             if(inputType is XInputTypes)
                 return Get((XInputTypes)inputType);
             throw new ArgumentException();
-        }
-
-        public IEnumerable<Enum> GetButtons()
-        {
-            return XInputHelper.Buttons.Select(b => (Enum)b).ToList();
-        }
-
-        public IEnumerable<Enum> GetAxes()
-        {
-            return XInputHelper.Axes.Select(a => (Enum)a).ToList();
         }
     }
 }

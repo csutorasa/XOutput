@@ -25,25 +25,25 @@ namespace XOutput.UI.Component
         public MappingViewModel(GameController controller, XInputTypes inputType)
         {
             this.controller = controller;
-            MapperData mapperData = controller.Mapper.GetMapping(inputType);
+            var mapperData = controller.Mapper.GetMapping(inputType);
             model = new MappingModel(mapperData);
             Model.XInputType = inputType;
-            IInputDevice device = controller.InputDevice;
+            var device = controller.InputDevice;
             if (inputType.IsAxis())
             {
                 Model.Inputs.Add(MappingTypes.Centered);
             }
             Model.Inputs.Add(MappingTypes.Disabled);
-            foreach (var directInput in device.GetButtons())
+            foreach (var directInput in device.Buttons)
             {
                 Model.Inputs.Add(directInput);
             }
-            foreach (var directInput in device.GetAxes())
+            foreach (var directInput in device.Axes)
             {
                 Model.Inputs.Add(directInput);
             }
             if (mapperData != null && mapperData.InputType == null)
-                mapperData.InputType = device.GetButtons().FirstOrDefault();
+                mapperData.InputType = device.Buttons.FirstOrDefault();
             SetSelected(mapperData);
             Model.SelectedInputChanged += SelectionChanged;
         }

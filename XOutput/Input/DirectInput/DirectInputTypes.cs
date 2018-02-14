@@ -38,4 +38,61 @@ namespace XOutput.Input.DirectInput
         Button19,
         Button20
     }
+
+    public class DirectInputHelper : AbstractInputHelper<DirectInputTypes>
+    {
+        public static readonly DirectInputHelper instance = new DirectInputHelper();
+        public static DirectInputHelper Instance => instance;
+
+        public override bool IsAxis(DirectInputTypes type)
+        {
+            switch (type)
+            {
+                case DirectInputTypes.Axis1:
+                case DirectInputTypes.Axis2:
+                case DirectInputTypes.Axis3:
+                case DirectInputTypes.Axis4:
+                case DirectInputTypes.Axis5:
+                case DirectInputTypes.Axis6:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public override bool IsButton(DirectInputTypes type)
+        {
+            switch (type)
+            {
+                case DirectInputTypes.Button1:
+                case DirectInputTypes.Button2:
+                case DirectInputTypes.Button3:
+                case DirectInputTypes.Button4:
+                case DirectInputTypes.Button5:
+                case DirectInputTypes.Button6:
+                case DirectInputTypes.Button7:
+                case DirectInputTypes.Button8:
+                case DirectInputTypes.Button9:
+                case DirectInputTypes.Button10:
+                case DirectInputTypes.Button11:
+                case DirectInputTypes.Button12:
+                case DirectInputTypes.Button13:
+                case DirectInputTypes.Button14:
+                case DirectInputTypes.Button15:
+                case DirectInputTypes.Button16:
+                case DirectInputTypes.Button17:
+                case DirectInputTypes.Button18:
+                case DirectInputTypes.Button19:
+                case DirectInputTypes.Button20:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public override bool IsDPad(DirectInputTypes type)
+        {
+            return false;
+        }
+    }
 }

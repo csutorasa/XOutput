@@ -32,7 +32,7 @@ namespace XOutput.UI.View
             model = new AutoConfigureModel();
             Model.ButtonsVisibility = valuesToRead.Length > 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
             Model.TimerVisibility = valuesToRead.Length <= 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-            inputTypes = controller.InputDevice.GetButtons().Concat(controller.InputDevice.GetAxes()).ToArray();
+            inputTypes = controller.InputDevice.Buttons.Concat(controller.InputDevice.Axes).ToArray();
             Model.CenterVisibility = xInputType.IsAxis() ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
         }
 

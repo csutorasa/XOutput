@@ -21,13 +21,5 @@ namespace XOutput.Input
         /// If the controller has DPad
         /// </summary>
         bool HasDPad { get; }
-        /// <summary>
-        /// If the controller has axes
-        /// </summary>
-        bool HasAxes { get; }
-        /// <summary>
-        /// If the controller has buttons
-        /// </summary>
-        int ButtonCount { get; }
     }
 }
