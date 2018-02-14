@@ -66,7 +66,8 @@ namespace XOutput.Input.DirectInput
             this.deviceInstance = deviceInstance;
             this.joystick = joystick;
             buttons = DirectInputHelper.Instance.Buttons.Take(joystick.Capabilities.ButtonCount).OfType<Enum>().ToArray();
-            axes = DirectInputHelper.Instance.Axes.OfType<Enum>().ToArray();
+            axes = getAxes();
+
             joystick.Acquire();
             connected = true;
         }
@@ -169,7 +170,6 @@ namespace XOutput.Input.DirectInput
             var state = joystick.GetCurrentState();
             if (axis < 1)
                 throw new ArgumentException();
-            var x = joystick.GetObjects().ToArray();
             switch (axis)
             {
                 case 1:
@@ -200,6 +200,32 @@ namespace XOutput.Input.DirectInput
             if (button < 1)
                 throw new ArgumentException();
             return state.GetButtons()[button - 1];
+        }
+
+        private Enum[] getAxes()
+        {
+            return joystick.GetObjects().Where(o => (o.ObjectType & ObjectDeviceType.Axis) != 0)
+                .Select(o => o.Name)
+                .Select(n =>
+                {
+                    if (n == "X" || n == "X Axis")
+                        return DirectInputTypes.Axis1;
+                    if (n == "Y" || n == "Y Axis")
+                        return DirectInputTypes.Axis2;
+                    if (n == "Z" || n == "Z Axis")
+                        return DirectInputTypes.Axis3;
+                    if (n == "X Rotation")
+                        return DirectInputTypes.Axis4;
+                    if (n == "Y Rotation")
+                        return DirectInputTypes.Axis5;
+                    if (n == "Z Rotation")
+                        return DirectInputTypes.Axis6;
+                    return (DirectInputTypes?)null;
+                })
+                .Where(a => a != null)
+                .OrderBy(a => (int)a)
+                .OfType<Enum>()
+                .ToArray();
         }
     }
 }
