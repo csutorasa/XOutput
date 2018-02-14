@@ -37,6 +37,10 @@ namespace XOutput.UI.Component
             {
                 Model.Inputs.Add(directInput);
             }
+            foreach (var directInput in device.Sliders)
+            {
+                Model.Inputs.Add(directInput);
+            }
             if (mapperData != null && mapperData.InputType == null)
                 mapperData.InputType = device.Buttons.FirstOrDefault();
             SetSelected(mapperData);
