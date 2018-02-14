@@ -23,10 +23,7 @@ namespace XOutput
     {
         private static DPadDirection[] values = ((DPadDirection[])Enum.GetValues(typeof(DPadDirection))).Where(d => d != DPadDirection.None).ToArray();
 
-        public static DPadDirection[] GetValues()
-        {
-            return values;
-        }
+        public static DPadDirection[] Values => values;
 
         public static DPadDirection GetDirection(bool up, bool down, bool left, bool right)
         {

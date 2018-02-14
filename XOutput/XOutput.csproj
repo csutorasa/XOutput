@@ -64,6 +64,7 @@
     <Compile Include="Input\IDevice.cs" />
     <Compile Include="Input\IInputDevice.cs" />
     <Compile Include="Input\InputHelper.cs" />
+    <Compile Include="Input\Keyboard\KeyboardInputTypes.cs" />
     <Compile Include="Input\Keyboard\Keyboard.cs" />
     <Compile Include="Input\Mapper\KeyboardToXInputMapper.cs" />
     <Compile Include="Input\Mapper\InputMapperBase.cs" />

@@ -28,7 +28,7 @@ namespace XOutput.UI.View
 
         public void ConfigureAll()
         {
-            IEnumerable<XInputTypes> types = XInputHelper.Values;
+            var types = XInputHelper.Instance.Values;
             if (controller.InputDevice.HasDPad)
             {
                 types = types.Where(t => !t.IsDPad());
@@ -42,16 +42,13 @@ namespace XOutput.UI.View
 
         private void createInputControls()
         {
-            foreach (var buttonInput in controller.InputDevice.GetButtons())
+            foreach (var buttonInput in controller.InputDevice.Buttons)
             {
                 Model.InputButtonViews.Add(new ButtonView(buttonInput));
             }
-            if (controller.InputDevice.HasAxes)
+            foreach (var axisInput in controller.InputDevice.Axes)
             {
-                foreach (var axisInput in controller.InputDevice.GetAxes())
-                {
-                    Model.InputAxisViews.Add(new AxisView(axisInput));
-                }
+                Model.InputAxisViews.Add(new AxisView(axisInput));
             }
             if (controller.InputDevice.HasDPad)
             {
@@ -79,18 +76,18 @@ namespace XOutput.UI.View
 
         private void createMappingControls()
         {
-            foreach (var xInputType in XInputHelper.Buttons)
+            foreach (var xInputType in XInputHelper.Instance.Buttons)
             {
                 Model.MapperButtonViews.Add(new MappingView(controller, xInputType));
             }
             if (!controller.InputDevice.HasDPad)
             {
-                foreach (var xInputType in XInputHelper.DPad)
+                foreach (var xInputType in XInputHelper.Instance.DPad)
                 {
                     Model.MapperDPadViews.Add(new MappingView(controller, xInputType));
                 }
             }
-            foreach (var xInputType in XInputHelper.Axes)
+            foreach (var xInputType in XInputHelper.Instance.Axes)
             {
                 Model.MapperAxisViews.Add(new MappingView(controller, xInputType));
             }
@@ -98,7 +95,7 @@ namespace XOutput.UI.View
 
         private void createXInputControls()
         {
-            foreach (var buttonInput in XInputHelper.Buttons)
+            foreach (var buttonInput in XInputHelper.Instance.Buttons)
             {
                 Model.XInputButtonViews.Add(new ButtonView(buttonInput));
             }

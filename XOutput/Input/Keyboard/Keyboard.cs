@@ -8,20 +8,26 @@ using System.Windows.Input;
 
 namespace XOutput.Input.Keyboard
 {
-    public class Keyboard : IInputDevice
+    public sealed class Keyboard : IInputDevice
     {
         public int ButtonCount => Enum.GetValues(typeof(Key)).Length;
         public string DisplayName => "Keyboard";
         public bool Connected => true;
-        public bool HasAxes => false;
         public bool HasDPad => false;
         public DPadDirection DPad => DPadDirection.None;
 
+        public IEnumerable<Enum> Buttons => throw new NotImplementedException();
+
+        public IEnumerable<Enum> Axes => new Enum[0];
+
         public event Action InputChanged;
+        
         private Thread inputRefresher;
+        private readonly Enum[] buttons;
 
         public Keyboard()
         {
+            buttons = KeyboardInputHelper.Instance.Buttons.Where(x => x != Key.None).OrderBy(x => x.ToString()).OfType<Enum>().ToArray(); 
             inputRefresher = new Thread(() => {
                 try
                 {
@@ -55,19 +61,6 @@ namespace XOutput.Input.Keyboard
             if (!(inputType is Key))
                 throw new ArgumentException();
             return System.Windows.Input.Keyboard.IsKeyDown((Key)inputType) ? 1 : 0;
-        }
-
-        public IEnumerable<Enum> GetButtons()
-        {
-            return ((Key[])Enum.GetValues(typeof(Key)))
-                .Where(x => x != Key.None)
-                .OrderBy(x => x.ToString())
-                .Select(x => (Enum)x);
-        }
-
-        public IEnumerable<Enum> GetAxes()
-        {
-            return new Enum[0];
         }
 
         /// <summary>
