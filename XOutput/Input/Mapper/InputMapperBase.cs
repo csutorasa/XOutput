@@ -34,7 +34,7 @@ namespace XOutput.Input.Mapper
                 return null;
             if (!mappings.ContainsKey(type.Value))
             {
-                mappings[type.Value] = new MapperData();
+                mappings[type.Value] = new MapperData { InputType = null, MinValue = type.Value.GetDisableValue(), MaxValue = type.Value.GetDisableValue() };
             }
             return mappings[type.Value];
         }
