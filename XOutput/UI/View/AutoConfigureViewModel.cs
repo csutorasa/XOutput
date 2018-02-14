@@ -21,7 +21,7 @@ namespace XOutput.UI.View
         private readonly GameController controller;
         private readonly XInputTypes[] valuesToRead;
         private XInputTypes xInputType;
-        private Enum[] inputTypes;
+        private readonly Enum[] inputTypes;
         private DateTime lastTime;
 
         public AutoConfigureViewModel(GameController controller, XInputTypes[] valuesToRead)
@@ -32,7 +32,7 @@ namespace XOutput.UI.View
             model = new AutoConfigureModel();
             Model.ButtonsVisibility = valuesToRead.Length > 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
             Model.TimerVisibility = valuesToRead.Length <= 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-            inputTypes = controller.InputDevice.Buttons.Concat(controller.InputDevice.Axes).ToArray();
+            inputTypes = controller.InputDevice.Buttons.Concat(controller.InputDevice.Axes).Concat(controller.InputDevice.Sliders).ToArray();
         }
 
         public void Initialize()
