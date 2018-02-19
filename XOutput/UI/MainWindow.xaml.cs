@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,7 +87,11 @@ namespace XOutput.UI
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.RefreshGameControllers();
+            try
+            {
+                viewModel.RefreshGameControllers();
+            }
+            catch (IOException) { }
         }
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
