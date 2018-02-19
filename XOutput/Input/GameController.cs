@@ -23,7 +23,7 @@ namespace XOutput.Input
         protected readonly IInputDevice inputDevice;
         protected readonly InputMapperBase mapper;
         protected readonly XDevice xInput;
-        protected readonly ScpDevice scpDevice;
+        protected readonly VigemDevice vigemDevice;
         protected Thread thread;
         protected bool running;
         private int controllerCount = 0;
@@ -31,7 +31,8 @@ namespace XOutput.Input
         {
             this.inputDevice = directInput;
             this.mapper = mapper;
-            scpDevice = new ScpDevice();
+            var x = new VigemDevice();
+            vigemDevice = new VigemDevice();
             xInput = new XDevice(directInput, mapper);
             running = false;
         }
@@ -43,7 +44,7 @@ namespace XOutput.Input
         {
             Stop();
             inputDevice.Dispose();
-            scpDevice?.Dispose();
+            vigemDevice?.Dispose();
         }
         public override string ToString()
         {
@@ -53,11 +54,11 @@ namespace XOutput.Input
         public int Start(Action onStop = null)
         {
             controllerCount = controllers.GetId();
-            if (scpDevice.Unplug(controllerCount))
+            if (vigemDevice.Unplug(controllerCount))
             {
                 Thread.Sleep(10);
             }
-            if (scpDevice.Plugin(controllerCount))
+            if (vigemDevice.Plugin(controllerCount))
             {
                 thread = new Thread(() =>
                 {
@@ -65,7 +66,7 @@ namespace XOutput.Input
                     {
                         XInput.InputChanged += () =>
                         {
-                            if (!scpDevice.Report(controllerCount, XInput.GetBinary()))
+                            if (!vigemDevice.Report(controllerCount, XInput.GetValues()))
                                 running = false;
                         };
                         while (running)
@@ -75,7 +76,7 @@ namespace XOutput.Input
                     }
                     finally
                     {
-                        scpDevice.Unplug(controllerCount);
+                        vigemDevice.Unplug(controllerCount);
                         onStop?.Invoke();
                     }
                 });
@@ -94,7 +95,7 @@ namespace XOutput.Input
         {
             running = false;
             thread?.Abort();
-            scpDevice?.Unplug(controllerCount);
+            vigemDevice?.Unplug(controllerCount);
             resetId();
         }
 

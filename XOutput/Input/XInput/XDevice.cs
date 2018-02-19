@@ -84,55 +84,17 @@ namespace XOutput.Input.XInput
         }
 
         /// <summary>
-        /// Gets binary data to report to scp device.
+        /// Gets a snapshot of data.
         /// </summary>
         /// <returns></returns>
-        public byte[] GetBinary()
+        public Dictionary<XInputTypes, double> GetValues()
         {
-            byte[] report = new byte[20];
-            report[0] = 0; // Input report
-            report[1] = 20; // Message length
-
-            // Buttons
-            if (DPad.HasFlag(DPadDirection.Up)) report[2] |= 1 << 0;
-            if (DPad.HasFlag(DPadDirection.Down)) report[2] |= 1 << 1;
-            if (DPad.HasFlag(DPadDirection.Left)) report[2] |= 1 << 2;
-            if (DPad.HasFlag(DPadDirection.Right)) report[2] |= 1 << 3;
-            if (GetBool(XInputTypes.Start)) report[2] |= 1 << 4;
-            if (GetBool(XInputTypes.Back)) report[2] |= 1 << 5;
-            if (GetBool(XInputTypes.L3)) report[2] |= 1 << 6;
-            if (GetBool(XInputTypes.R3)) report[2] |= 1 << 7;
-
-            if (GetBool(XInputTypes.L1)) report[3] |= 1 << 0;
-            if (GetBool(XInputTypes.R1)) report[3] |= 1 << 1;
-            if (GetBool(XInputTypes.Home)) report[3] |= 1 << 2;
-
-            if (GetBool(XInputTypes.A)) report[3] |= 1 << 4;
-            if (GetBool(XInputTypes.B)) report[3] |= 1 << 5;
-            if (GetBool(XInputTypes.X)) report[3] |= 1 << 6;
-            if (GetBool(XInputTypes.Y)) report[3] |= 1 << 7;
-
-            // Axes
-            byte l2 = (byte)(Get(XInputTypes.L2) * byte.MaxValue);
-            report[4] = l2;
-            byte r2 = (byte)(Get(XInputTypes.R2) * byte.MaxValue);
-            report[5] = r2;
-
-            ushort lx = (ushort)((Get(XInputTypes.LX) - 0.5) * ushort.MaxValue);
-            report[6] = (byte)(lx & 0xFF);
-            report[7] = (byte)((lx >> 8) & 0xFF);
-            ushort ly = (ushort)((Get(XInputTypes.LY) - 0.5) * ushort.MaxValue);
-            report[8] = (byte)(ly & 0xFF);
-            report[9] = (byte)((ly >> 8) & 0xFF);
-
-            ushort rx = (ushort)((Get(XInputTypes.RX) - 0.5) * ushort.MaxValue);
-            report[10] = (byte)(rx & 0xFF);
-            report[11] = (byte)((rx >> 8) & 0xFF);
-            ushort ry = (ushort)((Get(XInputTypes.RY) - 0.5) * ushort.MaxValue);
-            report[12] = (byte)(ry & 0xFF);
-            report[13] = (byte)((ry >> 8) & 0xFF);
-
-            return report;
+            var newValues = new Dictionary<XInputTypes, double>(values);
+            newValues[XInputTypes.UP] = dPad.HasFlag(DPadDirection.Up) ? 1 : 0;
+            newValues[XInputTypes.LEFT] = dPad.HasFlag(DPadDirection.Left) ? 1 : 0;
+            newValues[XInputTypes.RIGHT] = dPad.HasFlag(DPadDirection.Right) ? 1 : 0;
+            newValues[XInputTypes.DOWN] = dPad.HasFlag(DPadDirection.Down) ? 1 : 0;
+            return newValues;
         }
 
         public bool GetBool(XInputTypes inputType)
