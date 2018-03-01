@@ -100,6 +100,18 @@ namespace XOutput.Input.DirectInput
                 case DirectInputTypes.Button18:
                 case DirectInputTypes.Button19:
                 case DirectInputTypes.Button20:
+                case DirectInputTypes.Button21:
+                case DirectInputTypes.Button22:
+                case DirectInputTypes.Button23:
+                case DirectInputTypes.Button24:
+                case DirectInputTypes.Button25:
+                case DirectInputTypes.Button26:
+                case DirectInputTypes.Button27:
+                case DirectInputTypes.Button28:
+                case DirectInputTypes.Button29:
+                case DirectInputTypes.Button30:
+                case DirectInputTypes.Button31:
+                case DirectInputTypes.Button32:
                     return true;
                 default:
                     return false;
