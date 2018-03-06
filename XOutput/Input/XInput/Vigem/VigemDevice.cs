@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Nefarius.ViGEm.Client;
 using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.Xbox360;
+using Nefarius.ViGEm.Client.Exceptions;
 
 namespace XOutput.Input.XInput
 {
-    public class VigemDevice
+    public class VigemDevice : IXOutput
     {
         protected readonly ViGEmClient client;
         protected readonly Dictionary<int, Xbox360Controller> controllers = new Dictionary<int, Xbox360Controller>();
@@ -21,6 +22,19 @@ namespace XOutput.Input.XInput
         {
             InitMapping();
             client = new ViGEmClient();
+        }
+
+        public static bool IsAvailable()
+        {
+            try
+            {
+                new ViGEmClient();
+                return true;
+            }
+            catch(VigemBusNotFoundException)
+            {
+                return false;
+            }
         }
 
         public bool Plugin(int controllerCount)

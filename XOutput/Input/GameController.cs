@@ -31,7 +31,6 @@ namespace XOutput.Input
         {
             this.inputDevice = directInput;
             this.mapper = mapper;
-            var x = new VigemDevice();
             vigemDevice = new VigemDevice();
             xInput = new XDevice(directInput, mapper);
             running = false;

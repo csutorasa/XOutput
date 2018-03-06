@@ -70,6 +70,8 @@ namespace XOutput.Input.DirectInput
             axes = getAxes();
             sliders = getSliders();
 
+            var allEffects = joystick.GetEffects().LongCount();
+
             joystick.Acquire();
             connected = true;
         }
