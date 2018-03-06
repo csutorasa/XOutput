@@ -57,6 +57,7 @@ namespace XOutput.UI
         public void AddKeyboard()
         {
             Model.Controllers.Add(new ControllerView(new GameController(new Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard"))));
+            logger(string.Format(Message.ControllerConnected, "Keyboard"));
         }
         public void SaveSettings(string settingsFilePath)
         {
@@ -81,7 +82,7 @@ namespace XOutput.UI
             {
                 if (!Model.Controllers.Any(x => (x.DataContext as ControllerViewModel).Model.Controller.ToString() == device.ToString()))
                 {
-                    InputMapperBase mapper = settings.GetMapper(device.Id.ToString());
+                    InputMapperBase mapper = settings.GetMapper(device.ToString());
                     GameController controller = new GameController(device, mapper);
                     Model.Controllers.Add(new ControllerView(controller, logger));
                     device.StartCapturing();

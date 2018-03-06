@@ -49,6 +49,38 @@ namespace XOutput.Input.DirectInput
         Button30,
         Button31,
         Button32,
+        Button33,
+        Button34,
+        Button35,
+        Button36,
+        Button37,
+        Button38,
+        Button39,
+        Button40,
+        Button41,
+        Button42,
+        Button43,
+        Button44,
+        Button45,
+        Button46,
+        Button47,
+        Button48,
+        Button49,
+        Button50,
+        Button51,
+        Button52,
+        Button53,
+        Button54,
+        Button55,
+        Button56,
+        Button57,
+        Button58,
+        Button59,
+        Button60,
+        Button61,
+        Button62,
+        Button63,
+        Button64,
 
         // Sliders
         Slider1,
@@ -112,6 +144,38 @@ namespace XOutput.Input.DirectInput
                 case DirectInputTypes.Button30:
                 case DirectInputTypes.Button31:
                 case DirectInputTypes.Button32:
+                case DirectInputTypes.Button33:
+                case DirectInputTypes.Button34:
+                case DirectInputTypes.Button35:
+                case DirectInputTypes.Button36:
+                case DirectInputTypes.Button37:
+                case DirectInputTypes.Button38:
+                case DirectInputTypes.Button39:
+                case DirectInputTypes.Button40:
+                case DirectInputTypes.Button41:
+                case DirectInputTypes.Button42:
+                case DirectInputTypes.Button43:
+                case DirectInputTypes.Button44:
+                case DirectInputTypes.Button45:
+                case DirectInputTypes.Button46:
+                case DirectInputTypes.Button47:
+                case DirectInputTypes.Button48:
+                case DirectInputTypes.Button49:
+                case DirectInputTypes.Button50:
+                case DirectInputTypes.Button51:
+                case DirectInputTypes.Button52:
+                case DirectInputTypes.Button53:
+                case DirectInputTypes.Button54:
+                case DirectInputTypes.Button55:
+                case DirectInputTypes.Button56:
+                case DirectInputTypes.Button57:
+                case DirectInputTypes.Button58:
+                case DirectInputTypes.Button59:
+                case DirectInputTypes.Button60:
+                case DirectInputTypes.Button61:
+                case DirectInputTypes.Button62:
+                case DirectInputTypes.Button63:
+                case DirectInputTypes.Button64:
                     return true;
                 default:
                     return false;

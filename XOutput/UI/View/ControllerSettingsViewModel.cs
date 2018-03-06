@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XOutput.Input;
+using XOutput.Input.DirectInput;
 using XOutput.Input.XInput;
 using XOutput.UI.Component;
 
@@ -46,9 +47,44 @@ namespace XOutput.UI.View
             {
                 Model.InputButtonViews.Add(new ButtonView(buttonInput));
             }
-            foreach (var axisInput in controller.InputDevice.Axes)
+            var axes = controller.InputDevice.Axes.OfType<DirectInputTypes>();
+            if (axes.Contains(DirectInputTypes.Axis1) && axes.Contains(DirectInputTypes.Axis2))
             {
-                Model.InputAxisViews.Add(new AxisView(axisInput));
+                Model.InputAxisViews.Add(new Axis2DView(DirectInputTypes.Axis1, DirectInputTypes.Axis2));
+            }
+            else
+            {
+                if(axes.Contains(DirectInputTypes.Axis1))
+                {
+                    Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis1));
+                }
+                if (axes.Contains(DirectInputTypes.Axis2))
+                {
+                    Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis2));
+                }
+            }
+            if (axes.Contains(DirectInputTypes.Axis4) && axes.Contains(DirectInputTypes.Axis5))
+            {
+                Model.InputAxisViews.Add(new Axis2DView(DirectInputTypes.Axis4, DirectInputTypes.Axis5));
+            }
+            else
+            {
+                if (axes.Contains(DirectInputTypes.Axis4))
+                {
+                    Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis4));
+                }
+                if (axes.Contains(DirectInputTypes.Axis5))
+                {
+                    Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis5));
+                }
+            }
+            if (axes.Contains(DirectInputTypes.Axis3))
+            {
+                Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis3));
+            }
+            if (axes.Contains(DirectInputTypes.Axis6))
+            {
+                Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis6));
             }
             foreach (var sliderInput in controller.InputDevice.Sliders)
             {

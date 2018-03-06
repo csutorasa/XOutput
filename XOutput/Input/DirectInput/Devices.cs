@@ -1,4 +1,4 @@
-﻿using SlimDX.DirectInput;
+﻿using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace XOutput.Input.DirectInput
         /// </summary>
         private const string EMULATED_ID = "028e045e-0000-0000-0000-504944564944";
         
-        private readonly SlimDX.DirectInput.DirectInput directInput = new SlimDX.DirectInput.DirectInput();
+        private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
 
         public Devices()
         {
@@ -41,12 +41,12 @@ namespace XOutput.Input.DirectInput
         public IEnumerable<DirectDevice> GetInputDevices()
         {
             var directDevices = new List<DirectDevice>();
-            var deviceInstances = directInput.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly);
-            foreach(var deviceInstance in deviceInstances)
+            var deviceInstances = directInput.GetDevices().Where(di => di.Type != DeviceType.Mouse && di.Type != DeviceType.Keyboard);
+            foreach (var deviceInstance in deviceInstances)
             {
                 var joystick = new Joystick(directInput, deviceInstance.InstanceGuid);
 
-                if (joystick.Information.ProductGuid.ToString() == EMULATED_ID || (joystick.Capabilities.AxesCount < 1 && joystick.Capabilities.ButtonCount < 1))
+                if (joystick.Information.ProductGuid.ToString() == EMULATED_ID || (joystick.Capabilities.AxeCount < 1 && joystick.Capabilities.ButtonCount < 1))
                 {
                     joystick.Dispose();
                     continue;
