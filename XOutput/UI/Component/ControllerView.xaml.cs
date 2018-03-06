@@ -15,7 +15,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using XOutput.Input;
 using XOutput.UI.Component;
-using XOutput.UI.Resources;
 using XOutput.UI.View;
 
 namespace XOutput.UI.Component

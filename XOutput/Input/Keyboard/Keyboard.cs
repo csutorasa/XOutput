@@ -11,7 +11,7 @@ namespace XOutput.Input.Keyboard
     public sealed class Keyboard : IInputDevice
     {
         public int ButtonCount => Enum.GetValues(typeof(Key)).Length;
-        public string DisplayName => "Keyboard";
+        public string DisplayName => LanguageModel.Instance.Translate("Keyboard");
         public bool Connected => true;
         public bool HasDPad => false;
         public DPadDirection DPad => DPadDirection.None;

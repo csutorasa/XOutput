@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,7 +16,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using XOutput.UI.Component;
-using XOutput.UI.Resources;
 
 namespace XOutput.UI
 {
@@ -27,8 +25,6 @@ namespace XOutput.UI
     public partial class MainWindow : Window
     {
         private readonly MainWindowViewModel viewModel;
-        private const string SettingsFilePath = "settings.txt";
-        private const string GameControllersSettings = "joy.cpl";
 
         public MainWindow()
         {
@@ -39,55 +35,32 @@ namespace XOutput.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            LanguageManager languageManager = LanguageManager.getInstance();
+            viewModel.Initialize();
             foreach (var child in (Content as Grid).Children)
             {
-                if(child is Menu)
+                if (child is Menu)
                 {
                     Menu menu = child as Menu;
                     MenuItem langMenu = menu.Items[1] as MenuItem;
-                    foreach (var language in languageManager.GetLanguages()) {
+                    foreach (var language in LanguageManager.Instance.GetLanguages())
+                    {
                         MenuItem langMenuItem = new MenuItem();
                         langMenuItem.Header = language;
-                        langMenuItem.Click += (sender1, e1) => { languageManager.Language = language; };
+                        langMenuItem.Click += (sender1, e1) => { LanguageManager.Instance.Language = language; };
                         langMenu.Items.Add(langMenuItem);
                     }
                 }
-            }
-            try
-            {
-                viewModel.LoadSettings(SettingsFilePath);
-                Log(string.Format(Message.LoadSettings, SettingsFilePath));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format(ErrorMessage.LoadSettingsError, SettingsFilePath, ex.Message), ErrorMessage.Warning);
-                Log(string.Format(ErrorMessage.LoadSettingsError, SettingsFilePath, ex.Message));
-            }
-            try
-            {
-                viewModel.RefreshGameControllers();
-                viewModel.AddKeyboard();
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(string.Format(ErrorMessage.SCPNotInstalledError, ex.Message), ErrorMessage.Warning);
-                Log(string.Format(Message.ScpDownload));
             }
         }
 
         public void Log(string msg)
         {
-            Dispatcher.BeginInvoke(new Action(() => logBox.AppendText(msg + Environment.NewLine)));
+            Dispatcher.BeginInvoke((Action)(() => logBox.AppendText(msg + Environment.NewLine)));
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                viewModel.RefreshGameControllers();
-            }
-            catch (IOException) { }
+            viewModel.RefreshGameControllers();
         }
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
@@ -95,35 +68,23 @@ namespace XOutput.UI
         }
         private void GameControllers_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(GameControllersSettings);
+            viewModel.OpenWindowsGameControllerSettings();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                viewModel.SaveSettings(SettingsFilePath);
-                Log(string.Format(Message.SaveSettings, SettingsFilePath));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format(ErrorMessage.SaveSettingsError, SettingsFilePath, ex.Message), ErrorMessage.Warning);
-                Log(string.Format(ErrorMessage.SaveSettingsError, SettingsFilePath, ex.Message));
-            }
+            viewModel.SaveSettings();
         }
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(Message.AboutContent, Message.About);
+            viewModel.AboutPopupShow();
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            viewModel.Finalizer();
             viewModel.Dispose();
-            foreach (var controller in viewModel.Model.Controllers.Select(x => (x.DataContext as ControllerViewModel).Model.Controller))
-            {
-                controller.Dispose();
-            }
         }
     }
 }

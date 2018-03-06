@@ -8,7 +8,6 @@ using XOutput.Input;
 using XOutput.Input.DirectInput;
 using XOutput.Input.Mapper;
 using XOutput.Input.XInput;
-using XOutput.UI.Resources;
 using XOutput.UI.View;
 
 namespace XOutput.UI.Component
@@ -39,13 +38,13 @@ namespace XOutput.UI.Component
                 controllerCount = Model.Controller.Start(() =>
                 {
                     Model.ButtonText = "Start";
-                    log?.Invoke(string.Format(Message.EmulationStopped, Model.Controller.DisplayName));
+                    log?.Invoke(string.Format(LanguageModel.Instance.Translate("EmulationStopped"), Model.Controller.DisplayName));
                     Model.Started = false;
                 });
                 if (controllerCount != 0)
                 {
                     Model.ButtonText = "Stop";
-                    log?.Invoke(string.Format(Message.EmulationStarted, Model.Controller.DisplayName, controllerCount));
+                    log?.Invoke(string.Format(LanguageModel.Instance.Translate("EmulationStarted"), Model.Controller.DisplayName, controllerCount));
                 }
                 Model.Started = controllerCount != 0;
             }

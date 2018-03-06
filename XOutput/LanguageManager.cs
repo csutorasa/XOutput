@@ -14,10 +14,7 @@ namespace XOutput
         private Dictionary<string, Dictionary<string, string>> data = new Dictionary<string, Dictionary<string, string>>();
 
         private static LanguageManager instance = new LanguageManager("languages.txt");
-        public static LanguageManager getInstance()
-        {
-            return instance;
-        }
+        public static LanguageManager Instance => instance;
 
         private string language;
         public string Language
@@ -28,7 +25,7 @@ namespace XOutput
                 if (language != value)
                 {
                     language = value;
-                    LanguageModel.getInstance().Data = data[language];
+                    LanguageModel.Instance.Data = data[language];
                 }
             }
         }

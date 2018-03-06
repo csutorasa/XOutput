@@ -28,11 +28,7 @@ namespace XOutput.UI.Converters
         {
             Dictionary<string, string> translation = value as Dictionary<string, string>;
             string key = parameter as string;
-            if (translation == null || key == null || !translation.ContainsKey(key))
-            {
-                return key;
-            }
-            return translation[key];
+            return LanguageModel.Translate(translation, key);
         }
 
         /// <summary>
