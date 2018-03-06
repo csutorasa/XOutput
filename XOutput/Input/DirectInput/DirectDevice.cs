@@ -1,5 +1,4 @@
-﻿using SlimDX;
-using SlimDX.DirectInput;
+﻿using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +31,7 @@ namespace XOutput.Input.DirectInput
             get
             {
                 JoystickState state = joystick.GetCurrentState();
-                switch (state.GetPointOfViewControllers()[0])
+                switch (state.PointOfViewControllers[0])
                 {
                     case -1: return DPadDirection.None;
                     case 0: return DPadDirection.Up;
@@ -157,12 +156,9 @@ namespace XOutput.Input.DirectInput
         {
             if (!disposed)
             {
-                var result = joystick.Poll();
-                if (result.IsSuccess)
-                {
-                    InputChanged?.Invoke();
-                }
-                return result.IsSuccess;
+                joystick.Poll();
+                InputChanged?.Invoke();
+                return true;
             }
             return false;
         }
@@ -182,13 +178,13 @@ namespace XOutput.Input.DirectInput
                 case 1:
                     return state.X;
                 case 2:
-                    return state.Y;
+                    return ushort.MaxValue - state.Y;
                 case 3:
                     return state.Z;
                 case 4:
                     return state.RotationX;
                 case 5:
-                    return state.RotationY;
+                    return ushort.MaxValue - state.RotationY;
                 case 6:
                     return state.RotationZ;
                 default:
@@ -206,7 +202,7 @@ namespace XOutput.Input.DirectInput
             var state = joystick.GetCurrentState();
             if (button < 1)
                 throw new ArgumentException();
-            return state.GetButtons()[button - 1];
+            return state.Buttons[button - 1];
         }
 
         /// <summary>
@@ -219,25 +215,25 @@ namespace XOutput.Input.DirectInput
             var state = joystick.GetCurrentState();
             if (slider < 1)
                 throw new ArgumentException();
-            return state.GetSliders()[slider - 1];
+            return state.Sliders[slider - 1];
         }
 
         private Enum[] getAxes()
         {
-            return joystick.GetObjects(ObjectDeviceType.Axis)
+            return joystick.GetObjects(DeviceObjectTypeFlags.Axis)
                 .Select(o =>
                 {
-                    if (o.ObjectTypeGuid == ObjectGuid.XAxis)
+                    if (o.ObjectType == ObjectGuid.XAxis)
                         return DirectInputTypes.Axis1;
-                    if (o.ObjectTypeGuid == ObjectGuid.YAxis)
+                    if (o.ObjectType == ObjectGuid.YAxis)
                         return DirectInputTypes.Axis2;
-                    if (o.ObjectTypeGuid == ObjectGuid.ZAxis)
+                    if (o.ObjectType == ObjectGuid.ZAxis)
                         return DirectInputTypes.Axis3;
-                    if (o.ObjectTypeGuid == ObjectGuid.RotationalXAxis)
+                    if (o.ObjectType == ObjectGuid.RxAxis)
                         return DirectInputTypes.Axis4;
-                    if (o.ObjectTypeGuid == ObjectGuid.RotationalYAxis)
+                    if (o.ObjectType == ObjectGuid.RyAxis)
                         return DirectInputTypes.Axis5;
-                    if (o.ObjectTypeGuid == ObjectGuid.RotationalZAxis)
+                    if (o.ObjectType == ObjectGuid.RzAxis)
                         return DirectInputTypes.Axis6;
                     return (DirectInputTypes?)null;
                 })
@@ -249,7 +245,7 @@ namespace XOutput.Input.DirectInput
 
         private Enum[] getSliders()
         {
-            int slidersCount = joystick.GetObjects().Where(o => o.ObjectTypeGuid == ObjectGuid.Slider).Count();
+            int slidersCount = joystick.GetObjects().Where(o => o.ObjectType == ObjectGuid.Slider).Count();
             return DirectInputHelper.Instance.Sliders.Take(slidersCount).OfType<Enum>().ToArray();
         }
     }

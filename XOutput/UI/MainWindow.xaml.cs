@@ -16,12 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using XOutput.Input;
-using XOutput.Input.DirectInput;
-using XOutput.Input.Mapper;
 using XOutput.UI.Component;
 using XOutput.UI.Resources;
-using XOutput.UI.View;
 
 namespace XOutput.UI
 {
