@@ -24,6 +24,7 @@ namespace XOutput.UI.Component
             model.TypeY = typey;
             model.LabelY = typey.ToString();
             model.MaxY = maxy;
+            model.TwoD = true;
         }
 
         public void updateValues(IDevice device)
