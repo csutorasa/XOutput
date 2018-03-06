@@ -9,7 +9,7 @@ using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.Xbox360;
 using Nefarius.ViGEm.Client.Exceptions;
 
-namespace XOutput.Input.XInput
+namespace XOutput.Input.XInput.Vigem
 {
     public class VigemDevice : IXOutput
     {

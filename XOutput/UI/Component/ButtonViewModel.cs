@@ -8,7 +8,6 @@ using XOutput.Input;
 using XOutput.Input.DirectInput;
 using XOutput.Input.Mapper;
 using XOutput.Input.XInput;
-using XOutput.UI.Resources;
 using XOutput.UI.View;
 
 namespace XOutput.UI.Component

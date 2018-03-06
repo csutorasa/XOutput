@@ -10,13 +10,12 @@ using XOutput.Input;
 using XOutput.Input.DirectInput;
 using XOutput.Input.Mapper;
 using XOutput.UI.Component;
-using XOutput.UI.Resources;
 
 namespace XOutput.UI
 {
     public abstract class ViewModelBase<T> where T: ModelBase
     {
-        public LanguageModel LanguageModel => LanguageModel.getInstance();
+        public LanguageModel LanguageModel => LanguageModel.Instance;
         protected T model;
         public T Model => model;
     }

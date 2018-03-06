@@ -32,7 +32,7 @@ namespace XOutput
                     {
                         if (section.Value.ContainsKey("Language"))
                         {
-                            LanguageManager.getInstance().Language = section.Value["Language"];
+                            LanguageManager.Instance.Language = section.Value["Language"];
                         }
                     }
                     else if (id == "Keyboard")
@@ -67,7 +67,7 @@ namespace XOutput
                 ini.AddSection(mapper.Key, mapper.Value.ToDictionary());
             }
             Dictionary<string, string> generalSettings = new Dictionary<string, string>();
-            generalSettings["Language"] = LanguageManager.getInstance().Language;
+            generalSettings["Language"] = LanguageManager.Instance.Language;
             ini.AddSection("General", generalSettings);
             File.WriteAllText(filePath, ini.Serialize());
         }

@@ -130,8 +130,6 @@
     <Compile Include="UI\Component\ButtonModel.cs" />
     <Compile Include="UI\Component\MappingModel.cs" />
     <Compile Include="UI\ViewModelBase.cs" />
-    <Compile Include="UI\Resources\ErrorMessage.cs" />
-    <Compile Include="UI\Resources\Message.cs" />
     <Compile Include="UI\ModelBase.cs" />
     <Compile Include="UI\Component\AxisView.xaml.cs">
       <DependentUpon>AxisView.xaml</DependentUpon>
@@ -240,6 +238,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
+    <Folder Include="UI\Resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />

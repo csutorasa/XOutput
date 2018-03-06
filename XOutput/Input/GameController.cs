@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using XOutput.Input.DirectInput;
 using XOutput.Input.Mapper;
 using XOutput.Input.XInput;
+using XOutput.Input.XInput.SCPToolkit;
+using XOutput.Input.XInput.Vigem;
 
 namespace XOutput.Input
 {
@@ -23,7 +25,7 @@ namespace XOutput.Input
         protected readonly IInputDevice inputDevice;
         protected readonly InputMapperBase mapper;
         protected readonly XDevice xInput;
-        protected readonly VigemDevice vigemDevice;
+        protected readonly IXOutput xOutput;
         protected Thread thread;
         protected bool running;
         private int controllerCount = 0;
@@ -31,10 +33,27 @@ namespace XOutput.Input
         {
             this.inputDevice = directInput;
             this.mapper = mapper;
-            vigemDevice = new VigemDevice();
+            xOutput = createXOutput();
             xInput = new XDevice(directInput, mapper);
             running = false;
         }
+
+        private IXOutput createXOutput()
+        {
+            if(VigemDevice.IsAvailable())
+            {
+                return new VigemDevice();
+            }
+            else if(ScpDevice.IsAvailable())
+            {
+                return new ScpDevice();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         ~GameController()
         {
             Dispose();
@@ -43,7 +62,7 @@ namespace XOutput.Input
         {
             Stop();
             inputDevice.Dispose();
-            vigemDevice?.Dispose();
+            xOutput?.Dispose();
         }
         public override string ToString()
         {
@@ -53,11 +72,12 @@ namespace XOutput.Input
         public int Start(Action onStop = null)
         {
             controllerCount = controllers.GetId();
-            if (vigemDevice.Unplug(controllerCount))
+            if (xOutput.Unplug(controllerCount))
             {
+                // Wait for unplugging
                 Thread.Sleep(10);
             }
-            if (vigemDevice.Plugin(controllerCount))
+            if (xOutput.Plugin(controllerCount))
             {
                 thread = new Thread(() =>
                 {
@@ -65,7 +85,7 @@ namespace XOutput.Input
                     {
                         XInput.InputChanged += () =>
                         {
-                            if (!vigemDevice.Report(controllerCount, XInput.GetValues()))
+                            if (!xOutput.Report(controllerCount, XInput.GetValues()))
                                 running = false;
                         };
                         while (running)
@@ -75,7 +95,7 @@ namespace XOutput.Input
                     }
                     finally
                     {
-                        vigemDevice.Unplug(controllerCount);
+                        xOutput.Unplug(controllerCount);
                         onStop?.Invoke();
                     }
                 });
@@ -94,7 +114,7 @@ namespace XOutput.Input
         {
             running = false;
             thread?.Abort();
-            vigemDevice?.Unplug(controllerCount);
+            xOutput?.Unplug(controllerCount);
             resetId();
         }
 
