@@ -37,11 +37,20 @@ namespace XOutput.Input.DirectInput
         /// <summary>
         /// Gets the current available DirectInput devices.
         /// </summary>
+        /// <param name="allDevices">No filter</param>
         /// <returns>List of devices</returns>
-        public IEnumerable<DirectDevice> GetInputDevices()
+        public IEnumerable<DirectDevice> GetInputDevices(bool allDevices)
         {
             var directDevices = new List<DirectDevice>();
-            var deviceInstances = directInput.GetDevices().Where(di => di.Type != DeviceType.Mouse && di.Type != DeviceType.Keyboard);
+            IEnumerable<DeviceInstance> deviceInstances;
+            if (allDevices)
+            {
+                deviceInstances = directInput.GetDevices().Where(di => di.Type != DeviceType.Keyboard);
+            }
+            else
+            {
+                deviceInstances = directInput.GetDevices().Where(di => di.Type == DeviceType.Joystick || di.Type == DeviceType.Gamepad);
+            }
             foreach (var deviceInstance in deviceInstances)
             {
                 var joystick = new Joystick(directInput, deviceInstance.InstanceGuid);

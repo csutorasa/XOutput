@@ -34,7 +34,11 @@
             </MenuItem>
         </Menu>
         <GroupBox Grid.Row="1" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllers'}" Margin="0,0,0,5">
-            <ItemsControl ItemsSource="{Binding Model.Controllers}"/>
+            <DockPanel>
+                <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding Model.AllDevices}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"
+                          Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ShowAllDevices'}"/>
+                <ItemsControl ItemsSource="{Binding Model.Controllers}"/>
+            </DockPanel>
         </GroupBox>
         <GridSplitter Grid.Row="2" Height="3" HorizontalAlignment="Stretch"/>
         <GroupBox Grid.Row="3" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Output'}">

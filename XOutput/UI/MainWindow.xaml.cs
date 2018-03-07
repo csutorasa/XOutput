@@ -86,5 +86,10 @@ namespace XOutput.UI
             viewModel.Finalizer();
             viewModel.Dispose();
         }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            viewModel.RefreshGameControllers();
+        }
     }
 }
