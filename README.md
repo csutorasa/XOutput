@@ -4,13 +4,17 @@ If you have an older or not supported game controller (gamepad, wheel, joystick,
 
 XOutput is a software that can convert DirectInput into XInput. DirectInput data is read and sent to a virtual XInput (Xbox 360 Controller) device. XInput is the new standard game controller input on windows, and DirectInput can no longer be used with Universal Windows Platform softwares, but with this tool you can use DirectInput devices as well.
 
-## SCPToolkit
-
-If you want to use older SCP Toolkit instead of the newer VIGEm framework, you can use the [v1.x branch](https://github.com/csutorasa/XOutput/tree/1.x)
-
 ## How to install
+
+Install one of the two libraries. ViGEm is a newer (preferred), while SCPToolkit is a older (unsupported, legacy) solution.
+I recommend using the ViGEm framework.
+
 * Install [VIGEm framework](https://github.com/nefarius/ViGEm/wiki/Driver-Installation)
-* Download the [latest release](https://github.com/csutorasa/XOutput/releases/latest) with SlimDX.dll included
+* Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
+
+Download the application:
+
+* Download the [latest release](https://github.com/csutorasa/XOutput/releases/latest)
 
 ## How to use
 
