@@ -159,6 +159,8 @@
     <Compile Include="UI\View\AutoConfigureViewModel.cs" />
     <Compile Include="UI\MainWindowModel.cs" />
     <Compile Include="UI\MainWindowViewModel.cs" />
+    <Compile Include="UpdateChecker\UpdateChecker.cs" />
+    <Compile Include="UpdateChecker\Version.cs" />
     <Page Include="UI\Component\DPadView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -13,6 +13,7 @@ using XOutput.Input.Mapper;
 using XOutput.Input.XInput.SCPToolkit;
 using XOutput.Input.XInput.Vigem;
 using XOutput.UI.Component;
+using XOutput.UpdateChecker;
 
 namespace XOutput.UI
 {
@@ -126,7 +127,28 @@ namespace XOutput.UI
 
         public void AboutPopupShow()
         {
-            MessageBox.Show(Translate("AboutContent"), Translate("AboutMenu"));
+            MessageBox.Show(Translate("AboutContent") + Environment.NewLine + $"Version {UpdateChecker.Version.AppVersion}", Translate("AboutMenu"));
+        }
+
+        public void VersionCompare(VersionCompare compare)
+        {
+            switch (compare)
+            {
+                case UpdateChecker.VersionCompare.Error:
+                    log(Translate("VersionCheckError"));
+                    break;
+                case UpdateChecker.VersionCompare.NeedsUpgrade:
+                    log(Translate("VersionCheckNeedsUpgrade"));
+                    break;
+                case UpdateChecker.VersionCompare.NewRelease:
+                    log(Translate("VersionCheckNewRelease"));
+                    break;
+                case UpdateChecker.VersionCompare.UpToDate:
+                    log(Translate("VersionCheckUpToDate"));
+                    break;
+                default:
+                    throw new ArgumentException();
+            }
         }
 
         public void RefreshGameControllers()
