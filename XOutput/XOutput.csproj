@@ -238,7 +238,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
-    <Folder Include="UI\Resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />

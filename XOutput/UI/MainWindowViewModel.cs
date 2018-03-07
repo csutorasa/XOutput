@@ -131,7 +131,7 @@ namespace XOutput.UI
 
         public void RefreshGameControllers()
         {
-            IEnumerable<DirectDevice> devices = directInputDevices.GetInputDevices();
+            IEnumerable<DirectDevice> devices = directInputDevices.GetInputDevices(Model.AllDevices);
 
             foreach (var controllerView in Model.Controllers.ToList())
             {

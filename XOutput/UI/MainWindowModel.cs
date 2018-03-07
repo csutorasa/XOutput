@@ -13,5 +13,19 @@ namespace XOutput.UI
     {
         private readonly ObservableCollection<ControllerView> controllers = new ObservableCollection<ControllerView>();
         public ObservableCollection<ControllerView> Controllers { get { return controllers; } }
+
+        private bool allDevices;
+        public bool AllDevices
+        {
+            get { return allDevices; }
+            set
+            {
+                if(allDevices != value)
+                {
+                    allDevices = value;
+                    OnPropertyChanged(nameof(AllDevices));
+                }
+            }
+        }
     }
 }
