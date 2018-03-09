@@ -11,34 +11,6 @@ namespace XOutput.UI.Component
         public Enum TypeX { get; set; }
         public Enum TypeY { get; set; }
 
-        private string _labelx;
-        public string LabelX
-        {
-            get { return _labelx; }
-            set
-            {
-                if (_labelx != value)
-                {
-                    _labelx = value;
-                    OnPropertyChanged(nameof(LabelX));
-                }
-            }
-        }
-
-        private string _labely;
-        public string LabelY
-        {
-            get { return _labely; }
-            set
-            {
-                if (_labely != value)
-                {
-                    _labely = value;
-                    OnPropertyChanged(nameof(LabelY));
-                }
-            }
-        }
-
         private int _valuex;
         public int ValueX
         {

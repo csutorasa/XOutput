@@ -13,6 +13,7 @@
             <Converters:BoolInverterConverter/>
             <Converters:BoolToVisibilityConverter/>
         </Converters:MultiConverter>
+        <Converters:DynamicLanguageConverter x:Key="DynamicLanguageConverter"/> 
         <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
     <Grid>
@@ -24,8 +25,23 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Label Content="{Binding Model.LabelX}"/>
-        <Label Grid.Row="1" Content="{Binding Model.LabelY}"/>
+        <Label>
+            <Label.Content>
+                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                    <Binding Path="LanguageModel.Data" />
+                    <Binding Path="Model.TypeX" />
+                </MultiBinding>
+            </Label.Content>
+        </Label>
+        <Label Grid.Row="1">
+            <Label.Content>
+                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                    <Binding Path="LanguageModel.Data" />
+                    <Binding Path="Model.TypeY" />
+                </MultiBinding>
+            </Label.Content>
+        </Label>
+        
         <Grid Grid.Column="1" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
