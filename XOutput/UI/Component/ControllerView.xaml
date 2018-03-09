@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Converters="clr-namespace:XOutput.UI.Converters"
-             xmlns:local="clr-namespace:XOutput.UI.View"
+             xmlns:local="clr-namespace:XOutput.UI.Component"
+             d:DataContext="{d:DesignInstance Type=local:ControllerViewModel, IsDesignTimeCreatable=False}"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="300">
     <UserControl.Resources>
@@ -24,7 +25,8 @@
         <Button Grid.Column="1" FontSize="14" Margin="5" Click="Open_Click"
                 IsEnabled="{Binding Model.Started, Converter={StaticResource BoolInverterConverter}}"
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Edit'}" />
-        <Button Grid.Column="2" FontSize="14" Margin="5" Click="Button_Click">
+        <Button Grid.Column="2" FontSize="14" Margin="5" Click="Button_Click"
+                IsEnabled="{Binding Model.CanStart}">
             <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
                 <Binding Path="LanguageModel.Data"/>
                 <Binding Path="Model.ButtonText"/>
