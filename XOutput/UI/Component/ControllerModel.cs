@@ -49,6 +49,20 @@ namespace XOutput.UI.Component
                 }
             }
         }
+
+        private bool canStart;
+        public bool CanStart
+        {
+            get { return canStart; }
+            set
+            {
+                if (canStart != value)
+                {
+                    canStart = value;
+                    OnPropertyChanged(nameof(CanStart));
+                }
+            }
+        }
         public string DisplayName { get { return Controller.ToString(); } }
     }
 }

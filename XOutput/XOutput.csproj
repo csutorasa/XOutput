@@ -129,6 +129,7 @@
     <Compile Include="UI\Component\ControllerModel.cs" />
     <Compile Include="UI\Component\ButtonModel.cs" />
     <Compile Include="UI\Component\MappingModel.cs" />
+    <Compile Include="UI\IViewBase.cs" />
     <Compile Include="UI\ViewModelBase.cs" />
     <Compile Include="UI\ModelBase.cs" />
     <Compile Include="UI\Component\AxisView.xaml.cs">

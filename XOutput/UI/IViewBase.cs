@@ -13,10 +13,8 @@ using XOutput.UI.Component;
 
 namespace XOutput.UI
 {
-    public abstract class ViewModelBase<M> where M: ModelBase
+    public interface IViewBase<VM, M> where VM: ViewModelBase<M> where M: ModelBase
     {
-        public LanguageModel LanguageModel => LanguageModel.Instance;
-        protected M model;
-        public M Model => model;
+        VM ViewModel { get; }
     }
 }

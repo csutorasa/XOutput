@@ -26,6 +26,7 @@ namespace XOutput.UI
         private readonly Devices directInputDevices = new Devices();
         private readonly Action<string> log;
         private Settings settings;
+        private bool installed;
 
         public MainWindowViewModel(Action<string> logger)
         {
@@ -82,17 +83,20 @@ namespace XOutput.UI
                 {
                     log(Translate("ScpInstalled"));
                 }
+                installed = true;
             }
             else
             {
                 if (scp)
                 {
                     log(Translate("VigemNotInstalled"));
+                    installed = true;
                 }
                 else
                 {
                     string error = Translate("VigemAndScpNotInstalled");
                     log(error);
+                    installed = false;
                     MessageBox.Show(error, Translate("Error"));
                 }
             }
@@ -104,7 +108,7 @@ namespace XOutput.UI
 
         public void Finalizer()
         {
-            foreach (var controller in Model.Controllers.Select(x => (x.DataContext as ControllerViewModel).Model.Controller))
+            foreach (var controller in Model.Controllers.Select(x => x.ViewModel.Model.Controller))
             {
                 controller.Dispose();
             }
@@ -157,7 +161,7 @@ namespace XOutput.UI
 
             foreach (var controllerView in Model.Controllers.ToList())
             {
-                var controller = (controllerView.DataContext as ControllerViewModel).Model.Controller;
+                var controller = controllerView.ViewModel.Model.Controller;
                 if (controller.InputDevice is DirectDevice && !devices.Any(x => x.ToString() == controller.InputDevice.ToString()))
                 {
                     controller.Dispose();
@@ -167,11 +171,13 @@ namespace XOutput.UI
             }
             foreach (var device in devices)
             {
-                if (!Model.Controllers.Any(x => (x.DataContext as ControllerViewModel).Model.Controller.ToString() == device.ToString()))
+                if (!Model.Controllers.Any(x => x.ViewModel.Model.Controller.ToString() == device.ToString()))
                 {
                     InputMapperBase mapper = settings.GetMapper(device.ToString());
                     GameController controller = new GameController(device, mapper);
-                    Model.Controllers.Add(new ControllerView(controller, log));
+                    var controllerView = new ControllerView(controller, log);
+                    controllerView.ViewModel.Model.CanStart = installed;
+                    Model.Controllers.Add(controllerView);
                     device.StartCapturing();
                     log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
                 }

@@ -22,11 +22,12 @@ namespace XOutput.UI.View
     /// <summary>
     /// Interaction logic for AutoConfigureWindow.xaml
     /// </summary>
-    public partial class AutoConfigureWindow : Window
+    public partial class AutoConfigureWindow : Window, IViewBase<AutoConfigureViewModel, AutoConfigureModel>
     {
         private readonly AutoConfigureViewModel viewModel;
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly bool timed;
+        public AutoConfigureViewModel ViewModel => viewModel;
 
         public AutoConfigureWindow(GameController controller, params XInputTypes[] valuesToRead)
         {
