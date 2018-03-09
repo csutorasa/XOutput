@@ -6,8 +6,8 @@
         xmlns:Converters="clr-namespace:XOutput.UI.Converters"
         xmlns:local="clr-namespace:XOutput.UI.View"
         mc:Ignorable="d"
-        Title="{Binding Model.Title}" Width="1010" Height="800" MinWidth="1010"
-        d:DataContext="{d:DesignInstance Type=local:AutoConfigureViewModel, IsDesignTimeCreatable=False}"
+        Title="{Binding Model.Title}" Width="1010" Height="830" MinWidth="1010"
+        d:DataContext="{d:DesignInstance Type=local:ControllerSettingsViewModel, IsDesignTimeCreatable=False}"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
     <Window.Resources>
@@ -15,6 +15,7 @@
             <StackPanel Orientation="Vertical" Focusable="False"/>
         </ItemsPanelTemplate>
         <Converters:LanguageConverter x:Key="LanguageConverter"/>
+        <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <Converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
         <Converters:DynamicLanguageConverter x:Key="DynamicLanguageConverter"/>
         <Converters:EnumerableNotEmptyToVisibilityConverter x:Key="EnumerableNotEmptyToVisibilityConverter"/>
@@ -64,6 +65,9 @@
                         <ItemsControl ItemsSource="{Binding Model.MapperButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
                     <Button Height="30" Margin="5" Click="Button_Click" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ConfigureAll'}"/>
+                    <CheckBox IsChecked="{Binding Model.IsExclusive}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"
+                              Visibility="{Binding Model.CanSetExclusive, Converter={StaticResource BoolToVisibilityConverter}}"
+                              Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ExclusiveMode'}"/>
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>

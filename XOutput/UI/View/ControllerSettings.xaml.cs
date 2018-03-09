@@ -69,5 +69,10 @@ namespace XOutput.UI.View
         {
             viewModel.ConfigureAll();
         }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            viewModel.SetExclusive();
+        }
     }
 }
