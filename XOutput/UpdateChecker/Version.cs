@@ -8,7 +8,7 @@ namespace XOutput.UpdateChecker
 {
     public static class Version
     {
-        public const string AppVersion = "3.0";
+        public const string AppVersion = "3.1";
 
         public static VersionCompare Compare(string version)
         {
