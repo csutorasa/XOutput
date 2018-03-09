@@ -102,7 +102,9 @@ namespace XOutput.UI
             }
             RefreshGameControllers();
 
-            Model.Controllers.Add(new ControllerView(new GameController(new Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard")), log));
+            var controllerView = new ControllerView(new GameController(new Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard")), log);
+            controllerView.ViewModel.Model.CanStart = installed;
+            Model.Controllers.Add(controllerView);
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
         }
 
