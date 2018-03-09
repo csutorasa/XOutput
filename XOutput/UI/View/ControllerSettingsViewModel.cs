@@ -22,6 +22,8 @@ namespace XOutput.UI.View
             this.controller = controller;
             model = new ControllerSettingsModel();
             Model.Title = controller.DisplayName;
+            Model.IsExclusive = controller.IsExclusive;
+            Model.CanSetExclusive = controller.InputDevice is DirectDevice;
             createInputControls();
             createMappingControls();
             createXInputControls();
@@ -159,6 +161,11 @@ namespace XOutput.UI.View
             {
                 dPadView.updateValues(controller.XInput);
             }
+        }
+
+        public void SetExclusive()
+        {
+            controller.IsExclusive = Model.IsExclusive;
         }
     }
 }

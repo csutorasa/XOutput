@@ -9,8 +9,9 @@ namespace XOutput.Input.Mapper
 {
     public abstract class InputMapperBase
     {
-        private static readonly char SPLIT_CHAR = ',';
+        private const char SPLIT_CHAR = ',';
         protected readonly Dictionary<XInputTypes, MapperData> mappings = new Dictionary<XInputTypes, MapperData>();
+        public abstract bool IsExclusive { get; set; }
 
         /// <summary>
         /// Sets the mapping for a given XInput.
@@ -39,7 +40,7 @@ namespace XOutput.Input.Mapper
             return mappings[type.Value];
         }
 
-        public Dictionary<string, string> ToDictionary()
+        public virtual Dictionary<string, string> ToDictionary()
         {
             var dict = new Dictionary<string, string>();
             foreach(var mapping in mappings)

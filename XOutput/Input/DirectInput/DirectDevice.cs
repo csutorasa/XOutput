@@ -1,6 +1,7 @@
 ﻿using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -44,6 +45,27 @@ namespace XOutput.Input.DirectInput
                     case 31500: return DPadDirection.Up | DPadDirection.Left;
                     default:
                         throw new ArgumentException();
+                }
+            }
+        }
+
+        private bool isExclusive;
+        public bool IsExclusive
+        {
+            get { return isExclusive; }
+            set
+            {
+                if (value != isExclusive) {
+                    isExclusive = value;
+                    joystick.Unacquire();
+                    if (isExclusive) {
+                        joystick.SetCooperativeLevel(Process.GetCurrentProcess().MainWindowHandle, CooperativeLevel.Exclusive | CooperativeLevel.Background);
+                    }
+                    else
+                    {
+                        joystick.SetCooperativeLevel(Process.GetCurrentProcess().MainWindowHandle, CooperativeLevel.NonExclusive | CooperativeLevel.Background);
+                    }
+                    joystick.Acquire();
                 }
             }
         }
@@ -156,8 +178,11 @@ namespace XOutput.Input.DirectInput
         {
             if (!disposed)
             {
-                joystick.Poll();
-                InputChanged?.Invoke();
+                try
+                {
+                    joystick.Poll();
+                    InputChanged?.Invoke();
+                } catch (Exception) { }
                 return true;
             }
             return false;
