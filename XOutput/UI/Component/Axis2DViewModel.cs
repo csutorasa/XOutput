@@ -18,10 +18,8 @@ namespace XOutput.UI.Component
         {
             model = new Axis2DModel();
             model.TypeX = typex;
-            model.LabelX = typex.ToString();
             model.MaxX = maxx;
             model.TypeY = typey;
-            model.LabelY = typey.ToString();
             model.MaxY = maxy;
             model.TwoD = true;
         }
