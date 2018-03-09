@@ -37,10 +37,12 @@
             <DockPanel>
                 <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding Model.AllDevices}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"
                           Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ShowAllDevices'}"/>
-                <ItemsControl ItemsSource="{Binding Model.Controllers}"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Model.Controllers}"/>
+                </ScrollViewer>
             </DockPanel>
         </GroupBox>
-        <GridSplitter Grid.Row="2" Height="3" HorizontalAlignment="Stretch"/>
+        <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch"/>
         <GroupBox Grid.Row="3" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Output'}">
             <TextBox x:Name="logBox" TextWrapping="Wrap" IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         </GroupBox>
