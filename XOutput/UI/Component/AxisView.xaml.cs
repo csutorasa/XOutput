@@ -21,9 +21,10 @@ namespace XOutput.UI.Component
     /// <summary>
     /// Interaction logic for AxisView.xaml
     /// </summary>
-    public partial class AxisView : UserControl, IUpdatableView
+    public partial class AxisView : UserControl, IUpdatableView, IViewBase<AxisViewModel, AxisModel>
     {
         protected readonly AxisViewModel viewModel;
+        public AxisViewModel ViewModel => viewModel;
 
         public AxisView(Enum type)
         {

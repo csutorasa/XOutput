@@ -25,10 +25,11 @@ namespace XOutput.UI.View
     /// <summary>
     /// Interaction logic for ControllerSettings.xaml
     /// </summary>
-    public partial class ControllerSettings : Window
+    public partial class ControllerSettings : Window, IViewBase<ControllerSettingsViewModel, ControllerSettingsModel>
     {
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly ControllerSettingsViewModel viewModel;
+        public ControllerSettingsViewModel ViewModel => viewModel;
 
         public ControllerSettings(GameController controller)
         {

@@ -23,9 +23,11 @@ namespace XOutput.UI.Component
     /// <summary>
     /// Interaction logic for MappingView.xaml
     /// </summary>
-    public partial class MappingView : UserControl
+    public partial class MappingView : UserControl, IViewBase<MappingViewModel, MappingModel>
     {
         protected readonly MappingViewModel viewModel;
+        public MappingViewModel ViewModel => viewModel;
+
         public MappingView(GameController controller, XInputTypes type)
         {
             viewModel = new MappingViewModel(controller, type);

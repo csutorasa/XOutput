@@ -22,9 +22,10 @@ namespace XOutput.UI.Component
     /// <summary>
     /// Interaction logic for ControllerView.xaml
     /// </summary>
-    public partial class ControllerView : UserControl
+    public partial class ControllerView : UserControl, IViewBase<ControllerViewModel, ControllerModel>
     {
         protected readonly ControllerViewModel viewModel;
+        public ControllerViewModel ViewModel => viewModel;
 
         public ControllerView(GameController controller, Action<string> log = null)
         {

@@ -21,9 +21,10 @@ namespace XOutput.UI.Component
     /// <summary>
     /// Interaction logic for ButtonView.xaml
     /// </summary>
-    public partial class ButtonView : UserControl, IUpdatableView
+    public partial class ButtonView : UserControl, IUpdatableView, IViewBase<ButtonViewModel, ButtonModel>
     {
         protected readonly ButtonViewModel viewModel;
+        public ButtonViewModel ViewModel => viewModel;
 
         public ButtonView(Enum type)
         {
