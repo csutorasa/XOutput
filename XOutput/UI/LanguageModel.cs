@@ -16,11 +16,12 @@ namespace XOutput
         public static LanguageModel Instance => instance;
 
         private Dictionary<string, string> data;
-        public Dictionary<string, string> Data {
+        public Dictionary<string, string> Data
+        {
             get { return data; }
             set
             {
-                if(data != value)
+                if (data != value)
                 {
                     data = value;
                     OnPropertyChanged(nameof(Data));

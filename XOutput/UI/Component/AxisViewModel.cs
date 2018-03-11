@@ -20,8 +20,8 @@ namespace XOutput.UI.Component
             model.Type = type;
             model.Max = max;
         }
-        
-        public void updateValues(IDevice device)
+
+        public void UpdateValues(IDevice device)
         {
             model.Value = (int)(device.Get(model.Type) * model.Max);
         }

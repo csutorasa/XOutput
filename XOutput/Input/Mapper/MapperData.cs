@@ -30,7 +30,7 @@ namespace XOutput.Input.Mapper
             MinValue = 0;
             MaxValue = 0;
         }
-        
+
         /// <summary>
         /// Gets the value based on minimum and maximum values.
         /// </summary>

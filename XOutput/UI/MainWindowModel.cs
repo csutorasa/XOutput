@@ -20,7 +20,7 @@ namespace XOutput.UI
             get { return allDevices; }
             set
             {
-                if(allDevices != value)
+                if (allDevices != value)
                 {
                     allDevices = value;
                     OnPropertyChanged(nameof(AllDevices));

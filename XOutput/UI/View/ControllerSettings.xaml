@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:XOutput.UI.View"
         mc:Ignorable="d"
         Title="{Binding Model.Title}" Width="1010" Height="800" MinWidth="1010"
-        d:DataContext="{d:DesignInstance Type=local:AutoConfigureViewModel, IsDesignTimeCreatable=False}"
+        d:DataContext="{d:DesignInstance Type=local:ControllerSettingsViewModel, IsDesignTimeCreatable=False}"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
     <Window.Resources>

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace XOutput.Input
 {
+    /// <summary>
+    /// Main interface of input devices.
+    /// </summary>
     public interface IInputDevice : IDevice, IDisposable
     {
         /// <summary>

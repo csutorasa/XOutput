@@ -83,17 +83,21 @@
     <Compile Include="Helper.cs" />
     <Compile Include="IniData.cs" />
     <Compile Include="Input\Controllers.cs" />
+    <Compile Include="Input\DirectInput\DirectInputHelper.cs" />
     <Compile Include="Input\IDevice.cs" />
     <Compile Include="Input\IInputDevice.cs" />
-    <Compile Include="Input\InputHelper.cs" />
-    <Compile Include="Input\Keyboard\KeyboardInputTypes.cs" />
+    <Compile Include="Input\AbstractInputHelper.cs" />
+    <Compile Include="Input\IInputHelper.cs" />
+    <Compile Include="Input\Keyboard\KeyboardInputHelper.cs" />
     <Compile Include="Input\Keyboard\Keyboard.cs" />
     <Compile Include="Input\Mapper\KeyboardToXInputMapper.cs" />
     <Compile Include="Input\Mapper\InputMapperBase.cs" />
     <Compile Include="Input\XInput\IXOutput.cs" />
     <Compile Include="Input\XInput\SCPToolkit\NativeInterface.cs" />
     <Compile Include="Input\XInput\SCPToolkit\ScpDevice.cs" />
+    <Compile Include="Input\XInput\Vigem\VigemXBox360Mappings.cs" />
     <Compile Include="Input\XInput\Vigem\VigemDevice.cs" />
+    <Compile Include="Input\XInput\XInputHelper.cs" />
     <Compile Include="UI\Component\DPadModel.cs" />
     <Compile Include="UI\Component\DPadView.xaml.cs">
       <DependentUpon>DPadView.xaml</DependentUpon>
@@ -148,7 +152,7 @@
     <Compile Include="Input\DirectInput\Devices.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Input\XInput\XDevice.cs" />
-    <Compile Include="Input\XInput\InputTypes.cs" />
+    <Compile Include="Input\XInput\XInputTypes.cs" />
     <Compile Include="UI\Component\ControllerView.xaml.cs">
       <DependentUpon>ControllerView.xaml</DependentUpon>
     </Compile>

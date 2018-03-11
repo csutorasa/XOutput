@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace XOutput.Input.XInput.SCPToolkit
 {
+    /// <summary>
+    /// SCPToolkit XOutput implementation.
+    /// </summary>
     public sealed class ScpDevice : IXOutput
     {
         private const string SCP_BUS_CLASS_GUID = "{F679F562-3164-42CE-A4DB-E7DDBE723909}";
@@ -73,7 +76,7 @@ namespace XOutput.Input.XInput.SCPToolkit
 
         public bool Report(int controller, Dictionary<XInputTypes, double> values)
         {
-            return sendToDevice(NativeInterface.MessageType.Report, controller, getBytes(values), null);
+            return sendToDevice(NativeInterface.MessageType.Report, controller, GetBinaryData(values), null);
         }
 
         private bool sendToDevice(NativeInterface.MessageType type, int? controller, byte[] input, byte[] output)
@@ -88,7 +91,7 @@ namespace XOutput.Input.XInput.SCPToolkit
         /// Gets binary data to report to scp device.
         /// </summary>
         /// <returns></returns>
-        private byte[] getBytes(Dictionary<XInputTypes, double> values)
+        private byte[] GetBinaryData(Dictionary<XInputTypes, double> values)
         {
             byte[] report = new byte[20];
             report[0] = 0; // Input report

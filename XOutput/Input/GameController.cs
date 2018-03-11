@@ -12,12 +12,30 @@ using XOutput.Input.XInput.Vigem;
 
 namespace XOutput.Input
 {
+    /// <summary>
+    /// GameController is a container for input devices, mappers and output devices.
+    /// </summary>
     public class GameController : IDisposable
     {
+        /// <summary>
+        /// Gets the input device
+        /// </summary>
         public IInputDevice InputDevice => inputDevice;
+        /// <summary>
+        /// Gets the output device
+        /// </summary>
         public XDevice XInput => xInput;
+        /// <summary>
+        /// Gets the mapping of the input device
+        /// </summary>
         public InputMapperBase Mapper => mapper;
+        /// <summary>
+        /// Gets the name of the input device
+        /// </summary>
         public string DisplayName => inputDevice.DisplayName;
+        /// <summary>
+        /// Gets the number of the controller
+        /// </summary>
         public int ControllerCount => controllerCount;
 
         private static readonly Controllers controllers = new Controllers();
@@ -29,9 +47,10 @@ namespace XOutput.Input
         protected Thread thread;
         protected bool running;
         private int controllerCount = 0;
+
         public GameController(IInputDevice directInput, InputMapperBase mapper)
         {
-            this.inputDevice = directInput;
+            inputDevice = directInput;
             this.mapper = mapper;
             xOutput = createXOutput();
             xInput = new XDevice(directInput, mapper);
@@ -40,11 +59,11 @@ namespace XOutput.Input
 
         private IXOutput createXOutput()
         {
-            if(VigemDevice.IsAvailable())
+            if (VigemDevice.IsAvailable())
             {
                 return new VigemDevice();
             }
-            else if(ScpDevice.IsAvailable())
+            else if (ScpDevice.IsAvailable())
             {
                 return new ScpDevice();
             }
@@ -58,17 +77,20 @@ namespace XOutput.Input
         {
             Dispose();
         }
+
+        /// <summary>
+        /// Disposes all used resources
+        /// </summary>
         public void Dispose()
         {
             Stop();
             inputDevice.Dispose();
             xOutput?.Dispose();
         }
-        public override string ToString()
-        {
-            return inputDevice.ToString();
-        }
 
+        /// <summary>
+        /// Starts the emulation of the device
+        /// </summary>
         public int Start(Action onStop = null)
         {
             controllerCount = controllers.GetId();
@@ -79,26 +101,7 @@ namespace XOutput.Input
             }
             if (xOutput.Plugin(controllerCount))
             {
-                thread = new Thread(() =>
-                {
-                    try
-                    {
-                        XInput.InputChanged += () =>
-                        {
-                            if (!xOutput.Report(controllerCount, XInput.GetValues()))
-                                running = false;
-                        };
-                        while (running)
-                        {
-                            Thread.Sleep(100);
-                        }
-                    }
-                    finally
-                    {
-                        xOutput.Unplug(controllerCount);
-                        onStop?.Invoke();
-                    }
-                });
+                thread = new Thread(() => ReadAndReportValues(onStop));
                 running = true;
                 thread.IsBackground = true;
                 thread.Start();
@@ -110,6 +113,9 @@ namespace XOutput.Input
             return controllerCount;
         }
 
+        /// <summary>
+        /// Stops the emulation of the device
+        /// </summary>
         public void Stop()
         {
             running = false;
@@ -118,9 +124,35 @@ namespace XOutput.Input
             resetId();
         }
 
+        public override string ToString()
+        {
+            return inputDevice.ToString();
+        }
+
+        private void ReadAndReportValues(Action onStop)
+        {
+            try
+            {
+                XInput.InputChanged += () =>
+                {
+                    if (!xOutput.Report(controllerCount, XInput.GetValues()))
+                        running = false;
+                };
+                while (running)
+                {
+                    Thread.Sleep(100);
+                }
+            }
+            finally
+            {
+                xOutput.Unplug(controllerCount);
+                onStop?.Invoke();
+            }
+        }
+
         private void resetId()
         {
-            if(controllerCount != 0)
+            if (controllerCount != 0)
             {
                 controllers.DisposeId(controllerCount);
                 controllerCount = 0;

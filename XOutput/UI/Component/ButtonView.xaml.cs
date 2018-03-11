@@ -33,9 +33,9 @@ namespace XOutput.UI.Component
             InitializeComponent();
         }
 
-        public void updateValues(IDevice device)
+        public void UpdateValues(IDevice device)
         {
-            viewModel.updateValues(device);
+            viewModel.UpdateValues(device);
         }
     }
 }

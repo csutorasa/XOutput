@@ -7,6 +7,9 @@ using System.Windows.Input;
 
 namespace XOutput.Input.Keyboard
 {
+    /// <summary>
+    /// Key enum helper class.
+    /// </summary>
     public class KeyboardInputHelper : AbstractInputHelper<Key>
     {
         public static readonly KeyboardInputHelper instance = new KeyboardInputHelper();

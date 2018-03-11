@@ -47,17 +47,17 @@ namespace XOutput
 
         public string Serialize()
         {
-            return string.Join(Environment.NewLine, content.Select(section => string.Join(Environment.NewLine, new string[] { $"[{section.Key}]" }.Concat(section.Value.Select(valuePair => $"{escape(valuePair.Key)}={escape(valuePair.Value)}")).ToArray())));
+            return string.Join(Environment.NewLine, content.Select(section => string.Join(Environment.NewLine, new string[] { $"[{section.Key}]" }.Concat(section.Value.Select(valuePair => $"{EscapeText(valuePair.Key)}={EscapeText(valuePair.Value)}")).ToArray())));
         }
 
         public void Serialize(StreamWriter sw)
         {
-            foreach(var section in content)
+            foreach (var section in content)
             {
                 sw.Write("[");
                 sw.Write(section.Key);
                 sw.WriteLine("]");
-                foreach(var valuePair in section.Value)
+                foreach (var valuePair in section.Value)
                 {
                     sw.Write(valuePair.Key);
                     sw.Write("=");
@@ -66,7 +66,7 @@ namespace XOutput
             }
         }
 
-        private string escape(string text)
+        private string EscapeText(string text)
         {
             var newText = text;
             foreach (var espacePair in escapes)
@@ -97,7 +97,7 @@ namespace XOutput
             string line;
             string sectionHeader = null;
             Dictionary<string, string> data = new Dictionary<string, string>();
-            for(int linecount = 1; (line = sr.ReadLine()) != null; linecount++)
+            for (int linecount = 1; (line = sr.ReadLine()) != null; linecount++)
             {
                 if (string.IsNullOrWhiteSpace(line))
                     continue;
@@ -107,19 +107,19 @@ namespace XOutput
                 switch (state)
                 {
                     case 0:
-                        sectionHeader = readSectionHeader(line);
+                        sectionHeader = ReadSectionHeader(line);
                         state = 1;
                         break;
                     case 1:
-                        if(line[0] == '[')
+                        if (line[0] == '[')
                         {
                             ini.AddSection(sectionHeader, data);
                             data = new Dictionary<string, string>();
-                            sectionHeader = readSectionHeader(line);
+                            sectionHeader = ReadSectionHeader(line);
                         }
                         else
                         {
-                            var valuePair = readValue(line);
+                            var valuePair = ReadValue(line);
                             data.Add(valuePair.Key, valuePair.Value);
                         }
                         break;
@@ -137,7 +137,7 @@ namespace XOutput
             while (indexOfComment >= 0)
             {
                 indexOfComment = Math.Max(line.IndexOf('#', indexOfComment + 1), line.IndexOf(';', indexOfComment + 1));
-                if(indexOfComment != -1 && (indexOfComment == 0 || line[indexOfComment-1] != '\\'))
+                if (indexOfComment != -1 && (indexOfComment == 0 || line[indexOfComment - 1] != '\\'))
                 {
                     return line.Substring(0, indexOfComment);
                 }
@@ -145,20 +145,20 @@ namespace XOutput
             return line;
         }
 
-        private static string readSectionHeader(string line)
+        private static string ReadSectionHeader(string line)
         {
             if (line[0] != '[' || line[line.Length - 1] != ']')
                 throw new ArgumentException($"Invalid section definition: {line}!");
-            string section = unescape(line.Substring(1, line.Length - 2));
+            string section = UnescapeText(line.Substring(1, line.Length - 2));
             if (string.IsNullOrWhiteSpace(section))
                 throw new ArgumentException($"Empty section definition found!");
             return section;
         }
 
-        private static KeyValuePair<string, string> readValue(string line)
+        private static KeyValuePair<string, string> ReadValue(string line)
         {
             int equalsValue = line.IndexOf('=');
-            if(equalsValue < 0)
+            if (equalsValue < 0)
                 throw new ArgumentException($"Invalid data line conatins no '=': {line}!");
             if (equalsValue == 0)
                 throw new ArgumentException($"Invalid data line conatins no key: {line}!");
@@ -167,7 +167,7 @@ namespace XOutput
             return new KeyValuePair<string, string>(key, value);
         }
 
-        private static string unescape(string text)
+        private static string UnescapeText(string text)
         {
             var newText = text;
             foreach (var espacePair in escapes)

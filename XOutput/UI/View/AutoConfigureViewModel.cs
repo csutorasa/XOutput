@@ -37,13 +37,13 @@ namespace XOutput.UI.View
 
         public void Initialize()
         {
-            readReferenceValues();
-            controller.InputDevice.InputChanged += readValues;
+            ReadReferenceValues();
+            controller.InputDevice.InputChanged += ReadValues;
             Model.XInput = xInputType;
             SetTime(false);
         }
 
-        protected void readReferenceValues()
+        protected void ReadReferenceValues()
         {
             foreach (var type in inputTypes)
             {
@@ -54,7 +54,7 @@ namespace XOutput.UI.View
         /// <summary>
         /// Reads the current values, and if the values have changed enough saves them.
         /// </summary>
-        private void readValues()
+        private void ReadValues()
         {
             Enum maxType = null;
             double maxDiff = 0;
@@ -74,25 +74,25 @@ namespace XOutput.UI.View
                 if (maxType != Model.MaxType)
                 {
                     Model.MaxType = maxType;
-                    calculateStartValues();
+                    CalculateStartValues();
                 }
             }
             if (Model.MaxType != null)
             {
-                calculateValues();
+                CalculateValues();
             }
         }
 
         public bool SaveDisableValues()
         {
             MapperData md = controller.Mapper.GetMapping(xInputType);
-            if(md.InputType == null)
+            if (md.InputType == null)
             {
                 md.InputType = inputTypes.First();
             }
             md.MinValue = Model.XInput.GetDisableValue();
             md.MaxValue = Model.XInput.GetDisableValue();
-            return next();
+            return Next();
         }
 
         public bool SaveValues()
@@ -103,7 +103,7 @@ namespace XOutput.UI.View
                 md.InputType = Model.MaxType;
                 md.MinValue = Model.MinValue / 100;
                 md.MaxValue = Model.MaxValue / 100;
-                return next();
+                return Next();
             }
             else
             {
@@ -120,13 +120,13 @@ namespace XOutput.UI.View
 
         public void Close()
         {
-            controller.InputDevice.InputChanged -= readValues;
+            controller.InputDevice.InputChanged -= ReadValues;
         }
 
         protected void SetTime(bool shortTime)
         {
             Model.TimerValue = 0;
-            if(shortTime)
+            if (shortTime)
             {
                 Model.TimerMaxValue = xInputType.IsAxis() ? SHORT_AXIS_WAIT_TIME : SHORT_WAIT_TIME;
             }
@@ -137,7 +137,7 @@ namespace XOutput.UI.View
             lastTime = DateTime.Now;
         }
 
-        protected bool next()
+        protected bool Next()
         {
             Model.MaxType = null;
             int index = Array.IndexOf(valuesToRead, xInputType);
@@ -151,7 +151,7 @@ namespace XOutput.UI.View
             return false;
         }
 
-        private void calculateValues()
+        private void CalculateValues()
         {
             double current = controller.InputDevice.Get(Model.MaxType);
 
@@ -169,7 +169,7 @@ namespace XOutput.UI.View
             }
         }
 
-        private void calculateStartValues()
+        private void CalculateStartValues()
         {
             double current = controller.InputDevice.Get(Model.MaxType);
             double reference = referenceValues[Model.MaxType];

@@ -21,7 +21,7 @@ namespace XOutput.UpdateChecker
             client.DefaultRequestHeaders.Add("User-Agent", "System.Net.Http.HttpClient");
         }
 
-        protected string getLatestRelease(string response)
+        protected string GetLatestRelease(string response)
         {
             string tagName = Regex.Match(response, "\"tag_name\":\".*?\"").Value;
             string tags = tagName.Replace("\"tag_name\":\"", "");
@@ -36,10 +36,10 @@ namespace XOutput.UpdateChecker
                 var response = await client.GetAsync(new Uri(GITHUB_URL));
                 response.EnsureSuccessStatusCode();
                 string content = await response.Content.ReadAsStringAsync();
-                string latestRelease = getLatestRelease(content);
+                string latestRelease = GetLatestRelease(content);
                 compare = Version.Compare(latestRelease);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 compare = VersionCompare.Error;
             }

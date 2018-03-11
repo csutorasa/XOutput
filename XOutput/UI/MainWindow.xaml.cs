@@ -34,9 +34,9 @@ namespace XOutput.UI
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            getData();
+            await GetData();
             viewModel.Initialize();
             foreach (var child in (Content as Grid).Children)
             {
@@ -55,15 +55,15 @@ namespace XOutput.UI
             }
         }
 
-        public async Task getData()
+        public async Task GetData()
         {
-            
+
             try
             {
                 var result = await new UpdateChecker.UpdateChecker().CompareRelease();
                 viewModel.VersionCompare(result);
             }
-            catch (Exception){}
+            catch (Exception) { }
         }
 
         public void Log(string msg)

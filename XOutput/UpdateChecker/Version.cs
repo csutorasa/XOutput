@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace XOutput.UpdateChecker
 {
+    /// <summary>
+    /// Version related informations.
+    /// </summary>
     public static class Version
     {
+        /// <summary>
+        /// Current application version.
+        /// </summary>
         public const string AppVersion = "3.1";
 
         public static VersionCompare Compare(string version)
@@ -16,7 +22,7 @@ namespace XOutput.UpdateChecker
             {
                 var current = AppVersion.Split('.').Select(t => int.Parse(t)).ToArray();
                 var compare = version.Split('.').Select(t => int.Parse(t)).ToArray();
-                for(int i = 0; true; i++)
+                for (int i = 0; true; i++)
                 {
                     if (i >= current.Length)
                     {
@@ -37,7 +43,7 @@ namespace XOutput.UpdateChecker
                                 return VersionCompare.NeedsUpgrade;
                         }
                     }
-                } 
+                }
             }
             catch (Exception)
             {

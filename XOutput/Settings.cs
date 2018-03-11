@@ -25,7 +25,7 @@ namespace XOutput
             {
                 var text = File.ReadAllText(filePath);
                 IniData ini = IniData.Deserialize(text);
-                foreach(var section in ini.Content)
+                foreach (var section in ini.Content)
                 {
                     var id = section.Key;
                     if (id == "General")
@@ -47,7 +47,7 @@ namespace XOutput
             }
             return settings;
         }
-        
+
         private Dictionary<string, InputMapperBase> mappers;
 
         public Settings()
@@ -62,7 +62,7 @@ namespace XOutput
         public void Save(string filePath)
         {
             IniData ini = new IniData();
-            foreach(var mapper in mappers)
+            foreach (var mapper in mappers)
             {
                 ini.AddSection(mapper.Key, mapper.Value.ToDictionary());
             }
@@ -79,7 +79,7 @@ namespace XOutput
         /// <returns></returns>
         public InputMapperBase GetMapper(string id)
         {
-            if(!mappers.ContainsKey(id))
+            if (!mappers.ContainsKey(id))
             {
                 if (id == "Keyboard")
                 {
