@@ -6,17 +6,25 @@ using System.Threading.Tasks;
 
 namespace XOutput.Input
 {
+    /// <summary>
+    /// Threadsafe method to get ID of the controllers.
+    /// </summary>
     public sealed class Controllers
     {
         private List<int> ids = new List<int>();
         private object lockObject = new object();
+
+        /// <summary>
+        /// Gets a new ID.
+        /// </summary>
+        /// <returns></returns>
         public int GetId()
         {
-            lock(lockObject)
+            lock (lockObject)
             {
-                for(int i = 1; i <= int.MaxValue; i++)
+                for (int i = 1; i <= int.MaxValue; i++)
                 {
-                    if(!ids.Contains(i))
+                    if (!ids.Contains(i))
                     {
                         ids.Add(i);
                         return i;
@@ -25,6 +33,11 @@ namespace XOutput.Input
                 return 0;
             }
         }
+
+        /// <summary>
+        /// Disposes a used ID.
+        /// </summary>
+        /// <param name="id">ID to remove</param>
         public void DisposeId(int id)
         {
             lock (lockObject)

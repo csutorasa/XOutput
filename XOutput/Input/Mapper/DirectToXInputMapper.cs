@@ -21,32 +21,11 @@ namespace XOutput.Input.Mapper
         public static DirectToXInputMapper Parse(Dictionary<string, string> data)
         {
             DirectToXInputMapper mapper = new DirectToXInputMapper();
-            foreach(var mapping in FromDictionary(data, typeof(DirectInputTypes)))
+            foreach (var mapping in FromDictionary(data, typeof(DirectInputTypes)))
             {
                 mapper.mappings.Add(mapping.Key, mapping.Value);
             }
             return mapper;
-        }
-
-        /// <summary>
-        /// Serializes the mapper object into string.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var mapping in mappings)
-            {
-                sb.Append(mapping.Key);
-                sb.Append(";");
-                sb.Append(mapping.Value.InputType);
-                sb.Append(";");
-                sb.Append((int)Math.Round(mapping.Value.MinValue * 100));
-                sb.Append(";");
-                sb.Append((int)Math.Round(mapping.Value.MaxValue * 100));
-                sb.Append(Environment.NewLine);
-            }
-            return sb.ToString();
         }
     }
 }

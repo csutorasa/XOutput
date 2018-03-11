@@ -13,6 +13,6 @@ namespace XOutput.UI.Component
         /// Updates the view from a device.
         /// </summary>
         /// <param name="device">device to update from</param>
-        void updateValues(IDevice device);
+        void UpdateValues(IDevice device);
     }
 }

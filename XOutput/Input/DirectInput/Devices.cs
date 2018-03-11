@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace XOutput.Input.DirectInput
 {
-
+    /// <summary>
+    /// General DirectInput device manager class.
+    /// </summary>
     public sealed class Devices : IDisposable
     {
         /// <summary>
         /// Id of the emulated SCP device
         /// </summary>
-        private const string EMULATED_ID = "028e045e-0000-0000-0000-504944564944";
-        
+        private const string SCP_EMULATED_ID = "028e045e-0000-0000-0000-504944564944";
+
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
 
         public Devices()
@@ -54,13 +56,11 @@ namespace XOutput.Input.DirectInput
             foreach (var deviceInstance in deviceInstances)
             {
                 var joystick = new Joystick(directInput, deviceInstance.InstanceGuid);
-
-                if (joystick.Information.ProductGuid.ToString() == EMULATED_ID || (joystick.Capabilities.AxeCount < 1 && joystick.Capabilities.ButtonCount < 1))
+                if (joystick.Information.ProductGuid.ToString() == SCP_EMULATED_ID || (joystick.Capabilities.AxeCount < 1 && joystick.Capabilities.ButtonCount < 1))
                 {
                     joystick.Dispose();
                     continue;
                 }
-
                 joystick.Properties.BufferSize = 128;
 
                 directDevices.Add(new DirectDevice(deviceInstance, joystick));

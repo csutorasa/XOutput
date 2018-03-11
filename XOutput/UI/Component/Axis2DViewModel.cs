@@ -24,7 +24,7 @@ namespace XOutput.UI.Component
             model.TwoD = true;
         }
 
-        public void updateValues(IDevice device)
+        public void UpdateValues(IDevice device)
         {
             model.ValueX = (int)(device.Get(model.TypeX) * model.MaxX);
             model.ValueY = (int)(model.MaxY - device.Get(model.TypeY) * model.MaxY);

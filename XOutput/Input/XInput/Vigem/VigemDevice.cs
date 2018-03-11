@@ -11,6 +11,9 @@ using Nefarius.ViGEm.Client.Exceptions;
 
 namespace XOutput.Input.XInput.Vigem
 {
+    /// <summary>
+    /// ViGEm XOutput implementation.
+    /// </summary>
     public class VigemDevice : IXOutput
     {
         protected readonly ViGEmClient client;
@@ -31,7 +34,7 @@ namespace XOutput.Input.XInput.Vigem
                 new ViGEmClient();
                 return true;
             }
-            catch(VigemBusNotFoundException)
+            catch (VigemBusNotFoundException)
             {
                 return false;
             }
@@ -103,7 +106,7 @@ namespace XOutput.Input.XInput.Vigem
             buttonMappings.Add(XInputTypes.Home, new VigemXbox360ButtonMapping(Xbox360Buttons.Guide));
             buttonMappings.Add(XInputTypes.R3, new VigemXbox360ButtonMapping(Xbox360Buttons.RightThumb));
             buttonMappings.Add(XInputTypes.L3, new VigemXbox360ButtonMapping(Xbox360Buttons.LeftThumb));
-            
+
             buttonMappings.Add(XInputTypes.UP, new VigemXbox360ButtonMapping(Xbox360Buttons.Up));
             buttonMappings.Add(XInputTypes.DOWN, new VigemXbox360ButtonMapping(Xbox360Buttons.Down));
             buttonMappings.Add(XInputTypes.LEFT, new VigemXbox360ButtonMapping(Xbox360Buttons.Left));
@@ -115,43 +118,6 @@ namespace XOutput.Input.XInput.Vigem
             axisMappings.Add(XInputTypes.RY, new VigemXbox360AxisMapping(Xbox360Axes.RightThumbY));
             axisMappings.Add(XInputTypes.L2, new VigemXbox360AxisMapping(Xbox360Axes.LeftTrigger));
             axisMappings.Add(XInputTypes.R2, new VigemXbox360AxisMapping(Xbox360Axes.RightTrigger));
-        }
-    }
-
-    public class VigemXbox360ButtonMapping
-    {
-        public Xbox360Buttons Type { get; set; }
-
-        public VigemXbox360ButtonMapping(Xbox360Buttons button)
-        {
-            Type = button;
-        }
-        
-        public bool GetValue(double value)
-        {
-            return value > 0.5;
-        }
-    }
-
-    public class VigemXbox360AxisMapping
-    {
-        public Xbox360Axes Type { get; set; }
-
-        public VigemXbox360AxisMapping(Xbox360Axes button)
-        {
-            Type = button;
-        }
-
-        public short GetValue(double value)
-        {
-            if (Type == Xbox360Axes.LeftTrigger || Type == Xbox360Axes.RightTrigger)
-            {
-                return (byte)(value * byte.MaxValue);
-            }
-            else
-            {
-                return (short)((value - 0.5) * 2 * short.MaxValue);
-            }
         }
     }
 }

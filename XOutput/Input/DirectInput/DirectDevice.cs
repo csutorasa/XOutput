@@ -47,7 +47,7 @@ namespace XOutput.Input.DirectInput
                 }
             }
         }
-        
+
         private readonly DeviceInstance deviceInstance;
         private readonly Joystick joystick;
         private readonly Enum[] buttons;
@@ -67,8 +67,8 @@ namespace XOutput.Input.DirectInput
             this.deviceInstance = deviceInstance;
             this.joystick = joystick;
             buttons = DirectInputHelper.Instance.Buttons.Take(joystick.Capabilities.ButtonCount).OfType<Enum>().ToArray();
-            axes = getAxes();
-            sliders = getSliders();
+            axes = GetAxes();
+            sliders = GetSliders();
 
             joystick.Acquire();
             connected = true;
@@ -105,9 +105,10 @@ namespace XOutput.Input.DirectInput
 
         public void StartCapturing()
         {
-            if(inputRefresher == null && !disposed)
+            if (inputRefresher == null && !disposed)
             {
-                inputRefresher = new Thread(() => {
+                inputRefresher = new Thread(() =>
+                {
                     try
                     {
                         while (true)
@@ -218,7 +219,7 @@ namespace XOutput.Input.DirectInput
             return state.Sliders[slider - 1];
         }
 
-        private Enum[] getAxes()
+        private Enum[] GetAxes()
         {
             return joystick.GetObjects(DeviceObjectTypeFlags.Axis)
                 .Select(o =>
@@ -243,7 +244,7 @@ namespace XOutput.Input.DirectInput
                 .ToArray();
         }
 
-        private Enum[] getSliders()
+        private Enum[] GetSliders()
         {
             int slidersCount = joystick.GetObjects().Where(o => o.ObjectType == ObjectGuid.Slider).Count();
             return DirectInputHelper.Instance.Sliders.Take(slidersCount).OfType<Enum>().ToArray();

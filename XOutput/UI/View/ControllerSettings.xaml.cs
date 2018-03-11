@@ -41,7 +41,7 @@ namespace XOutput.UI.View
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             update();
-            
+
             timer.Interval = TimeSpan.FromMilliseconds(25);
             timer.Tick += (sender1, e1) => { update(); };
             timer.Start();
@@ -60,9 +60,9 @@ namespace XOutput.UI.View
                 return;
             }
 
-            viewModel.updateInputControls();
+            viewModel.UpdateInputControls();
 
-            viewModel.updateXInputControls();
+            viewModel.UpdateXInputControls();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

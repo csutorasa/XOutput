@@ -48,7 +48,7 @@ namespace XOutput.UI
                 }
             }
         }
-        
+
         public decimal? Min
         {
             get { return (decimal)mapperData.MinValue * 100; }
@@ -61,7 +61,7 @@ namespace XOutput.UI
                 }
             }
         }
-        
+
         public decimal? Max
         {
             get { return (decimal)mapperData.MaxValue * 100; }

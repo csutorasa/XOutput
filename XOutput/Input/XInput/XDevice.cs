@@ -29,7 +29,7 @@ namespace XOutput.Input.XInput
         private DPadDirection dPad = DPadDirection.None;
 
         /// <summary>
-        /// 
+        /// Creates a new XDevice.
         /// </summary>
         /// <param name="source">Direct input device</param>
         /// <param name="mapper">DirectInput to XInput mapper</param>
@@ -60,7 +60,7 @@ namespace XOutput.Input.XInput
         /// <returns></returns>
         public bool RefreshInput()
         {
-            foreach(var type in XInputHelper.Instance.Values)
+            foreach (var type in XInputHelper.Instance.Values)
             {
                 var mapping = mapper.GetMapping(type);
                 if (mapping != null)
@@ -71,7 +71,7 @@ namespace XOutput.Input.XInput
                     values[type] = mapping.GetValue(value);
                 }
             }
-            if(source.HasDPad)
+            if (source.HasDPad)
             {
                 dPad = source.DPad;
             }
@@ -104,7 +104,7 @@ namespace XOutput.Input.XInput
 
         public double Get(Enum inputType)
         {
-            if(inputType is XInputTypes)
+            if (inputType is XInputTypes)
                 return Get((XInputTypes)inputType);
             throw new ArgumentException();
         }

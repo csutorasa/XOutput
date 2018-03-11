@@ -21,7 +21,7 @@ namespace XOutput.UI.Component
             model = new DPadModel();
         }
 
-        public void updateValues(IDevice device)
+        public void UpdateValues(IDevice device)
         {
             model.Direction = device.DPad;
             if (model.Direction.HasFlag(DPadDirection.Up))

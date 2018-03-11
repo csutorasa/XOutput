@@ -115,7 +115,7 @@ namespace XOutput.UI
                 controller.Dispose();
             }
         }
-        
+
         public void SaveSettings()
         {
             try

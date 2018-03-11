@@ -22,7 +22,7 @@ namespace XOutput.Input.XInput
         private static byte[] GetHeader(MessageType type, int? controller)
         {
             byte[] buffer = new byte[8];
-            switch(type)
+            switch (type)
             {
                 case MessageType.Plugin:
                     buffer[0] = 0x10;

@@ -50,7 +50,7 @@ namespace XOutput.UI.View
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if(viewModel.IncreaseTime())
+            if (viewModel.IncreaseTime())
             {
                 if (!viewModel.SaveValues())
                 {
@@ -61,7 +61,7 @@ namespace XOutput.UI.View
 
         private void Disable_Click(object sender, RoutedEventArgs e)
         {
-            if(!viewModel.SaveDisableValues())
+            if (!viewModel.SaveDisableValues())
             {
                 Close();
             }
@@ -69,7 +69,7 @@ namespace XOutput.UI.View
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if(!viewModel.SaveValues())
+            if (!viewModel.SaveValues())
             {
                 Close();
             }

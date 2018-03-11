@@ -19,8 +19,8 @@ namespace XOutput.UI.Component
             model = new ButtonModel();
             model.Type = type;
         }
-        
-        public void updateValues(IDevice device)
+
+        public void UpdateValues(IDevice device)
         {
             Model.Value = device.Get(Model.Type) > 0.5;
         }

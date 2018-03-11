@@ -30,7 +30,7 @@ namespace XOutput.UI.View
         public ObservableCollection<IUpdatableView> XInputDPadViews => xInputDPadViews;
         private readonly ObservableCollection<IUpdatableView> xInputButtonViews = new ObservableCollection<IUpdatableView>();
         public ObservableCollection<IUpdatableView> XInputButtonViews => xInputButtonViews;
-        
+
         private string _title;
         public string Title
         {

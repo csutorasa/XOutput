@@ -8,6 +8,9 @@ using System.Windows.Input;
 
 namespace XOutput.Input.Keyboard
 {
+    /// <summary>
+    /// Keyboard input device.
+    /// </summary>
     public sealed class Keyboard : IInputDevice
     {
         public int ButtonCount => Enum.GetValues(typeof(Key)).Length;
@@ -21,24 +24,14 @@ namespace XOutput.Input.Keyboard
         public IEnumerable<Enum> Sliders => new Enum[0];
 
         public event Action InputChanged;
-        
+
         private Thread inputRefresher;
         private readonly Enum[] buttons;
 
         public Keyboard()
         {
-            buttons = KeyboardInputHelper.Instance.Buttons.Where(x => x != Key.None).OrderBy(x => x.ToString()).OfType<Enum>().ToArray(); 
-            inputRefresher = new Thread(() => {
-                try
-                {
-                    while (true)
-                    {
-                        InputChanged?.Invoke();
-                        Thread.Sleep(1);
-                    }
-                }
-                catch (ThreadAbortException) { }
-            });
+            buttons = KeyboardInputHelper.Instance.Buttons.Where(x => x != Key.None).OrderBy(x => x.ToString()).OfType<Enum>().ToArray();
+            inputRefresher = new Thread(() => InputRefresher());
             inputRefresher.SetApartmentState(ApartmentState.STA);
             inputRefresher.IsBackground = true;
             inputRefresher.Start();
@@ -70,6 +63,19 @@ namespace XOutput.Input.Keyboard
         public override string ToString()
         {
             return DisplayName;
+        }
+
+        private void InputRefresher()
+        {
+            try
+            {
+                while (true)
+                {
+                    InputChanged?.Invoke();
+                    Thread.Sleep(1);
+                }
+            }
+            catch (ThreadAbortException) { }
         }
     }
 }
