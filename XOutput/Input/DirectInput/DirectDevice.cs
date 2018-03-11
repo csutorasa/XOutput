@@ -58,10 +58,10 @@ namespace XOutput.Input.DirectInput
         private bool disposed = false;
 
         /// <summary>
-        /// 
+        /// Creates a new DirectDevice instance.
         /// </summary>
-        /// <param name="deviceInstance">SlimDX instanse</param>
-        /// <param name="joystick">SlimDX joystick</param>
+        /// <param name="deviceInstance">SharpDX instanse</param>
+        /// <param name="joystick">SharpDX joystick</param>
         public DirectDevice(DeviceInstance deviceInstance, Joystick joystick)
         {
             this.deviceInstance = deviceInstance;

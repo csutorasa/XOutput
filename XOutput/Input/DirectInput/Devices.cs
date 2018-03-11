@@ -19,10 +19,6 @@ namespace XOutput.Input.DirectInput
 
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
 
-        public Devices()
-        {
-
-        }
         ~Devices()
         {
             Dispose();
