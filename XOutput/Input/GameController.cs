@@ -19,18 +19,6 @@ namespace XOutput.Input
         public InputMapperBase Mapper => mapper;
         public string DisplayName => inputDevice.DisplayName;
         public int ControllerCount => controllerCount;
-        public bool IsExclusive
-        {
-            get { return mapper.IsExclusive; }
-            set
-            {
-                if(value != IsExclusive)
-                {
-                    mapper.IsExclusive = value;
-                    inputDevice.IsExclusive = value;
-                }
-            }
-        }
 
         private static readonly Controllers controllers = new Controllers();
 

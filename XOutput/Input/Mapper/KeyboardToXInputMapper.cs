@@ -11,8 +11,6 @@ namespace XOutput.Input.Mapper
 {
     public class KeyboardToXInputMapper : InputMapperBase
     {
-        public override bool IsExclusive { get => false; set { } }
-
         /// <summary>
         /// Gets a new mapper from dictionary.
         /// </summary>

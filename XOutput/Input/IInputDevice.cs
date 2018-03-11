@@ -21,7 +21,5 @@ namespace XOutput.Input
         /// If the controller has DPad
         /// </summary>
         bool HasDPad { get; }
-
-        bool IsExclusive { get; set; }
     }
 }
