@@ -13,20 +13,6 @@ namespace XOutput.Input.Mapper
     /// </summary>
     public sealed class DirectToXInputMapper : InputMapperBase
     {
-        private const string EXCLUSIVE = "Exclusive";
-        private bool isExclusive;
-        public override bool IsExclusive
-        {
-            get => isExclusive;
-            set
-            {
-                if (isExclusive != value)
-                {
-                    isExclusive = value;
-                }
-            }
-        }
-
         /// <summary>
         /// Gets a new mapper from dictionary.
         /// </summary>
@@ -35,27 +21,32 @@ namespace XOutput.Input.Mapper
         public static DirectToXInputMapper Parse(Dictionary<string, string> data)
         {
             DirectToXInputMapper mapper = new DirectToXInputMapper();
-            if(data.ContainsKey(EXCLUSIVE))
-            {
-                mapper.IsExclusive = data[EXCLUSIVE] == "true";
-                data.Remove(EXCLUSIVE);
-            }
-            else
-            {
-                mapper.IsExclusive = false;
-            }
-            foreach (var mapping in FromDictionary(data, typeof(DirectInputTypes)))
+            foreach(var mapping in FromDictionary(data, typeof(DirectInputTypes)))
             {
                 mapper.mappings.Add(mapping.Key, mapping.Value);
             }
             return mapper;
         }
 
-        public override Dictionary<string, string> ToDictionary()
+        /// <summary>
+        /// Serializes the mapper object into string.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
         {
-            var dict = base.ToDictionary();
-            dict[EXCLUSIVE] = IsExclusive ? "true" : "false";
-            return dict;
+            StringBuilder sb = new StringBuilder();
+            foreach (var mapping in mappings)
+            {
+                sb.Append(mapping.Key);
+                sb.Append(";");
+                sb.Append(mapping.Value.InputType);
+                sb.Append(";");
+                sb.Append((int)Math.Round(mapping.Value.MinValue * 100));
+                sb.Append(";");
+                sb.Append((int)Math.Round(mapping.Value.MaxValue * 100));
+                sb.Append(Environment.NewLine);
+            }
+            return sb.ToString();
         }
     }
 }

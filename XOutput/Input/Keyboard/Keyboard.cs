@@ -15,7 +15,6 @@ namespace XOutput.Input.Keyboard
         public bool Connected => true;
         public bool HasDPad => false;
         public DPadDirection DPad => DPadDirection.None;
-        public bool IsExclusive { get => false; set { } }
 
         public IEnumerable<Enum> Buttons => buttons;
         public IEnumerable<Enum> Axes => new Enum[0];

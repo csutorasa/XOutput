@@ -31,34 +31,6 @@ namespace XOutput.UI.View
         private readonly ObservableCollection<IUpdatableView> xInputButtonViews = new ObservableCollection<IUpdatableView>();
         public ObservableCollection<IUpdatableView> XInputButtonViews => xInputButtonViews;
         
-        private bool canSetExclusive;
-        public bool CanSetExclusive
-        {
-            get { return canSetExclusive; }
-            set
-            {
-                if (canSetExclusive != value)
-                {
-                    canSetExclusive = value;
-                    OnPropertyChanged(nameof(CanSetExclusive));
-                }
-            }
-        }
-
-        private bool isExclusive;
-        public bool IsExclusive
-        {
-            get { return isExclusive; }
-            set
-            {
-                if (isExclusive != value)
-                {
-                    isExclusive = value;
-                    OnPropertyChanged(nameof(IsExclusive));
-                }
-            }
-        }
-
         private string _title;
         public string Title
         {
