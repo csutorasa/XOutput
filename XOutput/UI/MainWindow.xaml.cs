@@ -29,14 +29,14 @@ namespace XOutput.UI
 
         public MainWindow()
         {
-            viewModel = new MainWindowViewModel(Log);
+            viewModel = new MainWindowViewModel(Dispatcher, Log);
             DataContext = viewModel;
             InitializeComponent();
+            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => viewModel.UnhandledException(e.Exception);
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            await GetData();
             viewModel.Initialize();
             foreach (var child in (Content as Grid).Children)
             {
@@ -53,6 +53,7 @@ namespace XOutput.UI
                     }
                 }
             }
+            await GetData();
         }
 
         public async Task GetData()

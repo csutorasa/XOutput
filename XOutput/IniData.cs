@@ -101,7 +101,6 @@ namespace XOutput
             {
                 if (string.IsNullOrWhiteSpace(line))
                     continue;
-                line = removeComment(line);
                 if (string.IsNullOrWhiteSpace(line))
                     continue;
                 switch (state)
@@ -129,20 +128,6 @@ namespace XOutput
             }
             ini.AddSection(sectionHeader, data);
             return ini;
-        }
-
-        private static string removeComment(string line)
-        {
-            int indexOfComment = 0;
-            while (indexOfComment >= 0)
-            {
-                indexOfComment = Math.Max(line.IndexOf('#', indexOfComment + 1), line.IndexOf(';', indexOfComment + 1));
-                if (indexOfComment != -1 && (indexOfComment == 0 || line[indexOfComment - 1] != '\\'))
-                {
-                    return line.Substring(0, indexOfComment);
-                }
-            }
-            return line;
         }
 
         private static string ReadSectionHeader(string line)

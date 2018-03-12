@@ -42,9 +42,9 @@ namespace XOutput.Input.Mapper
         public virtual Dictionary<string, string> ToDictionary()
         {
             var dict = new Dictionary<string, string>();
-            foreach(var mapping in mappings)
+            foreach (var mapping in mappings)
             {
-                dict.Add(mapping.Key.ToString(), 
+                dict.Add(mapping.Key.ToString(),
                     string.Join(SPLIT_CHAR.ToString(), new string[] { mapping.Value.InputType?.ToString(), ((int)Math.Round(mapping.Value.MinValue * 100)).ToString(), ((int)Math.Round(mapping.Value.MaxValue * 100)).ToString() }));
             }
             return dict;
@@ -55,18 +55,25 @@ namespace XOutput.Input.Mapper
             var dict = new Dictionary<XInputTypes, MapperData>();
             foreach (var mapping in data)
             {
-                var key = (XInputTypes)Enum.Parse(typeof(XInputTypes), mapping.Key);
-                var values = mapping.Value.Split(SPLIT_CHAR);
-                if (values.Length != 3)
+                try
                 {
-                    throw new ArgumentException("Invalid text: " + mapping.Value);
+                    var key = (XInputTypes)Enum.Parse(typeof(XInputTypes), mapping.Key);
+                    var values = mapping.Value.Split(SPLIT_CHAR);
+                    if (values.Length != 3)
+                    {
+                        throw new ArgumentException("Invalid text: " + mapping.Value);
+                    }
+                    Enum input = null;
+                    if (!string.IsNullOrEmpty(values[0]))
+                        input = (Enum)Enum.Parse(enumType, values[0]);
+                    var min = double.Parse(values[1]) / 100;
+                    var max = double.Parse(values[2]) / 100;
+                    dict.Add(key, new MapperData { InputType = input, MinValue = min, MaxValue = max });
                 }
-                Enum input = null;
-                if (!string.IsNullOrEmpty(values[0]))
-                    input = (Enum)Enum.Parse(enumType, values[0]);
-                var min = double.Parse(values[1]) / 100;
-                var max = double.Parse(values[2]) / 100;
-                dict.Add(key, new MapperData { InputType = input, MinValue = min, MaxValue = max });
+                catch (Exception)
+                {
+                    // Ignored
+                }
             }
             return dict;
         }

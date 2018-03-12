@@ -13,6 +13,9 @@ namespace XOutput.Input.Keyboard
     /// </summary>
     public sealed class Keyboard : IInputDevice
     {
+        public event Action InputChanged;
+        public event Action Disconnected;
+
         public int ButtonCount => Enum.GetValues(typeof(Key)).Length;
         public string DisplayName => LanguageModel.Instance.Translate("Keyboard");
         public bool Connected => true;
@@ -23,8 +26,6 @@ namespace XOutput.Input.Keyboard
         public IEnumerable<Enum> Axes => new Enum[0];
         public IEnumerable<Enum> Sliders => new Enum[0];
 
-        public event Action InputChanged;
-
         private Thread inputRefresher;
         private readonly Enum[] buttons;
 
@@ -32,6 +33,7 @@ namespace XOutput.Input.Keyboard
         {
             buttons = KeyboardInputHelper.Instance.Buttons.Where(x => x != Key.None).OrderBy(x => x.ToString()).OfType<Enum>().ToArray();
             inputRefresher = new Thread(() => InputRefresher());
+            inputRefresher.Name = "Keyboard input notification";
             inputRefresher.SetApartmentState(ApartmentState.STA);
             inputRefresher.IsBackground = true;
             inputRefresher.Start();

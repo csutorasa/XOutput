@@ -30,33 +30,36 @@ namespace XOutput.UI.View
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly ControllerSettingsViewModel viewModel;
         public ControllerSettingsViewModel ViewModel => viewModel;
+        private readonly GameController controller;
 
         public ControllerSettings(GameController controller)
         {
+            this.controller = controller;
             viewModel = new ControllerSettingsViewModel(controller);
+            controller.InputDevice.Disconnected += Disconnected;
             DataContext = viewModel;
             InitializeComponent();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            update();
+            Update();
 
             timer.Interval = TimeSpan.FromMilliseconds(25);
-            timer.Tick += (sender1, e1) => { update(); };
+            timer.Tick += (sender1, e1) => { Update(); };
             timer.Start();
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            controller.InputDevice.Disconnected -= Disconnected;
             timer.Stop();
         }
 
-        private void update()
+        private void Update()
         {
             if (!viewModel.IsConrtollerConnected)
             {
-                Close();
                 return;
             }
 
@@ -68,6 +71,14 @@ namespace XOutput.UI.View
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             viewModel.ConfigureAll();
+        }
+
+        void Disconnected()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                Close();
+            });
         }
     }
 }
