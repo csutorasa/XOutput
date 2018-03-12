@@ -103,6 +103,7 @@ namespace XOutput.Input
             {
                 thread = new Thread(() => ReadAndReportValues(onStop));
                 running = true;
+                thread.Name = $"Emulated controller {controllerCount} output refresher";
                 thread.IsBackground = true;
                 thread.Start();
             }
@@ -135,7 +136,7 @@ namespace XOutput.Input
             {
                 XInput.InputChanged += () =>
                 {
-                    if (!xOutput.Report(controllerCount, XInput.GetValues()))
+                    if (!xOutput.Report(controllerCount, XInput.GetValues()) || !inputDevice.Connected)
                         running = false;
                 };
                 while (running)

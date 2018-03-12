@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -25,16 +26,23 @@ namespace XOutput.UI
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly Devices directInputDevices = new Devices();
         private readonly Action<string> log;
+        private readonly Dispatcher dispatcher;
         private Settings settings;
         private bool installed;
 
-        public MainWindowViewModel(Action<string> logger)
+        public MainWindowViewModel(Dispatcher dispatcher, Action<string> logger)
         {
             model = new MainWindowModel();
             log = logger;
+            this.dispatcher = dispatcher;
             timer.Interval = TimeSpan.FromMilliseconds(10000);
             timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
             timer.Start();
+        }
+
+        public void UnhandledException(Exception exceptionObject)
+        {
+            MessageBox.Show(exceptionObject.Message + Environment.NewLine + exceptionObject.StackTrace);
         }
 
         ~MainWindowViewModel()
@@ -102,7 +110,8 @@ namespace XOutput.UI
             }
             RefreshGameControllers();
 
-            var controllerView = new ControllerView(new GameController(new Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard")), log);
+            var keyboardGameController = new GameController(new Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard"));
+            var controllerView = new ControllerView(keyboardGameController, log);
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
@@ -159,33 +168,34 @@ namespace XOutput.UI
 
         public void RefreshGameControllers()
         {
-            IEnumerable<DirectDevice> devices = directInputDevices.GetInputDevices(Model.AllDevices);
+            IEnumerable<SharpDX.DirectInput.DeviceInstance> instances = directInputDevices.GetInputDevices(Model.AllDevices);
 
             foreach (var controllerView in Model.Controllers.ToList())
             {
                 var controller = controllerView.ViewModel.Model.Controller;
-                if (controller.InputDevice is DirectDevice && !devices.Any(x => x.ToString() == controller.InputDevice.ToString()))
+                if (controller.InputDevice is DirectDevice && (!instances.Any(x => x.InstanceGuid == ((DirectDevice)controller.InputDevice).Id) || !controller.InputDevice.Connected))
                 {
                     controller.Dispose();
                     Model.Controllers.Remove(controllerView);
                     log(string.Format(LanguageModel.Instance.Translate("ControllerDisconnected"), controller.DisplayName));
                 }
             }
-            foreach (var device in devices)
+            foreach (var instance in instances)
             {
-                if (!Model.Controllers.Any(x => x.ViewModel.Model.Controller.ToString() == device.ToString()))
+                if (!Model.Controllers.Select(c => c.ViewModel.Model.Controller.InputDevice).OfType<DirectDevice>().Any(d => d.Id == instance.InstanceGuid))
                 {
+                    var device = directInputDevices.CreateDirectDevice(instance);
+                    if (device == null)
+                        continue;
                     InputMapperBase mapper = settings.GetMapper(device.ToString());
                     GameController controller = new GameController(device, mapper);
                     var controllerView = new ControllerView(controller, log);
                     controllerView.ViewModel.Model.CanStart = installed;
                     Model.Controllers.Add(controllerView);
                     device.StartCapturing();
+                    device.Disconnected -= DispatchRefreshGameControllers;
+                    device.Disconnected += DispatchRefreshGameControllers;
                     log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
-                }
-                else
-                {
-                    device.Dispose();
                 }
             }
         }
@@ -198,6 +208,18 @@ namespace XOutput.UI
         private string Translate(string key)
         {
             return LanguageModel.Instance.Translate(key);
+        }
+
+        private void DispatchRefreshGameControllers()
+        {
+            Thread delayThread = new Thread(() =>
+            {
+                Thread.Sleep(1000);
+                dispatcher.Invoke(RefreshGameControllers);
+            });
+            delayThread.Name = "Device list refresh delay";
+            delayThread.IsBackground = true;
+            delayThread.Start();
         }
     }
 }

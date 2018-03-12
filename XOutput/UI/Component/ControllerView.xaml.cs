@@ -27,7 +27,7 @@ namespace XOutput.UI.Component
         protected readonly ControllerViewModel viewModel;
         public ControllerViewModel ViewModel => viewModel;
 
-        public ControllerView(GameController controller, Action<string> log = null)
+        public ControllerView(GameController controller, Action<string> log)
         {
             viewModel = new ControllerViewModel(controller, log);
             DataContext = viewModel;

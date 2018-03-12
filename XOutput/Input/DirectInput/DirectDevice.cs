@@ -15,12 +15,27 @@ namespace XOutput.Input.DirectInput
     public sealed class DirectDevice : IInputDevice
     {
         public event Action InputChanged;
+        public event Action Disconnected;
         /// <summary>
         /// The GUID of the controller
         /// </summary>
-        public Guid Id => deviceInstance.ProductGuid;
+        public Guid Id => deviceInstance.InstanceGuid;
         public string DisplayName => deviceInstance.ProductName;
-        public bool Connected => connected;
+        public bool Connected
+        {
+            get => connected;
+            set
+            {
+                if (value != connected)
+                {
+                    if (!connected)
+                    {
+                        Disconnected?.Invoke();
+                    }
+                    connected = value;
+                }
+            }
+        }
         public bool HasDPad => joystick.Capabilities.PovCount > 0;
         public IEnumerable<Enum> Buttons => buttons;
         public IEnumerable<Enum> Axes => axes;
@@ -30,7 +45,7 @@ namespace XOutput.Input.DirectInput
         {
             get
             {
-                JoystickState state = joystick.GetCurrentState();
+                JoystickState state = GetCurrentState();
                 switch (state.PointOfViewControllers[0])
                 {
                     case -1: return DPadDirection.None;
@@ -71,7 +86,6 @@ namespace XOutput.Input.DirectInput
             sliders = GetSliders();
 
             joystick.Acquire();
-            connected = true;
         }
 
         ~DirectDevice()
@@ -87,9 +101,7 @@ namespace XOutput.Input.DirectInput
             if (!disposed)
             {
                 disposed = true;
-                connected = false;
-                if (inputRefresher != null)
-                    inputRefresher.Abort();
+                inputRefresher?.Abort();
                 joystick.Dispose();
             }
         }
@@ -113,13 +125,15 @@ namespace XOutput.Input.DirectInput
                     {
                         while (true)
                         {
-                            connected = RefreshInput();
+                            Connected = RefreshInput();
                             Thread.Sleep(1);
                         }
                     }
                     catch (ThreadAbortException) { }
                 });
+                inputRefresher.Name = ToString() + " input reader";
                 inputRefresher.IsBackground = true;
+                Connected = true;
                 inputRefresher.Start();
             }
         }
@@ -157,9 +171,16 @@ namespace XOutput.Input.DirectInput
         {
             if (!disposed)
             {
-                joystick.Poll();
-                InputChanged?.Invoke();
-                return true;
+                try
+                {
+                    joystick.Poll();
+                    InputChanged?.Invoke();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
             return false;
         }
@@ -171,7 +192,7 @@ namespace XOutput.Input.DirectInput
         /// <returns>Value</returns>
         private int GetAxisValue(int axis)
         {
-            var state = joystick.GetCurrentState();
+            var state = GetCurrentState();
             if (axis < 1)
                 throw new ArgumentException();
             switch (axis)
@@ -200,7 +221,7 @@ namespace XOutput.Input.DirectInput
         /// <returns>Value</returns>
         private bool GetButtonValue(int button)
         {
-            var state = joystick.GetCurrentState();
+            var state = GetCurrentState();
             if (button < 1)
                 throw new ArgumentException();
             return state.Buttons[button - 1];
@@ -213,7 +234,7 @@ namespace XOutput.Input.DirectInput
         /// <returns>Value</returns>
         private int GetSliderValue(int slider)
         {
-            var state = joystick.GetCurrentState();
+            var state = GetCurrentState();
             if (slider < 1)
                 throw new ArgumentException();
             return state.Sliders[slider - 1];
@@ -248,6 +269,19 @@ namespace XOutput.Input.DirectInput
         {
             int slidersCount = joystick.GetObjects().Where(o => o.ObjectType == ObjectGuid.Slider).Count();
             return DirectInputHelper.Instance.Sliders.Take(slidersCount).OfType<Enum>().ToArray();
+        }
+
+        private JoystickState GetCurrentState()
+        {
+            try
+            {
+                return joystick.GetCurrentState();
+            }
+            catch (Exception)
+            {
+                Connected = false;
+                return new JoystickState();
+            }
         }
     }
 }

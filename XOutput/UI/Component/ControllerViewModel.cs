@@ -16,7 +16,7 @@ namespace XOutput.UI.Component
     {
         private readonly Action<string> log;
 
-        public ControllerViewModel(GameController controller, Action<string> log = null)
+        public ControllerViewModel(GameController controller, Action<string> log)
         {
             this.log = log;
             model = new ControllerModel();

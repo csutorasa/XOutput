@@ -12,6 +12,10 @@ namespace XOutput.Input
     public interface IInputDevice : IDevice, IDisposable
     {
         /// <summary>
+        /// This event is invoked if the device is disconnected
+        /// </summary>
+        event Action Disconnected;
+        /// <summary>
         /// The friendly display name of the controller.
         /// </summary>
         string DisplayName { get; }
