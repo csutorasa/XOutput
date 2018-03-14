@@ -17,7 +17,9 @@ namespace XOutput.UI.View
         private const int WAIT_TIME = 5000;
         private const int SHORT_AXIS_WAIT_TIME = 3000;
         private const int SHORT_WAIT_TIME = 1000;
+        private const int BLINK_TIME = 500;
         private readonly Dictionary<Enum, double> referenceValues = new Dictionary<Enum, double>();
+        private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly GameController controller;
         private readonly XInputTypes[] valuesToRead;
         private XInputTypes xInputType;
@@ -33,6 +35,14 @@ namespace XOutput.UI.View
             Model.ButtonsVisibility = valuesToRead.Length > 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
             Model.TimerVisibility = valuesToRead.Length <= 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
             inputTypes = controller.InputDevice.Buttons.Concat(controller.InputDevice.Axes).Concat(controller.InputDevice.Sliders).ToArray();
+            timer.Interval = TimeSpan.FromMilliseconds(BLINK_TIME);
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            Model.Highlight = !Model.Highlight;
         }
 
         public void Initialize()
