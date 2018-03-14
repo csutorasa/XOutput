@@ -4,12 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Converters="clr-namespace:XOutput.UI.Converters"
+        xmlns:Components="clr-namespace:XOutput.UI.Component"
         xmlns:local="clr-namespace:XOutput.UI.View"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:AutoConfigureViewModel, IsDesignTimeCreatable=False}"
         Loaded="Window_Loaded"
         Closed="Window_Closed"
-        Title="AutoConfigure" Height="200" Width="550" ResizeMode="CanMinimize">
+        Title="AutoConfigure" Height="550" Width="550" ResizeMode="CanMinimize">
     <Window.Resources>
         <Converters:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
         <Converters:LanguageConverter x:Key="LanguageConverter"/>
@@ -26,6 +27,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="360"/>
         </Grid.RowDefinitions>
         <ProgressBar Visibility="{Binding Model.TimerVisibility}" Minimum="0" Value="{Binding Model.TimerValue}" Maximum="{Binding Model.TimerMaxValue}" Grid.ColumnSpan="2"
                      Width="200" Margin="5 0 0 0"/>
@@ -68,5 +70,10 @@
             <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="3" Click="Cancel_Click"
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Cancel'}" />
         </Grid>
+
+        <Components:XBox Grid.Row="5" Grid.ColumnSpan="2" 
+                         XInputType="{Binding DataContext.Model.XInput, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" 
+                         Highlight="{Binding DataContext.Model.Highlight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+
     </Grid>
 </Window>

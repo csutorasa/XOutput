@@ -24,6 +24,12 @@ namespace XOutput.UI.View
             get { return isAuto; }
             set { if (isAuto != value) { isAuto = value; OnPropertyChanged(nameof(IsAuto)); if (value) { MaxType = null; } } }
         }
+        private bool highlight;
+        public bool Highlight
+        {
+            get { return highlight; }
+            set { if (highlight != value) { highlight = value; OnPropertyChanged(nameof(Highlight)); } }
+        }
         private Enum maxType;
         public Enum MaxType
         {
