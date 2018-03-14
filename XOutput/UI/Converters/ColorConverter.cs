@@ -20,6 +20,8 @@ namespace XOutput.UI.Converters
         protected Dictionary<XInputTypes, Brush> foregroundColors = new Dictionary<XInputTypes, Brush>();
         protected Dictionary<XInputTypes, Brush> backgroundColors = new Dictionary<XInputTypes, Brush>();
 
+        protected static readonly Brush dpad = CreateData(134, 134, 134);
+
         public ColorConverter()
         {
             foregroundColors.Add(XInputTypes.A, CreateData(53, 217, 0));
@@ -65,21 +67,30 @@ namespace XOutput.UI.Converters
             XInputTypes? activeType = values[0] as XInputTypes?;
             bool? highlight = values[1] as bool?;
             var parameters = (parameter as string).Split('|');
-            var currentType = (XInputTypes)Enum.Parse(typeof(XInputTypes), parameters[0]);
             bool back = parameters.Length > 1 && parameters[1] == "back";
-            if (back)
+            if (parameters[0] == "DPAD")
             {
-                if (highlight == true && currentType == activeType)
+                if (highlight == true && XInputHelper.Instance.IsDPad(activeType.Value))
                     return new SolidColorBrush(Color.FromRgb(128, 0, 0));
-                else if (backgroundColors.ContainsKey(currentType))
-                    return backgroundColors[currentType];
+                return dpad;
             }
             else
             {
-                if (highlight == true && currentType == activeType)
-                    return new SolidColorBrush(Color.FromRgb(255, 0, 0));
-                else if (foregroundColors.ContainsKey(currentType))
-                    return foregroundColors[currentType];
+                var currentType = (XInputTypes)Enum.Parse(typeof(XInputTypes), parameters[0]);
+                if (back)
+                {
+                    if (highlight == true && currentType == activeType)
+                        return new SolidColorBrush(Color.FromRgb(128, 0, 0));
+                    else if (backgroundColors.ContainsKey(currentType))
+                        return backgroundColors[currentType];
+                }
+                else
+                {
+                    if (highlight == true && currentType == activeType)
+                        return new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                    else if (foregroundColors.ContainsKey(currentType))
+                        return foregroundColors[currentType];
+                }
             }
             return new SolidColorBrush(Colors.Black);
         }
@@ -97,7 +108,7 @@ namespace XOutput.UI.Converters
             throw new NotImplementedException();
         }
 
-        protected Brush CreateData(byte r, byte g, byte b)
+        protected static Brush CreateData(byte r, byte g, byte b)
         {
             return new SolidColorBrush(Color.FromRgb(r, g, b));
         }
