@@ -20,7 +20,8 @@ namespace XOutput.UI.Converters
         protected Dictionary<XInputTypes, Brush> foregroundColors = new Dictionary<XInputTypes, Brush>();
         protected Dictionary<XInputTypes, Brush> backgroundColors = new Dictionary<XInputTypes, Brush>();
 
-        protected static readonly Brush dpad = CreateData(134, 134, 134);
+        protected static readonly Brush dpad = CreateData(153, 153, 153);
+        protected static readonly Brush dpadBack = CreateData(134, 134, 134);
 
         public ColorConverter()
         {
@@ -70,9 +71,18 @@ namespace XOutput.UI.Converters
             bool back = parameters.Length > 1 && parameters[1] == "back";
             if (parameters[0] == "DPAD")
             {
-                if (highlight == true && XInputHelper.Instance.IsDPad(activeType.Value))
-                    return new SolidColorBrush(Color.FromRgb(128, 0, 0));
-                return dpad;
+                if (back)
+                {
+                    if (highlight == true && XInputHelper.Instance.IsDPad(activeType.Value))
+                        return new SolidColorBrush(Color.FromRgb(128, 0, 0));
+                    return dpadBack;
+                }
+                else
+                {
+                    if (highlight == true && XInputHelper.Instance.IsDPad(activeType.Value))
+                        return new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                    return dpad;
+                }
             }
             else
             {
