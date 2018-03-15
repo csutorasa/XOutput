@@ -24,22 +24,26 @@ namespace XOutput.UpdateChecker
                 var compare = version.Split('.').Select(t => int.Parse(t)).ToArray();
                 for (int i = 0; true; i++)
                 {
-                    if (i >= current.Length)
+                    bool currentNotPresent = i >= current.Length;
+                    bool compareNotPresent = i >= compare.Length;
+                    if (compareNotPresent)
                     {
-                        if (i >= compare.Length)
+                        if (currentNotPresent)
                             return VersionCompare.UpToDate;
                         else
                             return VersionCompare.NewRelease;
                     }
                     else
                     {
-                        if (i >= compare.Length)
+                        if (currentNotPresent)
                             return VersionCompare.NeedsUpgrade;
                         else
                         {
-                            if (current[i] > compare[i])
+                            int currentValue = current[i];
+                            int compareValue = compare[i];
+                            if (currentValue > compareValue)
                                 return VersionCompare.NewRelease;
-                            if (current[i] < compare[i])
+                            if (currentValue < compareValue)
                                 return VersionCompare.NeedsUpgrade;
                         }
                     }
