@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,51 +18,58 @@ namespace XOutput.UI.Converters
     /// </summary>
     public class ColorConverter : IMultiValueConverter
     {
+        protected static readonly Brush HighlightBrush = CreateBrush(255, 0, 0);
+        protected static readonly Brush HighlightBackBrush = CreateBrush(128, 0, 0);
+        protected static readonly Brush HighlightLabelBrush = CreateBrush(255, 255, 255);
+        protected static readonly Brush DPadBackBrush = CreateBrush(134, 134, 134);
         protected Dictionary<XInputTypes, Brush> foregroundColors = new Dictionary<XInputTypes, Brush>();
         protected Dictionary<XInputTypes, Brush> backgroundColors = new Dictionary<XInputTypes, Brush>();
         protected Dictionary<XInputTypes, Brush> labelColors = new Dictionary<XInputTypes, Brush>();
 
-        protected static readonly Brush dpad = CreateData(153, 153, 153);
-        protected static readonly Brush dpadBack = CreateData(134, 134, 134);
-
         public ColorConverter()
         {
-            foregroundColors.Add(XInputTypes.A, CreateData(53, 217, 0));
-            backgroundColors.Add(XInputTypes.A, CreateData(36, 149, 0));
-            labelColors.Add(XInputTypes.A, CreateData(173, 255, 146));
-            foregroundColors.Add(XInputTypes.B, CreateData(255, 19, 3));
-            backgroundColors.Add(XInputTypes.B, CreateData(171, 11, 0));
-            labelColors.Add(XInputTypes.B, CreateData(255, 161, 155));
-            foregroundColors.Add(XInputTypes.X, CreateData(14, 82, 255));
-            backgroundColors.Add(XInputTypes.X, CreateData(0, 50, 176));
-            labelColors.Add(XInputTypes.X, CreateData(133, 167, 255));
-            foregroundColors.Add(XInputTypes.Y, CreateData(255, 232, 35));
-            backgroundColors.Add(XInputTypes.Y, CreateData(217, 195, 0));
-            labelColors.Add(XInputTypes.Y, CreateData(255, 249, 193));
-            foregroundColors.Add(XInputTypes.L1, CreateData(255, 248, 248));
-            backgroundColors.Add(XInputTypes.L1, CreateData(241, 241, 241));
-            labelColors.Add(XInputTypes.L1, CreateData(187, 187, 187));
-            foregroundColors.Add(XInputTypes.R1, CreateData(255, 248, 248));
-            backgroundColors.Add(XInputTypes.R1, CreateData(241, 241, 241));
-            labelColors.Add(XInputTypes.R1, CreateData(187, 187, 187));
-            foregroundColors.Add(XInputTypes.L2, CreateData(248, 248, 248));
-            backgroundColors.Add(XInputTypes.L2, CreateData(187, 187, 187));
-            labelColors.Add(XInputTypes.L2, CreateData(187, 187, 187));
-            foregroundColors.Add(XInputTypes.R2, CreateData(248, 248, 248));
-            backgroundColors.Add(XInputTypes.R2, CreateData(187, 187, 187));
-            labelColors.Add(XInputTypes.R2, CreateData(187, 187, 187));
-            foregroundColors.Add(XInputTypes.L3, CreateData(153, 153, 153));
-            backgroundColors.Add(XInputTypes.L3, CreateData(134, 134, 134));
-            foregroundColors.Add(XInputTypes.R3, CreateData(153, 153, 153));
-            backgroundColors.Add(XInputTypes.R3, CreateData(134, 134, 134));
-            foregroundColors.Add(XInputTypes.Start, CreateData(241, 241, 241));
-            backgroundColors.Add(XInputTypes.Start, CreateData(217, 217, 217));
-            foregroundColors.Add(XInputTypes.Back, CreateData(241, 241, 241));
-            backgroundColors.Add(XInputTypes.Back, CreateData(217, 217, 217));
-            foregroundColors.Add(XInputTypes.Home, CreateData(202, 202, 202));
-            backgroundColors.Add(XInputTypes.Home, CreateData(119, 236, 0));
-
-
+            foregroundColors.Add(XInputTypes.A, CreateBrush(53, 217, 0));
+            backgroundColors.Add(XInputTypes.A, CreateBrush(36, 149, 0));
+            labelColors.Add(XInputTypes.A, CreateBrush(173, 255, 146));
+            foregroundColors.Add(XInputTypes.B, CreateBrush(255, 19, 3));
+            backgroundColors.Add(XInputTypes.B, CreateBrush(171, 11, 0));
+            labelColors.Add(XInputTypes.B, CreateBrush(255, 161, 155));
+            foregroundColors.Add(XInputTypes.X, CreateBrush(14, 82, 255));
+            backgroundColors.Add(XInputTypes.X, CreateBrush(0, 50, 176));
+            labelColors.Add(XInputTypes.X, CreateBrush(133, 167, 255));
+            foregroundColors.Add(XInputTypes.Y, CreateBrush(255, 232, 35));
+            backgroundColors.Add(XInputTypes.Y, CreateBrush(217, 195, 0));
+            labelColors.Add(XInputTypes.Y, CreateBrush(255, 249, 193));
+            foregroundColors.Add(XInputTypes.L1, CreateBrush(255, 248, 248));
+            backgroundColors.Add(XInputTypes.L1, CreateBrush(241, 241, 241));
+            labelColors.Add(XInputTypes.L1, CreateBrush(187, 187, 187));
+            foregroundColors.Add(XInputTypes.R1, CreateBrush(255, 248, 248));
+            backgroundColors.Add(XInputTypes.R1, CreateBrush(241, 241, 241));
+            labelColors.Add(XInputTypes.R1, CreateBrush(187, 187, 187));
+            foregroundColors.Add(XInputTypes.L2, CreateBrush(248, 248, 248));
+            backgroundColors.Add(XInputTypes.L2, CreateBrush(187, 187, 187));
+            labelColors.Add(XInputTypes.L2, CreateBrush(187, 187, 187));
+            foregroundColors.Add(XInputTypes.R2, CreateBrush(248, 248, 248));
+            backgroundColors.Add(XInputTypes.R2, CreateBrush(187, 187, 187));
+            labelColors.Add(XInputTypes.R2, CreateBrush(187, 187, 187));
+            foregroundColors.Add(XInputTypes.L3, CreateBrush(153, 153, 153));
+            backgroundColors.Add(XInputTypes.L3, CreateBrush(134, 134, 134));
+            foregroundColors.Add(XInputTypes.R3, CreateBrush(153, 153, 153));
+            backgroundColors.Add(XInputTypes.R3, CreateBrush(134, 134, 134));
+            foregroundColors.Add(XInputTypes.Start, CreateBrush(241, 241, 241));
+            backgroundColors.Add(XInputTypes.Start, CreateBrush(217, 217, 217));
+            foregroundColors.Add(XInputTypes.Back, CreateBrush(241, 241, 241));
+            backgroundColors.Add(XInputTypes.Back, CreateBrush(217, 217, 217));
+            foregroundColors.Add(XInputTypes.Home, CreateBrush(202, 202, 202));
+            backgroundColors.Add(XInputTypes.Home, CreateBrush(119, 236, 0));
+            foregroundColors.Add(XInputTypes.UP, CreateBrush(153, 153, 153));
+            backgroundColors.Add(XInputTypes.UP, CreateBrush(134, 134, 134));
+            foregroundColors.Add(XInputTypes.DOWN, CreateBrush(153, 153, 153));
+            backgroundColors.Add(XInputTypes.DOWN, CreateBrush(134, 134, 134));
+            foregroundColors.Add(XInputTypes.LEFT, CreateBrush(153, 153, 153));
+            backgroundColors.Add(XInputTypes.LEFT, CreateBrush(134, 134, 134));
+            foregroundColors.Add(XInputTypes.RIGHT, CreateBrush(153, 153, 153));
+            backgroundColors.Add(XInputTypes.RIGHT, CreateBrush(134, 134, 134));
         }
 
         /// <summary>
@@ -84,14 +92,8 @@ namespace XOutput.UI.Converters
                 if (back)
                 {
                     if (highlight == true && XInputHelper.Instance.IsDPad(activeType.Value))
-                        return new SolidColorBrush(Color.FromRgb(128, 0, 0));
-                    return dpadBack;
-                }
-                else
-                {
-                    if (highlight == true && XInputHelper.Instance.IsDPad(activeType.Value))
-                        return new SolidColorBrush(Color.FromRgb(255, 0, 0));
-                    return dpad;
+                        return HighlightBackBrush;
+                    return DPadBackBrush;
                 }
             }
             else
@@ -100,21 +102,21 @@ namespace XOutput.UI.Converters
                 if (back)
                 {
                     if (highlight == true && currentType == activeType)
-                        return new SolidColorBrush(Color.FromRgb(128, 0, 0));
+                        return HighlightBackBrush;
                     else if (backgroundColors.ContainsKey(currentType))
                         return backgroundColors[currentType];
                 }
                 else if (label)
                 {
                     if (highlight == true && currentType == activeType)
-                        return new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                        return HighlightLabelBrush;
                     else if (labelColors.ContainsKey(currentType))
                         return labelColors[currentType];
                 }
                 else
                 {
                     if (highlight == true && currentType == activeType)
-                        return new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                        return HighlightBrush;
                     else if (foregroundColors.ContainsKey(currentType))
                         return foregroundColors[currentType];
                 }
@@ -135,7 +137,7 @@ namespace XOutput.UI.Converters
             throw new NotImplementedException();
         }
 
-        protected static Brush CreateData(byte r, byte g, byte b)
+        protected static Brush CreateBrush(byte r, byte g, byte b)
         {
             return new SolidColorBrush(Color.FromRgb(r, g, b));
         }
