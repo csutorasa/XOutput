@@ -19,6 +19,7 @@ namespace XOutput.UI.Converters
     {
         protected Dictionary<XInputTypes, Brush> foregroundColors = new Dictionary<XInputTypes, Brush>();
         protected Dictionary<XInputTypes, Brush> backgroundColors = new Dictionary<XInputTypes, Brush>();
+        protected Dictionary<XInputTypes, Brush> labelColors = new Dictionary<XInputTypes, Brush>();
 
         protected static readonly Brush dpad = CreateData(153, 153, 153);
         protected static readonly Brush dpadBack = CreateData(134, 134, 134);
@@ -27,20 +28,28 @@ namespace XOutput.UI.Converters
         {
             foregroundColors.Add(XInputTypes.A, CreateData(53, 217, 0));
             backgroundColors.Add(XInputTypes.A, CreateData(36, 149, 0));
+            labelColors.Add(XInputTypes.A, CreateData(173, 255, 146));
             foregroundColors.Add(XInputTypes.B, CreateData(255, 19, 3));
             backgroundColors.Add(XInputTypes.B, CreateData(171, 11, 0));
+            labelColors.Add(XInputTypes.B, CreateData(255, 161, 155));
             foregroundColors.Add(XInputTypes.X, CreateData(14, 82, 255));
             backgroundColors.Add(XInputTypes.X, CreateData(0, 50, 176));
+            labelColors.Add(XInputTypes.X, CreateData(133, 167, 255));
             foregroundColors.Add(XInputTypes.Y, CreateData(255, 232, 35));
             backgroundColors.Add(XInputTypes.Y, CreateData(217, 195, 0));
+            labelColors.Add(XInputTypes.Y, CreateData(255, 249, 193));
             foregroundColors.Add(XInputTypes.L1, CreateData(255, 248, 248));
             backgroundColors.Add(XInputTypes.L1, CreateData(241, 241, 241));
+            labelColors.Add(XInputTypes.L1, CreateData(187, 187, 187));
             foregroundColors.Add(XInputTypes.R1, CreateData(255, 248, 248));
             backgroundColors.Add(XInputTypes.R1, CreateData(241, 241, 241));
+            labelColors.Add(XInputTypes.R1, CreateData(187, 187, 187));
             foregroundColors.Add(XInputTypes.L2, CreateData(248, 248, 248));
             backgroundColors.Add(XInputTypes.L2, CreateData(187, 187, 187));
+            labelColors.Add(XInputTypes.L2, CreateData(187, 187, 187));
             foregroundColors.Add(XInputTypes.R2, CreateData(248, 248, 248));
             backgroundColors.Add(XInputTypes.R2, CreateData(187, 187, 187));
+            labelColors.Add(XInputTypes.R2, CreateData(187, 187, 187));
             foregroundColors.Add(XInputTypes.L3, CreateData(153, 153, 153));
             backgroundColors.Add(XInputTypes.L3, CreateData(134, 134, 134));
             foregroundColors.Add(XInputTypes.R3, CreateData(153, 153, 153));
@@ -69,6 +78,7 @@ namespace XOutput.UI.Converters
             bool? highlight = values[1] as bool?;
             var parameters = (parameter as string).Split('|');
             bool back = parameters.Length > 1 && parameters[1] == "back";
+            bool label = parameters.Length > 1 && parameters[1] == "label";
             if (parameters[0] == "DPAD")
             {
                 if (back)
@@ -93,6 +103,13 @@ namespace XOutput.UI.Converters
                         return new SolidColorBrush(Color.FromRgb(128, 0, 0));
                     else if (backgroundColors.ContainsKey(currentType))
                         return backgroundColors[currentType];
+                }
+                else if (label)
+                {
+                    if (highlight == true && currentType == activeType)
+                        return new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                    else if (labelColors.ContainsKey(currentType))
+                        return labelColors[currentType];
                 }
                 else
                 {

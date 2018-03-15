@@ -727,7 +727,13 @@
                 <Canvas.RenderTransform>
                     <ScaleTransform ScaleX="1.0166235" ScaleY="0.98364837"/>
                 </Canvas.RenderTransform>
-                <Path Name="path5129" Fill="#FF249500">
+                <Path Name="path5129">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="A|back">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 580.24727 576.28665 -9.65271 0 -1.52327 4.36136 -6.20532 0 8.86703 -23.93937 7.35979 0 8.86703 23.93937 -6.20531 0 z m -8.11341 -4.44153 6.55807 0 -3.27102 -9.52444 z" FillRule="NonZero"/>
                     </Path.Data>
@@ -737,7 +743,13 @@
                 <Canvas.RenderTransform>
                     <MatrixTransform Matrix="1.0166235 0 0 0.98364834 -0.34723994 0.25253814"/>
                 </Canvas.RenderTransform>
-                <Path Name="path5132" Fill="#FF0032B0">
+                <Path Name="path5132">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="X|back">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 528.01275 524.78465 8.30583 12.21822 -6.4298 0 -5.59601 -8.17755 -5.54791 8.17755 -6.46186 0 8.30582 -12.21822 -7.98514 -11.72115 6.44584 0 5.24325 7.71255 5.22722 -7.71255 6.4779 0 z" FillRule="NonZero"/>
                     </Path.Data>
@@ -747,7 +759,13 @@
                 <Canvas.RenderTransform>
                     <MatrixTransform Matrix="1.0166235 0 0 0.98364833 -1.0732871 0"/>
                 </Canvas.RenderTransform>
-                <Path Name="path5135" Fill="#FFD9C300">
+                <Path Name="path5135">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="Y|back">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 569.21618 466.72261 6.75048 0 5.4517 8.53031 5.4517 -8.53031 6.76652 0 -9.12358 13.85373 0 10.08565 -6.17324 0 0 -10.08565 z" FillRule="NonZero"/>
                     </Path.Data>
@@ -757,47 +775,77 @@
                 <Canvas.RenderTransform>
                     <MatrixTransform Matrix="1.0165333 0.01354401 -0.0131047 0.98356101 -0.56821081 -0.37880721"/>
                 </Canvas.RenderTransform>
-                <Path Name="path5138" Fill="#FFAB0B00">
+                <Path Name="path5138">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="B|back">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 640.91037 510.44954 c 0.9908 10e-6 1.74207 -0.21775 2.25382 -0.65328 0.51172 -0.43551 0.76758 -1.0779 0.7676 -1.92718 -2e-5 -0.83836 -0.25588 -1.47802 -0.7676 -1.91901 -0.51175 -0.44094 -1.26302 -0.66142 -2.25382 -0.66144 l -3.47871 0 0 5.16091 z m 0.21232 10.66479 c 1.26299 0 2.21297 -0.26675 2.84993 -0.80027 0.63693 -0.53351 0.95541 -1.33922 0.95542 -2.41713 -10e-6 -1.05613 -0.31577 -1.84823 -0.94725 -2.37631 -0.63152 -0.52806 -1.58422 -0.79209 -2.8581 -0.7921 l -3.69103 0 0 6.38581 z m 5.84685 -8.77028 c 1.35009 0.39198 2.39534 1.11603 3.13574 2.17215 0.74036 1.05615 1.11056 2.35182 1.11058 3.88702 -2e-5 2.35181 -0.79485 4.10477 -2.38447 5.2589 -1.58967 1.15413 -4.0068 1.73119 -7.25141 1.73119 l -10.43614 0 0 -24.38367 9.43989 0 c 3.38615 3e-5 5.83867 0.51176 7.35756 1.53521 1.51886 1.0235 2.2783 2.66214 2.27832 4.91593 -2e-5 1.18681 -0.27767 2.19667 -0.83293 3.02959 -0.55531 0.83294 -1.36102 1.45084 -2.41714 1.85368 z" FillRule="NonZero"/>
                     </Path.Data>
                 </Path>
             </Canvas>
-            <Canvas Name="g5202" Opacity="1">
+            <Canvas Name="XLabel" Opacity="1">
                 <Canvas.RenderTransform>
                     <MatrixTransform Matrix="1.0166235 0 0 0.98364834 -0.12626907 1.2626907"/>
                 </Canvas.RenderTransform>
-                <Path Name="path5204" Fill="#FF85A7FF">
+                <Path Name="path5204">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="X|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 528.01275 524.78465 8.30583 12.21822 -6.4298 0 -5.59601 -8.17755 -5.54791 8.17755 -6.46186 0 8.30582 -12.21822 -7.98514 -11.72115 6.44584 0 5.24325 7.71255 5.22722 -7.71255 6.4779 0 z" FillRule="NonZero"/>
                     </Path.Data>
                 </Path>
             </Canvas>
-            <Canvas Name="g5206" Opacity="1">
+            <Canvas Name="YLabel" Opacity="1">
                 <Canvas.RenderTransform>
                     <MatrixTransform Matrix="1.0166235 0 0 0.98364833 0.17857143 1.6414979"/>
                 </Canvas.RenderTransform>
-                <Path Name="path5208" Fill="#FFFFF9C1">
+                <Path Name="path5208">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="Y|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 569.21618 466.72261 6.75048 0 5.4517 8.53031 5.4517 -8.53031 6.76652 0 -9.12358 13.85373 0 10.08565 -6.17324 0 0 -10.08565 z" FillRule="NonZero"/>
                     </Path.Data>
                 </Path>
             </Canvas>
-            <Canvas Name="g5210" Opacity="1">
+            <Canvas Name="ALabel" Opacity="1">
                 <Canvas.RenderTransform>
                     <MatrixTransform Matrix="1.0166235 0 0 0.98364837 0.85138696 1.43043"/>
                 </Canvas.RenderTransform>
-                <Path Name="path5212" Fill="#FFADFF92">
+                <Path Name="path5212">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="A|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 580.24727 576.28665 -9.65271 0 -1.52327 4.36136 -6.20532 0 8.86703 -23.93937 7.35979 0 8.86703 23.93937 -6.20531 0 z m -8.11341 -4.44153 6.55807 0 -3.27102 -9.52444 z" FillRule="NonZero"/>
                     </Path.Data>
                 </Path>
             </Canvas>
-            <Canvas Name="g5214" Opacity="1">
+            <Canvas Name="BLabel" Opacity="1">
                 <Canvas.RenderTransform>
                     <MatrixTransform Matrix="1.0165333 0.01354401 -0.0131047 0.98356101 0.94701796 0.50507629"/>
                 </Canvas.RenderTransform>
-                <Path Name="path5216" Fill="#FFFFA19B">
+                <Path Name="path5216">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="B|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 640.91037 510.44954 c 0.9908 10e-6 1.74207 -0.21775 2.25382 -0.65328 0.51172 -0.43551 0.76758 -1.0779 0.7676 -1.92718 -2e-5 -0.83836 -0.25588 -1.47802 -0.7676 -1.91901 -0.51175 -0.44094 -1.26302 -0.66142 -2.25382 -0.66144 l -3.47871 0 0 5.16091 z m 0.21232 10.66479 c 1.26299 0 2.21297 -0.26675 2.84993 -0.80027 0.63693 -0.53351 0.95541 -1.33922 0.95542 -2.41713 -10e-6 -1.05613 -0.31577 -1.84823 -0.94725 -2.37631 -0.63152 -0.52806 -1.58422 -0.79209 -2.8581 -0.7921 l -3.69103 0 0 6.38581 z m 5.84685 -8.77028 c 1.35009 0.39198 2.39534 1.11603 3.13574 2.17215 0.74036 1.05615 1.11056 2.35182 1.11058 3.88702 -2e-5 2.35181 -0.79485 4.10477 -2.38447 5.2589 -1.58967 1.15413 -4.0068 1.73119 -7.25141 1.73119 l -10.43614 0 0 -24.38367 9.43989 0 c 3.38615 3e-5 5.83867 0.51176 7.35756 1.53521 1.51886 1.0235 2.2783 2.66214 2.27832 4.91593 -2e-5 1.18681 -0.27767 2.19667 -0.83293 3.02959 -0.55531 0.83294 -1.36102 1.45084 -2.41714 1.85368 z" FillRule="NonZero"/>
                     </Path.Data>
@@ -841,16 +889,28 @@
                     <PathGeometry Figures="m 546.60156 335.86133 -2.54339 13.41798 3.83934 14.80904 0.78131 0.38689 -2.07726 -28.61391" FillRule="NonZero"/>
                 </Path.Data>
             </Path>
-            <Canvas Name="text5148" Opacity="1">
+            <Canvas Name="RTLabel" Opacity="1">
                 <Canvas.RenderTransform>
                     <MatrixTransform Matrix="1.2502948 0 0 0.79981137 0 -2"/>
                 </Canvas.RenderTransform>
-                <Path Name="path5167" Fill="#FFBBBBBB">
+                <Path Name="path5167">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="R2|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 450.95686 450.94278 v -8.34838 h 3.54778 c 0.89216 10e-6 1.5404 0.075 1.94473 0.22494 0.40431 0.14997 0.72796 0.41667 0.97094 0.8001 0.24296 0.38345 0.36445 0.82194 0.36445 1.31547 0 0.62642 -0.18413 1.14368 -0.55238 1.55179 -0.36826 0.40813 -0.91874 0.66533 -1.65145 0.77163 0.36445 0.21261 0.66532 0.44609 0.9026 0.70045 0.23727 0.25436 0.55712 0.70614 0.95955 1.35533 l 1.01935 1.62867 h -2.01591 l -1.21866 -1.8166 c -0.4328 -0.64919 -0.72892 -1.05825 -0.88837 -1.2272 -0.15945 -0.16894 -0.32839 -0.28473 -0.50682 -0.34737 -0.17844 -0.0626 -0.46127 -0.094 -0.84851 -0.094 h -0.34168 v 3.48514 z m 1.68562 -4.81769 h 1.24713 c 0.80864 10e-6 1.31357 -0.0342 1.51478 -0.1025 0.20121 -0.0683 0.35876 -0.18602 0.47266 -0.35307 0.11389 -0.16704 0.17084 -0.37584 0.17084 -0.62641 0 -0.28093 -0.075 -0.50777 -0.22494 -0.68052 -0.14996 -0.17273 -0.36161 -0.28187 -0.63495 -0.32744 -0.13668 -0.019 -0.5467 -0.0285 -1.23005 -0.0285 h -1.31547 z" FillRule="NonZero"/>
                     </Path.Data>
                 </Path>
-                <Path Name="path5169" Fill="#FFBBBBBB">
+                <Path Name="path5169">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="R2|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 461.25851 450.94278 v -6.9361 h -2.47718 v -1.41228 h 6.63429 v 1.41228 h -2.47149 v 6.9361 z" FillRule="NonZero"/>
                     </Path.Data>
@@ -871,32 +931,56 @@
                         <PathGeometry Figures="m 407.29277 357.93558 c 0 0 0.71429 -9.64285 -13.57142 -15.71428 -14.28572 -6.07143 -26.42858 -13.75 -43.03572 -17.14286 -16.60714 -3.39286 -26.60714 -4.28571 -34.64286 -4.10714 -8.03571 0.17857 -20.71428 1.07143 -22.14285 1.60714 -2.33262 4.63951 -0.25911 10.81657 2.19202 15.00616 25.64302 0.99053 38.08917 1.68343 69.80593 9.55602 0 0 11.49075 3.07314 17.86548 5.8421 1.27922 0.55564 17.45511 5.26783 17.45511 5.26783 2.25393 0.55781 4.34805 -0.41003 6.07431 -0.31497 z" FillRule="NonZero"/>
                     </Path.Data>
                 </Path>
-                <Canvas Name="g1138" Opacity="1">
+                <Canvas Name="RBLabel" Opacity="1">
                     <Canvas.RenderTransform>
                         <MatrixTransform Matrix="1.3100131 0.09824409 -0.05692715 0.75908187 -232.92918 -63.054482"/>
                     </Canvas.RenderTransform>
-                    <Path Name="path1134" Fill="#FFBBBBBB">
+                    <Path Name="path1134">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="R1|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                         <Path.Data>
                             <PathGeometry Figures="m 441.49862 465.6282 v -8.77168 h 3.72767 c 0.93739 0 1.6185 0.0788 2.04333 0.23634 0.42482 0.15757 0.76488 0.43779 1.02018 0.84067 0.25528 0.40289 0.38293 0.86361 0.38293 1.38217 0 0.65818 -0.19347 1.20167 -0.58039 1.63048 -0.38693 0.42882 -0.96533 0.69907 -1.73519 0.81075 0.38293 0.22339 0.69906 0.46871 0.94837 0.73596 0.24931 0.26727 0.58537 0.74195 1.00821 1.42406 l 1.07103 1.71125 h -2.11813 l -1.28045 -1.90871 c -0.45474 -0.6821 -0.76588 -1.11191 -0.93341 -1.28942 -0.16754 -0.17751 -0.34505 -0.29917 -0.53253 -0.36499 -0.18748 -0.0658 -0.48466 -0.0987 -0.89153 -0.0987 h -0.359 v 3.66185 z m 1.77109 -5.06197 h 1.31037 c 0.84964 10e-6 1.38017 -0.0359 1.59159 -0.1077 0.2114 -0.0718 0.37695 -0.19545 0.49662 -0.37097 0.11966 -0.17551 0.1795 -0.3949 0.1795 -0.65818 0 -0.29517 -0.0788 -0.53351 -0.23634 -0.71501 -0.15757 -0.18149 -0.37996 -0.29618 -0.66715 -0.34405 -0.14361 -0.0199 -0.57442 -0.0299 -1.29242 -0.0299 h -1.38217 z" FillRule="NonZero"/>
                         </Path.Data>
                     </Path>
-                    <Path Name="path1136" Fill="#FFBBBBBB">
+                    <Path Name="path1136">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="R1|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                         <Path.Data>
                             <PathGeometry Figures="m 450.35407 456.85652 h 3.50629 c 0.69407 0 1.21163 0.0289 1.55269 0.0867 0.34105 0.0579 0.64621 0.17852 0.91547 0.362 0.26924 0.1835 0.49362 0.42782 0.67313 0.73297 0.1795 0.30516 0.26925 0.64721 0.26925 1.02616 0 0.41086 -0.1107 0.78782 -0.33208 1.13086 -0.22139 0.34306 -0.52156 0.60034 -0.9005 0.77186 0.53451 0.15558 0.94537 0.42084 1.23258 0.7958 0.2872 0.37496 0.4308 0.81574 0.43081 1.32233 -10e-6 0.3989 -0.0927 0.78682 -0.27823 1.16378 -0.18549 0.37695 -0.43879 0.67812 -0.75989 0.90349 -0.32112 0.22538 -0.71702 0.36399 -1.18771 0.41585 -0.29519 0.0319 -1.00721 0.0519 -2.13608 0.0598 h -2.98573 z m 1.7711 1.45995 v 2.02838 h 1.16078 c 0.69008 0 1.11889 -0.01 1.28643 -0.0299 0.30316 -0.0359 0.5415 -0.1406 0.71502 -0.31413 0.17351 -0.17351 0.26027 -0.40188 0.26028 -0.6851 -1e-5 -0.27124 -0.0748 -0.49163 -0.22438 -0.66117 -0.14959 -0.16952 -0.37197 -0.27224 -0.66715 -0.30814 -0.17552 -0.0199 -0.68012 -0.0299 -1.5138 -0.0299 z m 0 3.48833 v 2.3455 h 1.63945 c 0.63823 0 1.04311 -0.018 1.21464 -0.0539 0.26326 -0.0479 0.47767 -0.16454 0.64321 -0.35003 0.16554 -0.18548 0.24831 -0.4338 0.24831 -0.74494 0 -0.26326 -0.0638 -0.48664 -0.19146 -0.67014 -0.12766 -0.18349 -0.31215 -0.31712 -0.55347 -0.40089 -0.24134 -0.0838 -0.76489 -0.12565 -1.57065 -0.12565 z" FillRule="NonZero"/>
                         </Path.Data>
                     </Path>
                 </Canvas>
             </Canvas>
-            <Canvas Name="text5144" Opacity="1">
+            <Canvas Name="LTLabel" Opacity="1">
                 <Canvas.RenderTransform>
                     <MatrixTransform Matrix="1.2502948 0 0 0.79981137 0 -2"/>
                 </Canvas.RenderTransform>
-                <Path Name="path5162" Fill="#FFBBBBBB">
+                <Path Name="path5162">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="L2|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 148.97675 450.61581 v -8.28004 h 1.68562 v 6.87346 h 4.19127 v 1.40658 z" FillRule="NonZero"/>
                     </Path.Data>
                 </Path>
-                <Path Name="path5164" Fill="#FFBBBBBB">
+                <Path Name="path5164">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="L2|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 157.94015 450.61581 v -6.9361 h -2.47718 v -1.41227 h 6.63429 v 1.41227 h -2.47149 v 6.9361 z" FillRule="NonZero"/>
                     </Path.Data>
@@ -913,16 +997,28 @@
                     <PathGeometry Figures="m 111.96429 401.29075 c 0 0 -0.71429 -9.64285 13.57142 -15.71428 14.28572 -6.07143 26.42858 -13.75 43.03572 -17.14286 16.60714 -3.39286 26.60714 -4.28571 34.64286 -4.10714 8.03571 0.17857 20.71428 1.07143 22.14285 1.60714 2.33262 4.63951 0.25911 10.81657 -2.19202 15.00616 -25.64302 0.99053 -38.08917 1.68343 -69.80593 9.55602 0 0 -11.49075 3.07314 -17.86548 5.8421 -1.27922 0.55564 -17.45511 5.26783 -17.45511 5.26783 -2.25393 0.55781 -4.34805 -0.41003 -6.07431 -0.31497 z" FillRule="NonZero"/>
                 </Path.Data>
             </Path>
-            <Canvas Name="text5140" Opacity="1">
+            <Canvas Name="LBLabel" Opacity="1">
                 <Canvas.RenderTransform>
                     <MatrixTransform Matrix="1.3107349 -0.08809376 0.05104557 0.75950004 2 2"/>
                 </Canvas.RenderTransform>
-                <Path Name="path5157" Fill="#FFBBBBBB">
+                <Path Name="path5157">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="L1|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 116.87287 509.30298 v -8.69989 h 1.77109 v 7.22198 h 4.40379 v 1.47791 z" FillRule="NonZero"/>
                     </Path.Data>
                 </Path>
-                <Path Name="path5159" Fill="#FFBBBBBB">
+                <Path Name="path5159">
+                    <Path.Fill>
+                        <MultiBinding Converter="{StaticResource ColorConverter}" ConverterParameter="L1|label">
+                            <Binding Path="Model.XInputType"/>
+                            <Binding Path="Model.Highlight"/>
+                        </MultiBinding>
+                    </Path.Fill>
                     <Path.Data>
                         <PathGeometry Figures="m 124.32222 500.53129 h 3.50628 c 0.69408 10e-6 1.21164 0.0289 1.5527 0.0868 0.34105 0.0579 0.6462 0.17851 0.91546 0.362 0.26925 0.1835 0.49363 0.42782 0.67314 0.73296 0.17949 0.30517 0.26924 0.64722 0.26925 1.02616 -1e-5 0.41087 -0.1107 0.78782 -0.33208 1.13087 -0.22139 0.34305 -0.52156 0.60034 -0.9005 0.77186 0.53451 0.15557 0.94537 0.42083 1.23258 0.79579 0.2872 0.37497 0.4308 0.81574 0.43081 1.32234 -1e-5 0.39889 -0.0927 0.78682 -0.27823 1.16377 -0.18549 0.37696 -0.43879 0.67812 -0.75989 0.9035 -0.32112 0.22537 -0.71702 0.36399 -1.18771 0.41584 -0.29519 0.0319 -1.00722 0.0519 -2.13608 0.0598 h -2.98573 z m 1.77109 1.45995 v 2.02838 h 1.16079 c 0.69008 1e-5 1.11889 -0.01 1.28643 -0.0299 0.30316 -0.0359 0.54149 -0.1406 0.71502 -0.31413 0.17351 -0.17351 0.26027 -0.40188 0.26028 -0.6851 -1e-5 -0.27124 -0.0748 -0.49163 -0.22438 -0.66116 -0.14959 -0.16953 -0.37197 -0.27224 -0.66715 -0.30815 -0.17552 -0.0199 -0.68012 -0.0299 -1.51381 -0.0299 z m 0 3.48834 v 2.34549 h 1.63946 c 0.63823 1e-5 1.0431 -0.0179 1.21463 -0.0538 0.26327 -0.0479 0.47767 -0.16454 0.64322 -0.35003 0.16554 -0.18548 0.24831 -0.43379 0.24831 -0.74493 0 -0.26327 -0.0638 -0.48665 -0.19147 -0.67014 -0.12765 -0.18349 -0.31214 -0.31712 -0.55346 -0.40089 -0.24134 -0.0838 -0.76489 -0.12565 -1.57065 -0.12565 z" FillRule="NonZero"/>
                     </Path.Data>
