@@ -45,7 +45,7 @@ namespace XOutput.UI.View
         {
             Update();
 
-            timer.Interval = TimeSpan.FromMilliseconds(25);
+            timer.Interval = TimeSpan.FromMilliseconds(10);
             timer.Tick += (sender1, e1) => { Update(); };
             timer.Start();
         }

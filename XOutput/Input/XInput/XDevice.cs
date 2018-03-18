@@ -18,7 +18,7 @@ namespace XOutput.Input.XInput
         /// </summary>
         public event Action InputChanged;
 
-        public DPadDirection DPad => dPad;
+        public IEnumerable<DPadDirection> DPads => dPads;
         public IEnumerable<Enum> Buttons => XInputHelper.Instance.Buttons.OfType<Enum>();
         public IEnumerable<Enum> Axes => XInputHelper.Instance.Axes.OfType<Enum>();
         public IEnumerable<Enum> Sliders => new Enum[0];
@@ -26,7 +26,7 @@ namespace XOutput.Input.XInput
         private readonly Dictionary<XInputTypes, double> values = new Dictionary<XInputTypes, double>();
         private readonly IInputDevice source;
         private readonly InputMapperBase mapper;
-        private DPadDirection dPad = DPadDirection.None;
+        private DPadDirection[] dPads = new DPadDirection[1];
 
         /// <summary>
         /// Creates a new XDevice.
@@ -71,13 +71,13 @@ namespace XOutput.Input.XInput
                     values[type] = mapping.GetValue(value);
                 }
             }
-            if (source.HasDPad)
+            if (source.DPads.Count() > 0)
             {
-                dPad = source.DPad;
+                dPads[0] = source.DPads.ElementAt(0);
             }
             else
             {
-                dPad = DPadHelper.GetDirection(GetBool(XInputTypes.UP), GetBool(XInputTypes.DOWN), GetBool(XInputTypes.LEFT), GetBool(XInputTypes.RIGHT));
+                dPads[0] = DPadHelper.GetDirection(GetBool(XInputTypes.UP), GetBool(XInputTypes.DOWN), GetBool(XInputTypes.LEFT), GetBool(XInputTypes.RIGHT));
             }
             InputChanged?.Invoke();
             return true;
@@ -90,10 +90,10 @@ namespace XOutput.Input.XInput
         public Dictionary<XInputTypes, double> GetValues()
         {
             var newValues = new Dictionary<XInputTypes, double>(values);
-            newValues[XInputTypes.UP] = dPad.HasFlag(DPadDirection.Up) ? 1 : 0;
-            newValues[XInputTypes.LEFT] = dPad.HasFlag(DPadDirection.Left) ? 1 : 0;
-            newValues[XInputTypes.RIGHT] = dPad.HasFlag(DPadDirection.Right) ? 1 : 0;
-            newValues[XInputTypes.DOWN] = dPad.HasFlag(DPadDirection.Down) ? 1 : 0;
+            newValues[XInputTypes.UP] = dPads[0].HasFlag(DPadDirection.Up) ? 1 : 0;
+            newValues[XInputTypes.LEFT] = dPads[0].HasFlag(DPadDirection.Left) ? 1 : 0;
+            newValues[XInputTypes.RIGHT] = dPads[0].HasFlag(DPadDirection.Right) ? 1 : 0;
+            newValues[XInputTypes.DOWN] = dPads[0].HasFlag(DPadDirection.Down) ? 1 : 0;
             return newValues;
         }
 

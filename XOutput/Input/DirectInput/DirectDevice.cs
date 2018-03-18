@@ -36,38 +36,18 @@ namespace XOutput.Input.DirectInput
                 }
             }
         }
-        public bool HasDPad => joystick.Capabilities.PovCount > 0;
+
+        public IEnumerable<DPadDirection> DPads => dpads;
         public IEnumerable<Enum> Buttons => buttons;
         public IEnumerable<Enum> Axes => axes;
         public IEnumerable<Enum> Sliders => sliders;
-
-        public DPadDirection DPad
-        {
-            get
-            {
-                JoystickState state = GetCurrentState();
-                switch (state.PointOfViewControllers[0])
-                {
-                    case -1: return DPadDirection.None;
-                    case 0: return DPadDirection.Up;
-                    case 4500: return DPadDirection.Up | DPadDirection.Right;
-                    case 9000: return DPadDirection.Right;
-                    case 13500: return DPadDirection.Down | DPadDirection.Right;
-                    case 18000: return DPadDirection.Down;
-                    case 22500: return DPadDirection.Down | DPadDirection.Left;
-                    case 27000: return DPadDirection.Left;
-                    case 31500: return DPadDirection.Up | DPadDirection.Left;
-                    default:
-                        throw new ArgumentException();
-                }
-            }
-        }
 
         private readonly DeviceInstance deviceInstance;
         private readonly Joystick joystick;
         private readonly Enum[] buttons;
         private readonly Enum[] axes;
         private readonly Enum[] sliders;
+        private readonly DPadDirection[] dpads;
         private bool connected = false;
         private Thread inputRefresher;
         private bool disposed = false;
@@ -84,6 +64,7 @@ namespace XOutput.Input.DirectInput
             buttons = DirectInputHelper.Instance.Buttons.Take(joystick.Capabilities.ButtonCount).OfType<Enum>().ToArray();
             axes = GetAxes();
             sliders = GetSliders();
+            dpads = new DPadDirection[joystick.Capabilities.PovCount];
 
             joystick.Acquire();
         }
@@ -174,6 +155,10 @@ namespace XOutput.Input.DirectInput
                 try
                 {
                     joystick.Poll();
+                    foreach (var dpad in Enumerable.Range(0, dpads.Length))
+                    {
+                        dpads[dpad] = GetDPadValue(dpad);
+                    }
                     InputChanged?.Invoke();
                     return true;
                 }
@@ -209,6 +194,42 @@ namespace XOutput.Input.DirectInput
                     return ushort.MaxValue - state.RotationY;
                 case 6:
                     return state.RotationZ;
+                case 7:
+                    return state.AccelerationX;
+                case 8:
+                    return ushort.MaxValue - state.AccelerationY;
+                case 9:
+                    return state.AccelerationZ;
+                case 10:
+                    return state.AngularAccelerationX;
+                case 11:
+                    return ushort.MaxValue - state.AngularAccelerationY;
+                case 12:
+                    return state.AngularAccelerationZ;
+                case 13:
+                    return state.ForceX;
+                case 14:
+                    return ushort.MaxValue - state.ForceY;
+                case 15:
+                    return state.ForceZ;
+                case 16:
+                    return state.TorqueX;
+                case 17:
+                    return ushort.MaxValue - state.TorqueY;
+                case 18:
+                    return state.TorqueZ;
+                case 19:
+                    return state.VelocityX;
+                case 20:
+                    return ushort.MaxValue - state.VelocityY;
+                case 21:
+                    return state.VelocityZ;
+                case 22:
+                    return state.AngularVelocityX;
+                case 23:
+                    return ushort.MaxValue - state.AngularVelocityY;
+                case 24:
+                    return state.AngularVelocityZ;
                 default:
                     return 0;
             }
@@ -240,29 +261,80 @@ namespace XOutput.Input.DirectInput
             return state.Sliders[slider - 1];
         }
 
+        private DPadDirection GetDPadValue(int dpad)
+        {
+            JoystickState state = GetCurrentState();
+            switch (state.PointOfViewControllers[dpad])
+            {
+                case -1: return DPadDirection.None;
+                case 0: return DPadDirection.Up;
+                case 4500: return DPadDirection.Up | DPadDirection.Right;
+                case 9000: return DPadDirection.Right;
+                case 13500: return DPadDirection.Down | DPadDirection.Right;
+                case 18000: return DPadDirection.Down;
+                case 22500: return DPadDirection.Down | DPadDirection.Left;
+                case 27000: return DPadDirection.Left;
+                case 31500: return DPadDirection.Up | DPadDirection.Left;
+                default:
+                    throw new ArgumentException();
+            }
+        }
+
         private Enum[] GetAxes()
         {
             return joystick.GetObjects(DeviceObjectTypeFlags.Axis)
-                .Select(o =>
-                {
-                    if (o.ObjectType == ObjectGuid.XAxis)
-                        return DirectInputTypes.Axis1;
-                    if (o.ObjectType == ObjectGuid.YAxis)
-                        return DirectInputTypes.Axis2;
-                    if (o.ObjectType == ObjectGuid.ZAxis)
-                        return DirectInputTypes.Axis3;
-                    if (o.ObjectType == ObjectGuid.RxAxis)
-                        return DirectInputTypes.Axis4;
-                    if (o.ObjectType == ObjectGuid.RyAxis)
-                        return DirectInputTypes.Axis5;
-                    if (o.ObjectType == ObjectGuid.RzAxis)
-                        return DirectInputTypes.Axis6;
-                    return (DirectInputTypes?)null;
-                })
+                .Select(MapAxis)
                 .Where(a => a != null)
                 .OrderBy(a => (int)a)
                 .OfType<Enum>()
                 .ToArray();
+        }
+
+        private DirectInputTypes? MapAxis(DeviceObjectInstance instance)
+        {
+            if (joystick.Information.Type == DeviceType.Mouse)
+            {
+                MouseOffset offset = (MouseOffset)instance.Offset;
+                switch (offset)
+                {
+                    case MouseOffset.X: return DirectInputTypes.Axis1;
+                    case MouseOffset.Y: return DirectInputTypes.Axis2;
+                    case MouseOffset.Z: return DirectInputTypes.Axis3;
+                    default: return null;
+                }
+            }
+            else
+            {
+                JoystickOffset offset = (JoystickOffset)instance.Offset;
+                switch (offset)
+                {
+                    case JoystickOffset.X: return DirectInputTypes.Axis1;
+                    case JoystickOffset.Y: return DirectInputTypes.Axis2;
+                    case JoystickOffset.Z: return DirectInputTypes.Axis3;
+                    case JoystickOffset.RotationX: return DirectInputTypes.Axis4;
+                    case JoystickOffset.RotationY: return DirectInputTypes.Axis5;
+                    case JoystickOffset.RotationZ: return DirectInputTypes.Axis6;
+                    case JoystickOffset.AccelerationX: return DirectInputTypes.Axis7;
+                    case JoystickOffset.AccelerationY: return DirectInputTypes.Axis8;
+                    case JoystickOffset.AccelerationZ: return DirectInputTypes.Axis9;
+                    case JoystickOffset.AngularAccelerationX: return DirectInputTypes.Axis10;
+                    case JoystickOffset.AngularAccelerationY: return DirectInputTypes.Axis11;
+                    case JoystickOffset.AngularAccelerationZ: return DirectInputTypes.Axis12;
+                    case JoystickOffset.ForceX: return DirectInputTypes.Axis13;
+                    case JoystickOffset.ForceY: return DirectInputTypes.Axis14;
+                    case JoystickOffset.ForceZ: return DirectInputTypes.Axis15;
+                    case JoystickOffset.TorqueX: return DirectInputTypes.Axis16;
+                    case JoystickOffset.TorqueY: return DirectInputTypes.Axis17;
+                    case JoystickOffset.TorqueZ: return DirectInputTypes.Axis18;
+                    case JoystickOffset.VelocityX: return DirectInputTypes.Axis19;
+                    case JoystickOffset.VelocityY: return DirectInputTypes.Axis20;
+                    case JoystickOffset.VelocityZ: return DirectInputTypes.Axis21;
+                    case JoystickOffset.AngularVelocityX: return DirectInputTypes.Axis22;
+                    case JoystickOffset.AngularVelocityY: return DirectInputTypes.Axis23;
+                    case JoystickOffset.AngularVelocityZ: return DirectInputTypes.Axis24;
+                    default: return null;
+                }
+            }
         }
 
         private Enum[] GetSliders()

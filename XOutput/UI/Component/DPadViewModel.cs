@@ -15,15 +15,17 @@ namespace XOutput.UI.Component
     public class DPadViewModel : ViewModelBase<DPadModel>
     {
         private const int len = 21;
+        private readonly int dPadIndex;
 
-        public DPadViewModel()
+        public DPadViewModel(int dPadIndex)
         {
             model = new DPadModel();
+            this.dPadIndex = dPadIndex;
         }
 
         public void UpdateValues(IDevice device)
         {
-            model.Direction = device.DPad;
+            model.Direction = device.DPads.ElementAt(dPadIndex);
             if (model.Direction.HasFlag(DPadDirection.Up))
             {
                 model.ValueY = -len;
@@ -50,8 +52,6 @@ namespace XOutput.UI.Component
                 model.ValueX = 0;
             }
             model.ValueX += 21;
-
-            model.Direction = device.DPad;
         }
     }
 }

@@ -26,9 +26,9 @@ namespace XOutput.UI.Component
         protected readonly DPadViewModel viewModel;
         public DPadViewModel ViewModel => viewModel;
 
-        public DPadView()
+        public DPadView(int dPadIndex)
         {
-            viewModel = new DPadViewModel();
+            viewModel = new DPadViewModel(dPadIndex);
             DataContext = viewModel;
             InitializeComponent();
         }

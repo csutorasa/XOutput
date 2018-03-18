@@ -21,6 +21,24 @@ namespace XOutput.Input.DirectInput
                 case DirectInputTypes.Axis4:
                 case DirectInputTypes.Axis5:
                 case DirectInputTypes.Axis6:
+                case DirectInputTypes.Axis7:
+                case DirectInputTypes.Axis8:
+                case DirectInputTypes.Axis9:
+                case DirectInputTypes.Axis10:
+                case DirectInputTypes.Axis11:
+                case DirectInputTypes.Axis12:
+                case DirectInputTypes.Axis13:
+                case DirectInputTypes.Axis14:
+                case DirectInputTypes.Axis15:
+                case DirectInputTypes.Axis16:
+                case DirectInputTypes.Axis17:
+                case DirectInputTypes.Axis18:
+                case DirectInputTypes.Axis19:
+                case DirectInputTypes.Axis20:
+                case DirectInputTypes.Axis21:
+                case DirectInputTypes.Axis22:
+                case DirectInputTypes.Axis23:
+                case DirectInputTypes.Axis24:
                     return true;
                 default:
                     return false;
@@ -95,6 +113,70 @@ namespace XOutput.Input.DirectInput
                 case DirectInputTypes.Button62:
                 case DirectInputTypes.Button63:
                 case DirectInputTypes.Button64:
+                case DirectInputTypes.Button65:
+                case DirectInputTypes.Button66:
+                case DirectInputTypes.Button67:
+                case DirectInputTypes.Button68:
+                case DirectInputTypes.Button69:
+                case DirectInputTypes.Button70:
+                case DirectInputTypes.Button71:
+                case DirectInputTypes.Button72:
+                case DirectInputTypes.Button73:
+                case DirectInputTypes.Button74:
+                case DirectInputTypes.Button75:
+                case DirectInputTypes.Button76:
+                case DirectInputTypes.Button77:
+                case DirectInputTypes.Button78:
+                case DirectInputTypes.Button79:
+                case DirectInputTypes.Button80:
+                case DirectInputTypes.Button81:
+                case DirectInputTypes.Button82:
+                case DirectInputTypes.Button83:
+                case DirectInputTypes.Button84:
+                case DirectInputTypes.Button85:
+                case DirectInputTypes.Button86:
+                case DirectInputTypes.Button87:
+                case DirectInputTypes.Button88:
+                case DirectInputTypes.Button89:
+                case DirectInputTypes.Button90:
+                case DirectInputTypes.Button91:
+                case DirectInputTypes.Button92:
+                case DirectInputTypes.Button93:
+                case DirectInputTypes.Button94:
+                case DirectInputTypes.Button95:
+                case DirectInputTypes.Button96:
+                case DirectInputTypes.Button97:
+                case DirectInputTypes.Button98:
+                case DirectInputTypes.Button99:
+                case DirectInputTypes.Button100:
+                case DirectInputTypes.Button101:
+                case DirectInputTypes.Button102:
+                case DirectInputTypes.Button103:
+                case DirectInputTypes.Button104:
+                case DirectInputTypes.Button105:
+                case DirectInputTypes.Button106:
+                case DirectInputTypes.Button107:
+                case DirectInputTypes.Button108:
+                case DirectInputTypes.Button109:
+                case DirectInputTypes.Button110:
+                case DirectInputTypes.Button111:
+                case DirectInputTypes.Button112:
+                case DirectInputTypes.Button113:
+                case DirectInputTypes.Button114:
+                case DirectInputTypes.Button115:
+                case DirectInputTypes.Button116:
+                case DirectInputTypes.Button117:
+                case DirectInputTypes.Button118:
+                case DirectInputTypes.Button119:
+                case DirectInputTypes.Button120:
+                case DirectInputTypes.Button121:
+                case DirectInputTypes.Button122:
+                case DirectInputTypes.Button123:
+                case DirectInputTypes.Button124:
+                case DirectInputTypes.Button125:
+                case DirectInputTypes.Button126:
+                case DirectInputTypes.Button127:
+                case DirectInputTypes.Button128:
                     return true;
                 default:
                     return false;
