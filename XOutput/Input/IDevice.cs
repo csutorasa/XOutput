@@ -19,7 +19,7 @@ namespace XOutput.Input
         /// Gets the current state of the DPad.
         /// </summary>
         /// <returns></returns>
-        DPadDirection DPad { get; }
+        IEnumerable<DPadDirection> DPads { get; }
         /// <summary>
         /// Gets all Enum values that represent button
         /// </summary>

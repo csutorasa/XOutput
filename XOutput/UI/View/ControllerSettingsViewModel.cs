@@ -30,7 +30,7 @@ namespace XOutput.UI.View
         public void ConfigureAll()
         {
             var types = XInputHelper.Instance.Values;
-            if (controller.InputDevice.HasDPad)
+            if (controller.InputDevice.DPads.Any())
             {
                 types = types.Where(t => !t.IsDPad());
             }
@@ -90,9 +90,9 @@ namespace XOutput.UI.View
             {
                 Model.InputAxisViews.Add(new AxisView(sliderInput));
             }
-            if (controller.InputDevice.HasDPad)
+            foreach (var dPadInput in Enumerable.Range(0, controller.InputDevice.DPads.Count()))
             {
-                Model.InputDPadViews.Add(new DPadView());
+                Model.InputDPadViews.Add(new DPadView(dPadInput));
             }
         }
 
@@ -106,12 +106,9 @@ namespace XOutput.UI.View
             {
                 buttonView.UpdateValues(controller.InputDevice);
             }
-            if (controller.InputDevice.HasDPad)
+            foreach (var dPadView in Model.InputDPadViews)
             {
-                foreach (var dPadView in Model.InputDPadViews)
-                {
-                    dPadView.UpdateValues(controller.InputDevice);
-                }
+                dPadView.UpdateValues(controller.InputDevice);
             }
         }
 
@@ -121,7 +118,7 @@ namespace XOutput.UI.View
             {
                 Model.MapperButtonViews.Add(new MappingView(controller, xInputType));
             }
-            if (!controller.InputDevice.HasDPad)
+            if (!controller.InputDevice.DPads.Any())
             {
                 foreach (var xInputType in XInputHelper.Instance.DPad)
                 {
@@ -140,7 +137,7 @@ namespace XOutput.UI.View
             {
                 Model.XInputButtonViews.Add(new ButtonView(buttonInput));
             }
-            Model.XInputDPadViews.Add(new DPadView());
+            Model.XInputDPadViews.Add(new DPadView(0));
             Model.XInputAxisViews.Add(new Axis2DView(XInputTypes.LX, XInputTypes.LY));
             Model.XInputAxisViews.Add(new Axis2DView(XInputTypes.RX, XInputTypes.RY));
             Model.XInputAxisViews.Add(new AxisView(XInputTypes.L2));

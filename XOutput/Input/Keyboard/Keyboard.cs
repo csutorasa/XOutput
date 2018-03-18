@@ -20,8 +20,8 @@ namespace XOutput.Input.Keyboard
         public string DisplayName => LanguageModel.Instance.Translate("Keyboard");
         public bool Connected => true;
         public bool HasDPad => false;
-        public DPadDirection DPad => DPadDirection.None;
 
+        public IEnumerable<DPadDirection> DPads => new DPadDirection[0];
         public IEnumerable<Enum> Buttons => buttons;
         public IEnumerable<Enum> Axes => new Enum[0];
         public IEnumerable<Enum> Sliders => new Enum[0];

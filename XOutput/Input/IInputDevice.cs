@@ -24,9 +24,5 @@ namespace XOutput.Input
         /// </summary>
         /// <returns></returns>
         bool Connected { get; }
-        /// <summary>
-        /// If the controller has DPad
-        /// </summary>
-        bool HasDPad { get; }
     }
 }
