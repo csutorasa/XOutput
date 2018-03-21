@@ -9,7 +9,7 @@ namespace XOutput.Input
     /// <summary>
     /// Main interface of devices.
     /// </summary>
-    public interface IDevice
+    public interface IDevice : IDisposable
     {
         /// <summary>
         /// This event is invoked if the data from the device was updated

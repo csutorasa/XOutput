@@ -131,6 +131,7 @@ namespace XOutput.UI.View
         public void Close()
         {
             controller.InputDevice.InputChanged -= ReadValues;
+            timer.Stop();
         }
 
         protected void SetTime(bool shortTime)
