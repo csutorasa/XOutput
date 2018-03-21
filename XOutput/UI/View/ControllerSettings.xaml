@@ -8,8 +8,7 @@
         mc:Ignorable="d"
         Title="{Binding Model.Title}" Width="1010" Height="800" MinWidth="1010"
         d:DataContext="{d:DesignInstance Type=local:ControllerSettingsViewModel, IsDesignTimeCreatable=False}"
-        Loaded="Window_Loaded"
-        Closed="Window_Closed">
+        Loaded="Window_Loaded">
     <Window.Resources>
         <ItemsPanelTemplate x:Key="VerticalStackPanel">
             <StackPanel Orientation="Vertical" Focusable="False"/>
@@ -19,7 +18,7 @@
         <Converters:DynamicLanguageConverter x:Key="DynamicLanguageConverter"/>
         <Converters:EnumerableNotEmptyToVisibilityConverter x:Key="EnumerableNotEmptyToVisibilityConverter"/>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="200"/>

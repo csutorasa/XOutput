@@ -13,8 +13,6 @@ namespace XOutput.UI.View
 {
     public class ControllerSettingsViewModel : ViewModelBase<ControllerSettingsModel>
     {
-        public bool IsConrtollerConnected { get { return controller.InputDevice.Connected; } }
-
         private readonly GameController controller;
 
         public ControllerSettingsViewModel(GameController controller)
@@ -39,6 +37,18 @@ namespace XOutput.UI.View
             {
                 v.Refresh();
             }
+        }
+
+        public void Update()
+        {
+            if (!controller.InputDevice.Connected)
+            {
+                return;
+            }
+
+            UpdateInputControls();
+
+            UpdateXInputControls();
         }
 
         private void CreateInputControls()
@@ -96,7 +106,7 @@ namespace XOutput.UI.View
             }
         }
 
-        public void UpdateInputControls()
+        private void UpdateInputControls()
         {
             foreach (var axisView in Model.InputAxisViews)
             {
@@ -144,7 +154,7 @@ namespace XOutput.UI.View
             Model.XInputAxisViews.Add(new AxisView(XInputTypes.R2));
         }
 
-        public void UpdateXInputControls()
+        private void UpdateXInputControls()
         {
             foreach (var axisView in Model.XInputAxisViews)
             {

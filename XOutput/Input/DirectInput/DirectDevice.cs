@@ -5,7 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Interop;
 using XOutput.Input;
+using XOutput.UI;
 
 namespace XOutput.Input.DirectInput
 {
@@ -66,6 +69,12 @@ namespace XOutput.Input.DirectInput
             sliders = GetSliders();
             dpads = new DPadDirection[joystick.Capabilities.PovCount];
 
+            joystick.Properties.AxisMode = DeviceAxisMode.Absolute;
+            try
+            {
+                joystick.SetCooperativeLevel(new WindowInteropHelper(Application.Current.MainWindow).Handle, CooperativeLevel.Background | CooperativeLevel.Exclusive);
+            }
+            catch { }
             joystick.Acquire();
         }
 
@@ -251,7 +260,7 @@ namespace XOutput.Input.DirectInput
         /// <summary>
         /// Gets the current value of a slider.
         /// </summary>
-        /// <param name="button">Slider index</param>
+        /// <param name="slider">Slider index</param>
         /// <returns>Value</returns>
         private int GetSliderValue(int slider)
         {
@@ -261,6 +270,11 @@ namespace XOutput.Input.DirectInput
             return state.Sliders[slider - 1];
         }
 
+        /// <summary>
+        /// Gets the current value of a DPad.
+        /// </summary>
+        /// <param name="dpad">DPad index</param>
+        /// <returns>Value</returns>
         private DPadDirection GetDPadValue(int dpad)
         {
             JoystickState state = GetCurrentState();

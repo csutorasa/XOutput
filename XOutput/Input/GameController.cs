@@ -85,6 +85,7 @@ namespace XOutput.Input
         {
             Stop();
             inputDevice.Dispose();
+            xInput?.Dispose();
             xOutput?.Dispose();
         }
 
@@ -121,6 +122,7 @@ namespace XOutput.Input
         {
             running = false;
             thread?.Abort();
+            XInput.InputChanged -= XInput_InputChanged;
             xOutput?.Unplug(controllerCount);
             resetId();
         }
@@ -134,11 +136,7 @@ namespace XOutput.Input
         {
             try
             {
-                XInput.InputChanged += () =>
-                {
-                    if (!xOutput.Report(controllerCount, XInput.GetValues()) || !inputDevice.Connected)
-                        running = false;
-                };
+                XInput.InputChanged += XInput_InputChanged;
                 while (running)
                 {
                     Thread.Sleep(100);
@@ -149,6 +147,12 @@ namespace XOutput.Input
                 xOutput.Unplug(controllerCount);
                 onStop?.Invoke();
             }
+        }
+
+        private void XInput_InputChanged()
+        {
+            if (!xOutput.Report(controllerCount, XInput.GetValues()) || !inputDevice.Connected)
+                running = false;
         }
 
         private void resetId()

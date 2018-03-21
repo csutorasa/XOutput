@@ -43,29 +43,23 @@ namespace XOutput.UI.View
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Update();
-
+            viewModel.Update();
             timer.Interval = TimeSpan.FromMilliseconds(10);
-            timer.Tick += (sender1, e1) => { Update(); };
+            timer.Tick += Timer_Tick;
             timer.Start();
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
-            controller.InputDevice.Disconnected -= Disconnected;
-            timer.Stop();
+            viewModel.Update();
         }
 
-        private void Update()
+        protected override void OnClosed(EventArgs e)
         {
-            if (!viewModel.IsConrtollerConnected)
-            {
-                return;
-            }
-
-            viewModel.UpdateInputControls();
-
-            viewModel.UpdateXInputControls();
+            base.OnClosed(e);
+            controller.InputDevice.Disconnected -= Disconnected;
+            timer.Tick -= Timer_Tick;
+            timer.Stop();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

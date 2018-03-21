@@ -83,6 +83,7 @@ namespace XOutput.UI.View
         private void Window_Closed(object sender, EventArgs e)
         {
             timer.Tick -= Timer_Tick;
+            timer.Stop();
             viewModel.Close();
         }
     }
