@@ -90,7 +90,7 @@
     <Compile Include="Input\Mapper\KeyboardToXInputMapper.cs" />
     <Compile Include="Input\Mapper\InputMapperBase.cs" />
     <Compile Include="Input\XInput\IXOutput.cs" />
-    <Compile Include="Input\XInput\SCPToolkit\NativeInterface.cs" />
+    <Compile Include="Input\XInput\SCPToolkit\NativeMethods.cs" />
     <Compile Include="Input\XInput\SCPToolkit\ScpDevice.cs" />
     <Compile Include="Input\XInput\Vigem\VigemXBox360Mappings.cs" />
     <Compile Include="Input\XInput\Vigem\VigemDevice.cs" />

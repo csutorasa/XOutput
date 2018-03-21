@@ -85,8 +85,8 @@ namespace XOutput.Input
         {
             Stop();
             inputDevice.Dispose();
-            xInput?.Dispose();
-            xOutput?.Dispose();
+            xInput.Dispose();
+            xOutput.Dispose();
         }
 
         /// <summary>

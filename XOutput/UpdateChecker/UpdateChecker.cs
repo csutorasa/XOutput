@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace XOutput.UpdateChecker
 {
-    public class UpdateChecker
+    public class UpdateChecker : IDisposable
     {
         protected const string GITHUB_URL = "https://api.github.com/repos/csutorasa/XOutput/releases/latest";
 
@@ -44,6 +44,11 @@ namespace XOutput.UpdateChecker
                 compare = VersionCompare.Error;
             }
             return await Task.Run(() => compare);
+        }
+
+        public void Dispose()
+        {
+            client.Dispose();
         }
     }
 }

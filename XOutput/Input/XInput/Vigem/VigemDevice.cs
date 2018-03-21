@@ -88,9 +88,9 @@ namespace XOutput.Input.XInput.Vigem
         {
             foreach (var controller in controllers.Values)
             {
-                controller?.Dispose();
+                controller.Dispose();
             }
-            client?.Dispose();
+            client.Dispose();
         }
 
         protected void InitMapping()
