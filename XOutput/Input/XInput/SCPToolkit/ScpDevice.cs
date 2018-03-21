@@ -22,20 +22,20 @@ namespace XOutput.Input.XInput.SCPToolkit
         public ScpDevice(int instance)
         {
             string devicePath = "";
-            if (NativeInterface.Find(new Guid(SCP_BUS_CLASS_GUID), ref devicePath, instance))
-                _safeFileHandle = NativeInterface.GetHandle(devicePath);
+            if (NativeMethods.Find(new Guid(SCP_BUS_CLASS_GUID), ref devicePath, instance))
+                _safeFileHandle = NativeMethods.GetHandle(devicePath);
             else
                 throw new IOException("SCP Device cannot be found");
         }
         public ScpDevice(string devicePath)
         {
-            _safeFileHandle = NativeInterface.GetHandle(devicePath);
+            _safeFileHandle = NativeMethods.GetHandle(devicePath);
         }
 
         public static bool IsAvailable()
         {
             string devicePath = "";
-            return NativeInterface.Find(new Guid(SCP_BUS_CLASS_GUID), ref devicePath, 0);
+            return NativeMethods.Find(new Guid(SCP_BUS_CLASS_GUID), ref devicePath, 0);
         }
 
         ~ScpDevice()
@@ -59,31 +59,31 @@ namespace XOutput.Input.XInput.SCPToolkit
         public bool Plugin(int controller)
         {
             byte[] buffer = new byte[8];
-            return sendToDevice(NativeInterface.MessageType.Plugin, controller, buffer, null);
+            return sendToDevice(NativeMethods.MessageType.Plugin, controller, buffer, null);
         }
 
         public bool Unplug(int controller)
         {
             byte[] buffer = new byte[8];
-            return sendToDevice(NativeInterface.MessageType.Unplug, controller, buffer, null);
+            return sendToDevice(NativeMethods.MessageType.Unplug, controller, buffer, null);
         }
 
         public bool UnplugAll()
         {
             byte[] buffer = new byte[8];
-            return sendToDevice(NativeInterface.MessageType.Unplug, null, buffer, null);
+            return sendToDevice(NativeMethods.MessageType.Unplug, null, buffer, null);
         }
 
         public bool Report(int controller, Dictionary<XInputTypes, double> values)
         {
-            return sendToDevice(NativeInterface.MessageType.Report, controller, GetBinaryData(values), null);
+            return sendToDevice(NativeMethods.MessageType.Report, controller, GetBinaryData(values), null);
         }
 
-        private bool sendToDevice(NativeInterface.MessageType type, int? controller, byte[] input, byte[] output)
+        private bool sendToDevice(NativeMethods.MessageType type, int? controller, byte[] input, byte[] output)
         {
             if (_safeFileHandle.IsInvalid || _safeFileHandle.IsClosed)
                 return false;
-            return NativeInterface.SendToDevice(_safeFileHandle, type, controller, input, output);
+            return NativeMethods.SendToDevice(_safeFileHandle, type, controller, input, output);
         }
 
 

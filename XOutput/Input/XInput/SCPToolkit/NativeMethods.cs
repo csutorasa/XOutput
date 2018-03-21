@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XOutput.Input.XInput
+namespace XOutput.Input.XInput.SCPToolkit
 {
-    static class NativeInterface
+    static class NativeMethods
     {
         public enum MessageType
         {
