@@ -14,12 +14,12 @@ namespace XOutput.Input.XInput.Vigem
     /// <summary>
     /// ViGEm XOutput implementation.
     /// </summary>
-    public class VigemDevice : IXOutput
+    public sealed class VigemDevice : IXOutput
     {
-        protected readonly ViGEmClient client;
-        protected readonly Dictionary<int, Xbox360Controller> controllers = new Dictionary<int, Xbox360Controller>();
-        protected readonly Dictionary<XInputTypes, VigemXbox360ButtonMapping> buttonMappings = new Dictionary<XInputTypes, VigemXbox360ButtonMapping>();
-        protected readonly Dictionary<XInputTypes, VigemXbox360AxisMapping> axisMappings = new Dictionary<XInputTypes, VigemXbox360AxisMapping>();
+        private readonly ViGEmClient client;
+        private readonly Dictionary<int, Xbox360Controller> controllers = new Dictionary<int, Xbox360Controller>();
+        private readonly Dictionary<XInputTypes, VigemXbox360ButtonMapping> buttonMappings = new Dictionary<XInputTypes, VigemXbox360ButtonMapping>();
+        private readonly Dictionary<XInputTypes, VigemXbox360AxisMapping> axisMappings = new Dictionary<XInputTypes, VigemXbox360AxisMapping>();
 
         public VigemDevice()
         {
@@ -93,7 +93,7 @@ namespace XOutput.Input.XInput.Vigem
             client.Dispose();
         }
 
-        protected void InitMapping()
+        private void InitMapping()
         {
             buttonMappings.Add(XInputTypes.A, new VigemXbox360ButtonMapping(Xbox360Buttons.A));
             buttonMappings.Add(XInputTypes.B, new VigemXbox360ButtonMapping(Xbox360Buttons.B));

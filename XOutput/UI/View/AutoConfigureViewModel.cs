@@ -26,14 +26,21 @@ namespace XOutput.UI.View
         private readonly Enum[] inputTypes;
         private DateTime lastTime;
 
-        public AutoConfigureViewModel(GameController controller, XInputTypes[] valuesToRead)
+        public AutoConfigureViewModel(AutoConfigureModel model, GameController controller, XInputTypes[] valuesToRead) : base(model)
         {
             this.controller = controller;
             this.valuesToRead = valuesToRead;
             xInputType = valuesToRead.First();
-            model = new AutoConfigureModel();
-            Model.ButtonsVisibility = valuesToRead.Length > 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-            Model.TimerVisibility = valuesToRead.Length <= 1 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+            if (valuesToRead.Length > 1)
+            {
+                Model.ButtonsVisibility = System.Windows.Visibility.Collapsed;
+                Model.TimerVisibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                Model.ButtonsVisibility = System.Windows.Visibility.Visible;
+                Model.TimerVisibility = System.Windows.Visibility.Collapsed;
+            }
             inputTypes = controller.InputDevice.Buttons.Concat(controller.InputDevice.Axes).Concat(controller.InputDevice.Sliders).ToArray();
             timer.Interval = TimeSpan.FromMilliseconds(BLINK_TIME);
             timer.Tick += Timer_Tick;

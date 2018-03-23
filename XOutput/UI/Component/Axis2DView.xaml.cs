@@ -26,9 +26,9 @@ namespace XOutput.UI.Component
         protected readonly Axis2DViewModel viewModel;
         public Axis2DViewModel ViewModel => viewModel;
 
-        public Axis2DView(Enum typex, Enum typey)
+        public Axis2DView(Axis2DViewModel viewModel)
         {
-            viewModel = new Axis2DViewModel(typex, typey, 42, 42);
+            this.viewModel = viewModel;
             DataContext = viewModel;
             InitializeComponent();
         }

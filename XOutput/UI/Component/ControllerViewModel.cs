@@ -16,17 +16,16 @@ namespace XOutput.UI.Component
     {
         private readonly Action<string> log;
 
-        public ControllerViewModel(GameController controller, Action<string> log)
+        public ControllerViewModel(ControllerModel model, GameController controller, Action<string> log) : base(model)
         {
             this.log = log;
-            model = new ControllerModel();
             Model.Controller = controller;
             Model.ButtonText = "Start";
         }
 
         public void Edit()
         {
-            var controllerSettingsWindow = new ControllerSettings(Model.Controller);
+            var controllerSettingsWindow = new ControllerSettings(new ControllerSettingsViewModel(new ControllerSettingsModel(), Model.Controller), Model.Controller);
             controllerSettingsWindow.ShowDialog();
         }
 

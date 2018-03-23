@@ -14,20 +14,19 @@ namespace XOutput.UI.Component
 {
     public class Axis2DViewModel : ViewModelBase<Axis2DModel>
     {
-        public Axis2DViewModel(Enum typex, Enum typey, int maxx, int maxy)
+        public Axis2DViewModel(Axis2DModel model, Enum typex, Enum typey, int maxx = 42, int maxy = 42) : base(model)
         {
-            model = new Axis2DModel();
-            model.TypeX = typex;
-            model.MaxX = maxx;
-            model.TypeY = typey;
-            model.MaxY = maxy;
-            model.TwoD = true;
+            Model.TypeX = typex;
+            Model.MaxX = maxx;
+            Model.TypeY = typey;
+            Model.MaxY = maxy;
+            Model.TwoD = true;
         }
 
         public void UpdateValues(IDevice device)
         {
-            model.ValueX = (int)(device.Get(model.TypeX) * model.MaxX);
-            model.ValueY = (int)(model.MaxY - device.Get(model.TypeY) * model.MaxY);
+            Model.ValueX = (int)(device.Get(Model.TypeX) * Model.MaxX);
+            Model.ValueY = (int)(Model.MaxY - device.Get(Model.TypeY) * Model.MaxY);
         }
     }
 }

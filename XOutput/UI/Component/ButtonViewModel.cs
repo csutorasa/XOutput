@@ -14,10 +14,9 @@ namespace XOutput.UI.Component
 {
     public class ButtonViewModel : ViewModelBase<ButtonModel>
     {
-        public ButtonViewModel(Enum type)
+        public ButtonViewModel(ButtonModel model, Enum type) : base(model)
         {
-            model = new ButtonModel();
-            model.Type = type;
+            Model.Type = type;
         }
 
         public void UpdateValues(IDevice device)

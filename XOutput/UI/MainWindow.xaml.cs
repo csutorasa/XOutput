@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -29,7 +30,7 @@ namespace XOutput.UI
 
         public MainWindow()
         {
-            viewModel = new MainWindowViewModel(Dispatcher, Log);
+            this.viewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher, Log);
             DataContext = viewModel;
             InitializeComponent();
             Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => viewModel.UnhandledException(e.Exception);

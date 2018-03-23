@@ -28,9 +28,9 @@ namespace XOutput.UI.Component
         protected readonly MappingViewModel viewModel;
         public MappingViewModel ViewModel => viewModel;
 
-        public MappingView(GameController controller, XInputTypes type)
+        public MappingView(MappingViewModel viewModel)
         {
-            viewModel = new MappingViewModel(controller, type);
+            this.viewModel = viewModel;
             DataContext = viewModel;
             InitializeComponent();
         }

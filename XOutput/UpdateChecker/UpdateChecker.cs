@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace XOutput.UpdateChecker
 {
-    public class UpdateChecker : IDisposable
+    public sealed class UpdateChecker : IDisposable
     {
-        protected const string GITHUB_URL = "https://api.github.com/repos/csutorasa/XOutput/releases/latest";
+        private const string GITHUB_URL = "https://api.github.com/repos/csutorasa/XOutput/releases/latest";
 
-        protected readonly HttpClient client = new HttpClient();
+        private readonly HttpClient client = new HttpClient();
 
         public UpdateChecker()
         {
@@ -21,7 +21,7 @@ namespace XOutput.UpdateChecker
             client.DefaultRequestHeaders.Add("User-Agent", "System.Net.Http.HttpClient");
         }
 
-        protected string GetLatestRelease(string response)
+        private string GetLatestRelease(string response)
         {
             string tagName = Regex.Match(response, "\"tag_name\":\".*?\"").Value;
             string tags = tagName.Replace("\"tag_name\":\"", "");

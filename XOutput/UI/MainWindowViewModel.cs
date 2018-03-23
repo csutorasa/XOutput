@@ -30,9 +30,8 @@ namespace XOutput.UI
         private Settings settings;
         private bool installed;
 
-        public MainWindowViewModel(Dispatcher dispatcher, Action<string> logger)
+        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher, Action<string> logger) : base(model)
         {
-            model = new MainWindowModel();
             log = logger;
             this.dispatcher = dispatcher;
             timer.Interval = TimeSpan.FromMilliseconds(10000);
@@ -111,7 +110,7 @@ namespace XOutput.UI
             RefreshGameControllers();
 
             var keyboardGameController = new GameController(new Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard"));
-            var controllerView = new ControllerView(keyboardGameController, log);
+            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, log));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
@@ -189,7 +188,7 @@ namespace XOutput.UI
                         continue;
                     InputMapperBase mapper = settings.GetMapper(device.ToString());
                     GameController controller = new GameController(device, mapper);
-                    var controllerView = new ControllerView(controller, log);
+                    var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, log));
                     controllerView.ViewModel.Model.CanStart = installed;
                     Model.Controllers.Add(controllerView);
                     device.StartCapturing();

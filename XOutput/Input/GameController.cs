@@ -15,7 +15,7 @@ namespace XOutput.Input
     /// <summary>
     /// GameController is a container for input devices, mappers and output devices.
     /// </summary>
-    public class GameController : IDisposable
+    public sealed class GameController : IDisposable
     {
         /// <summary>
         /// Gets the input device
@@ -40,12 +40,12 @@ namespace XOutput.Input
 
         private static readonly Controllers controllers = new Controllers();
 
-        protected readonly IInputDevice inputDevice;
-        protected readonly InputMapperBase mapper;
-        protected readonly XDevice xInput;
-        protected readonly IXOutput xOutput;
-        protected Thread thread;
-        protected bool running;
+        private readonly IInputDevice inputDevice;
+        private readonly InputMapperBase mapper;
+        private readonly XDevice xInput;
+        private readonly IXOutput xOutput;
+        private Thread thread;
+        private bool running;
         private int controllerCount = 0;
 
         public GameController(IInputDevice directInput, InputMapperBase mapper)
