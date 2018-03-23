@@ -15,8 +15,6 @@ namespace XOutput.UI
 {
     public class MappingModel : ModelBase
     {
-        public event Action<Enum> SelectedInputChanged;
-
         private XInputTypes _xInputType;
         public XInputTypes XInputType
         {
@@ -44,7 +42,6 @@ namespace XOutput.UI
                 {
                     selectedInput = value;
                     OnPropertyChanged(nameof(SelectedInput));
-                    SelectedInputChanged?.Invoke(value);
                 }
             }
         }
@@ -89,13 +86,18 @@ namespace XOutput.UI
             }
         }
 
-        public MapperData MapperData => mapperData;
-
-        private readonly MapperData mapperData;
-
-        public MappingModel(MapperData mapperData)
+        private MapperData mapperData;
+        public MapperData MapperData
         {
-            this.mapperData = mapperData;
+            get { return mapperData; }
+            set
+            {
+                if (mapperData != value)
+                {
+                    mapperData = value;
+                    OnPropertyChanged(nameof(MapperData));
+                }
+            }
         }
 
         public void Refresh()

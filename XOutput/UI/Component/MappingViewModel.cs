@@ -21,11 +21,10 @@ namespace XOutput.UI.Component
     {
         private GameController controller;
 
-        public MappingViewModel(GameController controller, XInputTypes inputType)
+        public MappingViewModel(MappingModel model, GameController controller, XInputTypes inputType) : base(model)
         {
             this.controller = controller;
             var mapperData = controller.Mapper.GetMapping(inputType);
-            model = new MappingModel(mapperData);
             Model.XInputType = inputType;
             var device = controller.InputDevice;
             Model.Inputs.Add(MappingTypes.Disabled);
@@ -43,13 +42,13 @@ namespace XOutput.UI.Component
             }
             if (mapperData != null && mapperData.InputType == null)
                 mapperData.InputType = device.Buttons.FirstOrDefault();
+            Model.MapperData = mapperData;
             SetSelected(mapperData);
-            Model.SelectedInputChanged += SelectionChanged;
         }
 
         public void Configure()
         {
-            new AutoConfigureWindow(controller, Model.XInputType).ShowDialog();
+            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), controller, new XInputTypes[] { Model.XInputType }), false).ShowDialog();
             SetSelected(GetMapperData());
         }
 
@@ -83,6 +82,7 @@ namespace XOutput.UI.Component
                 Model.SelectedInput = mapperData.InputType;
                 Model.ConfigVisibility = System.Windows.Visibility.Visible;
             }
+            SelectionChanged(Model.SelectedInput);
         }
 
         protected void SelectionChanged(Enum type)

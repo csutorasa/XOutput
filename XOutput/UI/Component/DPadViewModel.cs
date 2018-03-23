@@ -17,41 +17,40 @@ namespace XOutput.UI.Component
         private const int len = 21;
         private readonly int dPadIndex;
 
-        public DPadViewModel(int dPadIndex)
+        public DPadViewModel(DPadModel model, int dPadIndex) : base(model)
         {
-            model = new DPadModel();
             this.dPadIndex = dPadIndex;
         }
 
         public void UpdateValues(IDevice device)
         {
-            model.Direction = device.DPads.ElementAt(dPadIndex);
-            if (model.Direction.HasFlag(DPadDirection.Up))
+            Model.Direction = device.DPads.ElementAt(dPadIndex);
+            if (Model.Direction.HasFlag(DPadDirection.Up))
             {
-                model.ValueY = -len;
+                Model.ValueY = -len;
             }
-            else if (model.Direction.HasFlag(DPadDirection.Down))
+            else if (Model.Direction.HasFlag(DPadDirection.Down))
             {
-                model.ValueY = len;
-            }
-            else
-            {
-                model.ValueY = 0;
-            }
-            model.ValueY += 21;
-            if (model.Direction.HasFlag(DPadDirection.Right))
-            {
-                model.ValueX = len;
-            }
-            else if (model.Direction.HasFlag(DPadDirection.Left))
-            {
-                model.ValueX = -len;
+                Model.ValueY = len;
             }
             else
             {
-                model.ValueX = 0;
+                Model.ValueY = 0;
             }
-            model.ValueX += 21;
+            Model.ValueY += 21;
+            if (Model.Direction.HasFlag(DPadDirection.Right))
+            {
+                Model.ValueX = len;
+            }
+            else if (Model.Direction.HasFlag(DPadDirection.Left))
+            {
+                Model.ValueX = -len;
+            }
+            else
+            {
+                Model.ValueX = 0;
+            }
+            Model.ValueX += 21;
         }
     }
 }

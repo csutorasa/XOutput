@@ -26,9 +26,9 @@ namespace XOutput.UI.Component
         protected readonly AxisViewModel viewModel;
         public AxisViewModel ViewModel => viewModel;
 
-        public AxisView(Enum type)
+        public AxisView(AxisViewModel viewModel)
         {
-            viewModel = new AxisViewModel(type, 1000);
+            this.viewModel = viewModel;
             DataContext = viewModel;
             InitializeComponent();
         }

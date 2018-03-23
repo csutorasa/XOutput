@@ -13,7 +13,7 @@
             <Converters:BoolInverterConverter/>
             <Converters:BoolToVisibilityConverter/>
         </Converters:MultiConverter>
-        <Converters:DynamicLanguageConverter x:Key="DynamicLanguageConverter"/> 
+        <Converters:DynamicLanguageConverter x:Key="DynamicLanguageConverter"/>
         <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
     <Grid>
@@ -41,7 +41,7 @@
                 </MultiBinding>
             </Label.Content>
         </Label>
-        
+
         <Grid Grid.Column="1" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -49,20 +49,20 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Canvas Grid.Column="1" Canvas.Visibility="{Binding Model.TwoD, Converter={StaticResource BoolToVisibilityConverter}}">
-            <ProgressBar Value="{Binding Model.ValueX}" Maximum="{Binding Model.MaxX}" Height="6" Width="50" Canvas.Top="50" Canvas.Left="6"></ProgressBar>
-            <ProgressBar Value="{Binding Model.ValueY}" Maximum="{Binding Model.MaxY}" Width="6" Height="50" Orientation="Vertical">
-                <ProgressBar.RenderTransform>
-                    <TransformGroup>
-                        <RotateTransform Angle="180" CenterX="3" CenterY="25"/>
-                    </TransformGroup>
-                </ProgressBar.RenderTransform>
-            </ProgressBar>
-            <Border Canvas.Left="6" BorderThickness="1" BorderBrush="Black">
-                <Canvas Width="48" Height="48">
-                    <Ellipse Width="6" Height="6" Canvas.Left="{Binding Model.ValueX}" Canvas.Top="{Binding Model.ValueY}" Fill="Red"></Ellipse>
-                </Canvas>
-            </Border>
-        </Canvas>
+                <ProgressBar Value="{Binding Model.ValueX}" Maximum="{Binding Model.MaxX}" Height="6" Width="50" Canvas.Top="50" Canvas.Left="6"></ProgressBar>
+                <ProgressBar Value="{Binding Model.ValueY}" Maximum="{Binding Model.MaxY}" Width="6" Height="50" Orientation="Vertical">
+                    <ProgressBar.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="180" CenterX="3" CenterY="25"/>
+                        </TransformGroup>
+                    </ProgressBar.RenderTransform>
+                </ProgressBar>
+                <Border Canvas.Left="6" BorderThickness="1" BorderBrush="Black">
+                    <Canvas Width="48" Height="48">
+                        <Ellipse Width="6" Height="6" Canvas.Left="{Binding Model.ValueX}" Canvas.Top="{Binding Model.ValueY}" Fill="Red"></Ellipse>
+                    </Canvas>
+                </Border>
+            </Canvas>
         </Grid>
 
         <ProgressBar Grid.Column="1" Grid.ColumnSpan="2" Height="6" Value="{Binding Model.ValueX}" Maximum="{Binding Model.MaxX}">

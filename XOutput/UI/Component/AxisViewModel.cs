@@ -14,16 +14,15 @@ namespace XOutput.UI.Component
 {
     public class AxisViewModel : ViewModelBase<AxisModel>
     {
-        public AxisViewModel(Enum type, int max)
+        public AxisViewModel(AxisModel model, Enum type, int max = 1000) : base(model)
         {
-            model = new AxisModel();
-            model.Type = type;
-            model.Max = max;
+            Model.Type = type;
+            Model.Max = max;
         }
 
         public void UpdateValues(IDevice device)
         {
-            model.Value = (int)(device.Get(model.Type) * model.Max);
+            Model.Value = (int)(device.Get(Model.Type) * Model.Max);
         }
     }
 }

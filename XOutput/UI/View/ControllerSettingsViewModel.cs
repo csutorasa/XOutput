@@ -15,10 +15,9 @@ namespace XOutput.UI.View
     {
         private readonly GameController controller;
 
-        public ControllerSettingsViewModel(GameController controller)
+        public ControllerSettingsViewModel(ControllerSettingsModel model, GameController controller) : base(model)
         {
             this.controller = controller;
-            model = new ControllerSettingsModel();
             Model.Title = controller.DisplayName;
             CreateInputControls();
             CreateMappingControls();
@@ -32,7 +31,7 @@ namespace XOutput.UI.View
             {
                 types = types.Where(t => !t.IsDPad());
             }
-            new AutoConfigureWindow(controller, types.ToArray()).ShowDialog();
+            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), controller, types.ToArray()), types.Any()).ShowDialog();
             foreach (var v in Model.MapperAxisViews.Concat(Model.MapperButtonViews).Concat(Model.MapperDPadViews))
             {
                 v.Refresh();
@@ -51,58 +50,71 @@ namespace XOutput.UI.View
             UpdateXInputControls();
         }
 
+        public void Dispose()
+        {
+            Model.InputAxisViews.Clear();
+            Model.InputButtonViews.Clear();
+            Model.InputDPadViews.Clear();
+            Model.XInputAxisViews.Clear();
+            Model.XInputButtonViews.Clear();
+            Model.XInputDPadViews.Clear();
+            Model.MapperAxisViews.Clear();
+            Model.MapperButtonViews.Clear();
+            Model.MapperDPadViews.Clear();
+        }
+
         private void CreateInputControls()
         {
             foreach (var buttonInput in controller.InputDevice.Buttons)
             {
-                Model.InputButtonViews.Add(new ButtonView(buttonInput));
+                Model.InputButtonViews.Add(new ButtonView(new ButtonViewModel(new ButtonModel(), buttonInput)));
             }
             var axes = controller.InputDevice.Axes.OfType<DirectInputTypes>();
             if (axes.Contains(DirectInputTypes.Axis1) && axes.Contains(DirectInputTypes.Axis2))
             {
-                Model.InputAxisViews.Add(new Axis2DView(DirectInputTypes.Axis1, DirectInputTypes.Axis2));
+                Model.InputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), DirectInputTypes.Axis1, DirectInputTypes.Axis2)));
             }
             else
             {
                 if (axes.Contains(DirectInputTypes.Axis1))
                 {
-                    Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis1));
+                    Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis1)));
                 }
                 if (axes.Contains(DirectInputTypes.Axis2))
                 {
-                    Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis2));
+                    Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis2)));
                 }
             }
             if (axes.Contains(DirectInputTypes.Axis4) && axes.Contains(DirectInputTypes.Axis5))
             {
-                Model.InputAxisViews.Add(new Axis2DView(DirectInputTypes.Axis4, DirectInputTypes.Axis5));
+                Model.InputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), DirectInputTypes.Axis4, DirectInputTypes.Axis5)));
             }
             else
             {
                 if (axes.Contains(DirectInputTypes.Axis4))
                 {
-                    Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis4));
+                    Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis4)));
                 }
                 if (axes.Contains(DirectInputTypes.Axis5))
                 {
-                    Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis5));
+                    Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis5)));
                 }
             }
             if (axes.Contains(DirectInputTypes.Axis3))
             {
-                Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis3));
+                Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis3)));
             }
             if (axes.Contains(DirectInputTypes.Axis6))
             {
-                Model.InputAxisViews.Add(new AxisView(DirectInputTypes.Axis6));
+                Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis6)));
             }
             foreach (var sliderInput in controller.InputDevice.Sliders)
             {
-                Model.InputAxisViews.Add(new AxisView(sliderInput));
+                Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), sliderInput)));
             }
             foreach (var dPadInput in Enumerable.Range(0, controller.InputDevice.DPads.Count()))
             {
-                Model.InputDPadViews.Add(new DPadView(dPadInput));
+                Model.InputDPadViews.Add(new DPadView(new DPadViewModel(new DPadModel(), dPadInput)));
             }
         }
 
@@ -126,18 +138,18 @@ namespace XOutput.UI.View
         {
             foreach (var xInputType in XInputHelper.Instance.Buttons)
             {
-                Model.MapperButtonViews.Add(new MappingView(controller, xInputType));
+                Model.MapperButtonViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
             }
             if (!controller.InputDevice.DPads.Any())
             {
                 foreach (var xInputType in XInputHelper.Instance.DPad)
                 {
-                    Model.MapperDPadViews.Add(new MappingView(controller, xInputType));
+                    Model.MapperDPadViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
                 }
             }
             foreach (var xInputType in XInputHelper.Instance.Axes)
             {
-                Model.MapperAxisViews.Add(new MappingView(controller, xInputType));
+                Model.MapperAxisViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
             }
         }
 
@@ -145,13 +157,13 @@ namespace XOutput.UI.View
         {
             foreach (var buttonInput in XInputHelper.Instance.Buttons)
             {
-                Model.XInputButtonViews.Add(new ButtonView(buttonInput));
+                Model.XInputButtonViews.Add(new ButtonView(new ButtonViewModel(new ButtonModel(), buttonInput)));
             }
-            Model.XInputDPadViews.Add(new DPadView(0));
-            Model.XInputAxisViews.Add(new Axis2DView(XInputTypes.LX, XInputTypes.LY));
-            Model.XInputAxisViews.Add(new Axis2DView(XInputTypes.RX, XInputTypes.RY));
-            Model.XInputAxisViews.Add(new AxisView(XInputTypes.L2));
-            Model.XInputAxisViews.Add(new AxisView(XInputTypes.R2));
+            Model.XInputDPadViews.Add(new DPadView(new DPadViewModel(new DPadModel(), 0)));
+            Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), XInputTypes.LX, XInputTypes.LY)));
+            Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), XInputTypes.RX, XInputTypes.RY)));
+            Model.XInputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), XInputTypes.L2)));
+            Model.XInputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), XInputTypes.R2)));
         }
 
         private void UpdateXInputControls()

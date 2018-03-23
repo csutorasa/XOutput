@@ -52,7 +52,7 @@ namespace XOutput.UI.Component
 
         public XBox()
         {
-            viewModel = new XBoxViewModel();
+            viewModel = new XBoxViewModel(new XBoxModel());
             DataContext = viewModel;
             InitializeComponent();
         }

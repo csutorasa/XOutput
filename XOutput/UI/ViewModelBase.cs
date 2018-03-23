@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +14,15 @@ using XOutput.UI.Component;
 
 namespace XOutput.UI
 {
-    public abstract class ViewModelBase<M> where M : ModelBase
+    public abstract class ViewModelBase<M> where M : ModelBase, INotifyPropertyChanged
     {
         public LanguageModel LanguageModel => LanguageModel.Instance;
-        protected M model;
+        private readonly M model;
         public M Model => model;
+
+        public ViewModelBase(M model)
+        {
+            this.model = model;
+        }
     }
 }

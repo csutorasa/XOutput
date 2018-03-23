@@ -32,10 +32,10 @@ namespace XOutput.UI.View
         public ControllerSettingsViewModel ViewModel => viewModel;
         private readonly GameController controller;
 
-        public ControllerSettings(GameController controller)
+        public ControllerSettings(ControllerSettingsViewModel viewModel, GameController controller)
         {
             this.controller = controller;
-            viewModel = new ControllerSettingsViewModel(controller);
+            this.viewModel = viewModel;
             controller.InputDevice.Disconnected += Disconnected;
             DataContext = viewModel;
             InitializeComponent();
@@ -56,10 +56,11 @@ namespace XOutput.UI.View
 
         protected override void OnClosed(EventArgs e)
         {
-            base.OnClosed(e);
             controller.InputDevice.Disconnected -= Disconnected;
             timer.Tick -= Timer_Tick;
             timer.Stop();
+            viewModel.Dispose();
+            base.OnClosed(e);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -29,10 +29,10 @@ namespace XOutput.UI.View
         private readonly bool timed;
         public AutoConfigureViewModel ViewModel => viewModel;
 
-        public AutoConfigureWindow(GameController controller, params XInputTypes[] valuesToRead)
+        public AutoConfigureWindow(AutoConfigureViewModel viewModel, bool timed)
         {
-            viewModel = new AutoConfigureViewModel(controller, valuesToRead);
-            timed = valuesToRead.Length > 1;
+            this.viewModel = viewModel;
+            this.timed = timed;
             DataContext = viewModel;
             InitializeComponent();
         }

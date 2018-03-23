@@ -26,9 +26,9 @@ namespace XOutput.UI.Component
         protected readonly ButtonViewModel viewModel;
         public ButtonViewModel ViewModel => viewModel;
 
-        public ButtonView(Enum type)
+        public ButtonView(ButtonViewModel viewModel)
         {
-            viewModel = new ButtonViewModel(type);
+            this.viewModel = viewModel;
             DataContext = viewModel;
             InitializeComponent();
         }
