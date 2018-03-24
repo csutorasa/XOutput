@@ -9,7 +9,7 @@ namespace XOutput.Input.XInput
     /// <summary>
     /// Main interface for XOutput devices.
     /// </summary>
-    public interface IXOutput : IDisposable
+    public interface IXOutputInterface : IDisposable
     {
         /// <summary>
         /// Plugs in a new virutal XInput device.

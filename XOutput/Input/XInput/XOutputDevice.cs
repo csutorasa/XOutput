@@ -11,7 +11,7 @@ namespace XOutput.Input.XInput
     /// <summary>
     /// Device that contains data for a XInput device
     /// </summary>
-    public sealed class XDevice : IDevice
+    public sealed class XOutputDevice : IDevice
     {
         /// <summary>
         /// This event is invoked if the data from the device was updated
@@ -33,14 +33,14 @@ namespace XOutput.Input.XInput
         /// </summary>
         /// <param name="source">Direct input device</param>
         /// <param name="mapper">DirectInput to XInput mapper</param>
-        public XDevice(IInputDevice source, Mapper.InputMapperBase mapper)
+        public XOutputDevice(IInputDevice source, Mapper.InputMapperBase mapper)
         {
             this.source = source;
             this.mapper = mapper;
             source.InputChanged += Source_InputChanged;
         }
 
-        ~XDevice()
+        ~XOutputDevice()
         {
             Dispose();
         }

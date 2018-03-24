@@ -14,7 +14,7 @@ namespace XOutput.Input.XInput.Vigem
     /// <summary>
     /// ViGEm XOutput implementation.
     /// </summary>
-    public sealed class VigemDevice : IXOutput
+    public sealed class VigemDevice : IXOutputInterface
     {
         private readonly ViGEmClient client;
         private readonly Dictionary<int, Xbox360Controller> controllers = new Dictionary<int, Xbox360Controller>();
@@ -91,6 +91,11 @@ namespace XOutput.Input.XInput.Vigem
                 controller.Dispose();
             }
             client.Dispose();
+        }
+
+        public Xbox360Controller GetController(int controllerCount)
+        {
+            return controllers[controllerCount];
         }
 
         private void InitMapping()

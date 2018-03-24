@@ -25,6 +25,7 @@ namespace XOutput.Input.Keyboard
         public IEnumerable<Enum> Buttons => buttons;
         public IEnumerable<Enum> Axes => new Enum[0];
         public IEnumerable<Enum> Sliders => new Enum[0];
+        public IList<short> ForceFeedbacks => new List<short>();
 
         private Thread inputRefresher;
         private readonly Enum[] buttons;

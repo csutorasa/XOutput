@@ -44,6 +44,7 @@ namespace XOutput.Input.DirectInput
         public IEnumerable<Enum> Buttons => buttons;
         public IEnumerable<Enum> Axes => axes;
         public IEnumerable<Enum> Sliders => sliders;
+        public IList<short> ForceFeedbacks => forceFeedbacks;
 
         private readonly DeviceInstance deviceInstance;
         private readonly Joystick joystick;
@@ -51,6 +52,7 @@ namespace XOutput.Input.DirectInput
         private readonly Enum[] axes;
         private readonly Enum[] sliders;
         private readonly DPadDirection[] dpads;
+        private List<short> forceFeedbacks;
         private bool connected = false;
         private Thread inputRefresher;
         private bool disposed = false;
@@ -75,6 +77,7 @@ namespace XOutput.Input.DirectInput
                 joystick.SetCooperativeLevel(new WindowInteropHelper(Application.Current.MainWindow).Handle, CooperativeLevel.Background | CooperativeLevel.Exclusive);
             }
             catch { }
+            forceFeedbacks = new List<short>();
             joystick.Acquire();
         }
 
