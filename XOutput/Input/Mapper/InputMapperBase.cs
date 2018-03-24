@@ -9,8 +9,19 @@ namespace XOutput.Input.Mapper
 {
     public abstract class InputMapperBase
     {
+        /// <summary>
+        /// DPad index to use
+        /// </summary>
+        public int SelectedDPad { get; set; }
+
         private const char SPLIT_CHAR = ',';
+        protected const string SELECTEDDPAD_KEY = "SelectedDPad";
         protected readonly Dictionary<XInputTypes, MapperData> mappings = new Dictionary<XInputTypes, MapperData>();
+
+        public InputMapperBase()
+        {
+            SelectedDPad = -1;
+        }
 
         /// <summary>
         /// Sets the mapping for a given XInput.
@@ -42,6 +53,7 @@ namespace XOutput.Input.Mapper
         public virtual Dictionary<string, string> ToDictionary()
         {
             var dict = new Dictionary<string, string>();
+            dict.Add(SELECTEDDPAD_KEY, SelectedDPad.ToString());
             foreach (var mapping in mappings)
             {
                 dict.Add(mapping.Key.ToString(),

@@ -86,9 +86,9 @@ namespace XOutput.Input.XInput
                     values[type] = mapping.GetValue(value);
                 }
             }
-            if (source.DPads.Count() > 0)
+            if (mapper.SelectedDPad != -1)
             {
-                dPads[0] = source.DPads.ElementAt(0);
+                dPads[0] = source.DPads.ElementAt(mapper.SelectedDPad);
             }
             else
             {

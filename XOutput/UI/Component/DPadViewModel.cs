@@ -17,9 +17,11 @@ namespace XOutput.UI.Component
         private const int len = 21;
         private readonly int dPadIndex;
 
-        public DPadViewModel(DPadModel model, int dPadIndex) : base(model)
+        public DPadViewModel(DPadModel model, int dPadIndex, bool showLabel) : base(model)
         {
             this.dPadIndex = dPadIndex;
+            if (showLabel)
+                Model.Label = "DPad" + (dPadIndex + 1);
         }
 
         public void UpdateValues(IDevice device)

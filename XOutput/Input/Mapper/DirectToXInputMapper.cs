@@ -21,6 +21,13 @@ namespace XOutput.Input.Mapper
         public static DirectToXInputMapper Parse(Dictionary<string, string> data)
         {
             DirectToXInputMapper mapper = new DirectToXInputMapper();
+            try
+            {
+                var selectedDPadText = data[SELECTEDDPAD_KEY];
+                int selectedDPad = int.Parse(selectedDPadText);
+                mapper.SelectedDPad = selectedDPad;
+            }
+            catch (Exception) { }
             foreach (var mapping in FromDictionary(data, typeof(DirectInputTypes)))
             {
                 mapper.mappings.Add(mapping.Key, mapping.Value);
