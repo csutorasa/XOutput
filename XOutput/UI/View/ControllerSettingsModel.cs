@@ -31,16 +31,30 @@ namespace XOutput.UI.View
         private readonly ObservableCollection<IUpdatableView> xInputButtonViews = new ObservableCollection<IUpdatableView>();
         public ObservableCollection<IUpdatableView> XInputButtonViews => xInputButtonViews;
 
-        private string _title;
+        private string title;
         public string Title
         {
-            get { return _title; }
+            get { return title; }
             set
             {
-                if (_title != value)
+                if (title != value)
                 {
-                    _title = value;
+                    title = value;
                     OnPropertyChanged(nameof(Title));
+                }
+            }
+        }
+
+        private string forceFeedbackText;
+        public string ForceFeedbackText
+        {
+            get { return forceFeedbackText; }
+            set
+            {
+                if (forceFeedbackText != value)
+                {
+                    forceFeedbackText = value;
+                    OnPropertyChanged(nameof(ForceFeedbackText));
                 }
             }
         }

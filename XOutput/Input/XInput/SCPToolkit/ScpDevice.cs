@@ -12,7 +12,7 @@ namespace XOutput.Input.XInput.SCPToolkit
     /// <summary>
     /// SCPToolkit XOutput implementation.
     /// </summary>
-    public sealed class ScpDevice : IXOutput
+    public sealed class ScpDevice : IXOutputInterface
     {
         private const string SCP_BUS_CLASS_GUID = "{F679F562-3164-42CE-A4DB-E7DDBE723909}";
 

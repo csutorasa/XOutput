@@ -6,7 +6,7 @@
         xmlns:Converters="clr-namespace:XOutput.UI.Converters"
         xmlns:local="clr-namespace:XOutput.UI.View"
         mc:Ignorable="d"
-        Title="{Binding Model.Title}" Width="1010" Height="800" MinWidth="1010"
+        Title="{Binding Model.Title}" Width="1010" Height="850" MinWidth="1010"
         d:DataContext="{d:DesignInstance Type=local:ControllerSettingsViewModel, IsDesignTimeCreatable=False}"
         Loaded="Window_Loaded">
     <Window.Resources>
@@ -58,6 +58,14 @@
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}"
                               Visibility="{Binding Model.MapperDPadViews, Converter={StaticResource EnumerableNotEmptyToVisibilityConverter}}">
                         <ItemsControl ItemsSource="{Binding Model.MapperDPadViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
+                    </GroupBox>
+                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceFeedback'}">
+                        <Label>
+                            <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                                <Binding Path="LanguageModel.Data"/>
+                                <Binding Path="Model.ForceFeedbackText"/>
+                            </MultiBinding>
+                        </Label>
                     </GroupBox>
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Buttons'}">
                         <ItemsControl ItemsSource="{Binding Model.MapperButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>

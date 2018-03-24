@@ -89,7 +89,7 @@
     <Compile Include="Input\Keyboard\Keyboard.cs" />
     <Compile Include="Input\Mapper\KeyboardToXInputMapper.cs" />
     <Compile Include="Input\Mapper\InputMapperBase.cs" />
-    <Compile Include="Input\XInput\IXOutput.cs" />
+    <Compile Include="Input\XInput\IXOutputInterface.cs" />
     <Compile Include="Input\XInput\SCPToolkit\NativeMethods.cs" />
     <Compile Include="Input\XInput\SCPToolkit\ScpDevice.cs" />
     <Compile Include="Input\XInput\Vigem\VigemXBox360Mappings.cs" />
@@ -155,7 +155,7 @@
     <Compile Include="Input\DirectInput\DirectDevice.cs" />
     <Compile Include="Input\DirectInput\Devices.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Input\XInput\XDevice.cs" />
+    <Compile Include="Input\XInput\XOutputDevice.cs" />
     <Compile Include="Input\XInput\XInputTypes.cs" />
     <Compile Include="UI\Component\ControllerView.xaml.cs">
       <DependentUpon>ControllerView.xaml</DependentUpon>

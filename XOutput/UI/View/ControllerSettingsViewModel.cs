@@ -22,6 +22,15 @@ namespace XOutput.UI.View
             CreateInputControls();
             CreateMappingControls();
             CreateXInputControls();
+            if (controller.ForceFeedbackSupported)
+            {
+                if (controller.InputDevice.ForceFeedbacks.Any())
+                    Model.ForceFeedbackText = "ForceFeedbackMapped";
+                else
+                    Model.ForceFeedbackText = "ForceFeedbackUnsupported";
+            }
+            else
+                Model.ForceFeedbackText = "ForceFeedbackVigemOnly";
         }
 
         public void ConfigureAll()

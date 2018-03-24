@@ -24,7 +24,7 @@ namespace XOutput.Input
         /// <summary>
         /// Gets the output device
         /// </summary>
-        public XDevice XInput => xInput;
+        public XOutputDevice XInput => xInput;
         /// <summary>
         /// Gets the mapping of the input device
         /// </summary>
@@ -38,26 +38,29 @@ namespace XOutput.Input
         /// </summary>
         public int ControllerCount => controllerCount;
 
+        public bool ForceFeedbackSupported => xOutputInterface is VigemDevice;
+
         private static readonly Controllers controllers = new Controllers();
 
         private readonly IInputDevice inputDevice;
         private readonly InputMapperBase mapper;
-        private readonly XDevice xInput;
-        private readonly IXOutput xOutput;
+        private readonly XOutputDevice xInput;
+        private readonly IXOutputInterface xOutputInterface;
         private Thread thread;
         private bool running;
         private int controllerCount = 0;
+        private Nefarius.ViGEm.Client.Targets.Xbox360Controller controller;
 
         public GameController(IInputDevice directInput, InputMapperBase mapper)
         {
             inputDevice = directInput;
             this.mapper = mapper;
-            xOutput = createXOutput();
-            xInput = new XDevice(directInput, mapper);
+            xOutputInterface = createXOutput();
+            xInput = new XOutputDevice(directInput, mapper);
             running = false;
         }
 
-        private IXOutput createXOutput()
+        private IXOutputInterface createXOutput()
         {
             if (VigemDevice.IsAvailable())
             {
@@ -86,7 +89,7 @@ namespace XOutput.Input
             Stop();
             inputDevice.Dispose();
             xInput.Dispose();
-            xOutput.Dispose();
+            xOutputInterface.Dispose();
         }
 
         /// <summary>
@@ -95,18 +98,27 @@ namespace XOutput.Input
         public int Start(Action onStop = null)
         {
             controllerCount = controllers.GetId();
-            if (xOutput.Unplug(controllerCount))
+            if (controller != null)
+            {
+                controller.FeedbackReceived -= Controller_FeedbackReceived;
+            }
+            if (xOutputInterface.Unplug(controllerCount))
             {
                 // Wait for unplugging
                 Thread.Sleep(10);
             }
-            if (xOutput.Plugin(controllerCount))
+            if (xOutputInterface.Plugin(controllerCount))
             {
                 thread = new Thread(() => ReadAndReportValues(onStop));
                 running = true;
                 thread.Name = $"Emulated controller {controllerCount} output refresher";
                 thread.IsBackground = true;
                 thread.Start();
+                if (ForceFeedbackSupported)
+                {
+                    controller = ((VigemDevice)xOutputInterface).GetController(controllerCount);
+                    controller.FeedbackReceived += Controller_FeedbackReceived;
+                }
             }
             else
             {
@@ -123,7 +135,7 @@ namespace XOutput.Input
             running = false;
             thread?.Abort();
             XInput.InputChanged -= XInput_InputChanged;
-            xOutput?.Unplug(controllerCount);
+            xOutputInterface?.Unplug(controllerCount);
             resetId();
         }
 
@@ -144,15 +156,28 @@ namespace XOutput.Input
             }
             finally
             {
-                xOutput.Unplug(controllerCount);
+                xOutputInterface.Unplug(controllerCount);
                 onStop?.Invoke();
             }
         }
 
         private void XInput_InputChanged()
         {
-            if (!xOutput.Report(controllerCount, XInput.GetValues()) || !inputDevice.Connected)
+            if (!xOutputInterface.Report(controllerCount, XInput.GetValues()) || !inputDevice.Connected)
                 running = false;
+        }
+
+        private void Controller_FeedbackReceived(object sender, Nefarius.ViGEm.Client.Targets.Xbox360.Xbox360FeedbackReceivedEventArgs e)
+        {
+            var feedbacks = inputDevice.ForceFeedbacks;
+            if (feedbacks.Count > 0)
+            {
+                feedbacks[0] = e.LargeMotor;
+                if (feedbacks.Count > 1)
+                {
+                    feedbacks[1] = e.SmallMotor;
+                }
+            }
         }
 
         private void resetId()

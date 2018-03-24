@@ -24,5 +24,9 @@ namespace XOutput.Input
         /// </summary>
         /// <returns></returns>
         bool Connected { get; }
+        /// <summary>
+        /// Gets the force feedback motor values.
+        /// </summary>
+        IList<short> ForceFeedbacks { get; }
     }
 }
