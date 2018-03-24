@@ -49,5 +49,19 @@ namespace XOutput.UI.Component
                 }
             }
         }
+
+        private string label;
+        public string Label
+        {
+            get { return label; }
+            set
+            {
+                if (label != value)
+                {
+                    label = value;
+                    OnPropertyChanged(nameof(Label));
+                }
+            }
+        }
     }
 }

@@ -19,6 +19,12 @@ namespace XOutput.UI.View
         {
             this.controller = controller;
             Model.Title = controller.DisplayName;
+            if (controller.InputDevice.DPads.Any())
+            {
+                foreach (var i in Enumerable.Range(1, controller.InputDevice.DPads.Count()))
+                    Model.Dpads.Add(i);
+                Model.SelectedDPad = controller.Mapper.SelectedDPad + 1;
+            }
             CreateInputControls();
             CreateMappingControls();
             CreateXInputControls();
@@ -57,6 +63,11 @@ namespace XOutput.UI.View
             UpdateInputControls();
 
             UpdateXInputControls();
+        }
+
+        public void SelectedDPad()
+        {
+            controller.Mapper.SelectedDPad = Model.SelectedDPad - 1;
         }
 
         public void Dispose()
@@ -123,7 +134,7 @@ namespace XOutput.UI.View
             }
             foreach (var dPadInput in Enumerable.Range(0, controller.InputDevice.DPads.Count()))
             {
-                Model.InputDPadViews.Add(new DPadView(new DPadViewModel(new DPadModel(), dPadInput)));
+                Model.InputDPadViews.Add(new DPadView(new DPadViewModel(new DPadModel(), dPadInput, true)));
             }
         }
 
@@ -168,7 +179,8 @@ namespace XOutput.UI.View
             {
                 Model.XInputButtonViews.Add(new ButtonView(new ButtonViewModel(new ButtonModel(), buttonInput)));
             }
-            Model.XInputDPadViews.Add(new DPadView(new DPadViewModel(new DPadModel(), 0)));
+            foreach (var dPadIndex in Model.Dpads)
+                Model.XInputDPadViews.Add(new DPadView(new DPadViewModel(new DPadModel(), dPadIndex - 1, false)));
             Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), XInputTypes.LX, XInputTypes.LY)));
             Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), XInputTypes.RX, XInputTypes.RY)));
             Model.XInputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), XInputTypes.L2)));

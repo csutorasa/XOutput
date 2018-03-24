@@ -9,11 +9,13 @@
              d:DesignHeight="60" d:DesignWidth="150">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="56"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Canvas Grid.Column="1" Height="50">
+        <Label Grid.Column="0" Content="{Binding Model.Label}" VerticalAlignment="Center"/>
+        <Canvas Grid.Column="2" Height="50">
             <Border Canvas.Left="6" BorderThickness="1" BorderBrush="Black">
                 <Canvas Width="48" Height="48">
                     <Ellipse Width="6" Height="6" Canvas.Left="{Binding Model.ValueX}" Canvas.Top="{Binding Model.ValueY}" Fill="Red"></Ellipse>

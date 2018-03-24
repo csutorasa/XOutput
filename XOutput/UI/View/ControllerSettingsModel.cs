@@ -31,6 +31,23 @@ namespace XOutput.UI.View
         private readonly ObservableCollection<IUpdatableView> xInputButtonViews = new ObservableCollection<IUpdatableView>();
         public ObservableCollection<IUpdatableView> XInputButtonViews => xInputButtonViews;
 
+        private readonly ObservableCollection<int> dpads = new ObservableCollection<int>();
+        public ObservableCollection<int> Dpads => dpads;
+
+        private int selectedDPad;
+        public int SelectedDPad
+        {
+            get { return selectedDPad; }
+            set
+            {
+                if (selectedDPad != value)
+                {
+                    selectedDPad = value;
+                    OnPropertyChanged(nameof(SelectedDPad));
+                }
+            }
+        }
+
         private string title;
         public string Title
         {

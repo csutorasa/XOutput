@@ -75,5 +75,10 @@ namespace XOutput.UI.View
                 Close();
             });
         }
+
+        private void ComboBox_Selected(object sender, RoutedEventArgs e)
+        {
+            viewModel.SelectedDPad();
+        }
     }
 }
