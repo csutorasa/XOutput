@@ -45,6 +45,9 @@ build:
   
 before_build:
   - nuget restore
+  
+after_build:
+  - 7z a XOutput.zip %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\XOutput.exe
 
 #---------------------------------#
 #       tests configuration       #
@@ -57,6 +60,8 @@ test:
 #---------------------------------#
 
 artifacts:
+  - path: XOutput.zip
+    name: XOutput
 
 #---------------------------------#
 #     deployment configuration    #
