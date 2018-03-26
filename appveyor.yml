@@ -19,12 +19,7 @@ image: Visual Studio 2017
 init:
   - git config --global core.autocrlf input
 
-cache:
-  - '%LocalAppData%\NuGet\Cache'    # NuGet < v3
-  - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
-
 install:
-
 
 assembly_info:
   patch: true
@@ -45,9 +40,11 @@ build:
   parallel: true
   project: XOutput.sln
   include_nuget_references: true
-
   # MSBuild verbosity level - quiet|minimal|normal|detailed
   verbosity: normal 
+  
+before_build:
+  - nuget restore
 
 #---------------------------------#
 #       tests configuration       #
@@ -60,20 +57,6 @@ test:
 #---------------------------------#
 
 artifacts:
-
-  # pushing a single file
-  - path: test.zip
-
-  # pushing a single file with environment variable in path and "Deployment name" specified
-  - path: MyProject\bin\$(configuration)
-    name: myapp
-
-  # pushing entire folder as a zip archive
-  - path: logs
-
-  # pushing all *.nupkg files in build directory recursively
-  - path: '**\*.nupkg'
-
 
 #---------------------------------#
 #     deployment configuration    #
