@@ -1,0 +1,107 @@
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+version: 3.3-{branch}-{build}
+
+branches:
+  only:
+    - master
+
+skip_tags: true
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+image: Visual Studio 2017
+
+init:
+  - git config --global core.autocrlf input
+
+environment:
+
+cache:
+  - '%LocalAppData%\NuGet\Cache'    # NuGet < v3
+  - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
+
+install:
+
+
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "{version}"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "{version}"
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+platform: Any CPU
+
+configuration: Release
+
+build:
+  parallel: true
+  project: XOutput.sln
+  include_nuget_references: true
+
+  # MSBuild verbosity level - quiet|minimal|normal|detailed
+  verbosity: normal 
+
+#---------------------------------#
+#       tests configuration       #
+#---------------------------------#
+
+test:
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+
+  # pushing a single file
+  - path: test.zip
+
+  # pushing a single file with environment variable in path and "Deployment name" specified
+  - path: MyProject\bin\$(configuration)
+    name: myapp
+
+  # pushing entire folder as a zip archive
+  - path: logs
+
+  # pushing all *.nupkg files in build directory recursively
+  - path: '**\*.nupkg'
+
+
+#---------------------------------#
+#     deployment configuration    #
+#---------------------------------#
+
+deploy:
+
+#---------------------------------#
+#        global handlers          #
+#---------------------------------#
+
+on_success:
+
+on_failure:
+
+on_finish:
+
+
+#---------------------------------#
+#         notifications           #
+#---------------------------------#
+
+notifications:
+  - provider: Email
+    to:
+      - csutorasa@gmail.com
+    subject: 'Build {{status}}'
+    message: "{{message}}, {{commitId}}, ..."
+    on_build_status_changed: true
