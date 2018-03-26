@@ -13,7 +13,7 @@ Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, 
 
 Download the application:
 
-* Download the [latest release](https://github.com/csutorasa/XOutput/releases/latest)
+* Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
 
 ## How to use
 
@@ -51,3 +51,7 @@ After selecting the input, the minimum and maximum values can be configured. Som
 ### Deadzone
 
 If your analogue stick isn't in perfect condition, you may have what is called a deadzone, which means that a part of the axis isn't working right, usually it's the center part, syndromes of this are: wrong center position and unwanted movement of the camera, character, etc. To solve go to the game settings and apply a bit of deadzone, how much depends on the device in question.
+
+## Developer release
+
+If you want to test the latest, often unstable, features before the stable releases, you can check the [AppVeyor](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts) builds.
