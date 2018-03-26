@@ -19,8 +19,6 @@ image: Visual Studio 2017
 init:
   - git config --global core.autocrlf input
 
-environment:
-
 cache:
   - '%LocalAppData%\NuGet\Cache'    # NuGet < v3
   - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
