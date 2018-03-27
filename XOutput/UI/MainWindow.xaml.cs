@@ -33,7 +33,9 @@ namespace XOutput.UI
             this.viewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher, Log);
             DataContext = viewModel;
             InitializeComponent();
+#if DEBUG == false
             Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => viewModel.UnhandledException(e.Exception);
+#endif
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
