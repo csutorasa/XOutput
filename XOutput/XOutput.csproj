@@ -150,8 +150,8 @@
     <Compile Include="UI\View\AutoConfigureWindow.xaml.cs">
       <DependentUpon>AutoConfigureWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\View\ControllerSettings.xaml.cs">
-      <DependentUpon>ControllerSettings.xaml</DependentUpon>
+    <Compile Include="UI\View\ControllerSettingsWindow.xaml.cs">
+      <DependentUpon>ControllerSettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Input\DirectInput\DirectDevice.cs" />
     <Compile Include="Input\DirectInput\Devices.cs" />
@@ -195,7 +195,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\View\ControllerSettings.xaml">
+    <Page Include="UI\View\ControllerSettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

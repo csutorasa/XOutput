@@ -25,8 +25,14 @@ namespace XOutput.Input
         /// <returns></returns>
         bool Connected { get; }
         /// <summary>
-        /// Gets the force feedback motor values.
+        /// Gets the number of force feedback motors.
         /// </summary>
-        IList<short> ForceFeedbacks { get; }
+        int ForceFeedbackCount { get; }
+        /// <summary>
+        /// Sets the force feedback motor values.
+        /// </summary>
+        /// <param name="big">Big motor value</param>
+        /// <param name="small">Small motor value</param>
+        void SetForceFeedback(short big, short small);
     }
 }

@@ -171,15 +171,7 @@ namespace XOutput.Input
 
         private void Controller_FeedbackReceived(object sender, Nefarius.ViGEm.Client.Targets.Xbox360.Xbox360FeedbackReceivedEventArgs e)
         {
-            var feedbacks = inputDevice.ForceFeedbacks;
-            if (feedbacks.Count > 0)
-            {
-                feedbacks[0] = e.LargeMotor;
-                if (feedbacks.Count > 1)
-                {
-                    feedbacks[1] = e.SmallMotor;
-                }
-            }
+            inputDevice.SetForceFeedback(e.LargeMotor, e.SmallMotor);
         }
 
         private void resetId()

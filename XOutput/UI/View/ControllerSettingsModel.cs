@@ -75,5 +75,19 @@ namespace XOutput.UI.View
                 }
             }
         }
+
+        private string testButtonText;
+        public string TestButtonText
+        {
+            get { return testButtonText; }
+            set
+            {
+                if (testButtonText != value)
+                {
+                    testButtonText = value;
+                    OnPropertyChanged(nameof(TestButtonText));
+                }
+            }
+        }
     }
 }
