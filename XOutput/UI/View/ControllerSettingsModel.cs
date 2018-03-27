@@ -89,5 +89,19 @@ namespace XOutput.UI.View
                 }
             }
         }
+
+        private bool forceFeedbackEnabled;
+        public bool ForceFeedbackEnabled
+        {
+            get { return forceFeedbackEnabled; }
+            set
+            {
+                if (forceFeedbackEnabled != value)
+                {
+                    forceFeedbackEnabled = value;
+                    OnPropertyChanged(nameof(ForceFeedbackEnabled));
+                }
+            }
+        }
     }
 }

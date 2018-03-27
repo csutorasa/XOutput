@@ -72,7 +72,7 @@
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceFeedback'}">
                         <StackPanel Orientation="Horizontal">
                             <Label Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Test'}"/>
-                            <Button Width="50" Click="Button_Click_1">
+                            <Button Width="50" Click="Button_Click_1" IsEnabled="{Binding Model.ForceFeedbackEnabled}">
                                 <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
                                     <Binding Path="LanguageModel.Data"/>
                                     <Binding Path="Model.TestButtonText"/>
