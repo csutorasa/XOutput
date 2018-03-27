@@ -14,7 +14,7 @@ namespace XOutput.Input.Keyboard
     public sealed class Keyboard : IInputDevice
     {
         public event Action InputChanged;
-        public event Action Disconnected;
+        public event Action Disconnected { add { } remove { } }
 
         public int ButtonCount => Enum.GetValues(typeof(Key)).Length;
         public string DisplayName => LanguageModel.Instance.Translate("Keyboard");
