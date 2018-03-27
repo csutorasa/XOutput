@@ -114,6 +114,8 @@ namespace XOutput.UI
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
+
+            AutoStart();
         }
 
         public void Finalizer()
@@ -219,6 +221,24 @@ namespace XOutput.UI
             delayThread.Name = "Device list refresh delay";
             delayThread.IsBackground = true;
             delayThread.Start();
+        }
+
+        private void AutoStart()
+        {
+            var args = Environment.GetCommandLineArgs();
+            var startupControllers = args.Where(arg => arg.StartsWith("--start=")).Select(arg => arg.Replace("--start=", "")).ToArray();
+            foreach (var viewModel in Model.Controllers.Select(v => v.ViewModel))
+            {
+                var displayName = viewModel.Model.DisplayName;
+                foreach (var startupController in startupControllers)
+                {
+                    if (displayName.Contains(startupController))
+                    {
+                        viewModel.StartStop();
+                        break;
+                    }
+                }
+            }
         }
     }
 }
