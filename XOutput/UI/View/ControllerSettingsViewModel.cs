@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using XOutput.Input;
 using XOutput.Input.DirectInput;
 using XOutput.Input.XInput;
@@ -14,6 +15,8 @@ namespace XOutput.UI.View
     public class ControllerSettingsViewModel : ViewModelBase<ControllerSettingsModel>
     {
         private readonly GameController controller;
+        private readonly DispatcherTimer dispatcherTimer = new DispatcherTimer();
+        private int state = 0;
 
         public ControllerSettingsViewModel(ControllerSettingsModel model, GameController controller) : base(model)
         {
@@ -30,13 +33,16 @@ namespace XOutput.UI.View
             CreateXInputControls();
             if (controller.ForceFeedbackSupported)
             {
-                if (controller.InputDevice.ForceFeedbacks.Any())
+                if (controller.InputDevice.ForceFeedbackCount > 0)
                     Model.ForceFeedbackText = "ForceFeedbackMapped";
                 else
                     Model.ForceFeedbackText = "ForceFeedbackUnsupported";
             }
             else
                 Model.ForceFeedbackText = "ForceFeedbackVigemOnly";
+            dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            dispatcherTimer.Tick += DispatcherTimer_Tick;
+            Model.TestButtonText = "Start";
         }
 
         public void ConfigureAll()
@@ -68,6 +74,36 @@ namespace XOutput.UI.View
         public void SelectedDPad()
         {
             controller.Mapper.SelectedDPad = Model.SelectedDPad - 1;
+        }
+
+        public void TestForceFeedback()
+        {
+            if (dispatcherTimer.IsEnabled)
+            {
+                dispatcherTimer.Stop();
+                controller.InputDevice.SetForceFeedback(0, 0);
+                Model.TestButtonText = "Start";
+            }
+            else
+            {
+                dispatcherTimer.Start();
+                controller.InputDevice.SetForceFeedback(short.MaxValue, 0);
+                Model.TestButtonText = "Stop";
+            }
+        }
+
+        private void DispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            if (state == 0)
+            {
+                controller.InputDevice.SetForceFeedback(0, short.MaxValue);
+                state = 1;
+            }
+            else
+            {
+                controller.InputDevice.SetForceFeedback(short.MaxValue, 0);
+                state = 0;
+            }
         }
 
         public void Dispose()

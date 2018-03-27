@@ -1,4 +1,5 @@
-﻿using SharpDX.DirectInput;
+﻿using SharpDX;
+using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace XOutput.Input.DirectInput
         public IEnumerable<Enum> Buttons => buttons;
         public IEnumerable<Enum> Axes => axes;
         public IEnumerable<Enum> Sliders => sliders;
-        public IList<short> ForceFeedbacks => forceFeedbacks;
+        public int ForceFeedbackCount => actuators.Count;
 
         private readonly DeviceInstance deviceInstance;
         private readonly Joystick joystick;
@@ -52,7 +53,8 @@ namespace XOutput.Input.DirectInput
         private readonly Enum[] axes;
         private readonly Enum[] sliders;
         private readonly DPadDirection[] dpads;
-        private List<short> forceFeedbacks;
+        private readonly EffectInfo force;
+        private readonly Dictionary<DeviceObjectInstance, Effect> actuators;
         private bool connected = false;
         private Thread inputRefresher;
         private bool disposed = false;
@@ -77,8 +79,20 @@ namespace XOutput.Input.DirectInput
                 joystick.SetCooperativeLevel(new WindowInteropHelper(Application.Current.MainWindow).Handle, CooperativeLevel.Background | CooperativeLevel.Exclusive);
             }
             catch { }
-            forceFeedbacks = new List<short>();
             joystick.Acquire();
+            if (deviceInstance.ForceFeedbackDriverGuid != Guid.Empty)
+            {
+                var constantForce = joystick.GetEffects().Where(x => x.Guid == EffectGuid.ConstantForce).FirstOrDefault();
+                if (constantForce == null)
+                    force = joystick.GetEffects().FirstOrDefault();
+                else
+                    force = constantForce;
+                actuators = joystick.GetObjects().Where(doi => doi.ObjectId.Flags.HasFlag(DeviceObjectTypeFlags.ForceFeedbackActuator)).ToDictionary(doi => doi, doi => (Effect)null);
+            }
+            else
+            {
+                actuators = new Dictionary<DeviceObjectInstance, Effect>();
+            }
         }
 
         ~DirectDevice()
@@ -154,6 +168,43 @@ namespace XOutput.Input.DirectInput
                 return GetSliderValue(type - DirectInputTypes.Slider1 + 1) / (double)ushort.MaxValue;
             }
             return 0;
+        }
+
+        public void SetForceFeedback(short big, short small)
+        {
+            var values = new Dictionary<DeviceObjectInstance, Effect>(actuators);
+            foreach (var pair in values)
+            {
+                var oldEffect = pair.Value;
+                oldEffect?.Dispose();
+
+                var actuator = pair.Key;
+                var isSmall = actuator.ObjectType == ObjectGuid.YAxis;
+                var axes = new int[] { (int)actuator.ObjectId };
+                var directions = new int[axes.Length];
+                var effectParams = new EffectParameters();
+                effectParams.Flags = EffectFlags.Cartesian | EffectFlags.ObjectIds;
+                effectParams.StartDelay = 0;
+                effectParams.SamplePeriod = joystick.Capabilities.ForceFeedbackSamplePeriod;
+                effectParams.Duration = int.MaxValue;
+                effectParams.TriggerButton = -1;
+                effectParams.TriggerRepeatInterval = int.MaxValue;
+                effectParams.Gain = 10000;
+                effectParams.SetAxes(axes, directions);
+                var cf = new ConstantForce();
+                cf.Magnitude = CalculateMagnitude(isSmall ? small : big);
+                effectParams.Parameters = cf;
+                try
+                {
+                    var newEffect = new Effect(joystick, force.Guid, effectParams);
+                    newEffect.Start();
+                    actuators[actuator] = newEffect;
+                }
+                catch (SharpDXException)
+                {
+
+                }
+            }
         }
 
         /// <summary>
@@ -371,6 +422,12 @@ namespace XOutput.Input.DirectInput
                 Connected = false;
                 return new JoystickState();
             }
+        }
+
+        private int CalculateMagnitude(short value)
+        {
+            var percent = (double)value / short.MaxValue;
+            return (int)(10000 * percent);
         }
     }
 }

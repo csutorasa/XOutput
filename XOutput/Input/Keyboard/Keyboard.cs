@@ -25,7 +25,7 @@ namespace XOutput.Input.Keyboard
         public IEnumerable<Enum> Buttons => buttons;
         public IEnumerable<Enum> Axes => new Enum[0];
         public IEnumerable<Enum> Sliders => new Enum[0];
-        public IList<short> ForceFeedbacks => new List<short>();
+        public int ForceFeedbackCount => 0;
 
         private Thread inputRefresher;
         private readonly Enum[] buttons;
@@ -66,6 +66,11 @@ namespace XOutput.Input.Keyboard
         public override string ToString()
         {
             return DisplayName;
+        }
+
+        public void SetForceFeedback(short big, short small)
+        {
+
         }
 
         private void InputRefresher()
