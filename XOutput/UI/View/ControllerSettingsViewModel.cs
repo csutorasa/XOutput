@@ -31,15 +31,7 @@ namespace XOutput.UI.View
             CreateInputControls();
             CreateMappingControls();
             CreateXInputControls();
-            if (controller.ForceFeedbackSupported)
-            {
-                if (controller.InputDevice.ForceFeedbackCount > 0)
-                    Model.ForceFeedbackText = "ForceFeedbackMapped";
-                else
-                    Model.ForceFeedbackText = "ForceFeedbackUnsupported";
-            }
-            else
-                Model.ForceFeedbackText = "ForceFeedbackVigemOnly";
+            SetForceFeedback();
             dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
             dispatcherTimer.Tick += DispatcherTimer_Tick;
             Model.TestButtonText = "Start";
@@ -121,48 +113,10 @@ namespace XOutput.UI.View
 
         private void CreateInputControls()
         {
+            CreateInputAxes();
             foreach (var buttonInput in controller.InputDevice.Buttons)
             {
                 Model.InputButtonViews.Add(new ButtonView(new ButtonViewModel(new ButtonModel(), buttonInput)));
-            }
-            var axes = controller.InputDevice.Axes.OfType<DirectInputTypes>();
-            if (axes.Contains(DirectInputTypes.Axis1) && axes.Contains(DirectInputTypes.Axis2))
-            {
-                Model.InputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), DirectInputTypes.Axis1, DirectInputTypes.Axis2)));
-            }
-            else
-            {
-                if (axes.Contains(DirectInputTypes.Axis1))
-                {
-                    Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis1)));
-                }
-                if (axes.Contains(DirectInputTypes.Axis2))
-                {
-                    Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis2)));
-                }
-            }
-            if (axes.Contains(DirectInputTypes.Axis4) && axes.Contains(DirectInputTypes.Axis5))
-            {
-                Model.InputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), DirectInputTypes.Axis4, DirectInputTypes.Axis5)));
-            }
-            else
-            {
-                if (axes.Contains(DirectInputTypes.Axis4))
-                {
-                    Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis4)));
-                }
-                if (axes.Contains(DirectInputTypes.Axis5))
-                {
-                    Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis5)));
-                }
-            }
-            if (axes.Contains(DirectInputTypes.Axis3))
-            {
-                Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis3)));
-            }
-            if (axes.Contains(DirectInputTypes.Axis6))
-            {
-                Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), DirectInputTypes.Axis6)));
             }
             foreach (var sliderInput in controller.InputDevice.Sliders)
             {
@@ -236,6 +190,63 @@ namespace XOutput.UI.View
             foreach (var dPadView in Model.XInputDPadViews)
             {
                 dPadView.UpdateValues(controller.XInput);
+            }
+        }
+
+        private void SetForceFeedback()
+        {
+            if (controller.ForceFeedbackSupported)
+            {
+                if (controller.InputDevice.ForceFeedbackCount > 0)
+                {
+                    Model.ForceFeedbackText = "ForceFeedbackMapped";
+                    Model.ForceFeedbackEnabled = true;
+                }
+                else
+                {
+                    Model.ForceFeedbackText = "ForceFeedbackUnsupported";
+                    Model.ForceFeedbackEnabled = false;
+                }
+            }
+            else
+            {
+                Model.ForceFeedbackText = "ForceFeedbackVigemOnly";
+                Model.ForceFeedbackEnabled = false;
+            }
+        }
+
+        private void CreateInputAxes()
+        {
+            var axes = controller.InputDevice.Axes.OfType<DirectInputTypes>();
+            var xAxes = DirectInputHelper.Instance.Axes.Where(a => (int)a % 3 == 0);
+            var yAxes = DirectInputHelper.Instance.Axes.Where(a => (int)a % 3 == 1);
+            var zAxes = DirectInputHelper.Instance.Axes.Where(a => (int)a % 3 == 2);
+            for (int i = 0; i < xAxes.Count(); i++)
+            {
+                var x = xAxes.ElementAt(i);
+                var y = yAxes.ElementAt(i);
+                if (axes.Contains(x) && axes.Contains(y))
+                {
+                    Model.InputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), x, y)));
+                }
+                else
+                {
+                    if (axes.Contains(x))
+                    {
+                        Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), x)));
+                    }
+                    if (axes.Contains(y))
+                    {
+                        Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), y)));
+                    }
+                }
+            }
+            foreach (var z in zAxes)
+            {
+                if (axes.Contains(z))
+                {
+                    Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), z)));
+                }
             }
         }
     }
