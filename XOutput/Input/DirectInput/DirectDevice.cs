@@ -351,14 +351,19 @@ namespace XOutput.Input.DirectInput
         private Enum[] GetAxes()
         {
             return joystick.GetObjects(DeviceObjectTypeFlags.Axis)
-                .Select(MapAxis)
+                .Select(MapAxisByInstanceNumber)
                 .Where(a => a != null)
                 .OrderBy(a => (int)a)
                 .OfType<Enum>()
                 .ToArray();
         }
 
-        private DirectInputTypes? MapAxis(DeviceObjectInstance instance)
+        private DirectInputTypes? MapAxisByInstanceNumber(DeviceObjectInstance instance)
+        {
+            return DirectInputHelper.Instance.Axes.ElementAtOrDefault(instance.ObjectId.InstanceNumber);
+        }
+
+        private DirectInputTypes? MapAxisByOffset(DeviceObjectInstance instance)
         {
             if (joystick.Information.Type == DeviceType.Mouse)
             {
