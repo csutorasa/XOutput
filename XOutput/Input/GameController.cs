@@ -9,6 +9,7 @@ using XOutput.Input.Mapper;
 using XOutput.Input.XInput;
 using XOutput.Input.XInput.SCPToolkit;
 using XOutput.Input.XInput.Vigem;
+using XOutput.Logging;
 
 namespace XOutput.Input
 {
@@ -40,6 +41,7 @@ namespace XOutput.Input
 
         public bool ForceFeedbackSupported => xOutputInterface is VigemDevice;
 
+        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(GameController));
         private static readonly Controllers controllers = new Controllers();
 
         private readonly IInputDevice inputDevice;
@@ -66,14 +68,17 @@ namespace XOutput.Input
         {
             if (VigemDevice.IsAvailable())
             {
+                logger.Info("ViGEm devices are used.");
                 return new VigemDevice();
             }
             else if (ScpDevice.IsAvailable())
             {
+                logger.Info("SCP Toolkit devices are used.");
                 return new ScpDevice();
             }
             else
             {
+                logger.Warning("Neither ViGEm nor SCP devices can be used.");
                 return null;
             }
         }
@@ -118,6 +123,7 @@ namespace XOutput.Input
                 thread.Start();
                 if (ForceFeedbackSupported)
                 {
+                    logger.Info("Force feedback mapping is connected.");
                     controller = ((VigemDevice)xOutputInterface).GetController(controllerCount);
                     controller.FeedbackReceived += Controller_FeedbackReceived;
                 }

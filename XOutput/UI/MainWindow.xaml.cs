@@ -40,7 +40,7 @@ namespace XOutput.UI
 #endif
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void WindowLoaded(object sender, RoutedEventArgs e)
         {
             viewModel.Initialize();
             foreach (var child in (Content as Grid).Children)
@@ -58,8 +58,8 @@ namespace XOutput.UI
                     }
                 }
             }
-            await GetData();
             logger.Info("The application has started.");
+            await GetData();
         }
 
         public async Task GetData()
@@ -78,37 +78,37 @@ namespace XOutput.UI
             Dispatcher.BeginInvoke((Action)(() => logBox.AppendText(msg + Environment.NewLine)));
         }
 
-        private void Refresh_Click(object sender, RoutedEventArgs e)
+        private void RefreshClick(object sender, RoutedEventArgs e)
         {
             viewModel.RefreshGameControllers();
         }
-        private void Exit_Click(object sender, RoutedEventArgs e)
+        private void ExitClick(object sender, RoutedEventArgs e)
         {
             Close();
         }
-        private void GameControllers_Click(object sender, RoutedEventArgs e)
+        private void GameControllersClick(object sender, RoutedEventArgs e)
         {
             viewModel.OpenWindowsGameControllerSettings();
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+        private void SaveClick(object sender, RoutedEventArgs e)
         {
             viewModel.SaveSettings();
         }
 
-        private void About_Click(object sender, RoutedEventArgs e)
+        private void AboutClick(object sender, RoutedEventArgs e)
         {
             viewModel.AboutPopupShow();
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void WindowClosed(object sender, EventArgs e)
         {
             viewModel.Finalizer();
             viewModel.Dispose();
             logger.Info("The application has exited.");
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void CheckBoxChecked(object sender, RoutedEventArgs e)
         {
             viewModel.RefreshGameControllers();
         }

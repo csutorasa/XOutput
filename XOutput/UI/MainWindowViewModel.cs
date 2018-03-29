@@ -160,15 +160,18 @@ namespace XOutput.UI
             switch (compare)
             {
                 case UpdateChecker.VersionCompare.Error:
+                    logger.Warning("Failed to check latest version");
                     log(Translate("VersionCheckError"));
                     break;
                 case UpdateChecker.VersionCompare.NeedsUpgrade:
+                    logger.Info("New version is available");
                     log(Translate("VersionCheckNeedsUpgrade"));
                     break;
                 case UpdateChecker.VersionCompare.NewRelease:
                     log(Translate("VersionCheckNewRelease"));
                     break;
                 case UpdateChecker.VersionCompare.UpToDate:
+                    logger.Info("Version is up-to-date");
                     log(Translate("VersionCheckUpToDate"));
                     break;
                 default:
@@ -214,6 +217,7 @@ namespace XOutput.UI
 
         public void OpenWindowsGameControllerSettings()
         {
+            logger.Debug("Starting " + GameControllersSettings);
             Process.Start(GameControllersSettings);
         }
 

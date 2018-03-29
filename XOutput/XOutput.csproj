@@ -96,6 +96,7 @@
     <Compile Include="Input\XInput\Vigem\VigemDevice.cs" />
     <Compile Include="Input\XInput\XInputHelper.cs" />
     <Compile Include="Logging\AbstractLogger.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
