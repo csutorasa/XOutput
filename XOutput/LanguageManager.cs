@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using XOutput.Logging;
 
 namespace XOutput
 {
@@ -13,6 +14,7 @@ namespace XOutput
     {
         private Dictionary<string, Dictionary<string, string>> data = new Dictionary<string, Dictionary<string, string>>();
 
+        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(LanguageManager));
         private static LanguageManager instance = new LanguageManager("languages.txt");
         public static LanguageManager Instance => instance;
 
@@ -25,6 +27,7 @@ namespace XOutput
                 if (language != value)
                 {
                     language = value;
+                    logger.Info("Language is set to " + language);
                     LanguageModel.Instance.Data = data[language];
                 }
             }

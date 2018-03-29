@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XOutput.Input.Mapper;
+using XOutput.Logging;
 
 namespace XOutput
 {
@@ -13,6 +14,8 @@ namespace XOutput
     /// </summary>
     public sealed class Settings
     {
+        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(Settings));
+
         /// <summary>
         /// Reads a new setting from a file.
         /// </summary>
@@ -38,10 +41,12 @@ namespace XOutput
                     else if (id == "Keyboard")
                     {
                         settings.mappers[id] = KeyboardToXInputMapper.Parse(section.Value);
+                        logger.Debug("Mapper loaded for keyboard");
                     }
                     else
                     {
                         settings.mappers[id] = DirectToXInputMapper.Parse(section.Value);
+                        logger.Debug("Mapper loaded for " + id);
                     }
                 }
             }
