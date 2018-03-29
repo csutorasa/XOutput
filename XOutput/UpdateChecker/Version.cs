@@ -14,7 +14,7 @@ namespace XOutput.UpdateChecker
         /// <summary>
         /// Current application version.
         /// </summary>
-        public const string AppVersion = "3.4";
+        public const string AppVersion = "3.5";
 
         public static VersionCompare Compare(string version)
         {
