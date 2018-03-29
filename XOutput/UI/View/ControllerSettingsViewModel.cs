@@ -79,7 +79,7 @@ namespace XOutput.UI.View
             else
             {
                 dispatcherTimer.Start();
-                controller.InputDevice.SetForceFeedback(short.MaxValue, 0);
+                controller.InputDevice.SetForceFeedback(1, 0);
                 Model.TestButtonText = "Stop";
             }
         }
@@ -88,12 +88,12 @@ namespace XOutput.UI.View
         {
             if (state == 0)
             {
-                controller.InputDevice.SetForceFeedback(0, short.MaxValue);
+                controller.InputDevice.SetForceFeedback(0, 1);
                 state = 1;
             }
             else
             {
-                controller.InputDevice.SetForceFeedback(short.MaxValue, 0);
+                controller.InputDevice.SetForceFeedback(1, 0);
                 state = 0;
             }
         }
