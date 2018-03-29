@@ -13,6 +13,7 @@ using XOutput.Input.DirectInput;
 using XOutput.Input.Mapper;
 using XOutput.Input.XInput.SCPToolkit;
 using XOutput.Input.XInput.Vigem;
+using XOutput.Logging;
 using XOutput.UI.Component;
 using XOutput.UpdateChecker;
 
@@ -23,6 +24,7 @@ namespace XOutput.UI
         private const string SettingsFilePath = "settings.txt";
         private const string GameControllersSettings = "joy.cpl";
 
+        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindowViewModel));
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly Devices directInputDevices = new Devices();
         private readonly Action<string> log;
@@ -74,10 +76,12 @@ namespace XOutput.UI
             try
             {
                 LoadSettings(SettingsFilePath);
+                logger.Info("Loading settings was successful.");
                 log(string.Format(Translate("LoadSettingsSuccess"), SettingsFilePath));
             }
             catch (Exception ex)
             {
+                logger.Warning("Loading settings was unsuccessful.");
                 string error = string.Format(Translate("LoadSettingsError"), SettingsFilePath) + Environment.NewLine + ex.Message;
                 log(error);
                 MessageBox.Show(error, Translate("Warning"));
@@ -88,6 +92,7 @@ namespace XOutput.UI
             {
                 if (scp)
                 {
+                    logger.Info("SCPToolkit is installed only.");
                     log(Translate("ScpInstalled"));
                 }
                 installed = true;
@@ -96,11 +101,13 @@ namespace XOutput.UI
             {
                 if (scp)
                 {
+                    logger.Info("ViGEm is installed.");
                     log(Translate("VigemNotInstalled"));
                     installed = true;
                 }
                 else
                 {
+                    logger.Error("Neither ViGEm nor SCPToolkit is installed.");
                     string error = Translate("VigemAndScpNotInstalled");
                     log(error);
                     installed = false;
@@ -131,10 +138,12 @@ namespace XOutput.UI
             try
             {
                 settings.Save(SettingsFilePath);
+                logger.Info("Saving settings was successful.");
                 log(string.Format(Translate("SaveSettingsSuccess"), SettingsFilePath));
             }
             catch (Exception ex)
             {
+                logger.Warning("Saving settings was unsuccessful.");
                 string error = string.Format(Translate("SaveSettingsError"), SettingsFilePath) + Environment.NewLine + ex.Message;
                 log(error);
                 MessageBox.Show(error, Translate("Warning"));
@@ -178,6 +187,7 @@ namespace XOutput.UI
                 {
                     controller.Dispose();
                     Model.Controllers.Remove(controllerView);
+                    logger.Info($"{controller.DisplayName} was disconnected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerDisconnected"), controller.DisplayName));
                 }
             }
@@ -196,6 +206,7 @@ namespace XOutput.UI
                     device.StartCapturing();
                     device.Disconnected -= DispatchRefreshGameControllers;
                     device.Disconnected += DispatchRefreshGameControllers;
+                    logger.Info($"{controller.DisplayName} was connected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
                 }
             }

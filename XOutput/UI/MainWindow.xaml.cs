@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using XOutput.Logging;
 using XOutput.UI.Component;
 
 namespace XOutput.UI
@@ -25,6 +26,7 @@ namespace XOutput.UI
     /// </summary>
     public partial class MainWindow : Window, IViewBase<MainWindowViewModel, MainWindowModel>
     {
+        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindow));
         private readonly MainWindowViewModel viewModel;
         public MainWindowViewModel ViewModel => viewModel;
 
@@ -57,6 +59,7 @@ namespace XOutput.UI
                 }
             }
             await GetData();
+            logger.Info("The application has started.");
         }
 
         public async Task GetData()
@@ -102,6 +105,7 @@ namespace XOutput.UI
         {
             viewModel.Finalizer();
             viewModel.Dispose();
+            logger.Info("The application has exited.");
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
