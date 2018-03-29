@@ -33,6 +33,6 @@ namespace XOutput.Input
         /// </summary>
         /// <param name="big">Big motor value</param>
         /// <param name="small">Small motor value</param>
-        void SetForceFeedback(short big, short small);
+        void SetForceFeedback(double big, double small);
     }
 }

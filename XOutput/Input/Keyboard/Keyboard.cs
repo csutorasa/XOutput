@@ -68,7 +68,7 @@ namespace XOutput.Input.Keyboard
             return DisplayName;
         }
 
-        public void SetForceFeedback(short big, short small)
+        public void SetForceFeedback(double big, double small)
         {
 
         }

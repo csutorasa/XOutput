@@ -170,7 +170,7 @@ namespace XOutput.Input.DirectInput
             return 0;
         }
 
-        public void SetForceFeedback(short big, short small)
+        public void SetForceFeedback(double big, double small)
         {
             var values = new Dictionary<DeviceObjectInstance, Effect>(actuators);
             foreach (var pair in values)
@@ -429,10 +429,9 @@ namespace XOutput.Input.DirectInput
             }
         }
 
-        private int CalculateMagnitude(short value)
+        private int CalculateMagnitude(double value)
         {
-            var percent = (double)value / short.MaxValue;
-            return (int)(10000 * percent);
+            return (int)(10000 * value);
         }
     }
 }
