@@ -95,6 +95,10 @@
     <Compile Include="Input\XInput\Vigem\VigemXBox360Mappings.cs" />
     <Compile Include="Input\XInput\Vigem\VigemDevice.cs" />
     <Compile Include="Input\XInput\XInputHelper.cs" />
+    <Compile Include="Logging\AbstractLogger.cs" />
+    <Compile Include="Logging\LoggerFactory.cs" />
+    <Compile Include="Logging\TraceLogger.cs" />
+    <Compile Include="Logging\ILogger.cs" />
     <Compile Include="UI\Component\DPadModel.cs" />
     <Compile Include="UI\Component\DPadView.xaml.cs">
       <DependentUpon>DPadView.xaml</DependentUpon>
