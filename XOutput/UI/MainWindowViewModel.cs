@@ -43,6 +43,7 @@ namespace XOutput.UI
 
         public void UnhandledException(Exception exceptionObject)
         {
+            logger.Error(exceptionObject);
             MessageBox.Show(exceptionObject.Message + Environment.NewLine + exceptionObject.StackTrace);
         }
 
