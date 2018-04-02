@@ -29,6 +29,7 @@ namespace XOutput.UI
         private readonly MainWindowViewModel viewModel;
         public MainWindowViewModel ViewModel => viewModel;
         private bool hardExit = false;
+        private WindowState restoreState = WindowState.Normal;
 
         public MainWindow()
         {
@@ -39,6 +40,7 @@ namespace XOutput.UI
             DataContext = viewModel;
             if (ArgumentParser.Instance.Minimized)
             {
+                restoreState = WindowState;
                 WindowState = WindowState.Minimized;
             }
             InitializeComponent();
@@ -105,6 +107,7 @@ namespace XOutput.UI
             if (viewModel.GetSettings().CloseToTray && !hardExit)
             {
                 e.Cancel = true;
+                restoreState = WindowState;
                 WindowState = WindowState.Minimized;
                 ShowInTaskbar = false;
             }
@@ -126,7 +129,7 @@ namespace XOutput.UI
         {
             if (WindowState == WindowState.Minimized)
             {
-                WindowState = WindowState.Normal;
+                WindowState = restoreState;
                 Activate();
                 Topmost = true;
                 Topmost = false;
