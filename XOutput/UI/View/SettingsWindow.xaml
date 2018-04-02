@@ -3,14 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Converters="clr-namespace:XOutput.UI.Converters"
         xmlns:local="clr-namespace:XOutput.UI.View"
         mc:Ignorable="d"
-        Title="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SettingsMenu'}" Width="450" Height="200" MinWidth="450"
+        Title="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SettingsMenu'}" Width="460" Height="200" MinWidth="460"
         d:DataContext="{d:DesignInstance Type=local:SettingsViewModel, IsDesignTimeCreatable=False}">
-    <Window.Resources>
-        <Converters:LanguageConverter x:Key="LanguageConverter"/>
-    </Window.Resources>
     <StackPanel Margin="0,10">
         <DockPanel Margin="20,10">
             <Label DockPanel.Dock="Left" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Language'}" Width="200"/>
