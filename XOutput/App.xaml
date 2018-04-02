@@ -2,8 +2,26 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:XOutput"
+             xmlns:Converters="clr-namespace:XOutput.UI.Converters"
              StartupUri="UI/MainWindow.xaml">
     <Application.Resources>
-         
+        <ItemsPanelTemplate x:Key="VerticalStackPanel">
+            <StackPanel Orientation="Vertical" Focusable="False"/>
+        </ItemsPanelTemplate>
+
+        <Converters:BoolToBrushConverter x:Key="BoolToBrushConverter"></Converters:BoolToBrushConverter>
+        <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <Converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
+        <Converters:MultiConverter x:Key="InvertAndVisibilityConverter">
+            <Converters:BoolInverterConverter/>
+            <Converters:BoolToVisibilityConverter/>
+        </Converters:MultiConverter>
+        <Converters:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
+        <Converters:DynamicLanguageConverter x:Key="DynamicLanguageConverter"/>
+        <Converters:EnumerableNotEmptyToVisibilityConverter x:Key="EnumerableNotEmptyToVisibilityConverter"/>
+        <Converters:EnumerableCountToVisibilityConverter x:Key="EnumerableCountToVisibilityConverter"/>
+        <Converters:LanguageConverter x:Key="LanguageConverter"/>
+        <Converters:ColorConverter x:Key="ColorConverter"/>
+        <Converters:BlinkConverter x:Key="BlinkConverter"/>
     </Application.Resources>
 </Application>

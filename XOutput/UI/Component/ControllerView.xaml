@@ -2,17 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:Converters="clr-namespace:XOutput.UI.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:XOutput.UI.Component"
              d:DataContext="{d:DesignInstance Type=local:ControllerViewModel, IsDesignTimeCreatable=False}"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="300">
-    <UserControl.Resources>
-        <Converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
-        <Converters:LanguageConverter x:Key="LanguageConverter"/>
-        <Converters:DynamicLanguageConverter x:Key="DynamicLanguageConverter"/>
-    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
