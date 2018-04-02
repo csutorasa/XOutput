@@ -18,7 +18,7 @@ namespace XOutput.UI
         private XInputTypes xInputType;
         public XInputTypes XInputType
         {
-            get { return xInputType; }
+            get => xInputType;
             set
             {
                 if (xInputType != value)
@@ -35,7 +35,7 @@ namespace XOutput.UI
         private Enum selectedInput;
         public Enum SelectedInput
         {
-            get { return selectedInput; }
+            get => selectedInput;
             set
             {
                 if (selectedInput != value)
@@ -48,7 +48,7 @@ namespace XOutput.UI
 
         public decimal? Min
         {
-            get { return (decimal)mapperData.MinValue * 100; }
+            get => (decimal)mapperData.MinValue * 100;
             set
             {
                 if ((decimal)mapperData.MinValue != value)
@@ -61,7 +61,7 @@ namespace XOutput.UI
 
         public decimal? Max
         {
-            get { return (decimal)mapperData.MaxValue * 100; }
+            get => (decimal)mapperData.MaxValue * 100;
             set
             {
                 if ((decimal)mapperData.MaxValue != value)
@@ -89,7 +89,7 @@ namespace XOutput.UI
         private MapperData mapperData;
         public MapperData MapperData
         {
-            get { return mapperData; }
+            get => mapperData;
             set
             {
                 if (mapperData != value)

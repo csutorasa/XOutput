@@ -19,7 +19,7 @@ namespace XOutput.UI
         private XInputTypes xInputType;
         public XInputTypes XInputType
         {
-            get { return xInputType; }
+            get => xInputType;
             set
             {
                 if (xInputType != value)
@@ -33,7 +33,7 @@ namespace XOutput.UI
         private bool highlight;
         public bool Highlight
         {
-            get { return highlight; }
+            get => highlight;
             set
             {
                 if (highlight != value)

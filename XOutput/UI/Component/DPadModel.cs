@@ -11,7 +11,7 @@ namespace XOutput.UI.Component
         private DPadDirection direction;
         public DPadDirection Direction
         {
-            get { return direction; }
+            get => direction;
             set
             {
                 if (direction != value)
@@ -25,7 +25,7 @@ namespace XOutput.UI.Component
         private int valuex;
         public int ValueX
         {
-            get { return valuex; }
+            get => valuex;
             set
             {
                 if (valuex != value)
@@ -39,7 +39,7 @@ namespace XOutput.UI.Component
         private int valuey;
         public int ValueY
         {
-            get { return valuey; }
+            get => valuey;
             set
             {
                 if (valuey != value)
@@ -53,7 +53,7 @@ namespace XOutput.UI.Component
         private string label;
         public string Label
         {
-            get { return label; }
+            get => label;
             set
             {
                 if (label != value)

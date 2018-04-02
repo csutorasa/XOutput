@@ -17,7 +17,7 @@ namespace XOutput.UI
         private bool allDevices;
         public bool AllDevices
         {
-            get { return allDevices; }
+            get => allDevices;
             set
             {
                 if (allDevices != value)

@@ -11,7 +11,7 @@ namespace XOutput.UI.Component
         private Enum type;
         public Enum Type
         {
-            get { return type; }
+            get => type;
             set
             {
                 if (type != value)
@@ -24,7 +24,7 @@ namespace XOutput.UI.Component
         private int value;
         public int Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (this.value != value)
@@ -37,7 +37,7 @@ namespace XOutput.UI.Component
         private int max;
         public int Max
         {
-            get { return max; }
+            get => max;
             set
             {
                 if (max != value)

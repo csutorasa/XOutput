@@ -11,7 +11,7 @@ namespace XOutput.UI.Component
         private Enum type;
         public Enum Type
         {
-            get { return type; }
+            get => type;
             set
             {
                 if (type != value)
@@ -24,7 +24,7 @@ namespace XOutput.UI.Component
         private bool value;
         public bool Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (this.value != value)

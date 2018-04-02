@@ -12,7 +12,7 @@ namespace XOutput.UI.Component
         private GameController controller;
         public GameController Controller
         {
-            get { return controller; }
+            get => controller;
             set
             {
                 if (controller != value)
@@ -26,7 +26,7 @@ namespace XOutput.UI.Component
         private string buttonText;
         public string ButtonText
         {
-            get { return buttonText; }
+            get => buttonText;
             set
             {
                 if (buttonText != value)
@@ -39,7 +39,7 @@ namespace XOutput.UI.Component
         private bool started;
         public bool Started
         {
-            get { return started; }
+            get => started;
             set
             {
                 if (started != value)
@@ -53,7 +53,7 @@ namespace XOutput.UI.Component
         private bool canStart;
         public bool CanStart
         {
-            get { return canStart; }
+            get => canStart;
             set
             {
                 if (canStart != value)
