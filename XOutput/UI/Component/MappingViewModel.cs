@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XOutput.Input;
-using XOutput.Input.DirectInput;
-using XOutput.Input.Mapper;
-using XOutput.Input.XInput;
-using XOutput.UI.View;
+using XOutput.Devices;
+using XOutput.Devices.Mapper;
+using XOutput.Devices.XInput;
+using XOutput.Tools;
+using XOutput.UI.Windows;
 
 namespace XOutput.UI.Component
 {

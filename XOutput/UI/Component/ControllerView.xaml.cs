@@ -13,9 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using XOutput.Input;
-using XOutput.UI.Component;
-using XOutput.UI.View;
 
 namespace XOutput.UI.Component
 {

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:XOutput"
              xmlns:Converters="clr-namespace:XOutput.UI.Converters"
-             StartupUri="UI/MainWindow.xaml">
+             StartupUri="UI/Windows/MainWindow.xaml">
     <Application.Resources>
         <ItemsPanelTemplate x:Key="VerticalStackPanel">
             <StackPanel Orientation="Vertical" Focusable="False"/>
