@@ -6,11 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using XOutput.Input;
-using XOutput.Input.DirectInput;
-using XOutput.Input.Mapper;
-using XOutput.Input.XInput;
-using XOutput.UI.View;
+using XOutput.Devices.XInput;
 
 namespace XOutput.UI
 {

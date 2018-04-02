@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using XOutput.Input.XInput;
+using XOutput.Devices.XInput;
 
 namespace XOutput.UI.Converters
 {
