@@ -129,7 +129,7 @@ namespace XOutput.UI
             Model.Controllers.Add(controllerView);
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
 
-            AutoStart();
+            HandleArgs();
         }
 
         public void Finalizer()
@@ -250,18 +250,17 @@ namespace XOutput.UI
             delayThread.Start();
         }
 
-        private void AutoStart()
+        private void HandleArgs()
         {
-            var args = Environment.GetCommandLineArgs();
-            var startupControllers = args.Where(arg => arg.StartsWith("--start=")).Select(arg => arg.Replace("--start=", "")).ToArray();
             foreach (var viewModel in Model.Controllers.Select(v => v.ViewModel))
             {
                 var displayName = viewModel.Model.DisplayName;
-                foreach (var startupController in startupControllers)
+                foreach (var startupController in ArgumentParser.Instance.StartControllers)
                 {
                     if (displayName.Contains(startupController))
                     {
                         viewModel.StartStop();
+                        logger.Info($"{startupController} controller is started automatically");
                         break;
                     }
                 }

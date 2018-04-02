@@ -32,12 +32,17 @@ namespace XOutput.UI
 
         public MainWindow()
         {
-            this.viewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher, Log);
-            DataContext = viewModel;
-            InitializeComponent();
 #if DEBUG == false
             Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => viewModel.UnhandledException(e.Exception);
 #endif
+            viewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher, Log);
+            DataContext = viewModel;
+            InitializeComponent();
+            if (ArgumentParser.Instance.Minimized)
+            {
+                WindowState = WindowState.Minimized;
+                ShowInTaskbar = false;
+            }
         }
 
         private async void WindowLoaded(object sender, RoutedEventArgs e)
