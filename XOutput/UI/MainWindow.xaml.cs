@@ -37,16 +37,19 @@ namespace XOutput.UI
 #endif
             viewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher, Log);
             DataContext = viewModel;
-            InitializeComponent();
             if (ArgumentParser.Instance.Minimized)
             {
                 WindowState = WindowState.Minimized;
-                ShowInTaskbar = false;
             }
+            InitializeComponent();
         }
 
         private async void WindowLoaded(object sender, RoutedEventArgs e)
         {
+            if (ArgumentParser.Instance.Minimized)
+            {
+                ShowInTaskbar = false;
+            }
             viewModel.Initialize();
             logger.Info("The application has started.");
             await GetData();
