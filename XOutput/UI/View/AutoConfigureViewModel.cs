@@ -14,10 +14,10 @@ namespace XOutput.UI.View
 {
     public class AutoConfigureViewModel : ViewModelBase<AutoConfigureModel>
     {
-        private const int WAIT_TIME = 5000;
-        private const int SHORT_AXIS_WAIT_TIME = 3000;
-        private const int SHORT_WAIT_TIME = 1000;
-        private const int BLINK_TIME = 500;
+        private const int WaitTime = 5000;
+        private const int ShortAxisWaitTime = 3000;
+        private const int ShortWaitTime = 1000;
+        private const int BlinkTime = 500;
         private readonly Dictionary<Enum, double> referenceValues = new Dictionary<Enum, double>();
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly GameController controller;
@@ -42,12 +42,12 @@ namespace XOutput.UI.View
                 Model.TimerVisibility = System.Windows.Visibility.Collapsed;
             }
             inputTypes = controller.InputDevice.Buttons.Concat(controller.InputDevice.Axes).Concat(controller.InputDevice.Sliders).ToArray();
-            timer.Interval = TimeSpan.FromMilliseconds(BLINK_TIME);
-            timer.Tick += Timer_Tick;
+            timer.Interval = TimeSpan.FromMilliseconds(BlinkTime);
+            timer.Tick += TimerTick;
             timer.Start();
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {
             Model.Highlight = !Model.Highlight;
         }
@@ -146,11 +146,11 @@ namespace XOutput.UI.View
             Model.TimerValue = 0;
             if (shortTime)
             {
-                Model.TimerMaxValue = xInputType.IsAxis() ? SHORT_AXIS_WAIT_TIME : SHORT_WAIT_TIME;
+                Model.TimerMaxValue = xInputType.IsAxis() ? ShortAxisWaitTime : ShortWaitTime;
             }
             else
             {
-                Model.TimerMaxValue = WAIT_TIME;
+                Model.TimerMaxValue = WaitTime;
             }
             lastTime = DateTime.Now;
         }

@@ -14,8 +14,8 @@ namespace XOutput.Input.Mapper
         /// </summary>
         public int SelectedDPad { get; set; }
 
-        private const char SPLIT_CHAR = ',';
-        protected const string SELECTEDDPAD_KEY = "SelectedDPad";
+        private const char SplitChar = ',';
+        protected const string SelectedDPadKey = "SelectedDPad";
         protected readonly Dictionary<XInputTypes, MapperData> mappings = new Dictionary<XInputTypes, MapperData>();
 
         public InputMapperBase()
@@ -53,11 +53,11 @@ namespace XOutput.Input.Mapper
         public virtual Dictionary<string, string> ToDictionary()
         {
             var dict = new Dictionary<string, string>();
-            dict.Add(SELECTEDDPAD_KEY, SelectedDPad.ToString());
+            dict.Add(SelectedDPadKey, SelectedDPad.ToString());
             foreach (var mapping in mappings)
             {
                 dict.Add(mapping.Key.ToString(),
-                    string.Join(SPLIT_CHAR.ToString(), new string[] { mapping.Value.InputType?.ToString(), ((int)Math.Round(mapping.Value.MinValue * 100)).ToString(), ((int)Math.Round(mapping.Value.MaxValue * 100)).ToString() }));
+                    string.Join(SplitChar.ToString(), new string[] { mapping.Value.InputType?.ToString(), ((int)Math.Round(mapping.Value.MinValue * 100)).ToString(), ((int)Math.Round(mapping.Value.MaxValue * 100)).ToString() }));
             }
             return dict;
         }
@@ -70,7 +70,7 @@ namespace XOutput.Input.Mapper
                 try
                 {
                     var key = (XInputTypes)Enum.Parse(typeof(XInputTypes), mapping.Key);
-                    var values = mapping.Value.Split(SPLIT_CHAR);
+                    var values = mapping.Value.Split(SplitChar);
                     if (values.Length != 3)
                     {
                         throw new ArgumentException("Invalid text: " + mapping.Value);

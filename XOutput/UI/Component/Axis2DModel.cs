@@ -11,57 +11,57 @@ namespace XOutput.UI.Component
         public Enum TypeX { get; set; }
         public Enum TypeY { get; set; }
 
-        private int _valuex;
+        private int valuex;
         public int ValueX
         {
-            get { return _valuex; }
+            get { return valuex; }
             set
             {
-                if (_valuex != value)
+                if (valuex != value)
                 {
-                    _valuex = value;
+                    valuex = value;
                     OnPropertyChanged(nameof(ValueX));
                 }
             }
         }
 
-        private int _valuey;
+        private int valuey;
         public int ValueY
         {
-            get { return _valuey; }
+            get { return valuey; }
             set
             {
-                if (_valuey != value)
+                if (valuey != value)
                 {
-                    _valuey = value;
+                    valuey = value;
                     OnPropertyChanged(nameof(ValueY));
                 }
             }
         }
 
-        private int _maxx;
+        private int maxx;
         public int MaxX
         {
-            get { return _maxx; }
+            get { return maxx; }
             set
             {
-                if (_maxx != value)
+                if (maxx != value)
                 {
-                    _maxx = value;
+                    maxx = value;
                     OnPropertyChanged(nameof(MaxX));
                 }
             }
         }
 
-        private int _maxy;
+        private int maxy;
         public int MaxY
         {
-            get { return _maxy; }
+            get { return maxy; }
             set
             {
-                if (_maxy != value)
+                if (maxy != value)
                 {
-                    _maxy = value;
+                    maxy = value;
                     OnPropertyChanged(nameof(MaxY));
                 }
             }

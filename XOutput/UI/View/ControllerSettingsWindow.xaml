@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="{Binding Model.Title}" Width="1010" Height="850" MinWidth="1010"
         d:DataContext="{d:DesignInstance Type=local:ControllerSettingsViewModel, IsDesignTimeCreatable=False}"
-        Loaded="Window_Loaded">
+        Loaded="WindowLoaded">
     <Window.Resources>
         <ItemsPanelTemplate x:Key="VerticalStackPanel">
             <StackPanel Orientation="Vertical" Focusable="False"/>
@@ -58,7 +58,7 @@
                             <Label Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AutomaticDPad'}"
                                Visibility="{Binding Model.MapperDPadViews, Converter={StaticResource EnumerableCountToVisibilityConverter}, ConverterParameter='1|invert'}"/>
                             <StackPanel Visibility="{Binding Model.MapperDPadViews, Converter={StaticResource EnumerableCountToVisibilityConverter}, ConverterParameter='1'}">
-                                <ComboBox ItemsSource="{Binding Model.Dpads}" SelectedItem="{Binding Model.SelectedDPad}" SelectionChanged="ComboBox_Selected"/>
+                                <ComboBox ItemsSource="{Binding Model.Dpads}" SelectedItem="{Binding Model.SelectedDPad}" SelectionChanged="ComboBoxSelected"/>
                             </StackPanel>
                         </Grid>
                     </GroupBox>
@@ -72,7 +72,7 @@
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceFeedback'}">
                         <StackPanel Orientation="Horizontal">
                             <Label Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Test'}"/>
-                            <Button Width="50" Click="Button_Click_1" IsEnabled="{Binding Model.ForceFeedbackEnabled}">
+                            <Button Width="50" Click="ForceFeedbackButtonClick" IsEnabled="{Binding Model.ForceFeedbackEnabled}">
                                 <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
                                     <Binding Path="LanguageModel.Data"/>
                                     <Binding Path="Model.TestButtonText"/>
@@ -86,7 +86,7 @@
                             </Label>
                         </StackPanel>
                     </GroupBox>
-                    <Button Height="30" Margin="5" Click="Button_Click" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ConfigureAll'}"/>
+                    <Button Height="30" Margin="5" Click="ConfigureAllButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ConfigureAll'}"/>
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>

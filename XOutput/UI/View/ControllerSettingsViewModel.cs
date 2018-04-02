@@ -33,7 +33,7 @@ namespace XOutput.UI.View
             CreateXInputControls();
             SetForceFeedback();
             dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
-            dispatcherTimer.Tick += DispatcherTimer_Tick;
+            dispatcherTimer.Tick += DispatcherTimerTick;
             Model.TestButtonText = "Start";
         }
 
@@ -84,7 +84,7 @@ namespace XOutput.UI.View
             }
         }
 
-        private void DispatcherTimer_Tick(object sender, EventArgs e)
+        private void DispatcherTimerTick(object sender, EventArgs e)
         {
             if (state == 0)
             {

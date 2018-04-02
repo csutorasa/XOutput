@@ -40,13 +40,13 @@ namespace XOutput.UI.Component
             viewModel.Refresh();
         }
 
-        private void Configure_Click(object sender, RoutedEventArgs e)
+        private void ConfigureClick(object sender, RoutedEventArgs e)
         {
             viewModel.Configure();
             Refresh();
         }
 
-        private void Invert_Click(object sender, RoutedEventArgs e)
+        private void InvertClick(object sender, RoutedEventArgs e)
         {
             viewModel.Invert();
         }

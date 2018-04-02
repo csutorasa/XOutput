@@ -16,15 +16,15 @@ namespace XOutput.UI
 {
     public class XBoxModel : ModelBase
     {
-        private XInputTypes _xInputType;
+        private XInputTypes xInputType;
         public XInputTypes XInputType
         {
-            get { return _xInputType; }
+            get { return xInputType; }
             set
             {
-                if (_xInputType != value)
+                if (xInputType != value)
                 {
-                    _xInputType = value;
+                    xInputType = value;
                     OnPropertyChanged(nameof(XInputType));
                 }
             }

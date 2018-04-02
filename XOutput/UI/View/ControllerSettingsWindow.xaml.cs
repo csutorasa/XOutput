@@ -41,15 +41,15 @@ namespace XOutput.UI.View
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void WindowLoaded(object sender, RoutedEventArgs e)
         {
             viewModel.Update();
             timer.Interval = TimeSpan.FromMilliseconds(10);
-            timer.Tick += Timer_Tick;
+            timer.Tick += TimerTick;
             timer.Start();
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {
             viewModel.Update();
         }
@@ -57,13 +57,13 @@ namespace XOutput.UI.View
         protected override void OnClosed(EventArgs e)
         {
             controller.InputDevice.Disconnected -= Disconnected;
-            timer.Tick -= Timer_Tick;
+            timer.Tick -= TimerTick;
             timer.Stop();
             viewModel.Dispose();
             base.OnClosed(e);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ConfigureAllButtonClick(object sender, RoutedEventArgs e)
         {
             viewModel.ConfigureAll();
         }
@@ -76,12 +76,12 @@ namespace XOutput.UI.View
             });
         }
 
-        private void ComboBox_Selected(object sender, RoutedEventArgs e)
+        private void ComboBoxSelected(object sender, RoutedEventArgs e)
         {
             viewModel.SelectedDPad();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void ForceFeedbackButtonClick(object sender, RoutedEventArgs e)
         {
             viewModel.TestForceFeedback();
         }

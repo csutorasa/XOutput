@@ -21,28 +21,28 @@ namespace XOutput.UI.Component
                 }
             }
         }
-        private int _value;
+        private int value;
         public int Value
         {
-            get { return _value; }
+            get { return value; }
             set
             {
-                if (_value != value)
+                if (this.value != value)
                 {
-                    _value = value;
-                    OnPropertyChanged(nameof(Value));
+                    this.value = value;
+                    OnPropertyChanged(nameof(AxisModel.Value));
                 }
             }
         }
-        private int _max;
+        private int max;
         public int Max
         {
-            get { return _max; }
+            get { return max; }
             set
             {
-                if (_max != value)
+                if (max != value)
                 {
-                    _max = value;
+                    max = value;
                     OnPropertyChanged(nameof(Max));
                 }
             }

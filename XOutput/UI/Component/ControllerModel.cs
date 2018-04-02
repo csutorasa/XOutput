@@ -9,42 +9,42 @@ namespace XOutput.UI.Component
 {
     public class ControllerModel : ModelBase
     {
-        private GameController _controller;
+        private GameController controller;
         public GameController Controller
         {
-            get { return _controller; }
+            get { return controller; }
             set
             {
-                if (_controller != value)
+                if (controller != value)
                 {
-                    _controller = value;
+                    controller = value;
                     OnPropertyChanged(nameof(Controller));
                 }
             }
         }
 
-        private string _buttonText;
+        private string buttonText;
         public string ButtonText
         {
-            get { return _buttonText; }
+            get { return buttonText; }
             set
             {
-                if (_buttonText != value)
+                if (buttonText != value)
                 {
-                    _buttonText = value;
+                    buttonText = value;
                     OnPropertyChanged(nameof(ButtonText));
                 }
             }
         }
-        private bool _started;
+        private bool started;
         public bool Started
         {
-            get { return _started; }
+            get { return started; }
             set
             {
-                if (_started != value)
+                if (started != value)
                 {
-                    _started = value;
+                    started = value;
                     OnPropertyChanged(nameof(Started));
                 }
             }
