@@ -57,6 +57,6 @@ If your analogue stick isn't in perfect condition, you may have what is called a
 - `--start="controller-displayname"` - defines a part of the display name of the controller to be started on application startup.
 - `--minimized` - starts the application minimized to tray
 
-## Developer release [![Build](https://ci.appveyor.com/api/projects/status/github/csutorasa/XOutput)](https://ci.appveyor.com/project/csutorasa/xoutput/)
+## Developer release [![Build](https://ci.appveyor.com/api/projects/status/github/csutorasa/XOutput?branch=master&svg=true)](https://ci.appveyor.com/project/csutorasa/xoutput/)
 
 If you want to test the latest, often unstable, features before the stable releases, you can check the [AppVeyor](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts) builds.
