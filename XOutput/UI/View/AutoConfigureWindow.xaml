@@ -8,8 +8,8 @@
         xmlns:local="clr-namespace:XOutput.UI.View"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:AutoConfigureViewModel, IsDesignTimeCreatable=False}"
-        Loaded="Window_Loaded"
-        Closed="Window_Closed"
+        Loaded="WindowLoaded"
+        Closed="WindowClosed"
         Title="AutoConfigure" Height="550" Width="550" ResizeMode="CanMinimize">
     <Window.Resources>
         <Converters:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
@@ -62,12 +62,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="1" Click="Disable_Click"
+            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="1" Click="DisableClick"
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Disable'}"/>
-            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="2" Click="Save_Click"
+            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="2" Click="SaveClick"
                 IsEnabled="{Binding Model.MaxType, Converter={StaticResource NotNullToBoolConverter}}" 
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Save'}"/>
-            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="3" Click="Cancel_Click"
+            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="3" Click="CancelClick"
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Cancel'}" />
         </Grid>
 

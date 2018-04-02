@@ -66,8 +66,8 @@
                 <Label DockPanel.Dock="Right">%</Label>
                 <local:NumericTextBox Height="20" Minimum="0" Maximum="100" Value="{Binding Model.Max, Mode=TwoWay}"/>
             </DockPanel>
-            <Button Grid.Column="2" Margin="2" Click="Invert_Click" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Invert'}"/>
+            <Button Grid.Column="2" Margin="2" Click="InvertClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Invert'}"/>
         </Grid>
-        <Button Grid.Column="4" Margin="2" Click="Configure_Click" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Configure'}"/>
+        <Button Grid.Column="4" Margin="2" Click="ConfigureClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Configure'}"/>
     </Grid>
 </UserControl>
