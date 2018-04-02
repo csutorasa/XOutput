@@ -15,43 +15,43 @@ namespace XOutput.UI.View
         private XInputTypes xInput;
         public XInputTypes XInput
         {
-            get { return xInput; }
+            get => xInput;
             set { if (xInput != value) { xInput = value; OnPropertyChanged(nameof(XInput)); } }
         }
         private bool isAuto = true;
         public bool IsAuto
         {
-            get { return isAuto; }
+            get => isAuto;
             set { if (isAuto != value) { isAuto = value; OnPropertyChanged(nameof(IsAuto)); if (value) { MaxType = null; } } }
         }
         private bool highlight;
         public bool Highlight
         {
-            get { return highlight; }
+            get => highlight;
             set { if (highlight != value) { highlight = value; OnPropertyChanged(nameof(Highlight)); } }
         }
         private Enum maxType;
         public Enum MaxType
         {
-            get { return maxType; }
+            get => maxType;
             set { if (maxType != value) { maxType = value; OnPropertyChanged(nameof(MaxType)); } }
         }
         private double minValue;
         public double MinValue
         {
-            get { return minValue; }
+            get => minValue;
             set { if (minValue != value) { minValue = value; OnPropertyChanged(nameof(MinValue)); } }
         }
         private double maxValue;
         public double MaxValue
         {
-            get { return maxValue; }
+            get => maxValue;
             set { if (maxValue != value) { maxValue = value; OnPropertyChanged(nameof(MaxValue)); } }
         }
         private Visibility buttonsVisibility;
         public Visibility ButtonsVisibility
         {
-            get { return buttonsVisibility; }
+            get => buttonsVisibility;
             set
             {
                 if (buttonsVisibility != value)
@@ -64,7 +64,7 @@ namespace XOutput.UI.View
         private double timerMaxValue;
         public double TimerMaxValue
         {
-            get { return timerMaxValue; }
+            get => timerMaxValue;
             set
             {
                 if (timerMaxValue != value)
@@ -77,7 +77,7 @@ namespace XOutput.UI.View
         private double timerValue;
         public double TimerValue
         {
-            get { return timerValue; }
+            get => timerValue;
             set
             {
                 if (timerValue != value)
@@ -90,7 +90,7 @@ namespace XOutput.UI.View
         private Visibility timerVisibility;
         public Visibility TimerVisibility
         {
-            get { return timerVisibility; }
+            get => timerVisibility;
             set
             {
                 if (timerVisibility != value)

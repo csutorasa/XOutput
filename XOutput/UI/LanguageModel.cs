@@ -18,7 +18,7 @@ namespace XOutput
         private Dictionary<string, string> data;
         public Dictionary<string, string> Data
         {
-            get { return data; }
+            get => data;
             set
             {
                 if (data != value)

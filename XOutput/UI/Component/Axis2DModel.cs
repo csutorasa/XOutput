@@ -14,7 +14,7 @@ namespace XOutput.UI.Component
         private int valuex;
         public int ValueX
         {
-            get { return valuex; }
+            get => valuex;
             set
             {
                 if (valuex != value)
@@ -28,7 +28,7 @@ namespace XOutput.UI.Component
         private int valuey;
         public int ValueY
         {
-            get { return valuey; }
+            get => valuey;
             set
             {
                 if (valuey != value)
@@ -42,7 +42,7 @@ namespace XOutput.UI.Component
         private int maxx;
         public int MaxX
         {
-            get { return maxx; }
+            get => maxx;
             set
             {
                 if (maxx != value)
@@ -56,7 +56,7 @@ namespace XOutput.UI.Component
         private int maxy;
         public int MaxY
         {
-            get { return maxy; }
+            get => maxy;
             set
             {
                 if (maxy != value)
@@ -70,7 +70,7 @@ namespace XOutput.UI.Component
         private bool twoD;
         public bool TwoD
         {
-            get { return twoD; }
+            get => twoD;
             set
             {
                 if (twoD != value)

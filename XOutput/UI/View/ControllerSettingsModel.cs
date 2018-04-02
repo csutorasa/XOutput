@@ -37,7 +37,7 @@ namespace XOutput.UI.View
         private int selectedDPad;
         public int SelectedDPad
         {
-            get { return selectedDPad; }
+            get => selectedDPad;
             set
             {
                 if (selectedDPad != value)
@@ -51,7 +51,7 @@ namespace XOutput.UI.View
         private string title;
         public string Title
         {
-            get { return title; }
+            get => title;
             set
             {
                 if (title != value)
@@ -65,7 +65,7 @@ namespace XOutput.UI.View
         private string forceFeedbackText;
         public string ForceFeedbackText
         {
-            get { return forceFeedbackText; }
+            get => forceFeedbackText;
             set
             {
                 if (forceFeedbackText != value)
@@ -79,7 +79,7 @@ namespace XOutput.UI.View
         private string testButtonText;
         public string TestButtonText
         {
-            get { return testButtonText; }
+            get => testButtonText;
             set
             {
                 if (testButtonText != value)
@@ -93,7 +93,7 @@ namespace XOutput.UI.View
         private bool forceFeedbackEnabled;
         public bool ForceFeedbackEnabled
         {
-            get { return forceFeedbackEnabled; }
+            get => forceFeedbackEnabled;
             set
             {
                 if (forceFeedbackEnabled != value)
