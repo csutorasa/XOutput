@@ -80,6 +80,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ArgumentParser.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="IniData.cs" />
     <Compile Include="Input\Controllers.cs" />
