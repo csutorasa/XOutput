@@ -22,8 +22,8 @@ namespace XOutput.Logging
                     File.Delete(LogFile);
                 }
                 catch { }
-                System.Diagnostics.Trace.Listeners.Add(new TextWriterTraceListener(LogFile));
             }
+            System.Diagnostics.Trace.Listeners.Add(new TextWriterTraceListener(LogFile));
         }
 
         public TraceLogger(Type loggerType, int level) : base(loggerType, level)
