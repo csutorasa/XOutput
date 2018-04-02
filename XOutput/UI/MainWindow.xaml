@@ -4,11 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Converters="clr-namespace:XOutput.UI.Converters"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:XOutput"
         mc:Ignorable="d"
         Loaded="WindowLoaded"
         Closed="WindowClosed"
-        Title="XOutput" Width="700" Height="500" >
+        Closing="WindowClosing"
+        Title="XOutput" Width="700" Height="500">
     <Window.Resources>
         <Converters:LanguageConverter x:Key="LanguageConverter"/>
     </Window.Resources>
@@ -20,14 +22,23 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
+        <tb:TaskbarIcon Visibility="Visible" ToolTipText="XOutput" IconSource="/icon.ico" MenuActivation="RightClick" PopupActivation="LeftClick"
+                        TrayMouseDoubleClick="TaskbarIconTrayMouseDoubleClick">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ExitMenu'}" Click="ExitClick"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
         <Menu>
             <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='FileMenu'}">
                 <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveMenu'}" Click="SaveClick"/>
                 <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllersMenu'}" Click="GameControllersClick"/>
+                <Separator/>
                 <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ExitMenu'}" Click="ExitClick"/>
             </MenuItem>
-            <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='LanguageMenu'}">
-
+            <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ToolsMenu'}">
+                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SettingsMenu'}" Click="SettingsClick"/>
             </MenuItem>
             <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HelpMenu'}">
                 <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AboutMenu'}" Click="AboutClick"/>

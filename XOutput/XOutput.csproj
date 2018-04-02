@@ -44,6 +44,9 @@
       <HintPath>..\packages\Costura.Fody.1.6.2\lib\dotnet\Costura.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
     <Reference Include="Nefarius.ViGEmClient, Version=1.13.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nefarius.ViGEmClient.1.13.1\lib\net452\Nefarius.ViGEmClient.dll</HintPath>
     </Reference>
@@ -155,6 +158,8 @@
     <Compile Include="UI\View\AutoConfigureWindow.xaml.cs">
       <DependentUpon>AutoConfigureWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\View\SettingsModel.cs" />
+    <Compile Include="UI\View\SettingsViewModel.cs" />
     <Compile Include="UI\View\ControllerSettingsWindow.xaml.cs">
       <DependentUpon>ControllerSettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -174,6 +179,9 @@
     <Compile Include="UI\View\AutoConfigureViewModel.cs" />
     <Compile Include="UI\MainWindowModel.cs" />
     <Compile Include="UI\MainWindowViewModel.cs" />
+    <Compile Include="UI\View\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UpdateChecker\UpdateChecker.cs" />
     <Compile Include="UpdateChecker\Version.cs" />
     <Page Include="UI\Component\DPadView.xaml">
@@ -222,6 +230,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Component\MappingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\View\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

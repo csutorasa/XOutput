@@ -14,6 +14,10 @@ namespace XOutput
     /// </summary>
     public sealed class Settings
     {
+        private const string LanguageKey = "Language";
+        private const string CloseToTrayKey = "CloseToTray";
+        private const string General = "General";
+        private const string KeyboardKey = "Keyboard";
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(Settings));
 
         /// <summary>
@@ -31,14 +35,18 @@ namespace XOutput
                 foreach (var section in ini.Content)
                 {
                     var id = section.Key;
-                    if (id == "General")
+                    if (id == General)
                     {
-                        if (section.Value.ContainsKey("Language"))
+                        if (section.Value.ContainsKey(LanguageKey))
                         {
-                            LanguageManager.Instance.Language = section.Value["Language"];
+                            LanguageManager.Instance.Language = section.Value[LanguageKey];
+                        }
+                        if (section.Value.ContainsKey(CloseToTrayKey))
+                        {
+                            settings.CloseToTray = section.Value[CloseToTrayKey] == "true";
                         }
                     }
-                    else if (id == "Keyboard")
+                    else if (id == KeyboardKey)
                     {
                         settings.mappers[id] = KeyboardToXInputMapper.Parse(section.Value);
                         logger.Debug("Mapper loaded for keyboard");
@@ -54,6 +62,7 @@ namespace XOutput
         }
 
         private Dictionary<string, InputMapperBase> mappers;
+        public bool CloseToTray { get; set; }
 
         public Settings()
         {
@@ -72,8 +81,9 @@ namespace XOutput
                 ini.AddSection(mapper.Key, mapper.Value.ToDictionary());
             }
             Dictionary<string, string> generalSettings = new Dictionary<string, string>();
-            generalSettings["Language"] = LanguageManager.Instance.Language;
-            ini.AddSection("General", generalSettings);
+            generalSettings[LanguageKey] = LanguageManager.Instance.Language;
+            generalSettings[CloseToTrayKey] = CloseToTray ? "true" : "false";
+            ini.AddSection(General, generalSettings);
             File.WriteAllText(filePath, ini.Serialize());
         }
 
@@ -86,7 +96,7 @@ namespace XOutput
         {
             if (!mappers.ContainsKey(id))
             {
-                if (id == "Keyboard")
+                if (id == KeyboardKey)
                 {
                     mappers[id] = new KeyboardToXInputMapper();
                 }

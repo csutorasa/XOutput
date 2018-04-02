@@ -17,7 +17,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using XOutput.Logging;
-using XOutput.UI.Component;
 
 namespace XOutput.UI
 {
@@ -29,6 +28,7 @@ namespace XOutput.UI
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindow));
         private readonly MainWindowViewModel viewModel;
         public MainWindowViewModel ViewModel => viewModel;
+        private bool hardExit = false;
 
         public MainWindow()
         {
@@ -43,21 +43,6 @@ namespace XOutput.UI
         private async void WindowLoaded(object sender, RoutedEventArgs e)
         {
             viewModel.Initialize();
-            foreach (var child in (Content as Grid).Children)
-            {
-                if (child is Menu)
-                {
-                    Menu menu = child as Menu;
-                    MenuItem langMenu = menu.Items[1] as MenuItem;
-                    foreach (var language in LanguageManager.Instance.GetLanguages())
-                    {
-                        MenuItem langMenuItem = new MenuItem();
-                        langMenuItem.Header = language;
-                        langMenuItem.Click += (sender1, e1) => { LanguageManager.Instance.Language = language; };
-                        langMenu.Items.Add(langMenuItem);
-                    }
-                }
-            }
             logger.Info("The application has started.");
             await GetData();
         }
@@ -84,6 +69,7 @@ namespace XOutput.UI
         }
         private void ExitClick(object sender, RoutedEventArgs e)
         {
+            hardExit = true;
             Close();
         }
         private void GameControllersClick(object sender, RoutedEventArgs e)
@@ -96,9 +82,24 @@ namespace XOutput.UI
             viewModel.SaveSettings();
         }
 
+        private void SettingsClick(object sender, RoutedEventArgs e)
+        {
+            viewModel.OpenSettings();
+        }
+
         private void AboutClick(object sender, RoutedEventArgs e)
         {
             viewModel.AboutPopupShow();
+        }
+
+        private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (viewModel.GetSettings().CloseToTray && !hardExit)
+            {
+                e.Cancel = true;
+                WindowState = WindowState.Minimized;
+                ShowInTaskbar = false;
+            }
         }
 
         private void WindowClosed(object sender, EventArgs e)
@@ -111,6 +112,19 @@ namespace XOutput.UI
         private void CheckBoxChecked(object sender, RoutedEventArgs e)
         {
             viewModel.RefreshGameControllers();
+        }
+
+        private void TaskbarIconTrayMouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Minimized)
+            {
+                WindowState = WindowState.Normal;
+                Activate();
+                Topmost = true;
+                Topmost = false;
+                Focus();
+                ShowInTaskbar = true;
+            }
         }
     }
 }
