@@ -15,6 +15,7 @@ using XOutput.Input.XInput.SCPToolkit;
 using XOutput.Input.XInput.Vigem;
 using XOutput.Logging;
 using XOutput.UI.Component;
+using XOutput.UI.View;
 using XOutput.UpdateChecker;
 
 namespace XOutput.UI
@@ -69,6 +70,11 @@ namespace XOutput.UI
                 settings = new Settings();
                 throw;
             }
+        }
+
+        public Settings GetSettings()
+        {
+            return settings;
         }
 
         public void Initialize()
@@ -220,6 +226,11 @@ namespace XOutput.UI
         {
             logger.Debug("Starting " + GameControllersSettings);
             Process.Start(GameControllersSettings);
+        }
+
+        public void OpenSettings()
+        {
+            new SettingsWindow(new SettingsViewModel(new SettingsModel(settings))).ShowDialog();
         }
 
         private string Translate(string key)
