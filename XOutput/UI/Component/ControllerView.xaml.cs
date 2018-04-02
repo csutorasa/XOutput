@@ -33,12 +33,12 @@ namespace XOutput.UI.Component
             DataContext = viewModel;
             InitializeComponent();
         }
-        private void Open_Click(object sender, RoutedEventArgs e)
+        private void OpenClick(object sender, RoutedEventArgs e)
         {
             viewModel.Edit();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonClick(object sender, RoutedEventArgs e)
         {
             viewModel.StartStop();
         }

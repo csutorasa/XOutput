@@ -10,19 +10,19 @@ namespace XOutput.Logging
 {
     public class TraceLogger : AbstractLogger
     {
-        public const string LOG_FILE = "XOutput.log";
+        public const string LogFile = "XOutput.log";
 
         static TraceLogger()
         {
             System.Diagnostics.Trace.AutoFlush = true;
-            if (File.Exists(LOG_FILE))
+            if (File.Exists(LogFile))
             {
                 try
                 {
-                    File.Delete(LOG_FILE);
+                    File.Delete(LogFile);
                 }
                 catch { }
-                System.Diagnostics.Trace.Listeners.Add(new TextWriterTraceListener(LOG_FILE));
+                System.Diagnostics.Trace.Listeners.Add(new TextWriterTraceListener(LogFile));
             }
         }
 

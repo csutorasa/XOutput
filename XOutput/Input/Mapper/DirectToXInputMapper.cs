@@ -23,7 +23,7 @@ namespace XOutput.Input.Mapper
             DirectToXInputMapper mapper = new DirectToXInputMapper();
             try
             {
-                var selectedDPadText = data[SELECTEDDPAD_KEY];
+                var selectedDPadText = data[SelectedDPadKey];
                 int selectedDPad = int.Parse(selectedDPadText);
                 mapper.SelectedDPad = selectedDPad;
             }

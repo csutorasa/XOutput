@@ -21,16 +21,16 @@ namespace XOutput.UI.Component
                 }
             }
         }
-        private bool _value;
+        private bool value;
         public bool Value
         {
-            get { return _value; }
+            get { return value; }
             set
             {
-                if (_value != value)
+                if (this.value != value)
                 {
-                    _value = value;
-                    OnPropertyChanged(nameof(Value));
+                    this.value = value;
+                    OnPropertyChanged(nameof(ButtonModel.Value));
                 }
             }
         }

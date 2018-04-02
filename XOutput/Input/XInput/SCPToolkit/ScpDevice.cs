@@ -14,28 +14,28 @@ namespace XOutput.Input.XInput.SCPToolkit
     /// </summary>
     public sealed class ScpDevice : IXOutputInterface
     {
-        private const string SCP_BUS_CLASS_GUID = "{F679F562-3164-42CE-A4DB-E7DDBE723909}";
+        private const string SCPBusClassGUID = "{F679F562-3164-42CE-A4DB-E7DDBE723909}";
 
-        private readonly SafeFileHandle _safeFileHandle;
+        private readonly SafeFileHandle safeFileHandle;
 
         public ScpDevice() : this(0) { }
         public ScpDevice(int instance)
         {
             string devicePath = "";
-            if (NativeMethods.Find(new Guid(SCP_BUS_CLASS_GUID), ref devicePath, instance))
-                _safeFileHandle = NativeMethods.GetHandle(devicePath);
+            if (NativeMethods.Find(new Guid(SCPBusClassGUID), ref devicePath, instance))
+                safeFileHandle = NativeMethods.GetHandle(devicePath);
             else
                 throw new IOException("SCP Device cannot be found");
         }
         public ScpDevice(string devicePath)
         {
-            _safeFileHandle = NativeMethods.GetHandle(devicePath);
+            safeFileHandle = NativeMethods.GetHandle(devicePath);
         }
 
         public static bool IsAvailable()
         {
             string devicePath = "";
-            return NativeMethods.Find(new Guid(SCP_BUS_CLASS_GUID), ref devicePath, 0);
+            return NativeMethods.Find(new Guid(SCPBusClassGUID), ref devicePath, 0);
         }
 
         ~ScpDevice()
@@ -45,9 +45,9 @@ namespace XOutput.Input.XInput.SCPToolkit
 
         public void Dispose()
         {
-            if (_safeFileHandle != null && !_safeFileHandle.IsInvalid)
+            if (safeFileHandle != null && !safeFileHandle.IsInvalid)
             {
-                _safeFileHandle.Dispose();
+                safeFileHandle.Dispose();
             }
         }
 
@@ -81,9 +81,9 @@ namespace XOutput.Input.XInput.SCPToolkit
 
         private bool sendToDevice(NativeMethods.MessageType type, int? controller, byte[] input, byte[] output)
         {
-            if (_safeFileHandle.IsInvalid || _safeFileHandle.IsClosed)
+            if (safeFileHandle.IsInvalid || safeFileHandle.IsClosed)
                 return false;
-            return NativeMethods.SendToDevice(_safeFileHandle, type, controller, input, output);
+            return NativeMethods.SendToDevice(safeFileHandle, type, controller, input, output);
         }
 
 

@@ -22,29 +22,29 @@ namespace XOutput.UI.Component
             }
         }
 
-        private int _valuex;
+        private int valuex;
         public int ValueX
         {
-            get { return _valuex; }
+            get { return valuex; }
             set
             {
-                if (_valuex != value)
+                if (valuex != value)
                 {
-                    _valuex = value;
+                    valuex = value;
                     OnPropertyChanged(nameof(ValueX));
                 }
             }
         }
 
-        private int _valuey;
+        private int valuey;
         public int ValueY
         {
-            get { return _valuey; }
+            get { return valuey; }
             set
             {
-                if (_valuey != value)
+                if (valuey != value)
                 {
-                    _valuey = value;
+                    valuey = value;
                     OnPropertyChanged(nameof(ValueY));
                 }
             }

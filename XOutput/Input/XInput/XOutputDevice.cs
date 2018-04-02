@@ -37,7 +37,7 @@ namespace XOutput.Input.XInput
         {
             this.source = source;
             this.mapper = mapper;
-            source.InputChanged += Source_InputChanged;
+            source.InputChanged += SourceInputChanged;
         }
 
         ~XOutputDevice()
@@ -47,7 +47,7 @@ namespace XOutput.Input.XInput
 
         public void Dispose()
         {
-            source.InputChanged -= Source_InputChanged;
+            source.InputChanged -= SourceInputChanged;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace XOutput.Input.XInput
             return 0;
         }
 
-        private void Source_InputChanged()
+        private void SourceInputChanged()
         {
             RefreshInput();
         }
