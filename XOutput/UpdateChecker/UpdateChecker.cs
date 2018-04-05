@@ -6,13 +6,15 @@ using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using XOutput.Logging;
 
 namespace XOutput.UpdateChecker
 {
     public sealed class UpdateChecker : IDisposable
     {
-        private const string GITHUB_URL = "https://api.github.com/repos/csutorasa/XOutput/releases/latest";
+        private const string GithubURL = "https://api.github.com/repos/csutorasa/XOutput/releases/latest";
 
+        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(UpdateChecker));
         private readonly HttpClient client = new HttpClient();
 
         public UpdateChecker()
@@ -33,7 +35,8 @@ namespace XOutput.UpdateChecker
             VersionCompare compare;
             try
             {
-                var response = await client.GetAsync(new Uri(GITHUB_URL));
+                logger.Debug("Getting " + GithubURL);
+                var response = await client.GetAsync(new Uri(GithubURL));
                 response.EnsureSuccessStatusCode();
                 string content = await response.Content.ReadAsStringAsync();
                 string latestRelease = GetLatestRelease(content);

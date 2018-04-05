@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Logging;
 
 namespace XOutput.UpdateChecker
 {
@@ -14,12 +15,16 @@ namespace XOutput.UpdateChecker
         /// <summary>
         /// Current application version.
         /// </summary>
-        public const string AppVersion = "3.5";
+        public const string AppVersion = "3.7";
+
+        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(Version));
 
         public static VersionCompare Compare(string version)
         {
             try
             {
+                logger.Debug("Current application version: " + AppVersion);
+                logger.Debug("Latest application version: " + version);
                 var current = AppVersion.Split('.').Select(t => int.Parse(t)).ToArray();
                 var compare = version.Split('.').Select(t => int.Parse(t)).ToArray();
                 for (int i = 0; true; i++)

@@ -3,48 +3,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XOutput.Input;
+using XOutput.Devices;
 
 namespace XOutput.UI.Component
 {
     public class ControllerModel : ModelBase
     {
-        private GameController _controller;
+        private GameController controller;
         public GameController Controller
         {
-            get { return _controller; }
+            get => controller;
             set
             {
-                if (_controller != value)
+                if (controller != value)
                 {
-                    _controller = value;
+                    controller = value;
                     OnPropertyChanged(nameof(Controller));
                 }
             }
         }
 
-        private string _buttonText;
+        private string buttonText;
         public string ButtonText
         {
-            get { return _buttonText; }
+            get => buttonText;
             set
             {
-                if (_buttonText != value)
+                if (buttonText != value)
                 {
-                    _buttonText = value;
+                    buttonText = value;
                     OnPropertyChanged(nameof(ButtonText));
                 }
             }
         }
-        private bool _started;
+        private bool started;
         public bool Started
         {
-            get { return _started; }
+            get => started;
             set
             {
-                if (_started != value)
+                if (started != value)
                 {
-                    _started = value;
+                    started = value;
                     OnPropertyChanged(nameof(Started));
                 }
             }
@@ -53,7 +53,7 @@ namespace XOutput.UI.Component
         private bool canStart;
         public bool CanStart
         {
-            get { return canStart; }
+            get => canStart;
             set
             {
                 if (canStart != value)

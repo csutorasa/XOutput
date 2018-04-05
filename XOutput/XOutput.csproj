@@ -44,6 +44,9 @@
       <HintPath>..\packages\Costura.Fody.1.6.2\lib\dotnet\Costura.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
     <Reference Include="Nefarius.ViGEmClient, Version=1.13.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nefarius.ViGEmClient.1.13.1\lib\net452\Nefarius.ViGEmClient.dll</HintPath>
     </Reference>
@@ -77,25 +80,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Helper.cs" />
-    <Compile Include="IniData.cs" />
-    <Compile Include="Input\Controllers.cs" />
-    <Compile Include="Input\DirectInput\DirectInputHelper.cs" />
-    <Compile Include="Input\IDevice.cs" />
-    <Compile Include="Input\IInputDevice.cs" />
-    <Compile Include="Input\AbstractInputHelper.cs" />
-    <Compile Include="Input\IInputHelper.cs" />
-    <Compile Include="Input\Keyboard\KeyboardInputHelper.cs" />
-    <Compile Include="Input\Keyboard\Keyboard.cs" />
-    <Compile Include="Input\Mapper\KeyboardToXInputMapper.cs" />
-    <Compile Include="Input\Mapper\InputMapperBase.cs" />
-    <Compile Include="Input\XInput\IXOutputInterface.cs" />
-    <Compile Include="Input\XInput\SCPToolkit\NativeMethods.cs" />
-    <Compile Include="Input\XInput\SCPToolkit\ScpDevice.cs" />
-    <Compile Include="Input\XInput\Vigem\VigemXBox360Mappings.cs" />
-    <Compile Include="Input\XInput\Vigem\VigemDevice.cs" />
-    <Compile Include="Input\XInput\XInputHelper.cs" />
+    <Compile Include="Tools\ArgumentParser.cs" />
+    <Compile Include="Devices\DeviceInputChangedEventArgs.cs" />
+    <Compile Include="Tools\Helper.cs" />
+    <Compile Include="Tools\IniData.cs" />
+    <Compile Include="Devices\Controllers.cs" />
+    <Compile Include="Devices\Input\DeviceDisconnectedEventArgs.cs" />
+    <Compile Include="Devices\Input\DirectInput\DirectInputHelper.cs" />
+    <Compile Include="Devices\IDevice.cs" />
+    <Compile Include="Devices\Input\IInputDevice.cs" />
+    <Compile Include="Devices\AbstractInputHelper.cs" />
+    <Compile Include="Devices\IInputHelper.cs" />
+    <Compile Include="Devices\Input\Keyboard\KeyboardInputHelper.cs" />
+    <Compile Include="Devices\Input\Keyboard\Keyboard.cs" />
+    <Compile Include="Devices\Mapper\KeyboardToXInputMapper.cs" />
+    <Compile Include="Devices\Mapper\InputMapperBase.cs" />
+    <Compile Include="Devices\XInput\IXOutputInterface.cs" />
+    <Compile Include="Devices\XInput\SCPToolkit\NativeMethods.cs" />
+    <Compile Include="Devices\XInput\SCPToolkit\ScpDevice.cs" />
+    <Compile Include="Devices\XInput\Vigem\VigemXBox360Mappings.cs" />
+    <Compile Include="Devices\XInput\Vigem\VigemDevice.cs" />
+    <Compile Include="Devices\XInput\XInputHelper.cs" />
     <Compile Include="Logging\AbstractLogger.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
@@ -124,7 +131,7 @@
     <Compile Include="UI\Converters\MultiConverter.cs" />
     <Compile Include="UI\Converters\NotNullToBoolConverter.cs" />
     <Compile Include="UI\LanguageModel.cs" />
-    <Compile Include="LanguageManager.cs" />
+    <Compile Include="Tools\LanguageManager.cs" />
     <Compile Include="UI\Component\ControllerViewModel.cs" />
     <Compile Include="UI\Component\MappingViewModel.cs" />
     <Compile Include="UI\Converters\EnumerableNotEmptyToVisibilityConverter.cs" />
@@ -132,11 +139,11 @@
     <Compile Include="UI\Converters\LanguageConverter.cs" />
     <Compile Include="UI\Converters\BoolInverterConverter.cs" />
     <Compile Include="UI\Converters\BoolToBrushConverter.cs" />
-    <Compile Include="Input\DirectInput\DirectInputTypes.cs" />
-    <Compile Include="Input\DPadDirection.cs" />
-    <Compile Include="Input\Mapper\DirectToXInputMapper.cs" />
-    <Compile Include="Input\GameController.cs" />
-    <Compile Include="Input\Mapper\MapperData.cs" />
+    <Compile Include="Devices\Input\DirectInput\DirectInputTypes.cs" />
+    <Compile Include="Devices\DPadDirection.cs" />
+    <Compile Include="Devices\Mapper\DirectToXInputMapper.cs" />
+    <Compile Include="Devices\GameController.cs" />
+    <Compile Include="Devices\Mapper\MapperData.cs" />
     <Compile Include="UI\Component\NumericTextBox.cs" />
     <Compile Include="UI\Component\AxisModel.cs" />
     <Compile Include="UI\Component\ControllerModel.cs" />
@@ -151,28 +158,33 @@
     <Compile Include="UI\Component\ButtonView.xaml.cs">
       <DependentUpon>ButtonView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\View\AutoConfigureWindow.xaml.cs">
+    <Compile Include="UI\Windows\AutoConfigureWindow.xaml.cs">
       <DependentUpon>AutoConfigureWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\View\ControllerSettingsWindow.xaml.cs">
+    <Compile Include="UI\Windows\SettingsModel.cs" />
+    <Compile Include="UI\Windows\SettingsViewModel.cs" />
+    <Compile Include="UI\Windows\ControllerSettingsWindow.xaml.cs">
       <DependentUpon>ControllerSettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Input\DirectInput\DirectDevice.cs" />
-    <Compile Include="Input\DirectInput\Devices.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="Input\XInput\XOutputDevice.cs" />
-    <Compile Include="Input\XInput\XInputTypes.cs" />
+    <Compile Include="Devices\Input\DirectInput\DirectDevice.cs" />
+    <Compile Include="Devices\Input\DirectInput\DirectInputDevices.cs" />
+    <Compile Include="Tools\Settings.cs" />
+    <Compile Include="Devices\XInput\XOutputDevice.cs" />
+    <Compile Include="Devices\XInput\XInputTypes.cs" />
     <Compile Include="UI\Component\ControllerView.xaml.cs">
       <DependentUpon>ControllerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Component\MappingView.xaml.cs">
       <DependentUpon>MappingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\View\AutoConfigureModel.cs" />
-    <Compile Include="UI\View\ControllerSettingsModel.cs" />
-    <Compile Include="UI\View\AutoConfigureViewModel.cs" />
-    <Compile Include="UI\MainWindowModel.cs" />
-    <Compile Include="UI\MainWindowViewModel.cs" />
+    <Compile Include="UI\Windows\AutoConfigureModel.cs" />
+    <Compile Include="UI\Windows\ControllerSettingsModel.cs" />
+    <Compile Include="UI\Windows\AutoConfigureViewModel.cs" />
+    <Compile Include="UI\Windows\MainWindowModel.cs" />
+    <Compile Include="UI\Windows\MainWindowViewModel.cs" />
+    <Compile Include="UI\Windows\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UpdateChecker\UpdateChecker.cs" />
     <Compile Include="UpdateChecker\Version.cs" />
     <Page Include="UI\Component\DPadView.xaml">
@@ -195,15 +207,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\View\AutoConfigureWindow.xaml">
+    <Page Include="UI\Windows\AutoConfigureWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\View\ControllerSettingsWindow.xaml">
+    <Page Include="UI\Windows\ControllerSettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\MainWindow.xaml">
+    <Page Include="UI\Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -211,8 +223,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\View\ControllerSettingsViewModel.cs" />
-    <Compile Include="UI\MainWindow.xaml.cs">
+    <Compile Include="UI\Windows\ControllerSettingsViewModel.cs" />
+    <Compile Include="UI\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -221,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Component\MappingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -12,11 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using XOutput.Input;
-using XOutput.Input.DirectInput;
-using XOutput.Input.Mapper;
-using XOutput.Input.XInput;
-using XOutput.UI.Component;
 
 namespace XOutput.UI.Component
 {
@@ -40,13 +35,13 @@ namespace XOutput.UI.Component
             viewModel.Refresh();
         }
 
-        private void Configure_Click(object sender, RoutedEventArgs e)
+        private void ConfigureClick(object sender, RoutedEventArgs e)
         {
             viewModel.Configure();
             Refresh();
         }
 
-        private void Invert_Click(object sender, RoutedEventArgs e)
+        private void InvertClick(object sender, RoutedEventArgs e)
         {
             viewModel.Invert();
         }

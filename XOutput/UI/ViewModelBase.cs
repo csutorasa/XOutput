@@ -7,10 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using XOutput.Input;
-using XOutput.Input.DirectInput;
-using XOutput.Input.Mapper;
-using XOutput.UI.Component;
 
 namespace XOutput.UI
 {

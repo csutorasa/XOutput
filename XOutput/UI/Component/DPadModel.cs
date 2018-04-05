@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Devices;
 
 namespace XOutput.UI.Component
 {
@@ -11,7 +12,7 @@ namespace XOutput.UI.Component
         private DPadDirection direction;
         public DPadDirection Direction
         {
-            get { return direction; }
+            get => direction;
             set
             {
                 if (direction != value)
@@ -22,29 +23,29 @@ namespace XOutput.UI.Component
             }
         }
 
-        private int _valuex;
+        private int valuex;
         public int ValueX
         {
-            get { return _valuex; }
+            get => valuex;
             set
             {
-                if (_valuex != value)
+                if (valuex != value)
                 {
-                    _valuex = value;
+                    valuex = value;
                     OnPropertyChanged(nameof(ValueX));
                 }
             }
         }
 
-        private int _valuey;
+        private int valuey;
         public int ValueY
         {
-            get { return _valuey; }
+            get => valuey;
             set
             {
-                if (_valuey != value)
+                if (valuey != value)
                 {
-                    _valuey = value;
+                    valuey = value;
                     OnPropertyChanged(nameof(ValueY));
                 }
             }
@@ -53,7 +54,7 @@ namespace XOutput.UI.Component
         private string label;
         public string Label
         {
-            get { return label; }
+            get => label;
             set
             {
                 if (label != value)

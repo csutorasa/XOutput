@@ -3,16 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:Converters="clr-namespace:XOutput.UI.Converters"
         xmlns:local="clr-namespace:XOutput.UI.Component"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance Type=local:XBoxViewModel, IsDesignTimeCreatable=False}"
           Stretch="Uniform"
         d:DesignHeight="300" d:DesignWidth="300">
-    <Viewbox.Resources>
-        <Converters:ColorConverter x:Key="ColorConverter"/>
-        <Converters:BlinkConverter x:Key="BlinkConverter"/>
-    </Viewbox.Resources>
     <Canvas Name="svg3023" Width="744.09448" Height="500.35999">
         <Canvas Name="layer1">
             <Canvas.RenderTransform>

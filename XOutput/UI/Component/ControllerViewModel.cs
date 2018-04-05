@@ -4,11 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XOutput.Input;
-using XOutput.Input.DirectInput;
-using XOutput.Input.Mapper;
-using XOutput.Input.XInput;
-using XOutput.UI.View;
+using XOutput.Devices;
+using XOutput.UI.Windows;
 
 namespace XOutput.UI.Component
 {
@@ -25,7 +22,7 @@ namespace XOutput.UI.Component
 
         public void Edit()
         {
-            var controllerSettingsWindow = new ControllerSettings(new ControllerSettingsViewModel(new ControllerSettingsModel(), Model.Controller), Model.Controller);
+            var controllerSettingsWindow = new ControllerSettingsWindow(new ControllerSettingsViewModel(new ControllerSettingsModel(), Model.Controller), Model.Controller);
             controllerSettingsWindow.ShowDialog();
         }
 

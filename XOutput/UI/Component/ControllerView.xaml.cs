@@ -13,9 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using XOutput.Input;
-using XOutput.UI.Component;
-using XOutput.UI.View;
 
 namespace XOutput.UI.Component
 {
@@ -33,12 +30,12 @@ namespace XOutput.UI.Component
             DataContext = viewModel;
             InitializeComponent();
         }
-        private void Open_Click(object sender, RoutedEventArgs e)
+        private void OpenClick(object sender, RoutedEventArgs e)
         {
             viewModel.Edit();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonClick(object sender, RoutedEventArgs e)
         {
             viewModel.StartStop();
         }
