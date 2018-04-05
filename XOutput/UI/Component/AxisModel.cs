@@ -11,7 +11,7 @@ namespace XOutput.UI.Component
         private Enum type;
         public Enum Type
         {
-            get { return type; }
+            get => type;
             set
             {
                 if (type != value)
@@ -21,28 +21,28 @@ namespace XOutput.UI.Component
                 }
             }
         }
-        private int _value;
+        private int value;
         public int Value
         {
-            get { return _value; }
+            get => value;
             set
             {
-                if (_value != value)
+                if (this.value != value)
                 {
-                    _value = value;
-                    OnPropertyChanged(nameof(Value));
+                    this.value = value;
+                    OnPropertyChanged(nameof(AxisModel.Value));
                 }
             }
         }
-        private int _max;
+        private int max;
         public int Max
         {
-            get { return _max; }
+            get => max;
             set
             {
-                if (_max != value)
+                if (max != value)
                 {
-                    _max = value;
+                    max = value;
                     OnPropertyChanged(nameof(Max));
                 }
             }

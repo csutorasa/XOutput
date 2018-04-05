@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,37 +10,30 @@ namespace XOutput.Logging
 {
     public class TraceLogger : AbstractLogger
     {
-        public const string LOG_FILE = "XOutput.log";
+        public const string LogFile = "XOutput.log";
 
         static TraceLogger()
         {
-            Trace.AutoFlush = true;
-            Trace.Listeners.Add(new TextWriterTraceListener(LOG_FILE));
+            System.Diagnostics.Trace.AutoFlush = true;
+            if (File.Exists(LogFile))
+            {
+                try
+                {
+                    File.Delete(LogFile);
+                }
+                catch { }
+            }
+            System.Diagnostics.Trace.Listeners.Add(new TextWriterTraceListener(LogFile));
         }
 
-        public TraceLogger(Type loggerType) : base(loggerType)
+        public TraceLogger(Type loggerType, int level) : base(loggerType, level)
         {
 
         }
 
-        public override void Error(string log, params string[] args)
+        protected override void Log(LogLevel loglevel, string methodName, string log)
         {
-            Trace.TraceError(CreatePrefix(DateTime.Now, loggerType.Name, GetCallerMethodName()) + log, args);
-        }
-
-        public override void Error(Exception ex)
-        {
-            Trace.TraceError(CreatePrefix(DateTime.Now, loggerType.Name, GetCallerMethodName()) + ex.ToString());
-        }
-
-        public override void Info(string log, params string[] args)
-        {
-            Trace.TraceInformation(CreatePrefix(DateTime.Now, loggerType.Name, GetCallerMethodName()) + log, args);
-        }
-
-        public override void Warning(string log, params string[] args)
-        {
-            Trace.TraceWarning(CreatePrefix(DateTime.Now, loggerType.Name, GetCallerMethodName()) + log, args);
+            System.Diagnostics.Trace.WriteLine(CreatePrefix(DateTime.Now, loglevel, LoggerType.Name, methodName) + log);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace XOutput.UI.Component
         private Enum type;
         public Enum Type
         {
-            get { return type; }
+            get => type;
             set
             {
                 if (type != value)
@@ -21,16 +21,16 @@ namespace XOutput.UI.Component
                 }
             }
         }
-        private bool _value;
+        private bool value;
         public bool Value
         {
-            get { return _value; }
+            get => value;
             set
             {
-                if (_value != value)
+                if (this.value != value)
                 {
-                    _value = value;
-                    OnPropertyChanged(nameof(Value));
+                    this.value = value;
+                    OnPropertyChanged(nameof(ButtonModel.Value));
                 }
             }
         }

@@ -6,25 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using XOutput.Input;
-using XOutput.Input.DirectInput;
-using XOutput.Input.Mapper;
-using XOutput.Input.XInput;
-using XOutput.UI.View;
+using XOutput.Devices.XInput;
 
 namespace XOutput.UI
 {
     public class XBoxModel : ModelBase
     {
-        private XInputTypes _xInputType;
+        private XInputTypes xInputType;
         public XInputTypes XInputType
         {
-            get { return _xInputType; }
+            get => xInputType;
             set
             {
-                if (_xInputType != value)
+                if (xInputType != value)
                 {
-                    _xInputType = value;
+                    xInputType = value;
                     OnPropertyChanged(nameof(XInputType));
                 }
             }
@@ -33,7 +29,7 @@ namespace XOutput.UI
         private bool highlight;
         public bool Highlight
         {
-            get { return highlight; }
+            get => highlight;
             set
             {
                 if (highlight != value)

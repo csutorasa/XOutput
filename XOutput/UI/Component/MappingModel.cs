@@ -5,25 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using XOutput.Input;
-using XOutput.Input.DirectInput;
-using XOutput.Input.Mapper;
-using XOutput.Input.XInput;
-using XOutput.UI.View;
+using XOutput.Devices.Mapper;
+using XOutput.Devices.XInput;
 
 namespace XOutput.UI
 {
     public class MappingModel : ModelBase
     {
-        private XInputTypes _xInputType;
+        private XInputTypes xInputType;
         public XInputTypes XInputType
         {
-            get { return _xInputType; }
+            get => xInputType;
             set
             {
-                if (_xInputType != value)
+                if (xInputType != value)
                 {
-                    _xInputType = value;
+                    xInputType = value;
                     OnPropertyChanged(nameof(XInputType));
                 }
             }
@@ -35,7 +32,7 @@ namespace XOutput.UI
         private Enum selectedInput;
         public Enum SelectedInput
         {
-            get { return selectedInput; }
+            get => selectedInput;
             set
             {
                 if (selectedInput != value)
@@ -48,7 +45,7 @@ namespace XOutput.UI
 
         public decimal? Min
         {
-            get { return (decimal)mapperData.MinValue * 100; }
+            get => (decimal)mapperData.MinValue * 100;
             set
             {
                 if ((decimal)mapperData.MinValue != value)
@@ -61,7 +58,7 @@ namespace XOutput.UI
 
         public decimal? Max
         {
-            get { return (decimal)mapperData.MaxValue * 100; }
+            get => (decimal)mapperData.MaxValue * 100;
             set
             {
                 if ((decimal)mapperData.MaxValue != value)
@@ -89,7 +86,7 @@ namespace XOutput.UI
         private MapperData mapperData;
         public MapperData MapperData
         {
-            get { return mapperData; }
+            get => mapperData;
             set
             {
                 if (mapperData != value)

@@ -10,16 +10,15 @@ namespace XOutput.Logging
 {
     public abstract class AbstractLogger : ILogger
     {
-        protected readonly Type loggerType;
+        private readonly Type loggerType;
+        public Type LoggerType => loggerType;
+        private readonly int level;
+        public int Level => level;
 
-        public AbstractLogger(Type loggerType)
+        public AbstractLogger(Type loggerType, int level)
         {
             this.loggerType = loggerType;
-        }
-
-        protected MethodBase GetCallerMethod()
-        {
-            return new StackTrace().GetFrame(2).GetMethod();
+            this.level = level;
         }
 
         protected string GetCallerMethodName()
@@ -38,14 +37,82 @@ namespace XOutput.Logging
             }
         }
 
-        protected string CreatePrefix(DateTime time, string classname, string methodname)
+        protected string CreatePrefix(DateTime time, LogLevel loglevel, string classname, string methodname)
         {
-            return $"{time.ToString("yyyy-MM-dd HH\\:mm\\:ss.fff zzz")} {classname}.{methodname}: ";
+            return $"{time.ToString("yyyy-MM-dd HH\\:mm\\:ss.fff zzz")} {loglevel.Text} {classname}.{methodname}: ";
         }
 
-        public abstract void Error(string log, params string[] args);
-        public abstract void Error(Exception ex);
-        public abstract void Info(string log, params string[] args);
-        public abstract void Warning(string log, params string[] args);
+        public void Trace(string log)
+        {
+            LogCheck(LogLevel.Trace, GetCallerMethodName(), log);
+        }
+
+        public void Trace(Func<string> log)
+        {
+            LogCheck(LogLevel.Trace, GetCallerMethodName(), log);
+        }
+
+        public void Debug(string log)
+        {
+            LogCheck(LogLevel.Debug, GetCallerMethodName(), log);
+        }
+
+        public void Debug(Func<string> log)
+        {
+            LogCheck(LogLevel.Debug, GetCallerMethodName(), log);
+        }
+
+        public void Info(string log)
+        {
+            LogCheck(LogLevel.Info, GetCallerMethodName(), log);
+        }
+
+        public void Info(Func<string> log)
+        {
+            LogCheck(LogLevel.Info, GetCallerMethodName(), log);
+        }
+
+        public void Warning(string log)
+        {
+            LogCheck(LogLevel.Warning, GetCallerMethodName(), log);
+        }
+
+        public void Warning(Func<string> log)
+        {
+            LogCheck(LogLevel.Warning, GetCallerMethodName(), log);
+        }
+
+        public void Error(string log)
+        {
+            LogCheck(LogLevel.Error, GetCallerMethodName(), log);
+        }
+
+        public void Error(Func<string> log)
+        {
+            LogCheck(LogLevel.Error, GetCallerMethodName(), log);
+        }
+
+        public void Error(Exception ex)
+        {
+            LogCheck(LogLevel.Error, GetCallerMethodName(), ex.ToString());
+        }
+
+        protected void LogCheck(LogLevel loglevel, string methodName, string log)
+        {
+            if (loglevel.Level >= Level)
+            {
+                Log(loglevel, methodName, log);
+            }
+        }
+
+        protected void LogCheck(LogLevel loglevel, string methodName, Func<string> log)
+        {
+            if (loglevel.Level >= Level)
+            {
+                Log(loglevel, methodName, log());
+            }
+        }
+
+        protected abstract void Log(LogLevel loglevel, string methodName, string log);
     }
 }
