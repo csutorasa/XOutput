@@ -7,63 +7,42 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:MappingViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="30" d:DesignWidth="490">
-    <UserControl.Resources>
-        <DataTemplate x:Key="InputComboTemplate" DataType="ItemTemplate">
-            <Label>
-                <Label.Content>
-                    <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
-                        <Binding Path="LanguageModel.Data" BindsDirectlyToSource="true" />
-                    </MultiBinding>
-                </Label.Content>
-            </Label>
-        </DataTemplate>
-    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="60"/>
-            <ColumnDefinition Width="*" MinWidth="70"/>
-            <ColumnDefinition Width="3*" MinWidth="270"/>
+            <ColumnDefinition Width="*" MinWidth="50"/>
+            <ColumnDefinition Width="*" MinWidth="50"/>
+            <ColumnDefinition Width="3*" MinWidth="180"/>
             <ColumnDefinition Width="*" MinWidth="90"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Margin="2">
-            <Label.Content>
-                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
-                    <Binding Path="LanguageModel.Data" />
-                    <Binding Path="Model.XInputType" />
-                </MultiBinding>
-            </Label.Content>
+            <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                <Binding Path="LanguageModel.Data" />
+                <Binding Path="Model.XInputType" />
+            </MultiBinding>
         </Label>
-        <ComboBox Grid.Column="1" Margin="2" ItemsSource="{Binding Model.Inputs}" SelectedItem="{Binding Model.SelectedInput, Mode=TwoWay}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock>
-                        <TextBlock.Text>
-                            <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
-                                <Binding Path="DataContext.LanguageModel.Data" RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=ComboBox}" />
-                                <Binding Path="" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
+        <StackPanel Grid.Column="1" Margin="2" Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                        <Binding Path="LanguageModel.Data" />
+                        <Binding Path="Model.SelectedInput" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </StackPanel>
         <Grid Grid.Column="2" Visibility="{Binding Model.ConfigVisibility}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MinWidth="90"/>
-                <ColumnDefinition Width="*" MinWidth="90"/>
+                <ColumnDefinition Width="2*" MinWidth="180"/>
                 <ColumnDefinition Width="*" MinWidth="90"/>
             </Grid.ColumnDefinitions>
-            <DockPanel Grid.Column="0" Margin="2">
-                <Label DockPanel.Dock="Left">Min:</Label>
-                <Label DockPanel.Dock="Right">%</Label>
-                <local:NumericTextBox Height="20" Minimum="0" Maximum="100" Value="{Binding Model.Min, Mode=TwoWay}"/>
-            </DockPanel>
-            <DockPanel Grid.Column="1" Margin="2">
-                <Label DockPanel.Dock="Left">Max:</Label>
-                <Label DockPanel.Dock="Right">%</Label>
-                <local:NumericTextBox Height="20" Minimum="0" Maximum="100" Value="{Binding Model.Max, Mode=TwoWay}"/>
-            </DockPanel>
-            <Button Grid.Column="2" Margin="2" Click="InvertClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Invert'}"/>
+            <StackPanel Grid.Column="0" Margin="2" Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Text="Range: "/>
+                <TextBlock VerticalAlignment="Center" Text="{Binding Model.Min, Converter={StaticResource DecimalToStringConverter}}"/>
+                <TextBlock VerticalAlignment="Center" Text="-"/>
+                <TextBlock VerticalAlignment="Center" Text="{Binding Model.Max, Converter={StaticResource DecimalToStringConverter}}"/>
+                <TextBlock VerticalAlignment="Center" Text="%"/>
+            </StackPanel>
+            <Button Grid.Column="1" Margin="2" Click="InvertClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Invert'}"/>
         </Grid>
         <Button Grid.Column="4" Margin="2" Click="ConfigureClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Configure'}"/>
     </Grid>

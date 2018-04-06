@@ -99,7 +99,7 @@ namespace XOutput.UI
 
         public void Refresh()
         {
-            OnPropertyChanged(nameof(XInputType));
+            //OnPropertyChanged(nameof(XInputType));
             OnPropertyChanged(nameof(SelectedInput));
             OnPropertyChanged(nameof(Min));
             OnPropertyChanged(nameof(Max));

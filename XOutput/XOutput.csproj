@@ -125,6 +125,7 @@
     <Compile Include="UI\Component\XBox.xaml.cs">
       <DependentUpon>XBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Converters\DecimalToStringConverter.cs" />
     <Compile Include="UI\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\BlinkConverter.cs" />
     <Compile Include="UI\Converters\ColorConverter.cs" />
