@@ -31,9 +31,9 @@ namespace XOutput.Logging
 
         }
 
-        protected override void Log(LogLevel loglevel, string methodName, string log)
+        protected override Task Log(LogLevel loglevel, string methodName, string log)
         {
-            System.Diagnostics.Trace.WriteLine(CreatePrefix(DateTime.Now, loglevel, LoggerType.Name, methodName) + log);
+            return Task.Run(() => System.Diagnostics.Trace.WriteLine(CreatePrefix(DateTime.Now, loglevel, LoggerType.Name, methodName) + log));
         }
     }
 }
