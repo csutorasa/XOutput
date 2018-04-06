@@ -41,7 +41,7 @@ namespace XOutput.Devices
 
         public bool HasXOutputInstalled => xOutputInterface != null;
 
-        public bool ForceFeedbackSupported => xOutputInterface is VigemDevice;
+        public bool ForceFeedbackSupported => xOutputInterface is VigemDevice && inputDevice.ForceFeedbackCount > 0;
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(GameController));
         private static readonly Controllers controllers = new Controllers();
@@ -125,9 +125,10 @@ namespace XOutput.Devices
                 thread.Name = $"Emulated controller {controllerCount} output refresher";
                 thread.IsBackground = true;
                 thread.Start();
+                logger.Info($"Emulation started on {ToString()}.");
                 if (ForceFeedbackSupported)
                 {
-                    logger.Info("Force feedback mapping is connected.");
+                    logger.Info($"Force feedback mapping is connected on {ToString()}.");
                     controller = ((VigemDevice)xOutputInterface).GetController(controllerCount);
                     controller.FeedbackReceived += ControllerFeedbackReceived;
                 }
@@ -144,11 +145,20 @@ namespace XOutput.Devices
         /// </summary>
         public void Stop()
         {
-            running = false;
-            thread?.Abort();
-            XInput.InputChanged -= XInputInputChanged;
-            xOutputInterface?.Unplug(controllerCount);
-            resetId();
+            if (running)
+            {
+                running = false;
+                XInput.InputChanged -= XInputInputChanged;
+                if (ForceFeedbackSupported)
+                {
+                    controller.FeedbackReceived -= ControllerFeedbackReceived;
+                    logger.Info($"Force feedback mapping is disconnected on {ToString()}.");
+                }
+                xOutputInterface?.Unplug(controllerCount);
+                logger.Info($"Emulation stopped on {ToString()}.");
+                resetId();
+                thread?.Abort();
+            }
         }
 
         public override string ToString()
@@ -168,15 +178,15 @@ namespace XOutput.Devices
             }
             finally
             {
-                xOutputInterface.Unplug(controllerCount);
                 onStop?.Invoke();
+                Stop();
             }
         }
 
         private void XInputInputChanged(object sender, DeviceInputChangedEventArgs e)
         {
             if (!xOutputInterface.Report(controllerCount, XInput.GetValues()) || !inputDevice.Connected)
-                running = false;
+                Stop();
         }
 
         private void ControllerFeedbackReceived(object sender, Nefarius.ViGEm.Client.Targets.Xbox360.Xbox360FeedbackReceivedEventArgs e)
