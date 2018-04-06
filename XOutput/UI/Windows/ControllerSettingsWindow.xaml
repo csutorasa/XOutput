@@ -78,7 +78,13 @@
                             </Label>
                         </StackPanel>
                     </GroupBox>
-                    <Button Height="30" Margin="5" Click="ConfigureAllButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ConfigureAll'}"/>
+                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='OtherSettings'}">
+                        <StackPanel>
+                            <CheckBox Margin="5" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='StartWhenConnected'}"
+                                      IsChecked="{Binding Model.StartWhenConnected}" Checked="CheckBoxChecked" Unchecked="CheckBoxChecked"/>
+                            <Button Height="30" Margin="5" Click="ConfigureAllButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ConfigureAll'}"/>
+                        </StackPanel>
+                    </GroupBox>
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>

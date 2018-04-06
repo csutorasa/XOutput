@@ -14,8 +14,14 @@ namespace XOutput.Devices.Mapper
         /// </summary>
         public int SelectedDPad { get; set; }
 
+        /// <summary>
+        /// Starts the mapping when connected.
+        /// </summary>
+        public bool StartWhenConnected { get; set; }
+
         private const char SplitChar = ',';
         protected const string SelectedDPadKey = "SelectedDPad";
+        protected const string StartWhenConnectedKey = "StartWhenConnected";
         protected readonly Dictionary<XInputTypes, MapperData> mappings = new Dictionary<XInputTypes, MapperData>();
 
         public InputMapperBase()
@@ -54,6 +60,7 @@ namespace XOutput.Devices.Mapper
         {
             var dict = new Dictionary<string, string>();
             dict.Add(SelectedDPadKey, SelectedDPad.ToString());
+            dict.Add(StartWhenConnectedKey, StartWhenConnected ? "true" : "false");
             foreach (var mapping in mappings)
             {
                 dict.Add(mapping.Key.ToString(),
@@ -88,6 +95,19 @@ namespace XOutput.Devices.Mapper
                 }
             }
             return dict;
+        }
+
+        protected static bool ReadStartWhenConnected(Dictionary<string, string> data)
+        {
+            try
+            {
+                string startWhenConnectedText = data[StartWhenConnectedKey];
+                return startWhenConnectedText == "true";
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

@@ -30,6 +30,18 @@ namespace XOutput.UI.Component
         {
             if (!Model.Started)
             {
+                Start();
+            }
+            else
+            {
+                Model.Controller.Stop();
+            }
+        }
+
+        public void Start()
+        {
+            if (!Model.Started)
+            {
                 int controllerCount = 0;
                 controllerCount = Model.Controller.Start(() =>
                 {
@@ -43,10 +55,6 @@ namespace XOutput.UI.Component
                     log?.Invoke(string.Format(LanguageModel.Instance.Translate("EmulationStarted"), Model.Controller.DisplayName, controllerCount));
                 }
                 Model.Started = controllerCount != 0;
-            }
-            else
-            {
-                Model.Controller.Stop();
             }
         }
     }
