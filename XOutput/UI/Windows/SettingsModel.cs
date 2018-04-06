@@ -44,6 +44,19 @@ namespace XOutput.UI.Windows
             }
         }
 
+        public bool RunAtStartup
+        {
+            get => RegistryModifier.Instance.Autostart;
+            set
+            {
+                if (RegistryModifier.Instance.Autostart != value)
+                {
+                    RegistryModifier.Instance.Autostart = value;
+                    OnPropertyChanged(nameof(RunAtStartup));
+                }
+            }
+        }
+
         public SettingsModel(Settings settings)
         {
             this.settings = settings;

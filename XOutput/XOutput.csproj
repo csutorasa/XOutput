@@ -106,6 +106,7 @@
     <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Tools\RegistryModifier.cs" />
     <Compile Include="UI\Component\DPadModel.cs" />
     <Compile Include="UI\Component\DPadView.xaml.cs">
       <DependentUpon>DPadView.xaml</DependentUpon>
