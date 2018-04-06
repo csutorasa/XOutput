@@ -84,6 +84,11 @@ namespace XOutput.UI.Windows
             }
         }
 
+        public void SetStartWhenConnected()
+        {
+            controller.Mapper.StartWhenConnected = Model.StartWhenConnected;
+        }
+
         private void DispatcherTimerTick(object sender, EventArgs e)
         {
             if (state == 0)

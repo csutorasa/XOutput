@@ -81,5 +81,10 @@ namespace XOutput.UI.Windows
         {
             viewModel.TestForceFeedback();
         }
+
+        private void CheckBoxChecked(object sender, RoutedEventArgs e)
+        {
+            viewModel.SetStartWhenConnected();
+        }
     }
 }

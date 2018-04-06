@@ -217,8 +217,13 @@ namespace XOutput.UI.Windows
                     device.StartCapturing();
                     device.Disconnected -= DispatchRefreshGameControllers;
                     device.Disconnected += DispatchRefreshGameControllers;
-                    logger.Info($"{controller.DisplayName} was connected.");
+                    logger.Info($"{controller.DisplayName} is connected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
+                    if (controller.Mapper.StartWhenConnected)
+                    {
+                        controllerView.ViewModel.Start();
+                        logger.Info($"{controller.DisplayName} controller is started automatically.");
+                    }
                 }
             }
         }
@@ -260,7 +265,7 @@ namespace XOutput.UI.Windows
                 {
                     if (displayName.Contains(startupController))
                     {
-                        viewModel.StartStop();
+                        viewModel.Start();
                         logger.Info($"{startupController} controller is started automatically");
                         break;
                     }

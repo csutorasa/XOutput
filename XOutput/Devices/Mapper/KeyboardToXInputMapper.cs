@@ -17,6 +17,7 @@ namespace XOutput.Devices.Mapper
         public static KeyboardToXInputMapper Parse(Dictionary<string, string> data)
         {
             KeyboardToXInputMapper mapper = new KeyboardToXInputMapper();
+            mapper.StartWhenConnected = ReadStartWhenConnected(data);
             foreach (var mapping in FromDictionary(data, typeof(Key)))
             {
                 mapper.mappings.Add(mapping.Key, mapping.Value);

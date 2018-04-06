@@ -103,5 +103,19 @@ namespace XOutput.UI.Windows
                 }
             }
         }
+
+        private bool startWhenConnected;
+        public bool StartWhenConnected
+        {
+            get => startWhenConnected;
+            set
+            {
+                if (startWhenConnected != value)
+                {
+                    startWhenConnected = value;
+                    OnPropertyChanged(nameof(StartWhenConnected));
+                }
+            }
+        }
     }
 }
