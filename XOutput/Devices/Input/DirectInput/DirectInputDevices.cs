@@ -51,15 +51,22 @@ namespace XOutput.Devices.Input.DirectInput
 
         public DirectDevice CreateDirectDevice(DeviceInstance deviceInstance)
         {
-            var joystick = new Joystick(directInput, deviceInstance.InstanceGuid);
-            if (joystick.Information.ProductGuid.ToString() == EmulatedSCPID || (joystick.Capabilities.AxeCount < 1 && joystick.Capabilities.ButtonCount < 1))
+            try
             {
-                joystick.Dispose();
+                var joystick = new Joystick(directInput, deviceInstance.InstanceGuid);
+                if (joystick.Information.ProductGuid.ToString() == EmulatedSCPID || (joystick.Capabilities.AxeCount < 1 && joystick.Capabilities.ButtonCount < 1))
+                {
+                    joystick.Dispose();
+                    return null;
+                }
+                joystick.Properties.BufferSize = 128;
+
+                return new DirectDevice(deviceInstance, joystick);
+            }
+            catch
+            {
                 return null;
             }
-            joystick.Properties.BufferSize = 128;
-
-            return new DirectDevice(deviceInstance, joystick);
         }
     }
 }
