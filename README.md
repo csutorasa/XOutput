@@ -25,10 +25,11 @@ On the configuration screen there are 3 blocks. The left block shows the input, 
 
 1. Press 'Configure All' to set the mapping all at once, or press 'Configure' on each field to set them individually.
 2. Press the button or move the axis from one end to the other.
-3. Check your mapping comparing the input and output blocks. If needed, you can fine tune the configuration manually with the dropdown menus and percentage value textboxes. (more info below)
-4. Close the configuration window
-5. Save the settings using the 'File->Save' menu or the button located at the bottom right of the main window.
-6. Select 'Start' on the device.
+3. Check your mapping comparing the input and output blocks.
+4. If needed, you can apply deadzone values to axes. (more info below)
+5. Close the configuration window
+6. Save the settings using the 'File->Save' menu or the button located at the bottom right of the main window.
+7. Select 'Start' on the device.
 
 You can check if it is working in the Windows settings, or just select 'File->Game controllers', that opens the Windows calibration for you. An Xbox gamepad should have appeared in the list.
 
