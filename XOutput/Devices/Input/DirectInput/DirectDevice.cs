@@ -183,8 +183,14 @@ namespace XOutput.Devices.Input.DirectInput
 
                 var actuator = pair.Key;
                 var isSmall = actuator.ObjectType == ObjectGuid.YAxis;
-                var axes = new int[] { (int)actuator.ObjectId };
-                var directions = new int[axes.Length];
+                // All available axes will be added.
+                var axes = new List<int> { (int)actuator.ObjectId };
+                axes.AddRange(actuators.Keys.Select(a => (int)a.ObjectId).Where(a => a != (int)actuator.ObjectId));
+                // If two axes are used only the first one will have direction 1.
+                var directions = new int[axes.Count];
+                if (directions.Length > 1)
+                    directions[0] = 1;
+
                 var effectParams = new EffectParameters();
                 effectParams.Flags = EffectFlags.Cartesian | EffectFlags.ObjectIds;
                 effectParams.StartDelay = 0;
@@ -193,7 +199,7 @@ namespace XOutput.Devices.Input.DirectInput
                 effectParams.TriggerButton = -1;
                 effectParams.TriggerRepeatInterval = int.MaxValue;
                 effectParams.Gain = 10000;
-                effectParams.SetAxes(axes, directions);
+                effectParams.SetAxes(axes.ToArray(), directions);
                 var cf = new ConstantForce();
                 cf.Magnitude = CalculateMagnitude(isSmall ? small : big);
                 effectParams.Parameters = cf;
