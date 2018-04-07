@@ -64,7 +64,8 @@ namespace XOutput.Devices.Mapper
             foreach (var mapping in mappings)
             {
                 dict.Add(mapping.Key.ToString(),
-                    string.Join(SplitChar.ToString(), new string[] { mapping.Value.InputType?.ToString(), ((int)Math.Round(mapping.Value.MinValue * 100)).ToString(), ((int)Math.Round(mapping.Value.MaxValue * 100)).ToString() }));
+                    string.Join(SplitChar.ToString(), new string[] { mapping.Value.InputType?.ToString(), ((int)Math.Round(mapping.Value.MinValue * 100)).ToString(),
+                        ((int)Math.Round(mapping.Value.MaxValue * 100)).ToString(), ((int)Math.Round(mapping.Value.Deadzone * 100)).ToString() }));
             }
             return dict;
         }
@@ -78,23 +79,37 @@ namespace XOutput.Devices.Mapper
                 {
                     var key = (XInputTypes)Enum.Parse(typeof(XInputTypes), mapping.Key);
                     var values = mapping.Value.Split(SplitChar);
-                    if (values.Length != 3)
+                    if (values.Length != 4)
                     {
                         throw new ArgumentException("Invalid text: " + mapping.Value);
                     }
                     Enum input = null;
                     if (!string.IsNullOrEmpty(values[0]))
                         input = (Enum)Enum.Parse(enumType, values[0]);
-                    var min = double.Parse(values[1]) / 100;
-                    var max = double.Parse(values[2]) / 100;
-                    dict.Add(key, new MapperData { InputType = input, MinValue = min, MaxValue = max });
+                    double min = TryReadValue(values[1]);
+                    double max = TryReadValue(values[2]);
+                    double deadzone = TryReadValue(values[3]);
+                    dict.Add(key, new MapperData { InputType = input, MinValue = min, MaxValue = max, Deadzone = deadzone });
                 }
-                catch (Exception)
+                catch
                 {
                     // Ignored
                 }
             }
             return dict;
+        }
+
+        protected static double TryReadValue(string data, double defaultValue = 0)
+        {
+            double value;
+            if (double.TryParse(data, out value))
+            {
+                return value / 100;
+            }
+            else
+            {
+                return defaultValue;
+            }
         }
 
         protected static bool ReadStartWhenConnected(Dictionary<string, string> data)

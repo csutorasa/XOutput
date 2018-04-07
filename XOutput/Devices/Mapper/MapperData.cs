@@ -23,12 +23,17 @@ namespace XOutput.Devices.Mapper
         /// Maximum value
         /// </summary>
         public double MaxValue { get; set; }
+        /// <summary>
+        /// Deadzone
+        /// </summary>
+        public double Deadzone { get; set; }
 
         public MapperData()
         {
             InputType = null;
             MinValue = 0;
             MaxValue = 0;
+            Deadzone = 0;
         }
 
         /// <summary>
@@ -41,8 +46,18 @@ namespace XOutput.Devices.Mapper
             double range = MaxValue - MinValue;
             if (Math.Abs(range) < 0.0001)
                 return MinValue;
-            var mappedValue = (value - MinValue) / range;
-            return mappedValue < 0 ? 0 : (mappedValue > 1 ? 1 : mappedValue);
+            var readvalue = value;
+            if (Math.Abs(value - 0.5) < Deadzone)
+            {
+                readvalue = 0.5;
+            }
+
+            var mappedValue = (readvalue - MinValue) / range;
+            if (mappedValue < 0)
+                mappedValue = 0;
+            else if (mappedValue > 1)
+                mappedValue = 1;
+            return mappedValue;
         }
     }
 }
