@@ -10,7 +10,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="50"/>
-            <ColumnDefinition Width="Auto" MinWidth="50"/>
+            <ColumnDefinition Width="Auto" MinWidth="70"/>
             <ColumnDefinition Width="3*" MinWidth="270"/>
             <ColumnDefinition Width="*" MinWidth="90"/>
         </Grid.ColumnDefinitions>
@@ -37,14 +37,16 @@
                 <ColumnDefinition Width="*" MinWidth="90"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Margin="2" Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="Range: "/>
+                <TextBlock VerticalAlignment="Center" Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Range'}"/>
+                <TextBlock VerticalAlignment="Center" Text=": "/>
                 <TextBlock VerticalAlignment="Center" Text="{Binding Model.Min, Converter={StaticResource DecimalToStringConverter}}"/>
                 <TextBlock VerticalAlignment="Center" Text="-"/>
                 <TextBlock VerticalAlignment="Center" Text="{Binding Model.Max, Converter={StaticResource DecimalToStringConverter}}"/>
                 <TextBlock VerticalAlignment="Center" Text="%"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="2" Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="Deadzone: "/>
+                <TextBlock VerticalAlignment="Center" Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Deadzone'}"/>
+                <TextBlock VerticalAlignment="Center" Text=": "/>
                 <local:NumericTextBox VerticalAlignment="Center" Minimum="0" Maximum="50" Value="{Binding Model.Deadzone, Mode=TwoWay}"/>
                 <TextBlock VerticalAlignment="Center" Text="%"/>
             </StackPanel>
