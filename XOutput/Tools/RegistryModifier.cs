@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace XOutput.Tools
         {
             using (var key = GetRegistryKey())
             {
-                var filename = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                var filename = Process.GetCurrentProcess().MainModule.FileName;
                 string value = $"\"{filename}\" {AutostartParams}";
                 key.SetValue(AutostartValueKey, value);
                 logger.Debug($"{AutostartValueKey} registry set to {value}");
