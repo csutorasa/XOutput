@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using XOutput.Logging;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -45,6 +46,7 @@ namespace XOutput.Devices.Input.DirectInput
         public IEnumerable<Enum> Sliders => sliders;
         public int ForceFeedbackCount => actuators.Count;
 
+        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(DirectDevice));
         private readonly DeviceInstance deviceInstance;
         private readonly Joystick joystick;
         private readonly Enum[] buttons;
@@ -76,7 +78,10 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 joystick.SetCooperativeLevel(new WindowInteropHelper(Application.Current.MainWindow).Handle, CooperativeLevel.Background | CooperativeLevel.Exclusive);
             }
-            catch { }
+            catch
+            {
+                logger.Warning($"Failed to set cooperative level to exclusive for {ToString()}");
+            }
             joystick.Acquire();
             if (deviceInstance.ForceFeedbackDriverGuid != Guid.Empty)
             {
@@ -200,7 +205,7 @@ namespace XOutput.Devices.Input.DirectInput
                 }
                 catch (SharpDXException)
                 {
-
+                    logger.Warning($"Failed to create and start effect for {ToString()}");
                 }
             }
         }
@@ -223,8 +228,9 @@ namespace XOutput.Devices.Input.DirectInput
                     InputChanged?.Invoke(this, new DeviceInputChangedEventArgs());
                     return true;
                 }
-                catch (Exception)
+                catch
                 {
+                    logger.Warning($"Poll failed for {ToString()}");
                     return false;
                 }
             }
