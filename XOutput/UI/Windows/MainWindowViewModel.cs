@@ -214,7 +214,6 @@ namespace XOutput.UI.Windows
                     var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, log));
                     controllerView.ViewModel.Model.CanStart = installed;
                     Model.Controllers.Add(controllerView);
-                    device.StartCapturing();
                     device.Disconnected -= DispatchRefreshGameControllers;
                     device.Disconnected += DispatchRefreshGameControllers;
                     logger.Info($"{controller.ToString()} is connected.");
