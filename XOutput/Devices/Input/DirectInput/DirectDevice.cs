@@ -96,6 +96,12 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 actuators = new Dictionary<DeviceObjectInstance, Effect>();
             }
+            inputRefresher = new Thread(InputRefresher);
+            inputRefresher.Name = ToString() + " input reader";
+            inputRefresher.SetApartmentState(ApartmentState.STA);
+            inputRefresher.IsBackground = true;
+            Connected = true;
+            inputRefresher.Start();
         }
 
         ~DirectDevice()
@@ -125,27 +131,17 @@ namespace XOutput.Devices.Input.DirectInput
             return DisplayName + "(" + Id + ")";
         }
 
-        public void StartCapturing()
+        private void InputRefresher()
         {
-            if (inputRefresher == null && !disposed)
+            try
             {
-                inputRefresher = new Thread(() =>
+                while (true)
                 {
-                    try
-                    {
-                        while (true)
-                        {
-                            Connected = RefreshInput();
-                            Thread.Sleep(1);
-                        }
-                    }
-                    catch (ThreadAbortException) { }
-                });
-                inputRefresher.Name = ToString() + " input reader";
-                inputRefresher.IsBackground = true;
-                Connected = true;
-                inputRefresher.Start();
+                    Connected = RefreshInput();
+                    Thread.Sleep(1);
+                }
             }
+            catch (ThreadAbortException) { }
         }
 
         /// <summary>

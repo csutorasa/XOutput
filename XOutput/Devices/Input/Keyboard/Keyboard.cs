@@ -33,7 +33,7 @@ namespace XOutput.Devices.Input.Keyboard
         public Keyboard()
         {
             buttons = KeyboardInputHelper.Instance.Buttons.Where(x => x != Key.None).OrderBy(x => x.ToString()).OfType<Enum>().ToArray();
-            inputRefresher = new Thread(() => InputRefresher());
+            inputRefresher = new Thread(InputRefresher);
             inputRefresher.Name = "Keyboard input notification";
             inputRefresher.SetApartmentState(ApartmentState.STA);
             inputRefresher.IsBackground = true;
