@@ -25,32 +25,17 @@ On the configuration screen there are 3 blocks. The left block shows the input, 
 
 1. Press 'Configure All' to set the mapping all at once, or press 'Configure' on each field to set them individually.
 2. Press the button or move the axis from one end to the other.
-3. Check your mapping comparing the input and output blocks. If needed, you can fine tune the configuration manually with the dropdown menus and percentage value textboxes. (more info below)
-4. Close the configuration window
-5. Save the settings using the 'File->Save' menu or the button located at the bottom right of the main window.
-6. Select 'Start' on the device.
+3. Check your mapping comparing the input and output blocks.
+4. If needed, you can apply deadzone values to axes. (more info below)
+5. Close the configuration window
+6. Save the settings using the 'File->Save' menu or the button located at the bottom right of the main window.
+7. Select 'Start' on the device.
 
 You can check if it is working in the Windows settings, or just select 'File->Game controllers', that opens the Windows calibration for you. An Xbox gamepad should have appeared in the list.
 
-## Manual configuration (usually not needed)
-
-After selecting the input, the minimum and maximum values can be configured. Some examples are shown below:
-
-| Minimum | Maximum | Effect                                                  |
-|---------|---------|---------------------------------------------------------|
-| 0       | 100     | The axis is mapped as is                                |
-| 100     | 0       | The axis is inverted                                    |
-| 0       | 50      | Lower half of the axis                                  |
-| 50      | 100     | Upper half of the axis                                  |
-| 50      | 0       | Lower half of the axis inverted                         |
-| 100     | 50      | Upper half of the axis inverted                         |
-| 0       | 0       | The axis is always at the bottom-left, input is ignored |
-| 50      | 50      | The axis is always centered, input is ignored           |
-| 100     | 100     | The axis is always at the upper-right, input is ignored |
-
 ### Deadzone
 
-If your analogue stick isn't in perfect condition, you may have what is called a deadzone, which means that a part of the axis isn't working right, usually it's the center part, syndromes of this are: wrong center position and unwanted movement of the camera, character, etc. To solve go to the game settings and apply a bit of deadzone, how much depends on the device in question.
+If your analogue stick isn't in perfect condition, you may have what is called a deadzone, which means that a part of the axis isn't working right, usually it's the center part, syndromes of this are: wrong center position and unwanted movement of the camera, character, etc. To solve apply a bit of deadzone in the mapping settings, how much depends on the device in question.
 
 ## Command line arguments
 

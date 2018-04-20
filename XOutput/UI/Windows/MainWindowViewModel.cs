@@ -43,9 +43,9 @@ namespace XOutput.UI.Windows
             timer.Start();
         }
 
-        public void UnhandledException(Exception exceptionObject)
+        public async void UnhandledException(Exception exceptionObject)
         {
-            logger.Error(exceptionObject);
+            await logger.Error(exceptionObject);
             MessageBox.Show(exceptionObject.Message + Environment.NewLine + exceptionObject.StackTrace);
         }
 
@@ -198,7 +198,7 @@ namespace XOutput.UI.Windows
                 {
                     controller.Dispose();
                     Model.Controllers.Remove(controllerView);
-                    logger.Info($"{controller.DisplayName} was disconnected.");
+                    logger.Info($"{controller.ToString()} is disconnected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerDisconnected"), controller.DisplayName));
                 }
             }
@@ -217,8 +217,13 @@ namespace XOutput.UI.Windows
                     device.StartCapturing();
                     device.Disconnected -= DispatchRefreshGameControllers;
                     device.Disconnected += DispatchRefreshGameControllers;
-                    logger.Info($"{controller.DisplayName} was connected.");
+                    logger.Info($"{controller.ToString()} is connected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
+                    if (controller.Mapper.StartWhenConnected)
+                    {
+                        controllerView.ViewModel.Start();
+                        logger.Info($"{controller.ToString()} controller is started automatically.");
+                    }
                 }
             }
         }
@@ -260,7 +265,7 @@ namespace XOutput.UI.Windows
                 {
                     if (displayName.Contains(startupController))
                     {
-                        viewModel.StartStop();
+                        viewModel.Start();
                         logger.Info($"{startupController} controller is started automatically");
                         break;
                     }
