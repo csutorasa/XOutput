@@ -60,11 +60,15 @@
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceFeedback'}">
                         <StackPanel Orientation="Horizontal">
                             <Label Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Test'}"/>
-                            <Button Width="50" Click="ForceFeedbackButtonClick" IsEnabled="{Binding Model.ForceFeedbackEnabled}">
-                                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
-                                    <Binding Path="LanguageModel.Data"/>
-                                    <Binding Path="Model.TestButtonText"/>
-                                </MultiBinding>
+                            <Button Click="ForceFeedbackButtonClick" IsEnabled="{Binding Model.ForceFeedbackEnabled}">
+                                <TextBlock Margin="10 0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                                            <Binding Path="LanguageModel.Data"/>
+                                            <Binding Path="Model.TestButtonText"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
                             </Button>
                             <Label>
                                 <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
@@ -74,7 +78,13 @@
                             </Label>
                         </StackPanel>
                     </GroupBox>
-                    <Button Height="30" Margin="5" Click="ConfigureAllButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ConfigureAll'}"/>
+                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='OtherSettings'}">
+                        <StackPanel>
+                            <CheckBox Margin="5" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='StartWhenConnected'}"
+                                      IsChecked="{Binding Model.StartWhenConnected}" Checked="CheckBoxChecked" Unchecked="CheckBoxChecked"/>
+                            <Button Height="30" Margin="5" Click="ConfigureAllButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ConfigureAll'}"/>
+                        </StackPanel>
+                    </GroupBox>
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>

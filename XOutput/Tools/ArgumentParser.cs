@@ -22,6 +22,7 @@ namespace XOutput.Tools
         protected ArgumentParser()
         {
             var args = Environment.GetCommandLineArgs().ToList();
+            args.RemoveAt(0);
             startControllers = args.Where(arg => arg.StartsWith("--start=")).Select(arg => arg.Replace("--start=", "")).ToArray();
             minimized = args.Where(arg => arg == "--minimized").Any();
             if (minimized)

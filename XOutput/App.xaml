@@ -23,5 +23,6 @@
         <Converters:LanguageConverter x:Key="LanguageConverter"/>
         <Converters:ColorConverter x:Key="ColorConverter"/>
         <Converters:BlinkConverter x:Key="BlinkConverter"/>
+        <Converters:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
     </Application.Resources>
 </Application>

@@ -76,10 +76,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    </Page>
     <Compile Include="Tools\ArgumentParser.cs" />
     <Compile Include="Devices\DeviceInputChangedEventArgs.cs" />
     <Compile Include="Tools\Helper.cs" />
@@ -106,6 +106,7 @@
     <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Tools\RegistryModifier.cs" />
     <Compile Include="UI\Component\DPadModel.cs" />
     <Compile Include="UI\Component\DPadView.xaml.cs">
       <DependentUpon>DPadView.xaml</DependentUpon>
@@ -124,6 +125,7 @@
     <Compile Include="UI\Component\XBox.xaml.cs">
       <DependentUpon>XBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Converters\DecimalToStringConverter.cs" />
     <Compile Include="UI\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\BlinkConverter.cs" />
     <Compile Include="UI\Converters\ColorConverter.cs" />

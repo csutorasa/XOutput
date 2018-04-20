@@ -16,5 +16,9 @@
             <Label DockPanel.Dock="Left" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='CloseToTray'}" Width="200"/>
             <CheckBox HorizontalAlignment="Left" Width="200" VerticalAlignment="Center" IsChecked="{Binding Model.CloseToTray}"/>
         </DockPanel>
+        <DockPanel Margin="20,10">
+            <Label DockPanel.Dock="Left" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='RunAtStartup'}" Width="200"/>
+            <CheckBox HorizontalAlignment="Left" Width="200" VerticalAlignment="Center" IsChecked="{Binding Model.RunAtStartup}"/>
+        </DockPanel>
     </StackPanel>
 </Window>

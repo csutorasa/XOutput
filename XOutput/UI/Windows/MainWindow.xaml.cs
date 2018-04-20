@@ -54,7 +54,7 @@ namespace XOutput.UI.Windows
                 ShowInTaskbar = false;
             }
             viewModel.Initialize();
-            logger.Info("The application has started.");
+            await logger.Info("The application has started.");
             await GetData();
         }
 
@@ -114,11 +114,11 @@ namespace XOutput.UI.Windows
             }
         }
 
-        private void WindowClosed(object sender, EventArgs e)
+        private async void WindowClosed(object sender, EventArgs e)
         {
             viewModel.Finalizer();
             viewModel.Dispose();
-            logger.Info("The application has exited.");
+            await logger.Info("The application has exited.");
         }
 
         private void CheckBoxChecked(object sender, RoutedEventArgs e)

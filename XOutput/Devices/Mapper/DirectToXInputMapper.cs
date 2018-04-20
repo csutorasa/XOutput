@@ -22,11 +22,12 @@ namespace XOutput.Devices.Mapper
             DirectToXInputMapper mapper = new DirectToXInputMapper();
             try
             {
-                var selectedDPadText = data[SelectedDPadKey];
+                string selectedDPadText = data[SelectedDPadKey];
                 int selectedDPad = int.Parse(selectedDPadText);
                 mapper.SelectedDPad = selectedDPad;
             }
             catch (Exception) { }
+            mapper.StartWhenConnected = ReadStartWhenConnected(data);
             foreach (var mapping in FromDictionary(data, typeof(DirectInputTypes)))
             {
                 mapper.mappings.Add(mapping.Key, mapping.Value);
