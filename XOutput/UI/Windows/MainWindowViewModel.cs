@@ -196,6 +196,7 @@ namespace XOutput.UI.Windows
                 var controller = controllerView.ViewModel.Model.Controller;
                 if (controller.InputDevice is DirectDevice && (!instances.Any(x => x.InstanceGuid == ((DirectDevice)controller.InputDevice).Id) || !controller.InputDevice.Connected))
                 {
+                    controllerView.ViewModel.Dispose();
                     controller.Dispose();
                     Model.Controllers.Remove(controllerView);
                     logger.Info($"{controller.ToString()} is disconnected.");

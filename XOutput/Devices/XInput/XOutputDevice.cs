@@ -13,6 +13,8 @@ namespace XOutput.Devices.XInput
     /// </summary>
     public sealed class XOutputDevice : IDevice
     {
+        public const int DPadCount = 1;
+
         /// <summary>
         /// This event is invoked if the data from the device was updated
         /// </summary>
@@ -26,7 +28,8 @@ namespace XOutput.Devices.XInput
         private readonly Dictionary<XInputTypes, double> values = new Dictionary<XInputTypes, double>();
         private readonly IInputDevice source;
         private readonly InputMapperBase mapper;
-        private DPadDirection[] dPads = new DPadDirection[1];
+        private readonly DPadDirection[] dPads = new DPadDirection[DPadCount];
+        private readonly DeviceState state;
 
         /// <summary>
         /// Creates a new XDevice.
@@ -37,6 +40,7 @@ namespace XOutput.Devices.XInput
         {
             this.source = source;
             this.mapper = mapper;
+            state = new DeviceState(XInputHelper.Instance.Values.OfType<Enum>().ToArray(), DPadCount);
             source.InputChanged += SourceInputChanged;
         }
 
@@ -94,7 +98,10 @@ namespace XOutput.Devices.XInput
             {
                 dPads[0] = DPadHelper.GetDirection(GetBool(XInputTypes.UP), GetBool(XInputTypes.DOWN), GetBool(XInputTypes.LEFT), GetBool(XInputTypes.RIGHT));
             }
-            InputChanged?.Invoke(this, new DeviceInputChangedEventArgs());
+            var changedDPads = state.SetDPads(dPads);
+            var changedValues = state.SetValues(values.Where(t => !t.Key.IsDPad()).ToDictionary(x => (Enum)x.Key, x => x.Value));
+            if (changedDPads.Any() || changedValues.Any())
+                InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changedValues, changedDPads));
             return true;
         }
 

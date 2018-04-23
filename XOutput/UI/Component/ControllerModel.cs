@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using XOutput.Devices;
 
 namespace XOutput.UI.Component
@@ -60,6 +61,20 @@ namespace XOutput.UI.Component
                 {
                     canStart = value;
                     OnPropertyChanged(nameof(CanStart));
+                }
+            }
+        }
+
+        private Brush background;
+        public Brush Background
+        {
+            get => background;
+            set
+            {
+                if (background != value)
+                {
+                    background = value;
+                    OnPropertyChanged(nameof(Background));
                 }
             }
         }
