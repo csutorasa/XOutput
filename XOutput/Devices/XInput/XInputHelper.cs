@@ -97,6 +97,11 @@ namespace XOutput.Devices.XInput
             return XInputHelper.Instance.IsDPad(input);
         }
 
+        public static bool IsButton(this XInputTypes input)
+        {
+            return XInputHelper.Instance.IsButton(input);
+        }
+
         public static double GetDisableValue(this XInputTypes input)
         {
             return XInputHelper.Instance.GetDisableValue(input);

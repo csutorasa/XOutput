@@ -75,7 +75,7 @@ namespace XOutput.UI.Windows
         {
             Enum maxType = null;
             double maxDiff = 0;
-            foreach (var type in inputTypes)
+            foreach (var type in e.ChangedValues)
             {
                 double oldValue = referenceValues[type];
                 double newValue = controller.InputDevice.Get(type);
