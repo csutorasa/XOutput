@@ -13,7 +13,9 @@ namespace XOutput.UI.Windows
     {
         public SettingsViewModel(SettingsModel model) : base(model)
         {
-            foreach (var language in LanguageManager.Instance.GetLanguages())
+            var languages = LanguageManager.Instance.GetLanguages().ToList();
+            languages.Sort();
+            foreach (var language in languages)
             {
                 Model.Languages.Add(language);
             }
