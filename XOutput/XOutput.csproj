@@ -81,6 +81,13 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Devices\DeviceState.cs" />
+    <Compile Include="Devices\Input\InputDiagnosticsTypes.cs" />
+    <Compile Include="Devices\XInput\XInputDiagnostics.cs" />
+    <Compile Include="Devices\XInput\XInputDiagnosticsTypes.cs" />
+    <Compile Include="Diagnostics\DiagnosticsResultState.cs" />
+    <Compile Include="Diagnostics\DiagnosticsResult.cs" />
+    <Compile Include="Devices\Input\InputDiagnostics.cs" />
+    <Compile Include="Diagnostics\IDiagnostics.cs" />
     <Compile Include="Tools\ArgumentParser.cs" />
     <Compile Include="Devices\DeviceInputChangedEventArgs.cs" />
     <Compile Include="Tools\Helper.cs" />
@@ -121,6 +128,11 @@
     <Compile Include="UI\Component\AxisViewModel.cs" />
     <Compile Include="UI\Component\Axis2DViewModel.cs" />
     <Compile Include="UI\Component\IUpdatableView.cs" />
+    <Compile Include="UI\Component\DiagnosticsItemModel.cs" />
+    <Compile Include="UI\Component\DiagnosticsItemView.xaml.cs">
+      <DependentUpon>DiagnosticsItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Component\DiagnosticsItemViewModel.cs" />
     <Compile Include="UI\Component\XBoxModel.cs" />
     <Compile Include="UI\Component\XBoxViewModel.cs" />
     <Compile Include="UI\Component\XBox.xaml.cs">
@@ -160,6 +172,11 @@
     </Compile>
     <Compile Include="UI\Component\ButtonView.xaml.cs">
       <DependentUpon>ButtonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\DiagnosticsModel.cs" />
+    <Compile Include="UI\Windows\DiagnosticsViewModel.cs" />
+    <Compile Include="UI\Windows\DiagnosticsWindow.xaml.cs">
+      <DependentUpon>DiagnosticsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Windows\AutoConfigureWindow.xaml.cs">
       <DependentUpon>AutoConfigureWindow.xaml</DependentUpon>
@@ -206,9 +223,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\Component\DiagnosticsItemView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI\Component\XBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\DiagnosticsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\Windows\AutoConfigureWindow.xaml">
       <SubType>Designer</SubType>
