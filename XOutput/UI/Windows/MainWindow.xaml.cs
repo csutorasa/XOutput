@@ -98,6 +98,11 @@ namespace XOutput.UI.Windows
             viewModel.OpenSettings();
         }
 
+        private void DiagnosticsClick(object sender, RoutedEventArgs e)
+        {
+            viewModel.OpenDiagnostics();
+        }
+
         private void AboutClick(object sender, RoutedEventArgs e)
         {
             viewModel.AboutPopupShow();
