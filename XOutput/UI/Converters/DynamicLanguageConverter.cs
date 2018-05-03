@@ -40,7 +40,7 @@ namespace XOutput.UI.Converters
             else if (values[1] is sbyte || values[1] is byte || values[1] is char || values[1] is short || values[1] is ushort || values[1] is int || values[1] is uint || values[1] is long || values[1] is ulong || values[1] is decimal)
                 return values[1].ToString();
             else
-                throw new ArgumentException(values[1] + " cannot be translated");
+                key = values[1] as string;
             return getTranslation(translations, key) ?? key;
         }
 
