@@ -8,10 +8,10 @@ namespace XOutput.Devices.Input
 {
     public enum InputDiagnosticsTypes
     {
-
         AxesCount,
         ButtonsCount,
         DPadCount,
+        SlidersCount,
         ForceFeedbackCount,
     }
 }

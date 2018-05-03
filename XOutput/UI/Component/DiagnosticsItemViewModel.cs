@@ -23,7 +23,7 @@ namespace XOutput.UI.Component
         protected string SourceToString(object source)
         {
             if (source == null)
-                return "System";
+                return LanguageModel.Instance.Translate("System");
             if (source is IInputDevice)
                 return (source as IInputDevice).DisplayName;
             return null;
