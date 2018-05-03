@@ -242,9 +242,9 @@ namespace XOutput.UI.Windows
 
         public void OpenDiagnostics()
         {
-            ICollection<IDiagnostics> elements = Model.Controllers.Select(c => c.ViewModel.Model.Controller.InputDevice)
+            IList<IDiagnostics> elements = Model.Controllers.Select(c => c.ViewModel.Model.Controller.InputDevice)
                 .Select(d => new InputDiagnostics(d)).OfType<IDiagnostics>().ToList();
-            elements.Add(new Devices.XInput.XInputDiagnostics());
+            elements.Insert(0, new Devices.XInput.XInputDiagnostics());
 
             new DiagnosticsWindow(new DiagnosticsViewModel(new DiagnosticsModel(), elements)).ShowDialog();
         }

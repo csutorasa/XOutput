@@ -144,6 +144,7 @@
     <Compile Include="UI\Converters\ColorConverter.cs" />
     <Compile Include="UI\Converters\EnumerableCountToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\MultiConverter.cs" />
+    <Compile Include="UI\Converters\EqualsToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\NotNullToBoolConverter.cs" />
     <Compile Include="UI\LanguageModel.cs" />
     <Compile Include="Tools\LanguageManager.cs" />

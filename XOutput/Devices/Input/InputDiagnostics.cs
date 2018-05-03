@@ -26,6 +26,7 @@ namespace XOutput.Devices.Input
                 GetButtonsResult(),
                 GetDPadResult(),
                 GetForceFeedbackResult(),
+                GetSlidersResult(),
             };
         }
 
@@ -46,6 +47,17 @@ namespace XOutput.Devices.Input
                 result.State = DiagnosticsResultState.Passed;
             }
             return result;
+        }
+
+        public DiagnosticsResult GetSlidersResult()
+        {
+            int slidersCount = device.Sliders.Count();
+            return new DiagnosticsResult
+            {
+                Value = slidersCount,
+                Type = InputDiagnosticsTypes.SlidersCount,
+                State = DiagnosticsResultState.Passed,
+            };
         }
 
         public DiagnosticsResult GetButtonsResult()
