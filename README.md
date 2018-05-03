@@ -37,6 +37,16 @@ You can check if it is working in the Windows settings, or just select 'File->Ga
 
 If your analogue stick isn't in perfect condition, you may have what is called a deadzone, which means that a part of the axis isn't working right, usually it's the center part, syndromes of this are: wrong center position and unwanted movement of the camera, character, etc. To solve apply a bit of deadzone in the mapping settings, how much depends on the device in question.
 
+## Diagnostics
+
+XOutput has a diagnostics screen. A few tests are run to check if the application is working correctly.
+
+| Image                                    | Meaning                                                                                                  |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| green circle with a tick                 | Everything is optimal.                                                                                  |
+| yellow triangle with an exclamation mark | The experience may be sub-optimal. Some functions may not work, but the application is functional.  |
+| red circle with a minus sign             | Something is not working, the application cannot function properly. Some core features may be unusable. |
+
 ## Command line arguments
 
 - `--start="controller-displayname"` - defines a part of the display name of the controller to be started on application startup.
