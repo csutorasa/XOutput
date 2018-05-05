@@ -10,6 +10,26 @@ namespace XOutput.Devices
 
     public class DeviceInputChangedEventArgs : EventArgs
     {
+        public IEnumerable<Enum> ChangedValues => changedValues.ToArray();
+        public IEnumerable<int> ChangedDPads => changedDPads.ToArray();
 
+        protected IEnumerable<Enum> changedValues;
+        protected IEnumerable<int> changedDPads;
+
+        public DeviceInputChangedEventArgs(IEnumerable<Enum> changedValues, IEnumerable<int> changedDPads)
+        {
+            this.changedDPads = changedDPads;
+            this.changedValues = changedValues;
+        }
+
+        public bool HasValueChanged(Enum type)
+        {
+            return changedValues.Contains(type);
+        }
+
+        public bool HasDPadChanged(int dPadIndex)
+        {
+            return changedDPads.Contains(dPadIndex);
+        }
     }
 }

@@ -14,6 +14,7 @@ using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput.SCPToolkit;
 using XOutput.Devices.XInput.Vigem;
+using XOutput.Diagnostics;
 using XOutput.Logging;
 using XOutput.Tools;
 using XOutput.UI.Component;
@@ -196,6 +197,7 @@ namespace XOutput.UI.Windows
                 var controller = controllerView.ViewModel.Model.Controller;
                 if (controller.InputDevice is DirectDevice && (!instances.Any(x => x.InstanceGuid == ((DirectDevice)controller.InputDevice).Id) || !controller.InputDevice.Connected))
                 {
+                    controllerView.ViewModel.Dispose();
                     controller.Dispose();
                     Model.Controllers.Remove(controllerView);
                     logger.Info($"{controller.ToString()} is disconnected.");
@@ -214,7 +216,6 @@ namespace XOutput.UI.Windows
                     var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, log));
                     controllerView.ViewModel.Model.CanStart = installed;
                     Model.Controllers.Add(controllerView);
-                    device.StartCapturing();
                     device.Disconnected -= DispatchRefreshGameControllers;
                     device.Disconnected += DispatchRefreshGameControllers;
                     logger.Info($"{controller.ToString()} is connected.");
@@ -237,6 +238,15 @@ namespace XOutput.UI.Windows
         public void OpenSettings()
         {
             new SettingsWindow(new SettingsViewModel(new SettingsModel(settings))).ShowDialog();
+        }
+
+        public void OpenDiagnostics()
+        {
+            IList<IDiagnostics> elements = Model.Controllers.Select(c => c.ViewModel.Model.Controller.InputDevice)
+                .Select(d => new InputDiagnostics(d)).OfType<IDiagnostics>().ToList();
+            elements.Insert(0, new Devices.XInput.XInputDiagnostics());
+
+            new DiagnosticsWindow(new DiagnosticsViewModel(new DiagnosticsModel(), elements)).ShowDialog();
         }
 
         private string Translate(string key)

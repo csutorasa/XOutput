@@ -40,7 +40,7 @@ namespace XOutput.Devices.Input.DirectInput
             }
         }
 
-        public IEnumerable<DPadDirection> DPads => dpads;
+        public IEnumerable<DPadDirection> DPads => state.DPads;
         public IEnumerable<Enum> Buttons => buttons;
         public IEnumerable<Enum> Axes => axes;
         public IEnumerable<Enum> Sliders => sliders;
@@ -52,7 +52,8 @@ namespace XOutput.Devices.Input.DirectInput
         private readonly Enum[] buttons;
         private readonly Enum[] axes;
         private readonly Enum[] sliders;
-        private readonly DPadDirection[] dpads;
+        private readonly Enum[] allTypes;
+        private readonly DeviceState state;
         private readonly EffectInfo force;
         private readonly Dictionary<DeviceObjectInstance, Effect> actuators;
         private bool connected = false;
@@ -71,7 +72,6 @@ namespace XOutput.Devices.Input.DirectInput
             buttons = DirectInputHelper.Instance.Buttons.Take(joystick.Capabilities.ButtonCount).OfType<Enum>().ToArray();
             axes = GetAxes();
             sliders = GetSliders();
-            dpads = new DPadDirection[joystick.Capabilities.PovCount];
 
             joystick.Properties.AxisMode = DeviceAxisMode.Absolute;
             try
@@ -96,6 +96,14 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 actuators = new Dictionary<DeviceObjectInstance, Effect>();
             }
+            allTypes = buttons.Concat(axes).Concat(sliders).ToArray();
+            state = new DeviceState(allTypes, joystick.Capabilities.PovCount);
+            inputRefresher = new Thread(InputRefresher);
+            inputRefresher.Name = ToString() + " input reader";
+            inputRefresher.SetApartmentState(ApartmentState.STA);
+            inputRefresher.IsBackground = true;
+            Connected = true;
+            inputRefresher.Start();
         }
 
         ~DirectDevice()
@@ -125,27 +133,17 @@ namespace XOutput.Devices.Input.DirectInput
             return DisplayName + "(" + Id + ")";
         }
 
-        public void StartCapturing()
+        private void InputRefresher()
         {
-            if (inputRefresher == null && !disposed)
+            try
             {
-                inputRefresher = new Thread(() =>
+                while (true)
                 {
-                    try
-                    {
-                        while (true)
-                        {
-                            Connected = RefreshInput();
-                            Thread.Sleep(1);
-                        }
-                    }
-                    catch (ThreadAbortException) { }
-                });
-                inputRefresher.Name = ToString() + " input reader";
-                inputRefresher.IsBackground = true;
-                Connected = true;
-                inputRefresher.Start();
+                    Connected = RefreshInput();
+                    Thread.Sleep(1);
+                }
             }
+            catch (ThreadAbortException) { }
         }
 
         /// <summary>
@@ -227,11 +225,12 @@ namespace XOutput.Devices.Input.DirectInput
                 try
                 {
                     joystick.Poll();
-                    foreach (var dpad in Enumerable.Range(0, dpads.Length))
-                    {
-                        dpads[dpad] = GetDPadValue(dpad);
-                    }
-                    InputChanged?.Invoke(this, new DeviceInputChangedEventArgs());
+                    var newDPads = Enumerable.Range(0, state.DPads.Count()).Select(i => GetDPadValue(i));
+                    var newValues = allTypes.ToDictionary(t => t, t => Get(t));
+                    var changedDPads = state.SetDPads(newDPads);
+                    var changedValues = state.SetValues(newValues);
+                    if (changedDPads.Any() || changedValues.Any())
+                        InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changedValues, changedDPads));
                     return true;
                 }
                 catch
@@ -360,7 +359,15 @@ namespace XOutput.Devices.Input.DirectInput
 
         private Enum[] GetAxes()
         {
-            return joystick.GetObjects(DeviceObjectTypeFlags.Axis)
+            var axes = joystick.GetObjects(DeviceObjectTypeFlags.Axis).ToArray();
+            foreach (var axis in axes)
+            {
+                var properties = joystick.GetObjectPropertiesById(axis.ObjectId);
+                properties.Range = new InputRange(ushort.MinValue, ushort.MaxValue);
+                properties.DeadZone = 0;
+                properties.Saturation = 10000;
+            }
+            return axes
                 .Select(MapAxisByInstanceNumber)
                 .Where(a => a != null)
                 .OrderBy(a => (int)a)

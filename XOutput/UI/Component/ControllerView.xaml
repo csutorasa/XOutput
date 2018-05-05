@@ -7,7 +7,7 @@
              d:DataContext="{d:DesignInstance Type=local:ControllerViewModel, IsDesignTimeCreatable=False}"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="300">
-    <Grid>
+    <Grid Background="{Binding Model.Background}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="100"/>

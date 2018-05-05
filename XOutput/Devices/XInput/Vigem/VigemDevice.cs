@@ -31,7 +31,7 @@ namespace XOutput.Devices.XInput.Vigem
         {
             try
             {
-                new ViGEmClient();
+                new ViGEmClient().Dispose();
                 return true;
             }
             catch (VigemBusNotFoundException)
