@@ -928,6 +928,18 @@ DirectInputTypes.Button125=B125
 DirectInputTypes.Button126=B126
 DirectInputTypes.Button127=B127
 DirectInputTypes.Button128=B128
+True=Да
+False=Нет
+System=Система
+DiagnosticsMenu=Диагностика
+InputDiagnosticsTypes.AxesCount=Осей:
+InputDiagnosticsTypes.ButtonsCount=Кнопок:
+InputDiagnosticsTypes.DPadCount=DPad:
+InputDiagnosticsTypes.SlidersCount=Слайдеров:
+InputDiagnosticsTypes.ForceFeedbackCount=Моторов для виброотдачи:
+XInputDiagnosticsTypes.XDevice=ПО для виртуализации установлено
+XInputDiagnosticsTypes.ScpDevice=SCPToolkit установлен
+XInputDiagnosticsTypes.VigemDevice=ViGEm установлен
 
 [Brazilian Portuguese]
 FileMenu=Arquivo
