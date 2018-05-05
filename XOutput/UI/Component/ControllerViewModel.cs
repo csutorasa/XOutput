@@ -4,20 +4,28 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Threading;
 using XOutput.Devices;
 using XOutput.UI.Windows;
 
 namespace XOutput.UI.Component
 {
-    public class ControllerViewModel : ViewModelBase<ControllerModel>
+    public class ControllerViewModel : ViewModelBase<ControllerModel>, IDisposable
     {
+        private const int BackgroundDelayMS = 500;
         private readonly Action<string> log;
+        private readonly DispatcherTimer timer = new DispatcherTimer();
 
         public ControllerViewModel(ControllerModel model, GameController controller, Action<string> log) : base(model)
         {
             this.log = log;
             Model.Controller = controller;
             Model.ButtonText = "Start";
+            Model.Background = Brushes.White;
+            Model.Controller.InputDevice.InputChanged += InputDevice_InputChanged;
+            timer.Interval = TimeSpan.FromMilliseconds(BackgroundDelayMS);
+            timer.Tick += Timer_Tick;
         }
 
         public void Edit()
@@ -56,6 +64,24 @@ namespace XOutput.UI.Component
                 }
                 Model.Started = controllerCount != 0;
             }
+        }
+
+        public void Dispose()
+        {
+            timer.Tick -= Timer_Tick;
+            Model.Controller.InputDevice.InputChanged -= InputDevice_InputChanged;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            Model.Background = Brushes.White;
+        }
+
+        private void InputDevice_InputChanged(object sender, DeviceInputChangedEventArgs e)
+        {
+            Model.Background = Brushes.LightGreen;
+            timer.Stop();
+            timer.Start();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace XOutput.UpdateChecker
             VersionCompare compare;
             try
             {
-                logger.Debug("Getting " + GithubURL);
+                await logger.Debug("Getting " + GithubURL);
                 var response = await client.GetAsync(new Uri(GithubURL));
                 response.EnsureSuccessStatusCode();
                 string content = await response.Content.ReadAsStringAsync();

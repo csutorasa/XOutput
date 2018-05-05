@@ -24,5 +24,6 @@
         <Converters:ColorConverter x:Key="ColorConverter"/>
         <Converters:BlinkConverter x:Key="BlinkConverter"/>
         <Converters:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
+        <Converters:EqualsToVisibilityConverter x:Key="EqualsToVisibilityConverter"/>
     </Application.Resources>
 </Application>

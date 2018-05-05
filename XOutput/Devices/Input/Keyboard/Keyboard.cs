@@ -29,11 +29,13 @@ namespace XOutput.Devices.Input.Keyboard
 
         private Thread inputRefresher;
         private readonly Enum[] buttons;
+        private readonly DeviceState state;
 
         public Keyboard()
         {
             buttons = KeyboardInputHelper.Instance.Buttons.Where(x => x != Key.None).OrderBy(x => x.ToString()).OfType<Enum>().ToArray();
-            inputRefresher = new Thread(() => InputRefresher());
+            state = new DeviceState(buttons, 0);
+            inputRefresher = new Thread(InputRefresher);
             inputRefresher.Name = "Keyboard input notification";
             inputRefresher.SetApartmentState(ApartmentState.STA);
             inputRefresher.IsBackground = true;
@@ -79,7 +81,10 @@ namespace XOutput.Devices.Input.Keyboard
             {
                 while (true)
                 {
-                    InputChanged?.Invoke(this, new DeviceInputChangedEventArgs());
+                    var newValues = buttons.ToDictionary(t => t, t => Get(t));
+                    var changedValues = state.SetValues(newValues);
+                    if (changedValues.Any())
+                        InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changedValues, new int[0]));
                     Thread.Sleep(1);
                 }
             }
