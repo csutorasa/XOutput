@@ -7,17 +7,32 @@ using XOutput.Diagnostics;
 
 namespace XOutput.Devices.Input
 {
+    /// <summary>
+    /// Tests an input device.
+    /// </summary>
     public class InputDiagnostics : IDiagnostics
     {
         protected IInputDevice device;
 
+        /// <summary>
+        /// Gets the source <see cref="IInputDevice"/>.
+        /// <para>Implements <see cref="IDiagnostics.Source"/></para>
+        /// </summary>
         public object Source => device;
 
+        /// <summary>
+        /// C
+        /// </summary>
+        /// <param name="device"></param>
         public InputDiagnostics(IInputDevice device)
         {
             this.device = device;
         }
 
+        /// <summary>
+        /// <para>Implements <see cref="IDiagnostics.GetResults()"/></para>
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<DiagnosticsResult> GetResults()
         {
             return new DiagnosticsResult[]

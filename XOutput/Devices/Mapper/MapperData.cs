@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace XOutput.Devices.Mapper
 {
     /// <summary>
-    /// Contains mapping data to X input conversion.
+    /// Contains mapping data to Xinput conversion.
     /// </summary>
     public class MapperData
     {

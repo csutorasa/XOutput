@@ -7,6 +7,9 @@ using System.Windows.Data;
 
 namespace XOutput.UI.Converters
 {
+    /// <summary>
+    /// Multi converter class.
+    /// </summary>
     public class MultiConverter : List<IValueConverter>, IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

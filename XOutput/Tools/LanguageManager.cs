@@ -16,9 +16,15 @@ namespace XOutput.Tools
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(LanguageManager));
         private static LanguageManager instance = new LanguageManager("languages.txt");
+        /// <summary>
+        /// Gets the singleton instance of the class.
+        /// </summary>
         public static LanguageManager Instance => instance;
 
         private string language;
+        /// <summary>
+        /// Gets or sets the current language.
+        /// </summary>
         public string Language
         {
             get { return language; }
@@ -39,6 +45,10 @@ namespace XOutput.Tools
             Language = "English";
         }
 
+        /// <summary>
+        /// Gets the available languages.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<string> GetLanguages()
         {
             return data.Keys;

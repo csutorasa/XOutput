@@ -17,13 +17,40 @@ namespace XOutput.Devices.Input.DirectInput
     /// </summary>
     public sealed class DirectDevice : IInputDevice
     {
-        public event DeviceInputChangedHandler InputChanged;
-        public event DeviceDisconnectedHandler Disconnected;
+        #region Constants
         /// <summary>
-        /// The GUID of the controller
+        /// The delay in milliseconds to sleep between input reads.
+        /// </summary>
+        public const int ReadDelayMs = 1;
+        #endregion
+
+        #region Events
+        /// <summary>
+        /// Triggered periodically to trigger input read from Direct input device.
+        /// <para>Implements <see cref="IDevice.InputChanged"/></para>
+        /// </summary>
+        public event DeviceInputChangedHandler InputChanged;
+        /// <summary>
+        /// Triggered when the any read or write fails.
+        /// <para>Implements <see cref="IInputDevice.Disconnected"/></para>
+        /// </summary>
+        public event DeviceDisconnectedHandler Disconnected;
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// Gets the GUID of the controller.
         /// </summary>
         public Guid Id => deviceInstance.InstanceGuid;
+        /// <summary>
+        /// Gets the product name of the device.
+        /// <para>Implements <see cref="IInputDevice.DisplayName"/></para>
+        /// </summary>
         public string DisplayName => deviceInstance.ProductName;
+        /// <summary>
+        /// Gets or sets if the device is connected and ready to use.
+        /// <para>Implements <see cref="IInputDevice.Connected"/></para>
+        /// </summary>
         public bool Connected
         {
             get => connected;
@@ -39,12 +66,27 @@ namespace XOutput.Devices.Input.DirectInput
                 }
             }
         }
-
+        /// <summary>
+        /// <para>Implements <see cref="IDevice.DPads"/></para>
+        /// </summary>
         public IEnumerable<DPadDirection> DPads => state.DPads;
+        /// <summary>
+        /// <para>Implements <see cref="IDevice.Buttons"/></para>
+        /// </summary>
         public IEnumerable<Enum> Buttons => buttons;
+        /// <summary>
+        /// <para>Implements <see cref="IDevice.Axes"/></para>
+        /// </summary>
         public IEnumerable<Enum> Axes => axes;
+        /// <summary>
+        /// <para>Implements <see cref="IDevice.Sliders"/></para>
+        /// </summary>
         public IEnumerable<Enum> Sliders => sliders;
+        /// <summary>
+        /// <para>Implements <see cref="IInputDevice.ForceFeedbackCount"/></para>
+        /// </summary>
         public int ForceFeedbackCount => actuators.Count;
+        #endregion
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(DirectDevice));
         private readonly DeviceInstance deviceInstance;
@@ -126,8 +168,9 @@ namespace XOutput.Devices.Input.DirectInput
 
         /// <summary>
         /// Display name followed by the deviceID.
+        /// <para>Overrides <see cref="object.ToString()"/></para>
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Friendly name</returns>
         public override string ToString()
         {
             return DisplayName + "(" + Id + ")";
@@ -140,7 +183,7 @@ namespace XOutput.Devices.Input.DirectInput
                 while (true)
                 {
                     Connected = RefreshInput();
-                    Thread.Sleep(1);
+                    Thread.Sleep(ReadDelayMs);
                 }
             }
             catch (ThreadAbortException) { }
@@ -148,6 +191,7 @@ namespace XOutput.Devices.Input.DirectInput
 
         /// <summary>
         /// Gets the current state of the inputTpye.
+        /// <para>Implements <see cref="IDevice.Get(Enum)"/></para>
         /// </summary>
         /// <param name="inputType">Type of input</param>
         /// <returns>Value</returns>
@@ -171,6 +215,12 @@ namespace XOutput.Devices.Input.DirectInput
             return 0;
         }
 
+        /// <summary>
+        /// Sets the force feedback motor values.
+        /// <para>Implements <see cref="IInputDevice.SetForceFeedback(double, double)"/></para>
+        /// </summary>
+        /// <param name="big">Big motor value</param>
+        /// <param name="small">Small motor value</param>
         public void SetForceFeedback(double big, double small)
         {
             var values = new Dictionary<DeviceObjectInstance, Effect>(actuators);
@@ -215,9 +265,9 @@ namespace XOutput.Devices.Input.DirectInput
         }
 
         /// <summary>
-        /// Refreshes the current state.
+        /// Refreshes the current state. Triggers <see cref="InputChanged"/> event.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>if the input was available</returns>
         public bool RefreshInput()
         {
             if (!disposed)
@@ -357,6 +407,10 @@ namespace XOutput.Devices.Input.DirectInput
             }
         }
 
+        /// <summary>
+        /// Gets and initializes available axes for the device.
+        /// </summary>
+        /// <returns><see cref="DirectInputTypes"/> of the axes</returns>
         private Enum[] GetAxes()
         {
             var axes = joystick.GetObjects(DeviceObjectTypeFlags.Axis).ToArray();
@@ -427,12 +481,20 @@ namespace XOutput.Devices.Input.DirectInput
             }
         }
 
+        /// <summary>
+        /// Gets available sliders for the device.
+        /// </summary>
+        /// <returns><see cref="DirectInputTypes"/> of the axes</returns>
         private Enum[] GetSliders()
         {
             int slidersCount = joystick.GetObjects().Where(o => o.ObjectType == ObjectGuid.Slider).Count();
             return DirectInputHelper.Instance.Sliders.Take(slidersCount).OfType<Enum>().ToArray();
         }
 
+        /// <summary>
+        /// Reads the current state of the device.
+        /// </summary>
+        /// <returns>state</returns>
         private JoystickState GetCurrentState()
         {
             try
@@ -446,6 +508,11 @@ namespace XOutput.Devices.Input.DirectInput
             }
         }
 
+        /// <summary>
+        /// Calculates the magnitude value from 0-1 values.
+        /// </summary>
+        /// <param name="value">ratio</param>
+        /// <returns>magnitude value</returns>
         private int CalculateMagnitude(double value)
         {
             return (int)(10000 * value);

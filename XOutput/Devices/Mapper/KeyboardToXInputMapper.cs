@@ -7,6 +7,9 @@ using System.Windows.Input;
 
 namespace XOutput.Devices.Mapper
 {
+    /// <summary>
+    /// Mapper that converts keyboard into XInput
+    /// </summary>
     public class KeyboardToXInputMapper : InputMapperBase
     {
         /// <summary>

@@ -8,7 +8,7 @@ using XOutput.Devices.Input.DirectInput;
 namespace XOutput.Devices.Mapper
 {
     /// <summary>
-    /// Converts DirectInput into XInput
+    /// Mapper that converts DirectInput into XInput
     /// </summary>
     public sealed class DirectToXInputMapper : InputMapperBase
     {
