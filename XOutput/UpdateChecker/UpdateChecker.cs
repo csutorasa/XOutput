@@ -12,6 +12,9 @@ namespace XOutput.UpdateChecker
 {
     public sealed class UpdateChecker : IDisposable
     {
+        /// <summary>
+        /// GitHub URL to check the latest release version.
+        /// </summary>
         private const string GithubURL = "https://api.github.com/repos/csutorasa/XOutput/releases/latest";
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(UpdateChecker));
@@ -23,6 +26,11 @@ namespace XOutput.UpdateChecker
             client.DefaultRequestHeaders.Add("User-Agent", "System.Net.Http.HttpClient");
         }
 
+        /// <summary>
+        /// Gets the string of the latest release from a http response.
+        /// </summary>
+        /// <param name="response">GitHub response</param>
+        /// <returns></returns>
         private string GetLatestRelease(string response)
         {
             string tagName = Regex.Match(response, "\"tag_name\":\".*?\"").Value;
@@ -30,6 +38,10 @@ namespace XOutput.UpdateChecker
             return tags.Remove(tags.Length - 1);
         }
 
+        /// <summary>
+        /// Compares the current version with the latest release.
+        /// </summary>
+        /// <returns></returns>
         public async Task<VersionCompare> CompareRelease()
         {
             VersionCompare compare;
@@ -49,6 +61,9 @@ namespace XOutput.UpdateChecker
             return await Task.Run(() => compare);
         }
 
+        /// <summary>
+        /// Releases all resources.
+        /// </summary>
         public void Dispose()
         {
             client.Dispose();

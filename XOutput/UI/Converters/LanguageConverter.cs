@@ -19,7 +19,7 @@ namespace XOutput.UI.Converters
         /// <summary>
         /// Translates a text.
         /// </summary>
-        /// <param name="value">Ignored</param>
+        /// <param name="value">translation data</param>
         /// <param name="targetType">Ignored</param>
         /// <param name="parameter">Text key</param>
         /// <param name="culture">Ignored</param>

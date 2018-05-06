@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace XOutput.Logging
 {
+    /// <summary>
+    /// Logger base class.
+    /// </summary>
     public abstract class AbstractLogger : ILogger
     {
         private readonly Type loggerType;
@@ -115,6 +118,13 @@ namespace XOutput.Logging
             return Task.Run(() => { });
         }
 
+        /// <summary>
+        /// Writes the log.
+        /// </summary>
+        /// <param name="loglevel">loglevel</param>
+        /// <param name="methodName">name of the caller method</param>
+        /// <param name="log">log text</param>
+        /// <returns></returns>
         protected abstract Task Log(LogLevel loglevel, string methodName, string log);
     }
 }

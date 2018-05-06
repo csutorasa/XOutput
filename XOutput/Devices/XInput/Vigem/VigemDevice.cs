@@ -27,6 +27,10 @@ namespace XOutput.Devices.XInput.Vigem
             client = new ViGEmClient();
         }
 
+        /// <summary>
+        /// Gets if <see cref="VigemDevice"/> is available.
+        /// </summary>
+        /// <returns></returns>
         public static bool IsAvailable()
         {
             try
@@ -40,6 +44,11 @@ namespace XOutput.Devices.XInput.Vigem
             }
         }
 
+        /// <summary>
+        /// Implements <see cref="IXOutputInterface.Plugin(int)"/>
+        /// </summary>
+        /// <param name="controllerCount">number of controller</param>
+        /// <returns>If it was successful</returns>
         public bool Plugin(int controllerCount)
         {
             var controller = new Xbox360Controller(client);
@@ -48,6 +57,11 @@ namespace XOutput.Devices.XInput.Vigem
             return true;
         }
 
+        /// <summary>
+        /// Implements <see cref="IXOutputInterface.Unplug(int)"/>
+        /// </summary>
+        /// <param name="controllerCount">number of controller</param>
+        /// <returns>If it was successful</returns>
         public bool Unplug(int controllerCount)
         {
             if (controllers.ContainsKey(controllerCount))
@@ -60,6 +74,12 @@ namespace XOutput.Devices.XInput.Vigem
             return false;
         }
 
+        /// <summary>
+        /// Implements <see cref="IXOutputInterface.Report(int, Dictionary{XInputTypes, double})"/>
+        /// </summary>
+        /// <param name="controllerCount">Number of controller</param>
+        /// <param name="values">values for each XInput</param>
+        /// <returns>If it was successful</returns>
         public bool Report(int controllerCount, Dictionary<XInputTypes, double> values)
         {
             if (controllers.ContainsKey(controllerCount))

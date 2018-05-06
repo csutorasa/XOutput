@@ -14,6 +14,9 @@ namespace XOutput.Devices.XInput.SCPToolkit
     /// </summary>
     public sealed class ScpDevice : IXOutputInterface
     {
+        /// <summary>
+        /// SCP Bus class GUID
+        /// </summary>
         private const string SCPBusClassGUID = "{F679F562-3164-42CE-A4DB-E7DDBE723909}";
 
         private readonly SafeFileHandle safeFileHandle;
@@ -32,6 +35,10 @@ namespace XOutput.Devices.XInput.SCPToolkit
             safeFileHandle = NativeMethods.GetHandle(devicePath);
         }
 
+        /// <summary>
+        /// Gets if <see cref="ScpDevice"/> is available.
+        /// </summary>
+        /// <returns></returns>
         public static bool IsAvailable()
         {
             string devicePath = "";
@@ -56,12 +63,22 @@ namespace XOutput.Devices.XInput.SCPToolkit
             Dispose();
         }
 
+        /// <summary>
+        /// Implements <see cref="IXOutputInterface.Plugin(int)"/>
+        /// </summary>
+        /// <param name="controllerCount">number of controller</param>
+        /// <returns>If it was successful</returns>
         public bool Plugin(int controller)
         {
             byte[] buffer = new byte[8];
             return sendToDevice(NativeMethods.MessageType.Plugin, controller, buffer, null);
         }
 
+        /// <summary>
+        /// Implements <see cref="IXOutputInterface.Unplug(int)"/>
+        /// </summary>
+        /// <param name="controllerCount">number of controller</param>
+        /// <returns>If it was successful</returns>
         public bool Unplug(int controller)
         {
             byte[] buffer = new byte[8];
@@ -74,6 +91,12 @@ namespace XOutput.Devices.XInput.SCPToolkit
             return sendToDevice(NativeMethods.MessageType.Unplug, null, buffer, null);
         }
 
+        /// <summary>
+        /// Implements <see cref="IXOutputInterface.Report(int, Dictionary{XInputTypes, double})"/>
+        /// </summary>
+        /// <param name="controllerCount">Number of controller</param>
+        /// <param name="values">values for each XInput</param>
+        /// <returns>If it was successful</returns>
         public bool Report(int controller, Dictionary<XInputTypes, double> values)
         {
             return sendToDevice(NativeMethods.MessageType.Report, controller, GetBinaryData(values), null);
@@ -90,6 +113,7 @@ namespace XOutput.Devices.XInput.SCPToolkit
         /// <summary>
         /// Gets binary data to report to scp device.
         /// </summary>
+        /// <param name="values">current values to convert</param>
         /// <returns></returns>
         private byte[] GetBinaryData(Dictionary<XInputTypes, double> values)
         {

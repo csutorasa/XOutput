@@ -7,8 +7,24 @@ using XOutput.Devices.XInput;
 
 namespace XOutput.Devices.Mapper
 {
+    /// <summary>
+    /// Base of mappers.
+    /// </summary>
     public abstract class InputMapperBase
     {
+        /// <summary>
+        /// Split char between values
+        /// </summary>
+        private const char SplitChar = ',';
+        /// <summary>
+        /// Selected DPad setting key
+        /// </summary>
+        protected const string SelectedDPadKey = "SelectedDPad";
+        /// <summary>
+        /// Start when connected key
+        /// </summary>
+        protected const string StartWhenConnectedKey = "StartWhenConnected";
+
         /// <summary>
         /// DPad index to use
         /// </summary>
@@ -19,9 +35,6 @@ namespace XOutput.Devices.Mapper
         /// </summary>
         public bool StartWhenConnected { get; set; }
 
-        private const char SplitChar = ',';
-        protected const string SelectedDPadKey = "SelectedDPad";
-        protected const string StartWhenConnectedKey = "StartWhenConnected";
         protected readonly Dictionary<XInputTypes, MapperData> mappings = new Dictionary<XInputTypes, MapperData>();
 
         public InputMapperBase()
@@ -56,6 +69,10 @@ namespace XOutput.Devices.Mapper
             return mappings[type.Value];
         }
 
+        /// <summary>
+        /// Creates a dictionary to save the values to file.
+        /// </summary>
+        /// <returns></returns>
         public virtual Dictionary<string, string> ToDictionary()
         {
             var dict = new Dictionary<string, string>();
@@ -70,6 +87,12 @@ namespace XOutput.Devices.Mapper
             return dict;
         }
 
+        /// <summary>
+        /// Converts to mapping key-value pairs from the data read.
+        /// </summary>
+        /// <param name="data">Parsed file content</param>
+        /// <param name="enumType">Device input type enum</param>
+        /// <returns></returns>
         protected static Dictionary<XInputTypes, MapperData> FromDictionary(Dictionary<string, string> data, Type enumType)
         {
             var dict = new Dictionary<XInputTypes, MapperData>();
@@ -99,6 +122,12 @@ namespace XOutput.Devices.Mapper
             return dict;
         }
 
+        /// <summary>
+        /// Reads value from file if available.
+        /// </summary>
+        /// <param name="data">line read from the file</param>
+        /// <param name="defaultValue">default value to be returned when no value can be read</param>
+        /// <returns></returns>
         protected static double TryReadValue(string data, double defaultValue = 0)
         {
             double value;
@@ -112,6 +141,11 @@ namespace XOutput.Devices.Mapper
             }
         }
 
+        /// <summary>
+        /// Read if Start when connected is set.
+        /// </summary>
+        /// <param name="data">data from the file</param>
+        /// <returns></returns>
         protected static bool ReadStartWhenConnected(Dictionary<string, string> data)
         {
             try

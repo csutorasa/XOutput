@@ -21,9 +21,9 @@ namespace XOutput.UI.Converters
         /// </summary>
         /// <param name="value">Value to convert</param>
         /// <param name="targetType">Ignored</param>
-        /// <param name="parameter">Ignored</param>
+        /// <param name="parameter">other value</param>
         /// <param name="culture">Ignored</param>
-        /// <returns>If the value is not null</returns>
+        /// <returns>If the values equal</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value.Equals(parameter) ? Visibility.Visible : Visibility.Collapsed;

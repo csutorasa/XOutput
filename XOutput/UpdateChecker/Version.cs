@@ -19,6 +19,11 @@ namespace XOutput.UpdateChecker
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(Version));
 
+        /// <summary>
+        /// Compares the version with the current version.
+        /// </summary>
+        /// <param name="version">reference version</param>
+        /// <returns></returns>
         public static VersionCompare Compare(string version)
         {
             try
@@ -61,6 +66,9 @@ namespace XOutput.UpdateChecker
         }
     }
 
+    /// <summary>
+    /// Version compare result enum.
+    /// </summary>
     public enum VersionCompare
     {
         NewRelease,

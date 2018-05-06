@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace XOutput.Logging
 {
+    /// <summary>
+    /// Writes logs with the help of <see cref="System.Diagnostics.Trace"/>
+    /// </summary>
     public class TraceLogger : AbstractLogger
     {
         public const string LogFile = "XOutput.log";
@@ -31,6 +34,14 @@ namespace XOutput.Logging
 
         }
 
+        /// <summary>
+        /// Writes the log.
+        /// <para>Implements <see cref="AbstractLogger.LogCheck(LogLevel, string, string)"/></para>
+        /// </summary>
+        /// <param name="loglevel">loglevel</param>
+        /// <param name="methodName">name of the caller method</param>
+        /// <param name="log">log text</param>
+        /// <returns></returns>
         protected override Task Log(LogLevel loglevel, string methodName, string log)
         {
             return Task.Run(() => System.Diagnostics.Trace.WriteLine(CreatePrefix(DateTime.Now, loglevel, LoggerType.Name, methodName) + log));

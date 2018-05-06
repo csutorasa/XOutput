@@ -10,7 +10,7 @@ using System.Windows.Media;
 namespace XOutput.UI.Converters
 {
     /// <summary>
-    /// Converts a boolean value to brush.
+    /// Converts null value to false, otherwise true.
     /// Cannot be used backwards.
     /// </summary>
     public class NotNullToBoolConverter : IValueConverter
