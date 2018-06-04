@@ -49,7 +49,7 @@ namespace XOutput.UI.Windows
         {
             var device = sender as DirectDevice;
             var s = settings.GetDeviceSettings(device.Id.ToString());
-            GameController controller = new GameController(/*s.Mapping*/ null, /*s.DPadSettings*/ null, /*s.ForceFeedbackDevices*/ null);
+            GameController controller = new GameController(s.Mapping, s.DPadSettings, s.ForceFeedbackDevices);
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
@@ -140,7 +140,7 @@ namespace XOutput.UI.Windows
             RefreshGameControllers();
 
             /*var keyboardGameController = new GameController();
-            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, log));
+            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);*/
 

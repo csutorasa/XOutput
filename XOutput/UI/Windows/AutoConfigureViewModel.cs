@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using XOutput.Devices;
 using XOutput.Devices.XInput;
+using XOutput.Devices.XInput.Settings;
 using XOutput.Tools;
 
 namespace XOutput.UI.Windows
@@ -102,7 +103,7 @@ namespace XOutput.UI.Windows
 
         public bool SaveDisableValues()
         {
-            MapperData md = controller.XInput.GetMapping(xInputType);
+            MapperSettings md = controller.XInput.GetMapping(xInputType);
             if (md.InputType == null)
             {
                 md.InputType = inputTypes.First();
@@ -116,7 +117,7 @@ namespace XOutput.UI.Windows
         {
             if (Model.MaxType != null)
             {
-                MapperData md = controller.XInput.GetMapping(xInputType);
+                MapperSettings md = controller.XInput.GetMapping(xInputType);
                 md.InputType = Model.MaxType;
                 md.MinValue = Model.MinValue / 100;
                 md.MaxValue = Model.MaxValue / 100;

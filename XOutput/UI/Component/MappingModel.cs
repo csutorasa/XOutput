@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using XOutput.Devices.XInput;
+using XOutput.Devices.XInput.Settings;
 
 namespace XOutput.UI
 {
@@ -95,8 +96,8 @@ namespace XOutput.UI
             }
         }
 
-        private MapperData mapperData;
-        public MapperData MapperData
+        private MapperSettings mapperData;
+        public MapperSettings MapperData
         {
             get => mapperData;
             set

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using XOutput.Devices.Input;
+using XOutput.Devices.XInput.Settings;
 
 namespace XOutput.Devices.XInput
 {
@@ -53,8 +54,8 @@ namespace XOutput.Devices.XInput
         #endregion
 
         private readonly Dictionary<XInputTypes, double> values = new Dictionary<XInputTypes, double>();
-        private readonly Dictionary<XInputTypes, MapperData> mappers;
-        private readonly DPadData dPadData;
+        private readonly Dictionary<XInputTypes, MapperSettings> mappers;
+        private readonly DPadSettings dPadData;
         private readonly DPadDirection[] dPads = new DPadDirection[DPadCount];
         private readonly DeviceState state;
         private Thread inputRefresher;
@@ -64,7 +65,7 @@ namespace XOutput.Devices.XInput
         /// </summary>
         /// <param name="source">Direct input device</param>
         /// <param name="mapper">DirectInput to XInput mapper</param>
-        public XOutputDevice(Dictionary<XInputTypes, MapperData> mappers, DPadData dPadData)
+        public XOutputDevice(Dictionary<XInputTypes, MapperSettings> mappers, DPadSettings dPadData)
         {
             state = new DeviceState(XInputHelper.Instance.Values.OfType<Enum>().ToArray(), DPadCount);
             this.mappers = mappers;
@@ -126,8 +127,8 @@ namespace XOutput.Devices.XInput
                 if (mapping != null)
                 {
                     double value = 0;
-                    if (mapping.InputDevice != null && mapping.InputType != null)
-                        value = mapping.InputDevice.Get(mapping.InputType);
+                    if (mapping.Device != null && mapping.InputType != null)
+                        value = mapping.Device.Get(mapping.InputType);
                     values[type] = mapping.GetValue(value);
                 }
             }
@@ -160,7 +161,7 @@ namespace XOutput.Devices.XInput
             return newValues;
         }
 
-        internal DPadData GetDPadData()
+        internal DPadSettings GetDPadData()
         {
             return dPadData;
         }
@@ -188,11 +189,11 @@ namespace XOutput.Devices.XInput
             throw new ArgumentException();
         }
 
-        public MapperData GetMapping(XInputTypes type)
+        public MapperSettings GetMapping(XInputTypes type)
         {
             if (!mappers.ContainsKey(type))
             {
-                mappers[type] = new MapperData();
+                mappers[type] = new MapperSettings();
             }
             return mappers[type];
         }

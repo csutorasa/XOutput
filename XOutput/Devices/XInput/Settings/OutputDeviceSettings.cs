@@ -10,7 +10,7 @@ namespace XOutput.Devices.XInput.Settings
     public class OutputDeviceSettings
     {
         public bool StartWhenConnected { get; set; }
-        public List<string> ForceFeedbackDevices { get; set; }
+        public List<ForceFeedbackSettings> ForceFeedbackDevices { get; set; }
         public DPadSettings DPadSettings { get; set; }
         public Dictionary<XInputTypes, MapperSettings> Mapping { get; set; }
     }

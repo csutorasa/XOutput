@@ -87,7 +87,7 @@
     <Compile Include="Devices\Input\Diagnostics\InputDiagnosticsTypes.cs" />
     <Compile Include="Devices\XInput\Diagnostics\XInputDiagnostics.cs" />
     <Compile Include="Devices\XInput\Diagnostics\XInputDiagnosticsTypes.cs" />
-    <Compile Include="Devices\XInput\DPadData.cs" />
+    <Compile Include="Devices\XInput\Settings\ForceFeedbackSettings.cs" />
     <Compile Include="Devices\XInput\Settings\DPadSettings.cs" />
     <Compile Include="Diagnostics\DiagnosticsResultState.cs" />
     <Compile Include="Diagnostics\DiagnosticsResult.cs" />
@@ -162,7 +162,6 @@
     <Compile Include="Devices\Input\DirectInput\DirectInputTypes.cs" />
     <Compile Include="Devices\DPadDirection.cs" />
     <Compile Include="Devices\GameController.cs" />
-    <Compile Include="Devices\XInput\MapperData.cs" />
     <Compile Include="UI\Component\NumericTextBox.cs" />
     <Compile Include="UI\Component\AxisModel.cs" />
     <Compile Include="UI\Component\ControllerModel.cs" />

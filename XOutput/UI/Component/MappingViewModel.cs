@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using XOutput.Devices;
 using XOutput.Devices.XInput;
+using XOutput.Devices.XInput.Settings;
 using XOutput.Tools;
 using XOutput.UI.Windows;
 
@@ -64,12 +65,12 @@ namespace XOutput.UI.Component
             SetSelected(GetMapperData());
         }
 
-        protected MapperData GetMapperData()
+        protected MapperSettings GetMapperData()
         {
             return controller.GetMapping(Model.XInputType);
         }
 
-        protected void SetSelected(MapperData mapperData)
+        protected void SetSelected(MapperSettings mapperData)
         {
             if (Helper.DoubleEquals(mapperData.MinValue, Model.XInputType.GetDisableValue()) && Helper.DoubleEquals(mapperData.MaxValue, Model.XInputType.GetDisableValue()))
             {

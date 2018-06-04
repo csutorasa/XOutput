@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using XOutput.Devices.Input;
 using XOutput.Devices.XInput;
 using XOutput.Devices.XInput.SCPToolkit;
+using XOutput.Devices.XInput.Settings;
 using XOutput.Devices.XInput.Vigem;
 using XOutput.Logging;
 
@@ -43,13 +44,13 @@ namespace XOutput.Devices
 
         private readonly XOutputDevice xInput;
         private readonly IXOutputInterface xOutputInterface;
-        private readonly IEnumerable<IInputDevice> forceFeedbackDevices;
+        private readonly IEnumerable<ForceFeedbackSettings> forceFeedbackDevices;
         private Thread thread;
         private bool running;
         private int controllerCount = 0;
         private Nefarius.ViGEm.Client.Targets.Xbox360Controller controller;
 
-        public GameController(Dictionary<XInputTypes, MapperData> mappers, DPadData dpad, IEnumerable<IInputDevice> forceFeedbackDevices)
+        public GameController(Dictionary<XInputTypes, MapperSettings> mappers, DPadSettings dpad, IEnumerable<ForceFeedbackSettings> forceFeedbackDevices)
         {
             xOutputInterface = createXOutput();
             xInput = new XOutputDevice(mappers, dpad);
@@ -151,12 +152,12 @@ namespace XOutput.Devices
             }
         }
 
-        public MapperData GetMapping(XInputTypes type)
+        public MapperSettings GetMapping(XInputTypes type)
         {
             return XInput.GetMapping(type);
         }
 
-        public DPadData GetDPadData()
+        public DPadSettings GetDPadData()
         {
             return XInput.GetDPadData();
         }
@@ -193,7 +194,7 @@ namespace XOutput.Devices
         {
             foreach (var inputDevice in forceFeedbackDevices)
             {
-                inputDevice.SetForceFeedback((double)e.LargeMotor / byte.MaxValue, (double)e.SmallMotor / byte.MaxValue);
+                inputDevice.Device.SetForceFeedback((double)e.LargeMotor / byte.MaxValue, (double)e.SmallMotor / byte.MaxValue);
             }
         }
 
