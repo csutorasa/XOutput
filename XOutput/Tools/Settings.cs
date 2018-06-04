@@ -21,12 +21,12 @@ namespace XOutput.Tools
         public static Settings Instance => instance;
 
         public bool CloseToTray { get; set; }
-        public Dictionary<string, OutputDeviceSettings> OutputDevices { get; set; }
         public string Lanugage
         {
             get => LanguageManager.Instance.Language;
             set { LanguageManager.Instance.Language = value; }
         }
+        public Dictionary<string, OutputDeviceSettings> OutputDevices { get; set; }
 
         /// <summary>
         /// Reads a new setting from a file.
@@ -51,7 +51,7 @@ namespace XOutput.Tools
         /// <param name="filePath">Filepath of the settings file</param>
         public void Save(string filePath)
         {
-            File.WriteAllText(filePath, JsonConvert.SerializeObject(this));
+            File.WriteAllText(filePath, JsonConvert.SerializeObject(this, new JsonSerializerSettings { Formatting = Formatting.Indented }));
         }
 
         public OutputDeviceSettings GetDeviceSettings(string deviceName)
