@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Devices.Input;
 
-namespace XOutput.Devices.Mapper
+namespace XOutput.Devices.XInput
 {
     /// <summary>
     /// Contains mapping data to Xinput conversion.
     /// </summary>
     public class MapperData
     {
+        /// <summary>
+        /// From data type
+        /// </summary>
+        public IInputDevice InputDevice { get; set; }
         /// <summary>
         /// From data type
         /// </summary>
@@ -30,6 +35,7 @@ namespace XOutput.Devices.Mapper
 
         public MapperData()
         {
+            InputDevice = null;
             InputType = null;
             MinValue = 0;
             MaxValue = 0;

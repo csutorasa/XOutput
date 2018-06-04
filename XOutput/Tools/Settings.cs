@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XOutput.Devices.Mapper;
+using XOutput.Devices.XInput.Settings;
 using XOutput.Logging;
 
 namespace XOutput.Tools
@@ -14,11 +15,18 @@ namespace XOutput.Tools
     /// </summary>
     public sealed class Settings
     {
-        private const string LanguageKey = "Language";
-        private const string CloseToTrayKey = "CloseToTray";
-        private const string General = "General";
-        private const string KeyboardKey = "Keyboard";
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(Settings));
+
+        private static Settings instance;
+        public static Settings Instance => instance;
+
+        public bool CloseToTray { get; set; }
+        public Dictionary<string, OutputDeviceSettings> OutputDevices { get; set; }
+        public string Lanugage
+        {
+            get => LanguageManager.Instance.Language;
+            set { LanguageManager.Instance.Language = value; }
+        }
 
         /// <summary>
         /// Reads a new setting from a file.
@@ -31,42 +39,10 @@ namespace XOutput.Tools
             if (File.Exists(filePath))
             {
                 var text = File.ReadAllText(filePath);
-                IniData ini = IniData.Deserialize(text);
-                foreach (var section in ini.Content)
-                {
-                    var id = section.Key;
-                    if (id == General)
-                    {
-                        if (section.Value.ContainsKey(LanguageKey))
-                        {
-                            LanguageManager.Instance.Language = section.Value[LanguageKey];
-                        }
-                        if (section.Value.ContainsKey(CloseToTrayKey))
-                        {
-                            settings.CloseToTray = section.Value[CloseToTrayKey] == "true";
-                        }
-                    }
-                    else if (id == KeyboardKey)
-                    {
-                        settings.mappers[id] = KeyboardToXInputMapper.Parse(section.Value);
-                        logger.Debug("Mapper loaded for keyboard");
-                    }
-                    else
-                    {
-                        settings.mappers[id] = DirectToXInputMapper.Parse(section.Value);
-                        logger.Debug("Mapper loaded for " + id);
-                    }
-                }
+                settings = JsonConvert.DeserializeObject<Settings>(text);
             }
+            instance = settings;
             return settings;
-        }
-
-        private Dictionary<string, InputMapperBase> mappers;
-        public bool CloseToTray { get; set; }
-
-        public Settings()
-        {
-            mappers = new Dictionary<string, InputMapperBase>();
         }
 
         /// <summary>
@@ -75,37 +51,16 @@ namespace XOutput.Tools
         /// <param name="filePath">Filepath of the settings file</param>
         public void Save(string filePath)
         {
-            IniData ini = new IniData();
-            foreach (var mapper in mappers)
-            {
-                ini.AddSection(mapper.Key, mapper.Value.ToDictionary());
-            }
-            Dictionary<string, string> generalSettings = new Dictionary<string, string>();
-            generalSettings[LanguageKey] = LanguageManager.Instance.Language;
-            generalSettings[CloseToTrayKey] = CloseToTray ? "true" : "false";
-            ini.AddSection(General, generalSettings);
-            File.WriteAllText(filePath, ini.Serialize());
+            File.WriteAllText(filePath, JsonConvert.SerializeObject(this));
         }
 
-        /// <summary>
-        /// Gets the mapper with the given deviceID. If the mapper is not saved in this settings, a new mapper will be returned.
-        /// </summary>
-        /// <param name="id">DeviceID</param>
-        /// <returns></returns>
-        public InputMapperBase GetMapper(string id)
+        public OutputDeviceSettings GetDeviceSettings(string deviceName)
         {
-            if (!mappers.ContainsKey(id))
+            if (!OutputDevices.ContainsKey(deviceName))
             {
-                if (id == KeyboardKey)
-                {
-                    mappers[id] = new KeyboardToXInputMapper();
-                }
-                else
-                {
-                    mappers[id] = new DirectToXInputMapper();
-                }
+                OutputDevices[deviceName] = new OutputDeviceSettings();
             }
-            return mappers[id];
+            return OutputDevices[deviceName];
         }
     }
 }

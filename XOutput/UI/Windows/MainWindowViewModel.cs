@@ -10,8 +10,9 @@ using System.Windows;
 using System.Windows.Threading;
 using XOutput.Devices;
 using XOutput.Devices.Input;
+using XOutput.Devices.Input.Diagnostics;
 using XOutput.Devices.Input.DirectInput;
-using XOutput.Devices.Mapper;
+using XOutput.Devices.XInput.Diagnostics;
 using XOutput.Devices.XInput.SCPToolkit;
 using XOutput.Devices.XInput.Vigem;
 using XOutput.Diagnostics;
@@ -24,7 +25,7 @@ namespace XOutput.UI.Windows
 {
     public class MainWindowViewModel : ViewModelBase<MainWindowModel>, IDisposable
     {
-        private const string SettingsFilePath = "settings.txt";
+        private const string SettingsFilePath = "settings.json";
         private const string GameControllersSettings = "joy.cpl";
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindowViewModel));
@@ -39,9 +40,29 @@ namespace XOutput.UI.Windows
         {
             log = logger;
             this.dispatcher = dispatcher;
+            directInputDevices.DeviceConnected += DirectInputDevices_DeviceConnected;
             timer.Interval = TimeSpan.FromMilliseconds(10000);
             timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
             timer.Start();
+        }
+
+        private void DirectInputDevices_DeviceConnected(object sender, DeviceConnectedEventArgs e)
+        {
+            var device = sender as DirectDevice;
+            /*var s = settings.GetDeviceSettings("");
+            GameController controller = null;
+            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, log));
+            controllerView.ViewModel.Model.CanStart = installed;
+            Model.Controllers.Add(controllerView);
+            device.Disconnected -= DispatchRefreshGameControllers;
+            device.Disconnected += DispatchRefreshGameControllers;
+            logger.Info($"{controller.ToString()} is connected.");
+            log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
+            if (s.StartWhenConnected)
+            {
+                controllerView.ViewModel.Start();
+                logger.Info($"{controller.ToString()} controller is started automatically.");
+            }*/
         }
 
         public async void UnhandledException(Exception exceptionObject)
@@ -125,10 +146,10 @@ namespace XOutput.UI.Windows
             }
             RefreshGameControllers();
 
-            var keyboardGameController = new GameController(new Devices.Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard"));
+            /*var keyboardGameController = new GameController();
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, log));
             controllerView.ViewModel.Model.CanStart = installed;
-            Model.Controllers.Add(controllerView);
+            Model.Controllers.Add(controllerView);*/
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
 
             HandleArgs();
@@ -190,7 +211,9 @@ namespace XOutput.UI.Windows
 
         public void RefreshGameControllers()
         {
-            IEnumerable<SharpDX.DirectInput.DeviceInstance> instances = directInputDevices.GetInputDevices(Model.AllDevices);
+            //IEnumerable<SharpDX.DirectInput.DeviceInstance> instances = directInputDevices.GetInputDevices(Model.AllDevices);
+            directInputDevices.RefreshInputDevices();
+            /*IEnumerable<SharpDX.DirectInput.DeviceInstance> instances = directInputDevices.ConnectedDevices;
 
             foreach (var controllerView in Model.Controllers.ToList())
             {
@@ -211,8 +234,8 @@ namespace XOutput.UI.Windows
                     var device = directInputDevices.CreateDirectDevice(instance);
                     if (device == null)
                         continue;
-                    InputMapperBase mapper = settings.GetMapper(device.ToString());
-                    GameController controller = new GameController(device, mapper);
+                    var s = settings.OutputDevices[""];
+                    GameController controller = new GameController();
                     var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, log));
                     controllerView.ViewModel.Model.CanStart = installed;
                     Model.Controllers.Add(controllerView);
@@ -220,13 +243,13 @@ namespace XOutput.UI.Windows
                     device.Disconnected += DispatchRefreshGameControllers;
                     logger.Info($"{controller.ToString()} is connected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
-                    if (controller.Mapper.StartWhenConnected)
+                    if (s.StartWhenConnected)
                     {
                         controllerView.ViewModel.Start();
                         logger.Info($"{controller.ToString()} controller is started automatically.");
                     }
                 }
-            }
+            }*/
         }
 
         public void OpenWindowsGameControllerSettings()
@@ -242,11 +265,11 @@ namespace XOutput.UI.Windows
 
         public void OpenDiagnostics()
         {
-            IList<IDiagnostics> elements = Model.Controllers.Select(c => c.ViewModel.Model.Controller.InputDevice)
+            /*IList<IDiagnostics> elements = Model.Controllers.Select(c => c.ViewModel.Model.Controller.InputDevice)
                 .Select(d => new InputDiagnostics(d)).OfType<IDiagnostics>().ToList();
-            elements.Insert(0, new Devices.XInput.XInputDiagnostics());
+            elements.Insert(0, new XInputDiagnostics());
 
-            new DiagnosticsWindow(new DiagnosticsViewModel(new DiagnosticsModel(), elements)).ShowDialog();
+            new DiagnosticsWindow(new DiagnosticsViewModel(new DiagnosticsModel(), elements)).ShowDialog();*/
         }
 
         private string Translate(string key)

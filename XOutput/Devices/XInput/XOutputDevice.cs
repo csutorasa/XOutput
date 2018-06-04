@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using XOutput.Devices.Input;
-using XOutput.Devices.Mapper;
 
 namespace XOutput.Devices.XInput
 {
@@ -18,6 +18,10 @@ namespace XOutput.Devices.XInput
         /// XInput devices has 1 DPad.
         /// </summary>
         public const int DPadCount = 1;
+        /// <summary>
+        /// The delay in milliseconds to sleep between input reads.
+        /// </summary>
+        public const int ReadDelayMs = 1;
         #endregion
 
         #region Events
@@ -49,22 +53,27 @@ namespace XOutput.Devices.XInput
         #endregion
 
         private readonly Dictionary<XInputTypes, double> values = new Dictionary<XInputTypes, double>();
-        private readonly IInputDevice source;
-        private readonly InputMapperBase mapper;
+        private readonly Dictionary<XInputTypes, MapperData> mappers;
+        private readonly DPadData dPadData;
         private readonly DPadDirection[] dPads = new DPadDirection[DPadCount];
         private readonly DeviceState state;
+        private Thread inputRefresher;
 
         /// <summary>
         /// Creates a new XDevice.
         /// </summary>
         /// <param name="source">Direct input device</param>
         /// <param name="mapper">DirectInput to XInput mapper</param>
-        public XOutputDevice(IInputDevice source, Mapper.InputMapperBase mapper)
+        public XOutputDevice(Dictionary<XInputTypes, MapperData> mappers, DPadData dPadData)
         {
-            this.source = source;
-            this.mapper = mapper;
             state = new DeviceState(XInputHelper.Instance.Values.OfType<Enum>().ToArray(), DPadCount);
-            source.InputChanged += SourceInputChanged;
+            this.mappers = mappers;
+            this.dPadData = dPadData;
+            inputRefresher = new Thread(InputRefresher);
+            inputRefresher.Name = ToString() + " input reader";
+            inputRefresher.SetApartmentState(ApartmentState.STA);
+            inputRefresher.IsBackground = true;
+            inputRefresher.Start();
         }
 
         ~XOutputDevice()
@@ -74,7 +83,7 @@ namespace XOutput.Devices.XInput
 
         public void Dispose()
         {
-            source.InputChanged -= SourceInputChanged;
+            inputRefresher?.Abort();
         }
 
         /// <summary>
@@ -92,9 +101,17 @@ namespace XOutput.Devices.XInput
             return 0;
         }
 
-        private void SourceInputChanged(object sender, DeviceInputChangedEventArgs e)
+        private void InputRefresher()
         {
-            RefreshInput();
+            try
+            {
+                while (true)
+                {
+                    RefreshInput();
+                    Thread.Sleep(ReadDelayMs);
+                }
+            }
+            catch (ThreadAbortException) { }
         }
 
         /// <summary>
@@ -105,18 +122,18 @@ namespace XOutput.Devices.XInput
         {
             foreach (var type in XInputHelper.Instance.Values)
             {
-                var mapping = mapper.GetMapping(type);
+                var mapping = GetMapping(type);
                 if (mapping != null)
                 {
                     double value = 0;
-                    if (mapping.InputType != null)
-                        value = source.Get(mapping.InputType);
+                    if (mapping.InputDevice != null && mapping.InputType != null)
+                        value = mapping.InputDevice.Get(mapping.InputType);
                     values[type] = mapping.GetValue(value);
                 }
             }
-            if (mapper.SelectedDPad != -1)
+            if (dPadData.HasDPad)
             {
-                dPads[0] = source.DPads.ElementAt(mapper.SelectedDPad);
+                dPads[0] = dPadData.GetDirection();
             }
             else
             {
@@ -143,6 +160,11 @@ namespace XOutput.Devices.XInput
             return newValues;
         }
 
+        internal DPadData GetDPadData()
+        {
+            return dPadData;
+        }
+
         /// <summary>
         /// Gets boolean output.
         /// </summary>
@@ -164,6 +186,11 @@ namespace XOutput.Devices.XInput
             if (inputType is XInputTypes)
                 return Get((XInputTypes)inputType);
             throw new ArgumentException();
+        }
+
+        public MapperData GetMapping(XInputTypes type)
+        {
+            return mappers[type];
         }
     }
 }

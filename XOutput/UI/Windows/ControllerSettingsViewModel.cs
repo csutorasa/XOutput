@@ -22,11 +22,11 @@ namespace XOutput.UI.Windows
         {
             this.controller = controller;
             Model.Title = controller.DisplayName;
-            if (controller.InputDevice.DPads.Any())
+            if (controller.GetDPadData().HasDPad)
             {
-                foreach (var i in Enumerable.Range(1, controller.InputDevice.DPads.Count()))
+                /*foreach (var i in Enumerable.Range(1, controller.InputDevice.DPads.Count()))
                     Model.Dpads.Add(i);
-                Model.SelectedDPad = controller.Mapper.SelectedDPad + 1;
+                Model.SelectedDPad = controller.GetDPadData().Selected + 1;*/
             }
             CreateInputControls();
             CreateMappingControls();
@@ -40,10 +40,10 @@ namespace XOutput.UI.Windows
         public void ConfigureAll()
         {
             var types = XInputHelper.Instance.Values;
-            if (controller.InputDevice.DPads.Any())
+            /*if (controller.InputDevice.DPads.Any())
             {
                 types = types.Where(t => !t.IsDPad());
-            }
+            }*/
             new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), controller, types.ToArray()), types.Any()).ShowDialog();
             foreach (var v in Model.MapperAxisViews.Concat(Model.MapperButtonViews).Concat(Model.MapperDPadViews))
             {
@@ -53,10 +53,10 @@ namespace XOutput.UI.Windows
 
         public void Update()
         {
-            if (!controller.InputDevice.Connected)
+            /*if (!controller.InputDevice.Connected)
             {
                 return;
-            }
+            }*/
 
             UpdateInputControls();
 
@@ -65,7 +65,7 @@ namespace XOutput.UI.Windows
 
         public void SelectedDPad()
         {
-            controller.Mapper.SelectedDPad = Model.SelectedDPad - 1;
+            //controller.Mapper.SelectedDPad = Model.SelectedDPad - 1;
         }
 
         public void TestForceFeedback()
@@ -73,32 +73,32 @@ namespace XOutput.UI.Windows
             if (dispatcherTimer.IsEnabled)
             {
                 dispatcherTimer.Stop();
-                controller.InputDevice.SetForceFeedback(0, 0);
+                //controller.InputDevice.SetForceFeedback(0, 0);
                 Model.TestButtonText = "Start";
             }
             else
             {
                 dispatcherTimer.Start();
-                controller.InputDevice.SetForceFeedback(1, 0);
+                //controller.InputDevice.SetForceFeedback(1, 0);
                 Model.TestButtonText = "Stop";
             }
         }
 
         public void SetStartWhenConnected()
         {
-            controller.Mapper.StartWhenConnected = Model.StartWhenConnected;
+            //controller.Mapper.StartWhenConnected = Model.StartWhenConnected;
         }
 
         private void DispatcherTimerTick(object sender, EventArgs e)
         {
             if (state == 0)
             {
-                controller.InputDevice.SetForceFeedback(0, 1);
+                //controller.InputDevice.SetForceFeedback(0, 1);
                 state = 1;
             }
             else
             {
-                controller.InputDevice.SetForceFeedback(1, 0);
+                //controller.InputDevice.SetForceFeedback(1, 0);
                 state = 0;
             }
         }
@@ -119,7 +119,7 @@ namespace XOutput.UI.Windows
         private void CreateInputControls()
         {
             CreateInputAxes();
-            foreach (var buttonInput in controller.InputDevice.Buttons)
+            /*foreach (var buttonInput in controller.InputDevice.Buttons)
             {
                 Model.InputButtonViews.Add(new ButtonView(new ButtonViewModel(new ButtonModel(), buttonInput)));
             }
@@ -130,12 +130,12 @@ namespace XOutput.UI.Windows
             foreach (var dPadInput in Enumerable.Range(0, controller.InputDevice.DPads.Count()))
             {
                 Model.InputDPadViews.Add(new DPadView(new DPadViewModel(new DPadModel(), dPadInput, true)));
-            }
+            }*/
         }
 
         private void UpdateInputControls()
         {
-            foreach (var axisView in Model.InputAxisViews)
+            /*foreach (var axisView in Model.InputAxisViews)
             {
                 axisView.UpdateValues(controller.InputDevice);
             }
@@ -146,7 +146,7 @@ namespace XOutput.UI.Windows
             foreach (var dPadView in Model.InputDPadViews)
             {
                 dPadView.UpdateValues(controller.InputDevice);
-            }
+            }*/
         }
 
         private void CreateMappingControls()
@@ -155,13 +155,13 @@ namespace XOutput.UI.Windows
             {
                 Model.MapperButtonViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
             }
-            if (!controller.InputDevice.DPads.Any())
+            /*if (!controller.InputDevice.DPads.Any())
             {
                 foreach (var xInputType in XInputHelper.Instance.DPad)
                 {
                     Model.MapperDPadViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
                 }
-            }
+            }*/
             foreach (var xInputType in XInputHelper.Instance.Axes)
             {
                 Model.MapperAxisViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
@@ -200,7 +200,7 @@ namespace XOutput.UI.Windows
 
         private void SetForceFeedback()
         {
-            if (controller.ForceFeedbackSupported)
+            /*if (controller.ForceFeedbackSupported)
             {
                 if (controller.InputDevice.ForceFeedbackCount > 0)
                 {
@@ -217,12 +217,12 @@ namespace XOutput.UI.Windows
             {
                 Model.ForceFeedbackText = "ForceFeedbackVigemOnly";
                 Model.ForceFeedbackEnabled = false;
-            }
+            }*/
         }
 
         private void CreateInputAxes()
         {
-            var axes = controller.InputDevice.Axes.OfType<DirectInputTypes>();
+            /*var axes = controller.InputDevice.Axes.OfType<DirectInputTypes>();
             var xAxes = DirectInputHelper.Instance.Axes.Where(a => (int)a % 3 == 0);
             var yAxes = DirectInputHelper.Instance.Axes.Where(a => (int)a % 3 == 1);
             var zAxes = DirectInputHelper.Instance.Axes.Where(a => (int)a % 3 == 2);
@@ -252,7 +252,7 @@ namespace XOutput.UI.Windows
                 {
                     Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), z)));
                 }
-            }
+            }*/
         }
     }
 }

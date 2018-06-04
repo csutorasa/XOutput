@@ -100,6 +100,11 @@ namespace XOutput.Logging
             return LogCheck(LogLevel.Error, GetCallerMethodName(), ex.ToString());
         }
 
+        public Task Error(string log, Exception ex)
+        {
+            return LogCheck(LogLevel.Error, GetCallerMethodName(), log + ex.ToString());
+        }
+
         protected Task LogCheck(LogLevel loglevel, string methodName, string log)
         {
             if (loglevel.Level >= Level)

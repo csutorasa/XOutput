@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using XOutput.Devices;
-using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
 using XOutput.Tools;
 
@@ -41,7 +40,7 @@ namespace XOutput.UI.Windows
                 Model.ButtonsVisibility = System.Windows.Visibility.Visible;
                 Model.TimerVisibility = System.Windows.Visibility.Collapsed;
             }
-            inputTypes = controller.InputDevice.Buttons.Concat(controller.InputDevice.Axes).Concat(controller.InputDevice.Sliders).ToArray();
+            //inputTypes = controller.InputDevice.Buttons.Concat(controller.InputDevice.Axes).Concat(controller.InputDevice.Sliders).ToArray();
             timer.Interval = TimeSpan.FromMilliseconds(BlinkTime);
             timer.Tick += TimerTick;
             timer.Start();
@@ -55,7 +54,7 @@ namespace XOutput.UI.Windows
         public void Initialize()
         {
             ReadReferenceValues();
-            controller.InputDevice.InputChanged += ReadValues;
+            //controller.InputDevice.InputChanged += ReadValues;
             Model.XInput = xInputType;
             SetTime(false);
         }
@@ -64,7 +63,7 @@ namespace XOutput.UI.Windows
         {
             foreach (var type in inputTypes)
             {
-                referenceValues[type] = controller.InputDevice.Get(type);
+                // referenceValues[type] = controller.InputDevice.Get(type);
             }
         }
 
@@ -78,7 +77,8 @@ namespace XOutput.UI.Windows
             foreach (var type in e.ChangedValues)
             {
                 double oldValue = referenceValues[type];
-                double newValue = controller.InputDevice.Get(type);
+                //double newValue = controller.InputDevice.Get(type);
+                double newValue = oldValue;
                 double diff = Math.Abs(newValue - oldValue);
                 if (diff > maxDiff)
                 {
@@ -102,7 +102,7 @@ namespace XOutput.UI.Windows
 
         public bool SaveDisableValues()
         {
-            MapperData md = controller.Mapper.GetMapping(xInputType);
+            MapperData md = controller.XInput.GetMapping(xInputType);
             if (md.InputType == null)
             {
                 md.InputType = inputTypes.First();
@@ -116,7 +116,7 @@ namespace XOutput.UI.Windows
         {
             if (Model.MaxType != null)
             {
-                MapperData md = controller.Mapper.GetMapping(xInputType);
+                MapperData md = controller.XInput.GetMapping(xInputType);
                 md.InputType = Model.MaxType;
                 md.MinValue = Model.MinValue / 100;
                 md.MaxValue = Model.MaxValue / 100;
@@ -137,7 +137,7 @@ namespace XOutput.UI.Windows
 
         public void Close()
         {
-            controller.InputDevice.InputChanged -= ReadValues;
+            //controller.InputDevice.InputChanged -= ReadValues;
             timer.Stop();
         }
 
@@ -171,7 +171,8 @@ namespace XOutput.UI.Windows
 
         private void CalculateValues()
         {
-            double current = controller.InputDevice.Get(Model.MaxType);
+            //double current = controller.InputDevice.Get(Model.MaxType);
+            double current = 0.5;
 
             double min = Math.Min(current, Model.MinValue / 100);
             double minValue = Math.Round(min * 100);
@@ -189,7 +190,8 @@ namespace XOutput.UI.Windows
 
         private void CalculateStartValues()
         {
-            double current = controller.InputDevice.Get(Model.MaxType);
+            //double current = controller.InputDevice.Get(Model.MaxType);
+            double current = 0.5;
             double reference = referenceValues[Model.MaxType];
 
             double min = Math.Min(current, reference);

@@ -1,7 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using XOutput.Logging;
 
@@ -15,7 +20,7 @@ namespace XOutput.Tools
         private Dictionary<string, Dictionary<string, string>> data = new Dictionary<string, Dictionary<string, string>>();
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(LanguageManager));
-        private static LanguageManager instance = new LanguageManager("languages.txt");
+        private static LanguageManager instance = new LanguageManager(typeof(Properties.Resources));
         /// <summary>
         /// Gets the singleton instance of the class.
         /// </summary>
@@ -39,9 +44,26 @@ namespace XOutput.Tools
             }
         }
 
-        private LanguageManager(string filePath)
+        private LanguageManager(Type resources)
         {
-            data = IniData.Deserialize(Properties.Resources.languages).Content;
+            data = new Dictionary<string, Dictionary<string, string>>();
+            using (var resourceSet = new ResourceManager(resources).GetResourceSet(CultureInfo.CurrentUICulture, true, true))
+            {
+                foreach (DictionaryEntry x in resourceSet)
+                {
+                    try
+                    {
+                        var language = (x.Key as string).Replace("_", " ");
+                        var content = Encoding.UTF8.GetString(x.Value as byte[]);
+                        var translations = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
+                        data[language] = translations;
+                    }
+                    catch (Exception e)
+                    {
+                        logger.Error("Failed to load language " + language, e);
+                    }
+                }
+            }
             Language = "English";
         }
 

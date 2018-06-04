@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XOutput.Devices.XInput
+namespace XOutput.Devices.XInput.Diagnostics
 {
     /// <summary>
     /// XInput diagnostic types.

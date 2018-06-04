@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XOutput.Devices;
-using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
 using XOutput.Tools;
 using XOutput.UI.Windows;
@@ -24,11 +23,11 @@ namespace XOutput.UI.Component
         public MappingViewModel(MappingModel model, GameController controller, XInputTypes inputType) : base(model)
         {
             this.controller = controller;
-            var mapperData = controller.Mapper.GetMapping(inputType);
+            var mapperData = controller.XInput.GetMapping(inputType);
             Model.XInputType = inputType;
-            var device = controller.InputDevice;
+            //var device = controller.InputDevice;
             Model.Inputs.Add(MappingTypes.Disabled);
-            foreach (var directInput in device.Buttons)
+            /*foreach (var directInput in device.Buttons)
             {
                 Model.Inputs.Add(directInput);
             }
@@ -41,7 +40,7 @@ namespace XOutput.UI.Component
                 Model.Inputs.Add(directInput);
             }
             if (mapperData != null && mapperData.InputType == null)
-                mapperData.InputType = device.Buttons.FirstOrDefault();
+                mapperData.InputType = device.Buttons.FirstOrDefault();*/
             Model.MapperData = mapperData;
             SetSelected(mapperData);
         }
@@ -67,7 +66,7 @@ namespace XOutput.UI.Component
 
         protected MapperData GetMapperData()
         {
-            return controller.Mapper.GetMapping(Model.XInputType);
+            return controller.GetMapping(Model.XInputType);
         }
 
         protected void SetSelected(MapperData mapperData)

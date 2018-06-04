@@ -61,36 +61,62 @@ namespace XOutput.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [English]
-        ///FileMenu=File
-        ///SaveMenu=Save
-        ///GameControllersMenu=Game Controllers
-        ///ExitMenu=Exit
-        ///LanguageMenu=Language
-        ///HelpMenu=Help
-        ///AboutMenu=About
-        ///GameControllers=Game Controllers
-        ///Output=Output
-        ///ForceRefresh=Force Refresh
-        ///Edit=Edit
-        ///Start=Start
-        ///Stop=Stop
-        ///DirectInput=DirectInput
-        ///Mapping=Mapping
-        ///XInput=XInput
-        ///Axes=Axes
-        ///DPad=DPad
-        ///Buttons=Buttons
-        ///Invert=Invert
-        ///MinimumValue=Minimum value
-        ///MaximumValue=Maximum value
-        ///NoDPad=This device has no DPad
-        ///AutomaticDPad=DPad is automatically mapped
-        ///Save=Sav [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string languages {
+        internal static byte[] Brazilian_Portugese {
             get {
-                return ResourceManager.GetString("languages", resourceCulture);
+                object obj = ResourceManager.GetObject("Brazilian_Portugese", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] English {
+            get {
+                object obj = ResourceManager.GetObject("English", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] German {
+            get {
+                object obj = ResourceManager.GetObject("German", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Hungarian {
+            get {
+                object obj = ResourceManager.GetObject("Hungarian", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Russian {
+            get {
+                object obj = ResourceManager.GetObject("Russian", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Spanish {
+            get {
+                object obj = ResourceManager.GetObject("Spanish", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

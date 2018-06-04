@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using XOutput.Diagnostics;
 
-namespace XOutput.Devices.Input
+namespace XOutput.Devices.Input.Diagnostics
 {
     /// <summary>
     /// Tests an input device.

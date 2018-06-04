@@ -40,15 +40,17 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Costura, Version=1.6.2.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
-      <HintPath>..\packages\Costura.Fody.1.6.2\lib\dotnet\Costura.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Costura, Version=2.0.1.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Costura.Fody.2.0.1\lib\net452\Costura.dll</HintPath>
     </Reference>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
-    <Reference Include="Nefarius.ViGEmClient, Version=1.13.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Nefarius.ViGEmClient.1.13.1\lib\net452\Nefarius.ViGEmClient.dll</HintPath>
+    <Reference Include="Nefarius.ViGEmClient, Version=1.15.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nefarius.ViGEmClient.1.15.16\lib\net452\Nefarius.ViGEmClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
@@ -81,17 +83,19 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Devices\DeviceState.cs" />
-    <Compile Include="Devices\Input\InputDiagnosticsTypes.cs" />
-    <Compile Include="Devices\XInput\XInputDiagnostics.cs" />
-    <Compile Include="Devices\XInput\XInputDiagnosticsTypes.cs" />
+    <Compile Include="Devices\Input\DirectInput\DeviceConnectedEventArgs.cs" />
+    <Compile Include="Devices\Input\Diagnostics\InputDiagnosticsTypes.cs" />
+    <Compile Include="Devices\XInput\Diagnostics\XInputDiagnostics.cs" />
+    <Compile Include="Devices\XInput\Diagnostics\XInputDiagnosticsTypes.cs" />
+    <Compile Include="Devices\XInput\DPadData.cs" />
+    <Compile Include="Devices\XInput\Settings\DPadSettings.cs" />
     <Compile Include="Diagnostics\DiagnosticsResultState.cs" />
     <Compile Include="Diagnostics\DiagnosticsResult.cs" />
-    <Compile Include="Devices\Input\InputDiagnostics.cs" />
+    <Compile Include="Devices\Input\Diagnostics\InputDiagnostics.cs" />
     <Compile Include="Diagnostics\IDiagnostics.cs" />
     <Compile Include="Tools\ArgumentParser.cs" />
     <Compile Include="Devices\DeviceInputChangedEventArgs.cs" />
     <Compile Include="Tools\Helper.cs" />
-    <Compile Include="Tools\IniData.cs" />
     <Compile Include="Devices\Controllers.cs" />
     <Compile Include="Devices\Input\DeviceDisconnectedEventArgs.cs" />
     <Compile Include="Devices\Input\DirectInput\DirectInputHelper.cs" />
@@ -101,8 +105,6 @@
     <Compile Include="Devices\IInputHelper.cs" />
     <Compile Include="Devices\Input\Keyboard\KeyboardInputHelper.cs" />
     <Compile Include="Devices\Input\Keyboard\Keyboard.cs" />
-    <Compile Include="Devices\Mapper\KeyboardToXInputMapper.cs" />
-    <Compile Include="Devices\Mapper\InputMapperBase.cs" />
     <Compile Include="Devices\XInput\IXOutputInterface.cs" />
     <Compile Include="Devices\XInput\SCPToolkit\NativeMethods.cs" />
     <Compile Include="Devices\XInput\SCPToolkit\ScpDevice.cs" />
@@ -114,6 +116,8 @@
     <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Devices\XInput\Settings\MapperSettings.cs" />
+    <Compile Include="Devices\XInput\Settings\OutputDeviceSettings.cs" />
     <Compile Include="Tools\RegistryModifier.cs" />
     <Compile Include="UI\Component\DPadModel.cs" />
     <Compile Include="UI\Component\DPadView.xaml.cs">
@@ -157,9 +161,8 @@
     <Compile Include="UI\Converters\BoolToBrushConverter.cs" />
     <Compile Include="Devices\Input\DirectInput\DirectInputTypes.cs" />
     <Compile Include="Devices\DPadDirection.cs" />
-    <Compile Include="Devices\Mapper\DirectToXInputMapper.cs" />
     <Compile Include="Devices\GameController.cs" />
-    <Compile Include="Devices\Mapper\MapperData.cs" />
+    <Compile Include="Devices\XInput\MapperData.cs" />
     <Compile Include="UI\Component\NumericTextBox.cs" />
     <Compile Include="UI\Component\AxisModel.cs" />
     <Compile Include="UI\Component\ControllerModel.cs" />
@@ -294,12 +297,17 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\Russian.json" />
+    <None Include="Resources\Spanish.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\languages.txt" />
+    <None Include="Resources\Brazilian Portugese.json" />
+    <None Include="Resources\English.json" />
+    <None Include="Resources\German.json" />
+    <None Include="Resources\Hungarian.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
@@ -311,15 +319,15 @@
     <Resource Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.3.0.3\build\Fody.targets" Condition="Exists('..\packages\Fody.3.0.3\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\Fody.2.4.6\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.2.4.6\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.3.0.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.3.0.3\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.2.0.1\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.2.0.1\build\Costura.Fody.targets'))" />
   </Target>
-  <Import Project="..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets')" />
-  <Import Project="..\packages\Fody.2.4.6\build\Fody.targets" Condition="Exists('..\packages\Fody.2.4.6\build\Fody.targets')" />
+  <Import Project="..\packages\Costura.Fody.2.0.1\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.2.0.1\build\Costura.Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

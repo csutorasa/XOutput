@@ -74,5 +74,11 @@ namespace XOutput.Logging
         /// <param name="ex">exception</param>
         /// <returns></returns>
         Task Error(Exception ex);
+        /// <summary>
+        /// Writes a error log.
+        /// </summary>
+        /// <param name="ex">exception</param>
+        /// <returns></returns>
+        Task Error(string log, Exception ex);
     }
 }

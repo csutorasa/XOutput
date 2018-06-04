@@ -7,7 +7,7 @@ using XOutput.Devices.XInput.SCPToolkit;
 using XOutput.Devices.XInput.Vigem;
 using XOutput.Diagnostics;
 
-namespace XOutput.Devices.XInput
+namespace XOutput.Devices.XInput.Diagnostics
 {
     /// <summary>
     /// Tests the XInput emulation devices.

@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using XOutput.Devices.Input;
-using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
 using XOutput.Devices.XInput.SCPToolkit;
 using XOutput.Devices.XInput.Vigem;
@@ -19,21 +18,13 @@ namespace XOutput.Devices
     public sealed class GameController : IDisposable
     {
         /// <summary>
-        /// Gets the input device.
-        /// </summary>
-        public IInputDevice InputDevice => inputDevice;
-        /// <summary>
         /// Gets the output device.
         /// </summary>
         public XOutputDevice XInput => xInput;
         /// <summary>
-        /// Gets the mapping of the input device.
+        /// Gets or sets the name of the output device.
         /// </summary>
-        public InputMapperBase Mapper => mapper;
-        /// <summary>
-        /// Gets the name of the input device.
-        /// </summary>
-        public string DisplayName => inputDevice.DisplayName;
+        public string DisplayName { get; set; }
         /// <summary>
         /// Gets the number of the controller.
         /// </summary>
@@ -45,28 +36,24 @@ namespace XOutput.Devices
         /// <summary>
         /// Gets if force feedback is supported.
         /// </summary>
-        public bool ForceFeedbackSupported => xOutputInterface is VigemDevice && inputDevice.ForceFeedbackCount > 0;
+        public bool ForceFeedbackSupported => xOutputInterface is VigemDevice;
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(GameController));
         private static readonly Controllers controllers = new Controllers();
 
-        private readonly IInputDevice inputDevice;
-        private readonly InputMapperBase mapper;
         private readonly XOutputDevice xInput;
         private readonly IXOutputInterface xOutputInterface;
+        private readonly IEnumerable<IInputDevice> forceFeedbackDevices;
         private Thread thread;
         private bool running;
         private int controllerCount = 0;
         private Nefarius.ViGEm.Client.Targets.Xbox360Controller controller;
 
-        public GameController(IInputDevice directInput, InputMapperBase mapper)
+        public GameController(Dictionary<XInputTypes, MapperData> mappers, DPadData dpad, IEnumerable<IInputDevice> forceFeedbackDevices)
         {
-            inputDevice = directInput;
-            this.mapper = mapper;
             xOutputInterface = createXOutput();
-            xInput = new XOutputDevice(directInput, mapper);
-            if (mapper.SelectedDPad == -1 && directInput.DPads.Any())
-                mapper.SelectedDPad = 0;
+            xInput = new XOutputDevice(mappers, dpad);
+            this.forceFeedbackDevices = forceFeedbackDevices;
             running = false;
         }
 
@@ -100,7 +87,6 @@ namespace XOutput.Devices
         public void Dispose()
         {
             Stop();
-            inputDevice.Dispose();
             xInput.Dispose();
             xOutputInterface.Dispose();
         }
@@ -165,9 +151,19 @@ namespace XOutput.Devices
             }
         }
 
+        public MapperData GetMapping(XInputTypes type)
+        {
+            return XInput.GetMapping(type);
+        }
+
+        public DPadData GetDPadData()
+        {
+            return XInput.GetDPadData();
+        }
+
         public override string ToString()
         {
-            return inputDevice.ToString();
+            return DisplayName;
         }
 
         private void ReadAndReportValues(Action onStop)
@@ -189,13 +185,16 @@ namespace XOutput.Devices
 
         private void XInputInputChanged(object sender, DeviceInputChangedEventArgs e)
         {
-            if (!xOutputInterface.Report(controllerCount, XInput.GetValues()) || !inputDevice.Connected)
+            if (!xOutputInterface.Report(controllerCount, XInput.GetValues()))
                 Stop();
         }
 
         private void ControllerFeedbackReceived(object sender, Nefarius.ViGEm.Client.Targets.Xbox360.Xbox360FeedbackReceivedEventArgs e)
         {
-            inputDevice.SetForceFeedback((double)e.LargeMotor / byte.MaxValue, (double)e.SmallMotor / byte.MaxValue);
+            foreach (var inputDevice in forceFeedbackDevices)
+            {
+                inputDevice.SetForceFeedback((double)e.LargeMotor / byte.MaxValue, (double)e.SmallMotor / byte.MaxValue);
+            }
         }
 
         private void resetId()

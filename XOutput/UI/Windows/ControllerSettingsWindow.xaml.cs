@@ -32,7 +32,7 @@ namespace XOutput.UI.Windows
         {
             this.controller = controller;
             this.viewModel = viewModel;
-            controller.InputDevice.Disconnected += Disconnected;
+            //controller.InputDevice.Disconnected += Disconnected;
             DataContext = viewModel;
             InitializeComponent();
         }
@@ -52,7 +52,7 @@ namespace XOutput.UI.Windows
 
         protected override void OnClosed(EventArgs e)
         {
-            controller.InputDevice.Disconnected -= Disconnected;
+            //controller.InputDevice.Disconnected -= Disconnected;
             timer.Tick -= TimerTick;
             timer.Stop();
             viewModel.Dispose();

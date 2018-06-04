@@ -17,6 +17,25 @@ namespace XOutput.Devices.Input.DirectInput
         /// </summary>
         private const string EmulatedSCPID = "028e045e-0000-0000-0000-504944564944";
 
+        public bool AllDevices
+        {
+            get => allDevices;
+            set
+            {
+                if (value != allDevices)
+                {
+                    allDevices = value;
+                    RefreshInputDevices();
+                }
+            }
+        }
+
+        public event DeviceConnectedHandler DeviceConnected;
+        public IEnumerable<DirectDevice> ConnectedDevices => connectedDevices;
+
+        private bool allDevices = false;
+        private IEnumerable<DirectDevice> connectedDevices = new DirectDevice[0];
+
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
 
         ~DirectInputDevices()
@@ -35,18 +54,28 @@ namespace XOutput.Devices.Input.DirectInput
         /// <summary>
         /// Gets the current available DirectInput devices.
         /// </summary>
-        /// <param name="allDevices">No filter</param>
-        /// <returns>List of devices</returns>
-        public IEnumerable<DeviceInstance> GetInputDevices(bool allDevices)
+        public void RefreshInputDevices()
         {
-            if (allDevices)
+            IEnumerable<DeviceInstance> newConnectedDevices;
+            if (AllDevices)
             {
-                return directInput.GetDevices().Where(di => di.Type != DeviceType.Keyboard);
+                newConnectedDevices = directInput.GetDevices().Where(di => di.Type != DeviceType.Keyboard).ToArray();
             }
             else
             {
-                return directInput.GetDevices().Where(di => di.Type == DeviceType.Joystick || di.Type == DeviceType.Gamepad);
+                newConnectedDevices = directInput.GetDevices().Where(di => di.Type == DeviceType.Joystick || di.Type == DeviceType.Gamepad).ToArray();
             }
+            var newDevices = newConnectedDevices.Where(d => !connectedDevices.Any(c => c.Id == d.InstanceGuid)).Select(CreateDirectDevice).Where(d => d != null);
+            var removedDevices = connectedDevices.Where(c => !newConnectedDevices.Any(d => c.Id == d.InstanceGuid));
+            foreach (var newDevice in newDevices)
+            {
+                DeviceConnected?.Invoke(newDevice, new DeviceConnectedEventArgs());
+            }
+            foreach (var removeDevice in removedDevices)
+            {
+                removeDevice.Dispose();
+            }
+
         }
 
         /// <summary>
