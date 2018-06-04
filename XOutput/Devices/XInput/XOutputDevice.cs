@@ -190,6 +190,10 @@ namespace XOutput.Devices.XInput
 
         public MapperData GetMapping(XInputTypes type)
         {
+            if (!mappers.ContainsKey(type))
+            {
+                mappers[type] = new MapperData();
+            }
             return mappers[type];
         }
     }

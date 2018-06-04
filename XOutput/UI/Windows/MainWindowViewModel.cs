@@ -12,6 +12,7 @@ using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Devices.Input.Diagnostics;
 using XOutput.Devices.Input.DirectInput;
+using XOutput.Devices.Input.Keyboard;
 using XOutput.Devices.XInput.Diagnostics;
 using XOutput.Devices.XInput.SCPToolkit;
 using XOutput.Devices.XInput.Vigem;
@@ -31,14 +32,12 @@ namespace XOutput.UI.Windows
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindowViewModel));
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly DirectInputDevices directInputDevices = new DirectInputDevices();
-        private readonly Action<string> log;
         private readonly Dispatcher dispatcher;
         private Settings settings;
         private bool installed;
 
-        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher, Action<string> logger) : base(model)
+        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher) : base(model)
         {
-            log = logger;
             this.dispatcher = dispatcher;
             directInputDevices.DeviceConnected += DirectInputDevices_DeviceConnected;
             timer.Interval = TimeSpan.FromMilliseconds(10000);
@@ -49,20 +48,19 @@ namespace XOutput.UI.Windows
         private void DirectInputDevices_DeviceConnected(object sender, DeviceConnectedEventArgs e)
         {
             var device = sender as DirectDevice;
-            /*var s = settings.GetDeviceSettings("");
-            GameController controller = null;
-            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, log));
+            var s = settings.GetDeviceSettings(device.Id.ToString());
+            GameController controller = new GameController(/*s.Mapping*/ null, /*s.DPadSettings*/ null, /*s.ForceFeedbackDevices*/ null);
+            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
             device.Disconnected -= DispatchRefreshGameControllers;
             device.Disconnected += DispatchRefreshGameControllers;
             logger.Info($"{controller.ToString()} is connected.");
-            log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
             if (s.StartWhenConnected)
             {
                 controllerView.ViewModel.Start();
                 logger.Info($"{controller.ToString()} controller is started automatically.");
-            }*/
+            }
         }
 
         public async void UnhandledException(Exception exceptionObject)
@@ -107,13 +105,11 @@ namespace XOutput.UI.Windows
             {
                 LoadSettings(SettingsFilePath);
                 logger.Info("Loading settings was successful.");
-                log(string.Format(Translate("LoadSettingsSuccess"), SettingsFilePath));
             }
             catch (Exception ex)
             {
                 logger.Warning("Loading settings was unsuccessful.");
                 string error = string.Format(Translate("LoadSettingsError"), SettingsFilePath) + Environment.NewLine + ex.Message;
-                log(error);
                 MessageBox.Show(error, Translate("Warning"));
             }
             bool vigem = VigemDevice.IsAvailable();
@@ -123,7 +119,6 @@ namespace XOutput.UI.Windows
                 if (scp)
                 {
                     logger.Info("SCPToolkit is installed only.");
-                    log(Translate("ScpInstalled"));
                 }
                 installed = true;
             }
@@ -132,14 +127,12 @@ namespace XOutput.UI.Windows
                 if (scp)
                 {
                     logger.Info("ViGEm is installed.");
-                    log(Translate("VigemNotInstalled"));
                     installed = true;
                 }
                 else
                 {
                     logger.Error("Neither ViGEm nor SCPToolkit is installed.");
                     string error = Translate("VigemAndScpNotInstalled");
-                    log(error);
                     installed = false;
                     MessageBox.Show(error, Translate("Error"));
                 }
@@ -150,7 +143,6 @@ namespace XOutput.UI.Windows
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, log));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);*/
-            log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
 
             HandleArgs();
         }
@@ -169,13 +161,11 @@ namespace XOutput.UI.Windows
             {
                 settings.Save(SettingsFilePath);
                 logger.Info("Saving settings was successful.");
-                log(string.Format(Translate("SaveSettingsSuccess"), SettingsFilePath));
             }
             catch (Exception ex)
             {
                 logger.Warning("Saving settings was unsuccessful.");
                 string error = string.Format(Translate("SaveSettingsError"), SettingsFilePath) + Environment.NewLine + ex.Message;
-                log(error);
                 MessageBox.Show(error, Translate("Warning"));
             }
         }
@@ -191,18 +181,14 @@ namespace XOutput.UI.Windows
             {
                 case UpdateChecker.VersionCompare.Error:
                     logger.Warning("Failed to check latest version");
-                    log(Translate("VersionCheckError"));
                     break;
                 case UpdateChecker.VersionCompare.NeedsUpgrade:
                     logger.Info("New version is available");
-                    log(Translate("VersionCheckNeedsUpgrade"));
                     break;
                 case UpdateChecker.VersionCompare.NewRelease:
-                    log(Translate("VersionCheckNewRelease"));
                     break;
                 case UpdateChecker.VersionCompare.UpToDate:
                     logger.Info("Version is up-to-date");
-                    log(Translate("VersionCheckUpToDate"));
                     break;
                 default:
                     throw new ArgumentException();
@@ -211,45 +197,7 @@ namespace XOutput.UI.Windows
 
         public void RefreshGameControllers()
         {
-            //IEnumerable<SharpDX.DirectInput.DeviceInstance> instances = directInputDevices.GetInputDevices(Model.AllDevices);
             directInputDevices.RefreshInputDevices();
-            /*IEnumerable<SharpDX.DirectInput.DeviceInstance> instances = directInputDevices.ConnectedDevices;
-
-            foreach (var controllerView in Model.Controllers.ToList())
-            {
-                var controller = controllerView.ViewModel.Model.Controller;
-                if (controller.InputDevice is DirectDevice && (!instances.Any(x => x.InstanceGuid == ((DirectDevice)controller.InputDevice).Id) || !controller.InputDevice.Connected))
-                {
-                    controllerView.ViewModel.Dispose();
-                    controller.Dispose();
-                    Model.Controllers.Remove(controllerView);
-                    logger.Info($"{controller.ToString()} is disconnected.");
-                    log(string.Format(LanguageModel.Instance.Translate("ControllerDisconnected"), controller.DisplayName));
-                }
-            }
-            foreach (var instance in instances)
-            {
-                if (!Model.Controllers.Select(c => c.ViewModel.Model.Controller.InputDevice).OfType<DirectDevice>().Any(d => d.Id == instance.InstanceGuid))
-                {
-                    var device = directInputDevices.CreateDirectDevice(instance);
-                    if (device == null)
-                        continue;
-                    var s = settings.OutputDevices[""];
-                    GameController controller = new GameController();
-                    var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, log));
-                    controllerView.ViewModel.Model.CanStart = installed;
-                    Model.Controllers.Add(controllerView);
-                    device.Disconnected -= DispatchRefreshGameControllers;
-                    device.Disconnected += DispatchRefreshGameControllers;
-                    logger.Info($"{controller.ToString()} is connected.");
-                    log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
-                    if (s.StartWhenConnected)
-                    {
-                        controllerView.ViewModel.Start();
-                        logger.Info($"{controller.ToString()} controller is started automatically.");
-                    }
-                }
-            }*/
         }
 
         public void OpenWindowsGameControllerSettings()
@@ -265,11 +213,11 @@ namespace XOutput.UI.Windows
 
         public void OpenDiagnostics()
         {
-            /*IList<IDiagnostics> elements = Model.Controllers.Select(c => c.ViewModel.Model.Controller.InputDevice)
-                .Select(d => new InputDiagnostics(d)).OfType<IDiagnostics>().ToList();
+            IList<IDiagnostics> elements = directInputDevices.ConnectedDevices.Select(d => new InputDiagnostics(d)).OfType<IDiagnostics>().ToList();
+            elements.Add(new InputDiagnostics(Keyboard.Instance));
             elements.Insert(0, new XInputDiagnostics());
 
-            new DiagnosticsWindow(new DiagnosticsViewModel(new DiagnosticsModel(), elements)).ShowDialog();*/
+            new DiagnosticsWindow(new DiagnosticsViewModel(new DiagnosticsModel(), elements)).ShowDialog();
         }
 
         private string Translate(string key)
@@ -287,6 +235,8 @@ namespace XOutput.UI.Windows
             delayThread.Name = "Device list refresh delay";
             delayThread.IsBackground = true;
             delayThread.Start();
+            /*Model.Controllers.Remove(controllerView);
+            logger.Info($"{controller.ToString()} is disconnected.");*/
         }
 
         private void HandleArgs()

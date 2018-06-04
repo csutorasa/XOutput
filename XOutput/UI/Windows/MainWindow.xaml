@@ -14,10 +14,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="3"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <tb:TaskbarIcon Visibility="Visible" ToolTipText="XOutput" IconSource="/icon.ico" MenuActivation="RightClick" PopupActivation="LeftClick"
                         TrayMouseDoubleClick="TaskbarIconTrayMouseDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
@@ -26,7 +28,7 @@
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
-        <Menu>
+        <Menu Grid.ColumnSpan="100">
             <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='FileMenu'}">
                 <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveMenu'}" Click="SaveClick"/>
                 <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllersMenu'}" Click="GameControllersClick"/>
@@ -41,20 +43,27 @@
                 <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AboutMenu'}" Click="AboutClick"/>
             </MenuItem>
         </Menu>
-        <GroupBox Grid.Row="1" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllers'}" Margin="0,0,0,5">
+        <GroupBox Grid.Row="1" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllers'}" Margin="3,3,8,3">
             <DockPanel>
-                <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding Model.AllDevices}" Checked="CheckBoxChecked" Unchecked="CheckBoxChecked"
+                <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding Model.AllDevices}" Checked="CheckBoxChecked" Unchecked="CheckBoxChecked" Margin="10"
                           Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ShowAllDevices'}"/>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding Model.Controllers}"/>
                 </ScrollViewer>
             </DockPanel>
         </GroupBox>
-        <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch"/>
-        <GroupBox Grid.Row="3" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Output'}">
-            <TextBox x:Name="logBox" TextWrapping="Wrap" IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        <GridSplitter Grid.Row="1" Grid.Column="0" Width="5" VerticalAlignment="Stretch"/>
+        <GroupBox Grid.Row="1" Grid.Column="1" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Output'}"
+                  Margin="3">
+            <DockPanel>
+                <Button DockPanel.Dock="Bottom" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AddNewDevice'}"
+                        Width="150" Height="30" Margin="5"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Model.Controllers}"/>
+                </ScrollViewer>
+            </DockPanel>
         </GroupBox>
-        <DockPanel Grid.Row="4">
+        <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="100">
             <Button Click="RefreshClick" Width="150" Margin="10" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceRefresh'}" DockPanel.Dock="Left"/>
             <Button Click="SaveClick" Width="150" Margin="10" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveConfiguration'}" DockPanel.Dock="Right"/>
             <Grid/>

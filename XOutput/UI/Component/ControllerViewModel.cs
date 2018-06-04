@@ -14,12 +14,10 @@ namespace XOutput.UI.Component
     public class ControllerViewModel : ViewModelBase<ControllerModel>, IDisposable
     {
         private const int BackgroundDelayMS = 500;
-        private readonly Action<string> log;
         private readonly DispatcherTimer timer = new DispatcherTimer();
 
-        public ControllerViewModel(ControllerModel model, GameController controller, Action<string> log) : base(model)
+        public ControllerViewModel(ControllerModel model, GameController controller) : base(model)
         {
-            this.log = log;
             Model.Controller = controller;
             Model.ButtonText = "Start";
             Model.Background = Brushes.White;
@@ -53,13 +51,11 @@ namespace XOutput.UI.Component
                 controllerCount = Model.Controller.Start(() =>
                 {
                     Model.ButtonText = "Start";
-                    log?.Invoke(string.Format(LanguageModel.Instance.Translate("EmulationStopped"), Model.Controller.DisplayName));
                     Model.Started = false;
                 });
                 if (controllerCount != 0)
                 {
                     Model.ButtonText = "Stop";
-                    log?.Invoke(string.Format(LanguageModel.Instance.Translate("EmulationStarted"), Model.Controller.DisplayName, controllerCount));
                 }
                 Model.Started = controllerCount != 0;
             }

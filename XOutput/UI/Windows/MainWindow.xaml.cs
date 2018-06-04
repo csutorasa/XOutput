@@ -37,7 +37,7 @@ namespace XOutput.UI.Windows
 #if DEBUG == false
             Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => viewModel.UnhandledException(e.Exception);
 #endif
-            viewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher, Log);
+            viewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher);
             DataContext = viewModel;
             if (ArgumentParser.Instance.Minimized)
             {
@@ -67,11 +67,6 @@ namespace XOutput.UI.Windows
                 viewModel.VersionCompare(result);
             }
             catch (Exception) { }
-        }
-
-        public void Log(string msg)
-        {
-            Dispatcher.BeginInvoke((Action)(() => logBox.AppendText(msg + Environment.NewLine)));
         }
 
         private void RefreshClick(object sender, RoutedEventArgs e)

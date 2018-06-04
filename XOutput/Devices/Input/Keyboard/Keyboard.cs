@@ -73,6 +73,8 @@ namespace XOutput.Devices.Input.Keyboard
         public int ForceFeedbackCount => 0;
         #endregion
 
+        private static readonly Keyboard instance = new Keyboard();
+        public static Keyboard Instance => instance;
         private Thread inputRefresher;
         private readonly Enum[] buttons;
         private readonly DeviceState state;
@@ -80,7 +82,7 @@ namespace XOutput.Devices.Input.Keyboard
         /// <summary>
         /// Creates a new keyboard device instance.
         /// </summary>
-        public Keyboard()
+        private Keyboard()
         {
             buttons = KeyboardInputHelper.Instance.Buttons.Where(x => x != Key.None).OrderBy(x => x.ToString()).OfType<Enum>().ToArray();
             state = new DeviceState(buttons, 0);
