@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Tools;
 using XOutput.UI.Component;
 
 namespace XOutput.UI.Windows
@@ -22,6 +23,7 @@ namespace XOutput.UI.Windows
                 if (allDevices != value)
                 {
                     allDevices = value;
+                    Settings.Instance.ShowAllDevices = value;
                     OnPropertyChanged(nameof(AllDevices));
                 }
             }

@@ -21,6 +21,7 @@ namespace XOutput.Tools
         public static Settings Instance => instance;
 
         public bool CloseToTray { get; set; }
+        public bool ShowAllDevices { get; set; }
         public string Lanugage
         {
             get => LanguageManager.Instance.Language;
@@ -40,6 +41,10 @@ namespace XOutput.Tools
             {
                 var text = File.ReadAllText(filePath);
                 settings = JsonConvert.DeserializeObject<Settings>(text);
+                if (settings.OutputDevices == null)
+                {
+                    settings.OutputDevices = new Dictionary<string, OutputDeviceSettings>();
+                }
             }
             instance = settings;
             return settings;

@@ -85,6 +85,7 @@ namespace XOutput.UI.Windows
             try
             {
                 settings = Settings.Load(settingsFilePath);
+                Model.AllDevices = Settings.Instance.ShowAllDevices;
             }
             catch
             {
