@@ -2,7 +2,7 @@
 #      general configuration      #
 #---------------------------------#
 
-version: 3.9.2-{branch}-{build}
+version: 3.10-{branch}-{build}
 
 branches:
   only:
