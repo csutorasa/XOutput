@@ -34,7 +34,9 @@ namespace XOutput.Devices.Input.DirectInput
         public IEnumerable<DirectDevice> ConnectedDevices => connectedDevices;
 
         private bool allDevices = false;
-        private IEnumerable<DirectDevice> connectedDevices = new DirectDevice[0];
+        private IList<DirectDevice> connectedDevices = new List<DirectDevice>();
+
+        private Object refreshLock = new Object();
 
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
 
@@ -56,26 +58,30 @@ namespace XOutput.Devices.Input.DirectInput
         /// </summary>
         public void RefreshInputDevices()
         {
-            IEnumerable<DeviceInstance> newConnectedDevices;
-            if (AllDevices)
+            lock (refreshLock)
             {
-                newConnectedDevices = directInput.GetDevices().Where(di => di.Type != DeviceType.Keyboard).ToArray();
+                IEnumerable<DeviceInstance> newConnectedDevices;
+                if (AllDevices)
+                {
+                    newConnectedDevices = directInput.GetDevices().Where(di => di.Type != DeviceType.Keyboard).ToArray();
+                }
+                else
+                {
+                    newConnectedDevices = directInput.GetDevices().Where(di => di.Type == DeviceType.Joystick || di.Type == DeviceType.Gamepad).ToArray();
+                }
+                var newDevices = newConnectedDevices.Where(d => !connectedDevices.Any(c => c.Id == d.InstanceGuid)).Select(CreateDirectDevice).Where(d => d != null);
+                var removedDevices = connectedDevices.Where(c => !newConnectedDevices.Any(d => c.Id == d.InstanceGuid));
+                foreach (var newDevice in newDevices)
+                {
+                    DeviceConnected?.Invoke(newDevice, new DeviceConnectedEventArgs());
+                    connectedDevices.Add(newDevice);
+                }
+                foreach (var removeDevice in removedDevices)
+                {
+                    removeDevice.Dispose();
+                    connectedDevices.Remove(removeDevice);
+                }
             }
-            else
-            {
-                newConnectedDevices = directInput.GetDevices().Where(di => di.Type == DeviceType.Joystick || di.Type == DeviceType.Gamepad).ToArray();
-            }
-            var newDevices = newConnectedDevices.Where(d => !connectedDevices.Any(c => c.Id == d.InstanceGuid)).Select(CreateDirectDevice).Where(d => d != null);
-            var removedDevices = connectedDevices.Where(c => !newConnectedDevices.Any(d => c.Id == d.InstanceGuid));
-            foreach (var newDevice in newDevices)
-            {
-                DeviceConnected?.Invoke(newDevice, new DeviceConnectedEventArgs());
-            }
-            foreach (var removeDevice in removedDevices)
-            {
-                removeDevice.Dispose();
-            }
-
         }
 
         /// <summary>

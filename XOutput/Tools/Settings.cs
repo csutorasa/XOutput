@@ -58,7 +58,21 @@ namespace XOutput.Tools
         {
             if (!OutputDevices.ContainsKey(deviceName))
             {
-                OutputDevices[deviceName] = new OutputDeviceSettings();
+                var settings = new OutputDeviceSettings
+                {
+                    StartWhenConnected = false,
+                    DPadSettings = new DPadSettings(),
+                    ForceFeedbackDevices = new List<ForceFeedbackSettings>(),
+                    Mapping = new Dictionary<Devices.XInput.XInputTypes, MapperSettings>()
+                };
+                foreach (var xInputType in Devices.XInput.XInputHelper.Instance.Values)
+                {
+                    settings.Mapping[xInputType] = new MapperSettings
+                    {
+                        InputType = xInputType,
+                    };
+                }
+                OutputDevices[deviceName] = settings;
             }
             return OutputDevices[deviceName];
         }
