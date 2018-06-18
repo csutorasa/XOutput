@@ -268,7 +268,7 @@ namespace XOutput.UI.Windows
 
         private void HandleArgs()
         {
-            foreach (var viewModel in Model.Controllers.Select(v => v.ViewModel))
+            foreach (var viewModel in Model.Controllers.Select(v => v.ViewModel).OrderBy(v => v.Model.Controller.DisplayName).ToArray())
             {
                 var displayName = viewModel.Model.DisplayName;
                 foreach (var startupController in ArgumentParser.Instance.StartControllers)
