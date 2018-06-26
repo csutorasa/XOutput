@@ -14,6 +14,11 @@ Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, 
 Download the application:
 
 * Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
+* Unzip to any directory
+
+Install all the drivers for your contollers.
+
+If you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
 ## How to use
 
