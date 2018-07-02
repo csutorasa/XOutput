@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace XOutput.UI.Component
 {
-    public class Icon : Label
+    public class Icon : TextBlock
     {
         public Icon()
         {

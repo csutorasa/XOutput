@@ -25,25 +25,50 @@
                         TrayMouseDoubleClick="TaskbarIconTrayMouseDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ExitMenu'}" Click="ExitClick"/>
+                    <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ExitMenu'}" Click="ExitClick">
+                        <MenuItem.Icon>
+                            <component:Icon Text="times" FontSize="16" TextAlignment="Center"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
         <Menu Grid.ColumnSpan="100">
             <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='FileMenu'}">
                 <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveMenu'}" Click="SaveClick"/>
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllersMenu'}" Click="GameControllersClick"/>
+                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllersMenu'}" Click="GameControllersClick">
+                    <MenuItem.Icon>
+                        <component:Icon Text="gamepad" FontSize="12" TextAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator/>
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ExitMenu'}" Click="ExitClick"/>
+                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ExitMenu'}" Click="ExitClick">
+                    <MenuItem.Icon>
+                        <component:Icon Text="times" FontSize="16" TextAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ToolsMenu'}">
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SettingsMenu'}" Click="SettingsClick"/>
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DiagnosticsMenu'}" Click="DiagnosticsClick"/>
+                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SettingsMenu'}" Click="SettingsClick">
+                    <MenuItem.Icon>
+                        <component:Icon Text="cog" FontSize="16" TextAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DiagnosticsMenu'}" Click="DiagnosticsClick">
+                    <MenuItem.Icon>
+                        <component:Icon Text="wrench" FontSize="16" TextAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HelpMenu'}">
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AboutMenu'}" Click="AboutClick"/>
+                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AboutMenu'}" Click="AboutClick">
+                    <MenuItem.Icon>
+                        <component:Icon Text="question" FontSize="16" TextAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
         </Menu>
+
         <GroupBox Grid.Row="1" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllers'}" Margin="3,3,8,3">
             <DockPanel>
                 <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding Model.AllDevices}" Checked="CheckBoxChecked" Unchecked="CheckBoxChecked" Margin="10"
@@ -57,19 +82,25 @@
         <GroupBox Grid.Row="1" Grid.Column="1" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Output'}"
                   Margin="3">
             <DockPanel>
-                <Button DockPanel.Dock="Bottom" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AddNewDevice'}"
-                        Width="150" Height="30" Margin="5"/>
+                <Button DockPanel.Dock="Bottom" Width="150" Height="30" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AddNewDevice'}" VerticalAlignment="Center"/>
+                        <component:Icon Text="plus" Padding="5 0 0 0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding Model.Controllers}"/>
                 </ScrollViewer>
             </DockPanel>
         </GroupBox>
         <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="100">
-            <Button Click="RefreshClick" Width="150" Margin="10" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceRefresh'}" DockPanel.Dock="Left"/>
-            <Button Click="SaveClick" Width="150" Margin="10" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveConfiguration'}" DockPanel.Dock="Right"/>
-            <Button>
-                <component:Icon>book</component:Icon>
+            <Button Click="RefreshClick" Width="150" Margin="10" DockPanel.Dock="Left">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceRefresh'}" VerticalAlignment="Center"/>
+                    <component:Icon Text="sync" Padding="5 0 0 0" VerticalAlignment="Center"/>
+                </StackPanel>
             </Button>
+            <Button Click="SaveClick" Width="150" Margin="10" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveConfiguration'}" DockPanel.Dock="Right"/>
             <Grid/>
         </DockPanel>
     </Grid>
