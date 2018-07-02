@@ -20,7 +20,7 @@ namespace XOutput.Tools
         private Dictionary<string, Dictionary<string, string>> data = new Dictionary<string, Dictionary<string, string>>();
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(LanguageManager));
-        private static LanguageManager instance = new LanguageManager(typeof(Properties.Resources));
+        private static LanguageManager instance = new LanguageManager(typeof(Properties.Languages));
         /// <summary>
         /// Gets the singleton instance of the class.
         /// </summary>

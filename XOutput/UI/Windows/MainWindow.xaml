@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:component="clr-namespace:XOutput.UI.Component"
         xmlns:local="clr-namespace:XOutput"
         mc:Ignorable="d"
         Loaded="WindowLoaded"
@@ -66,6 +67,9 @@
         <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="100">
             <Button Click="RefreshClick" Width="150" Margin="10" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceRefresh'}" DockPanel.Dock="Left"/>
             <Button Click="SaveClick" Width="150" Margin="10" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveConfiguration'}" DockPanel.Dock="Right"/>
+            <Button>
+                <component:Icon>book</component:Icon>
+            </Button>
             <Grid/>
         </DockPanel>
     </Grid>

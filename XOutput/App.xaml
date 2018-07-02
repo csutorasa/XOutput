@@ -8,7 +8,6 @@
         <ItemsPanelTemplate x:Key="VerticalStackPanel">
             <StackPanel Orientation="Vertical" Focusable="False"/>
         </ItemsPanelTemplate>
-
         <Converters:BoolToBrushConverter x:Key="BoolToBrushConverter"></Converters:BoolToBrushConverter>
         <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <Converters:BoolInverterConverter x:Key="BoolInverterConverter"/>

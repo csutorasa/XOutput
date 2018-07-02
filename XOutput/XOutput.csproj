@@ -90,6 +90,11 @@
     <Compile Include="Diagnostics\DiagnosticsResult.cs" />
     <Compile Include="Devices\Input\Diagnostics\InputDiagnostics.cs" />
     <Compile Include="Diagnostics\IDiagnostics.cs" />
+    <Compile Include="Properties\Languages.Designer.cs">
+      <DependentUpon>Languages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Tools\ArgumentParser.cs" />
     <Compile Include="Devices\DeviceInputChangedEventArgs.cs" />
     <Compile Include="Tools\Helper.cs" />
@@ -128,6 +133,7 @@
     <Compile Include="UI\Component\ButtonViewModel.cs" />
     <Compile Include="UI\Component\AxisViewModel.cs" />
     <Compile Include="UI\Component\Axis2DViewModel.cs" />
+    <Compile Include="UI\Component\Icon.cs" />
     <Compile Include="UI\Component\IUpdatableView.cs" />
     <Compile Include="UI\Component\DiagnosticsItemModel.cs" />
     <Compile Include="UI\Component\DiagnosticsItemView.xaml.cs">
@@ -273,19 +279,14 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="Properties\Languages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>Languages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -293,17 +294,20 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Resources\Russian.json" />
-    <None Include="Resources\Spanish.json" />
+    <Resource Include="Resources\Fonts\FontAwesome.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Resources\Languages\Russian.json" />
+    <None Include="Resources\Languages\Spanish.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Brazilian Portugese.json" />
-    <None Include="Resources\English.json" />
-    <None Include="Resources\German.json" />
-    <None Include="Resources\Hungarian.json" />
+    <None Include="Resources\Languages\Brazilian Portugese.json" />
+    <None Include="Resources\Languages\English.json" />
+    <None Include="Resources\Languages\German.json" />
+    <None Include="Resources\Languages\Hungarian.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
