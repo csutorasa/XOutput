@@ -1,0 +1,72 @@
+﻿<Window x:Class="XOutput.UI.Windows.InputDeviceSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XOutput.UI.Windows"
+        mc:Ignorable="d"
+        Title="{Binding Model.Title}" Width="720" Height="600" MinWidth="720"
+        d:DataContext="{d:DesignInstance Type=local:InputDeviceSettingsViewModel, IsDesignTimeCreatable=False}"
+        Loaded="WindowLoaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" MinWidth="200"/>
+            <ColumnDefinition Width="3*" MinWidth="300"/>
+            <ColumnDefinition Width="2*" MinWidth="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <!--Direct Input-->
+        <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Buttons'}" Margin="3,3,8,3">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Model.InputButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+        <GridSplitter Grid.Column="0" Width="5"></GridSplitter>
+        <!--Mapping-->
+        <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Axes'}" Grid.Column="1" Margin="3,3,8,3">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Model.InputAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+        <GridSplitter Grid.Column="1" Width="5"></GridSplitter>
+        <!--XInput-->
+        <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}" Grid.Column="2" Margin="3">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Model.InputDPadViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+        <!--XInput-->
+        <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceFeedback'}" Grid.ColumnSpan="3" Grid.Row="1" Margin="3">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Test'}"/>
+                    <Button Click="ForceFeedbackButtonClick" IsEnabled="{Binding Model.ForceFeedbackEnabled}">
+                        <TextBlock Margin="10 0">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                                    <Binding Path="LanguageModel.Data"/>
+                                    <Binding Path="Model.TestButtonText"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Button>
+                    <Label>
+                        <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                            <Binding Path="LanguageModel.Data"/>
+                            <Binding Path="Model.ForceFeedbackText"/>
+                        </MultiBinding>
+                    </Label>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+    </Grid>
+</Window>

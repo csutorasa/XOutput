@@ -33,7 +33,7 @@ namespace XOutput.UI.Component
 
         private void OpenClick(object sender, RoutedEventArgs e)
         {
-
+            ViewModel.OpenSettings();
         }
     }
 }

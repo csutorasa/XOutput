@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Tools;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -19,15 +20,7 @@ namespace XOutput.Devices.Input.DirectInput
 
         public bool AllDevices
         {
-            get => allDevices;
-            set
-            {
-                if (value != allDevices)
-                {
-                    allDevices = value;
-                    RefreshInputDevices();
-                }
-            }
+            get => Settings.Instance.ShowAllDevices;
         }
 
         public event DeviceConnectedHandler DeviceConnected;
@@ -73,8 +66,8 @@ namespace XOutput.Devices.Input.DirectInput
                 {
                     newConnectedDevices = directInput.GetDevices().Where(di => di.Type == DeviceType.Joystick || di.Type == DeviceType.Gamepad).ToArray();
                 }
-                var newDevices = newConnectedDevices.Where(d => !connectedDevices.Any(c => c.Id == d.InstanceGuid)).Select(CreateDirectDevice).Where(d => d != null);
-                var removedDevices = connectedDevices.Where(c => !newConnectedDevices.Any(d => c.Id == d.InstanceGuid));
+                var newDevices = newConnectedDevices.Where(d => !connectedDevices.Any(c => c.Id == d.InstanceGuid)).Select(CreateDirectDevice).Where(d => d != null).ToArray();
+                var removedDevices = connectedDevices.Where(c => !newConnectedDevices.Any(d => c.Id == d.InstanceGuid)).ToArray();
                 foreach (var newDevice in newDevices)
                 {
                     DeviceConnected?.Invoke(newDevice, new DeviceConnectedEventArgs());

@@ -238,8 +238,10 @@ namespace XOutput.UI.Windows
             delayThread.Name = "Device list refresh delay";
             delayThread.IsBackground = true;
             delayThread.Start();
-            /*Model.Controllers.Remove(controllerView);
-            logger.Info($"{controller.ToString()} is disconnected.");*/
+            var inputDevice = sender as DirectDevice;
+            var inputDeviceView = Model.InputDevices.First(id => id.ViewModel.InputDevice == inputDevice);
+            Model.InputDevices.Remove(inputDeviceView);
+            logger.Info($"{inputDevice.ToString()} is disconnected.");
         }
 
         private void HandleArgs()

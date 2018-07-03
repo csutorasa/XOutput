@@ -163,6 +163,7 @@ namespace XOutput.Devices.Input.DirectInput
                 disposed = true;
                 inputRefresher?.Abort();
                 joystick.Dispose();
+                Disconnected?.Invoke(this, new DeviceDisconnectedEventArgs());
             }
         }
 

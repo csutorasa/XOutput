@@ -10,20 +10,32 @@ namespace XOutput.UI.Component
 {
     public class InputDeviceModel : ModelBase
     {
-        private IInputDevice inputDevice;
-        public IInputDevice InputDevice
+        private Brush background;
+        public Brush Background
         {
-            get => inputDevice;
+            get => background;
             set
             {
-                if (inputDevice != value)
+                if (background != value)
                 {
-                    inputDevice = value;
-                    OnPropertyChanged(nameof(InputDevice));
+                    background = value;
+                    OnPropertyChanged(nameof(Background));
                 }
             }
         }
 
-        public string DisplayName { get { return InputDevice.ToString(); } }
+        private string displayName;
+        public string DisplayName
+        {
+            get => displayName;
+            set
+            {
+                if (displayName != value)
+                {
+                    displayName = value;
+                    OnPropertyChanged(nameof(DisplayName));
+                }
+            }
+        }
     }
 }

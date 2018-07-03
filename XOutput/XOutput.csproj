@@ -184,6 +184,11 @@
     <Compile Include="UI\Component\ButtonView.xaml.cs">
       <DependentUpon>ButtonView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Windows\InputDeviceSettingsModel.cs" />
+    <Compile Include="UI\Windows\InputDeviceSettingsViewModel.cs" />
+    <Compile Include="UI\Windows\InputDeviceSettingsWindow.xaml.cs">
+      <DependentUpon>InputDeviceSettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Windows\DiagnosticsModel.cs" />
     <Compile Include="UI\Windows\DiagnosticsViewModel.cs" />
     <Compile Include="UI\Windows\DiagnosticsWindow.xaml.cs">
@@ -245,6 +250,10 @@
     <Page Include="UI\Component\XBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\InputDeviceSettingsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\Windows\DiagnosticsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
