@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:component="clr-namespace:XOutput.UI.Component"
-        xmlns:local="clr-namespace:XOutput"
+        xmlns:local="clr-namespace:XOutput.UI.Windows"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel, IsDesignTimeCreatable=False}"
         Loaded="WindowLoaded"
         Closed="WindowClosed"
         Closing="WindowClosing"
@@ -74,7 +75,7 @@
                 <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding Model.AllDevices}" Checked="CheckBoxChecked" Unchecked="CheckBoxChecked" Margin="10"
                           Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ShowAllDevices'}"/>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding Model.Controllers}"/>
+                    <ItemsControl ItemsSource="{Binding Model.InputDevices}"/>
                 </ScrollViewer>
             </DockPanel>
         </GroupBox>

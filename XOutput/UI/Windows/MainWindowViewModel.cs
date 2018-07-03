@@ -48,19 +48,21 @@ namespace XOutput.UI.Windows
         private void DirectInputDevices_DeviceConnected(object sender, DeviceConnectedEventArgs e)
         {
             var device = sender as DirectDevice;
-            var s = settings.GetDeviceSettings(device.Id.ToString());
+            var inputDeviceView = new InputDeviceView(new InputDeviceViewModel(new InputDeviceModel(), device));
+            Model.InputDevices.Add(inputDeviceView);
+            device.Disconnected -= DispatchRefreshGameControllers;
+            device.Disconnected += DispatchRefreshGameControllers;
+            logger.Info($"{device.ToString()} is connected.");
+            /*var s = settings.GetDeviceSettings(device.Id.ToString());
             GameController controller = new GameController(s.Mapping, s.DPadSettings, s.ForceFeedbackDevices);
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
-            device.Disconnected -= DispatchRefreshGameControllers;
-            device.Disconnected += DispatchRefreshGameControllers;
-            logger.Info($"{controller.ToString()} is connected.");
             if (s.StartWhenConnected)
             {
                 controllerView.ViewModel.Start();
                 logger.Info($"{controller.ToString()} controller is started automatically.");
-            }
+            }*/
         }
 
         public async void UnhandledException(Exception exceptionObject)

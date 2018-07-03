@@ -121,6 +121,11 @@
     <Compile Include="Devices\XInput\Settings\MapperSettings.cs" />
     <Compile Include="Devices\XInput\Settings\OutputDeviceSettings.cs" />
     <Compile Include="Tools\RegistryModifier.cs" />
+    <Compile Include="UI\Component\InputDeviceModel.cs" />
+    <Compile Include="UI\Component\InputDeviceView.xaml.cs">
+      <DependentUpon>InputDeviceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Component\InputDeviceViewModel.cs" />
     <Compile Include="UI\Component\DPadModel.cs" />
     <Compile Include="UI\Component\DPadView.xaml.cs">
       <DependentUpon>DPadView.xaml</DependentUpon>
@@ -213,6 +218,10 @@
     </Compile>
     <Compile Include="UpdateChecker\UpdateChecker.cs" />
     <Compile Include="UpdateChecker\Version.cs" />
+    <Page Include="UI\Component\InputDeviceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI\Component\DPadView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
