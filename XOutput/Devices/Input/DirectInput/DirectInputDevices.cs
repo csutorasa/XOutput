@@ -51,6 +51,10 @@ namespace XOutput.Devices.Input.DirectInput
         public void Dispose()
         {
             directInput.Dispose();
+            foreach (var device in connectedDevices)
+            {
+                device.Dispose();
+            }
         }
 
         /// <summary>
