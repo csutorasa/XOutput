@@ -26,7 +26,6 @@ namespace XOutput.Devices.Input.DirectInput
         public event DeviceConnectedHandler DeviceConnected;
         public IEnumerable<DirectDevice> ConnectedDevices => connectedDevices;
 
-        private bool allDevices = false;
         private IList<DirectDevice> connectedDevices = new List<DirectDevice>();
 
         private Object refreshLock = new Object();

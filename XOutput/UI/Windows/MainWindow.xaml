@@ -19,8 +19,8 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" MinWidth="50"/>
+            <ColumnDefinition Width="*" MinWidth="50"/>
         </Grid.ColumnDefinitions>
         <tb:TaskbarIcon Visibility="Visible" ToolTipText="XOutput" IconSource="/icon.ico" MenuActivation="RightClick" PopupActivation="LeftClick"
                         TrayMouseDoubleClick="TaskbarIconTrayMouseDoubleClick">
