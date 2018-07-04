@@ -142,9 +142,9 @@ namespace XOutput.UI.Windows
             }
             RefreshGameControllers();
 
-            /*var keyboardGameController = new GameController();
-            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController));
-            controllerView.ViewModel.Model.CanStart = installed;
+            var keyboardView = new InputDeviceView(new InputDeviceViewModel(new InputDeviceModel(), Keyboard.Instance));
+            Model.InputDevices.Add(keyboardView);
+            /*controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);*/
 
             HandleArgs();
@@ -152,10 +152,7 @@ namespace XOutput.UI.Windows
 
         public void Finalizer()
         {
-            foreach (var controller in Model.Controllers.Select(x => x.ViewModel.Model.Controller))
-            {
-                controller.Dispose();
-            }
+            Keyboard.Instance.Dispose();
         }
 
         public void SaveSettings()
