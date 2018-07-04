@@ -14,7 +14,6 @@ namespace XOutput.Devices.XInput.Settings
         public string Type { get; set; }
         public double MinValue { get; set; }
         public double MaxValue { get; set; }
-        public double Deadzone { get; set; }
         [JsonIgnore]
         public IInputDevice Device { get; set; }
         [JsonIgnore]
@@ -31,10 +30,6 @@ namespace XOutput.Devices.XInput.Settings
             if (Math.Abs(range) < 0.0001)
                 return MinValue;
             var readvalue = value;
-            if (Math.Abs(value - 0.5) < Deadzone)
-            {
-                readvalue = 0.5;
-            }
             var mappedValue = (readvalue - MinValue) / range;
             if (mappedValue < 0)
                 mappedValue = 0;

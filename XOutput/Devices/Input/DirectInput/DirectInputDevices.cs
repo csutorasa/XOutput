@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XOutput.Tools;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -20,7 +19,7 @@ namespace XOutput.Devices.Input.DirectInput
 
         public bool AllDevices
         {
-            get => Settings.Instance.ShowAllDevices;
+            get => Tools.Settings.Instance.ShowAllDevices;
         }
 
         public event DeviceConnectedHandler DeviceConnected;

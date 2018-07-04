@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Devices.Input;
+using XOutput.Devices.Input.Settings;
 using XOutput.Devices.XInput.Settings;
 using XOutput.Logging;
 
@@ -27,6 +29,7 @@ namespace XOutput.Tools
             get => LanguageManager.Instance.Language;
             set { LanguageManager.Instance.Language = value; }
         }
+        public Dictionary<string, InputDeviceSettings> InputDevices { get; set; }
         public Dictionary<string, OutputDeviceSettings> OutputDevices { get; set; }
 
         /// <summary>
@@ -44,6 +47,10 @@ namespace XOutput.Tools
                 if (settings.OutputDevices == null)
                 {
                     settings.OutputDevices = new Dictionary<string, OutputDeviceSettings>();
+                }
+                if (settings.InputDevices == null)
+                {
+                    settings.InputDevices = new Dictionary<string, InputDeviceSettings>();
                 }
             }
             instance = settings;
@@ -80,6 +87,32 @@ namespace XOutput.Tools
                 OutputDevices[deviceName] = settings;
             }
             return OutputDevices[deviceName];
+        }
+
+        public void LoadInputs(List<IInputDevice> inputDevices)
+        {
+            foreach (var inputDevice in InputDevices)
+            {
+                inputDevice.Value.Device = inputDevices.FirstOrDefault(id => id.DisplayName == inputDevice.Key);
+            }
+        }
+
+        public void LoadOutputs(List<IInputDevice> inputDevices)
+        {
+            foreach (var outputDevice in OutputDevices)
+            {
+                outputDevice.Value.DPadSettings.Device = inputDevices.FirstOrDefault(id => id.DisplayName == outputDevice.Value.DPadSettings.DeviceName);
+                foreach (var forceFeedbackDevice in outputDevice.Value.ForceFeedbackDevices)
+                {
+                    forceFeedbackDevice.Device = inputDevices.FirstOrDefault(id => id.DisplayName == forceFeedbackDevice.DeviceName);
+                }
+                foreach (var mapping in outputDevice.Value.Mapping)
+                {
+                    var device = inputDevices.FirstOrDefault(id => id.DisplayName == mapping.Value.DeviceName);
+                    mapping.Value.Device = device;
+                    mapping.Value.InputType = device.Axes.Concat(device.Buttons).Concat(device.Sliders).FirstOrDefault(it => it.ToString() == mapping.Value.Type);
+                }
+            }
         }
     }
 }
