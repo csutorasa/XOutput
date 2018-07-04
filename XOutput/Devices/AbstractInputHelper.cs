@@ -46,7 +46,7 @@ namespace XOutput.Devices
             {
                 throw new ArgumentException("Type must be enum", nameof(T));
             }
-            values = ((T[])Enum.GetValues(typeof(T))).Distinct();
+            values = ((T[])Enum.GetValues(typeof(T))).Distinct().ToArray();
             buttons = values.Where(v => IsButton(v)).ToArray();
             axes = values.Where(v => IsAxis(v)).ToArray();
             dPad = values.Where(v => IsDPad(v)).ToArray();
