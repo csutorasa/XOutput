@@ -41,6 +41,11 @@ namespace XOutput.Devices.Input.Keyboard
         /// </summary>
         public string DisplayName => LanguageModel.Instance.Translate("Keyboard");
         /// <summary>
+        /// Gets the keyboard string.
+        /// <para>Implements <see cref="IInputDevice.Id"/></para>
+        /// </summary>
+        public string Id => "Keyboard";
+        /// <summary>
         /// Returns true always, as keyboard is expected to be connected at all times.
         /// <para>Implements <see cref="IInputDevice.Connected"/></para>
         /// </summary>
@@ -117,6 +122,17 @@ namespace XOutput.Devices.Input.Keyboard
             if (!(inputType is Key))
                 throw new ArgumentException();
             return System.Windows.Input.Keyboard.IsKeyDown((Key)inputType) ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Gets the current raw state of the inputTpye.
+        /// <para>Implements <see cref="IInputDevice.GetRaw(Enum)"/></para>
+        /// </summary>
+        /// <param name="inputType">Type of input</param>
+        /// <returns>Value</returns>
+        public double GetRaw(Enum inputType)
+        {
+            return Get(inputType);
         }
 
         /// <summary>

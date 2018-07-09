@@ -23,6 +23,7 @@ namespace XOutput.Devices.Input.DirectInput
         }
 
         public event DeviceConnectedHandler DeviceConnected;
+        public event DeviceDisconnectedHandler DeviceDisconnected;
         public IEnumerable<DirectDevice> ConnectedDevices => connectedDevices;
 
         private IList<DirectDevice> connectedDevices = new List<DirectDevice>();
@@ -30,6 +31,14 @@ namespace XOutput.Devices.Input.DirectInput
         private Object refreshLock = new Object();
 
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
+
+        private static DirectInputDevices instance = new DirectInputDevices();
+        public static DirectInputDevices Instance => instance;
+
+        private DirectInputDevices()
+        {
+
+        }
 
         ~DirectInputDevices()
         {
@@ -64,17 +73,18 @@ namespace XOutput.Devices.Input.DirectInput
                 {
                     newConnectedDevices = directInput.GetDevices().Where(di => di.Type == DeviceType.Joystick || di.Type == DeviceType.Gamepad).ToArray();
                 }
-                var newDevices = newConnectedDevices.Where(d => !connectedDevices.Any(c => c.Id == d.InstanceGuid)).Select(CreateDirectDevice).Where(d => d != null).ToArray();
-                var removedDevices = connectedDevices.Where(c => !newConnectedDevices.Any(d => c.Id == d.InstanceGuid)).ToArray();
+                var newDevices = newConnectedDevices.Where(d => !connectedDevices.Any(c => c.Id == d.InstanceGuid.ToString())).Select(CreateDirectDevice).Where(d => d != null).ToArray();
+                var removedDevices = connectedDevices.Where(c => !newConnectedDevices.Any(d => c.Id == d.InstanceGuid.ToString())).ToArray();
                 foreach (var newDevice in newDevices)
                 {
-                    DeviceConnected?.Invoke(newDevice, new DeviceConnectedEventArgs());
                     connectedDevices.Add(newDevice);
+                    DeviceConnected?.Invoke(newDevice, new DeviceConnectedEventArgs());
                 }
                 foreach (var removeDevice in removedDevices)
                 {
                     removeDevice.Dispose();
                     connectedDevices.Remove(removeDevice);
+                    DeviceDisconnected?.Invoke(removeDevice, new DeviceDisconnectedEventArgs());
                 }
             }
         }

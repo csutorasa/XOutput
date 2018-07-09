@@ -31,7 +31,6 @@ namespace XOutput.UI.Windows
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindowViewModel));
         private readonly DispatcherTimer timer = new DispatcherTimer();
-        private readonly DirectInputDevices directInputDevices = new DirectInputDevices();
         private readonly Dispatcher dispatcher;
         private Settings settings;
         private bool installed;
@@ -39,10 +38,6 @@ namespace XOutput.UI.Windows
         public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher) : base(model)
         {
             this.dispatcher = dispatcher;
-            directInputDevices.DeviceConnected += DirectInputDevices_DeviceConnected;
-            timer.Interval = TimeSpan.FromMilliseconds(10000);
-            timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
-            timer.Start();
         }
 
         private void DirectInputDevices_DeviceConnected(object sender, DeviceConnectedEventArgs e)
@@ -79,7 +74,7 @@ namespace XOutput.UI.Windows
         public void Dispose()
         {
             timer.Stop();
-            directInputDevices.Dispose();
+            DirectInputDevices.Instance.Dispose();
         }
 
         public void LoadSettings(string settingsFilePath)
@@ -140,6 +135,7 @@ namespace XOutput.UI.Windows
                     MessageBox.Show(error, Translate("Error"));
                 }
             }
+            DirectInputDevices.Instance.DeviceConnected += DirectInputDevices_DeviceConnected;
             RefreshGameControllers();
 
             var keyboardView = new InputDeviceView(new InputDeviceViewModel(new InputDeviceModel(), Keyboard.Instance));
@@ -148,6 +144,10 @@ namespace XOutput.UI.Windows
             Model.Controllers.Add(controllerView);*/
 
             HandleArgs();
+
+            timer.Interval = TimeSpan.FromMilliseconds(10000);
+            timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
+            timer.Start();
         }
 
         public void Finalizer()
@@ -197,7 +197,7 @@ namespace XOutput.UI.Windows
 
         public void RefreshGameControllers()
         {
-            directInputDevices.RefreshInputDevices();
+            DirectInputDevices.Instance.RefreshInputDevices();
         }
 
         public void OpenWindowsGameControllerSettings()
@@ -213,7 +213,7 @@ namespace XOutput.UI.Windows
 
         public void OpenDiagnostics()
         {
-            IList<IDiagnostics> elements = directInputDevices.ConnectedDevices.Select(d => new InputDiagnostics(d)).OfType<IDiagnostics>().ToList();
+            IList<IDiagnostics> elements = DirectInputDevices.Instance.ConnectedDevices.Select(d => new InputDiagnostics(d)).OfType<IDiagnostics>().ToList();
             elements.Add(new InputDiagnostics(Keyboard.Instance));
             elements.Insert(0, new XInputDiagnostics());
 

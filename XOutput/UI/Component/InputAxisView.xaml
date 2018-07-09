@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="XOutput.UI.Component.InputAxisView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:XOutput.UI.Component"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=local:InputAxisViewModel, IsDesignTimeCreatable=False}"
+             d:DesignHeight="60" d:DesignWidth="350">
+    <Grid Height="60">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="150"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Label Grid.RowSpan="2" VerticalAlignment="Center">
+            <Label.Content>
+                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                    <Binding Path="LanguageModel.Data" />
+                    <Binding Path="Model.Type" />
+                </MultiBinding>
+            </Label.Content>
+        </Label>
+        <ProgressBar Grid.Column="1" Height="6" Value="{Binding Model.RawValue}" Maximum="{Binding Model.Max}"></ProgressBar>
+        <ProgressBar Grid.Column="1" Grid.Row="1" Height="6" Value="{Binding Model.Value}" Maximum="{Binding Model.Max}"></ProgressBar>
+        <StackPanel Grid.Column="2" Margin="2" Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center" Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Deadzone'}" Width="90"/>
+            <local:NumericTextBox VerticalAlignment="Center" Minimum="0" Maximum="50" Value="{Binding Model.Deadzone, Mode=TwoWay}"/>
+            <TextBlock VerticalAlignment="Center" Text="%"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="2" Margin="2" Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center" Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AntiDeadzone'}" Width="90"/>
+            <local:NumericTextBox VerticalAlignment="Center" Minimum="0" Maximum="50" Value="{Binding Model.AntiDeadzone, Mode=TwoWay}"/>
+            <TextBlock VerticalAlignment="Center" Text="%"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

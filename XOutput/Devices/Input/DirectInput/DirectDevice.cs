@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using XOutput.Devices.Input.Settings;
 using XOutput.Logging;
 
 namespace XOutput.Devices.Input.DirectInput
@@ -40,8 +41,9 @@ namespace XOutput.Devices.Input.DirectInput
         #region Properties
         /// <summary>
         /// Gets the GUID of the controller.
+        /// <para>Implements <see cref="IInputDevice.Id"/></para>
         /// </summary>
-        public Guid Id => deviceInstance.InstanceGuid;
+        public string Id => deviceInstance.InstanceGuid.ToString();
         /// <summary>
         /// Gets the product name of the device.
         /// <para>Implements <see cref="IInputDevice.DisplayName"/></para>
@@ -197,6 +199,39 @@ namespace XOutput.Devices.Input.DirectInput
         /// <param name="inputType">Type of input</param>
         /// <returns>Value</returns>
         public double Get(Enum inputType)
+        {
+            if (!(inputType is DirectInputTypes))
+                throw new ArgumentException();
+            var type = (DirectInputTypes)inputType;
+            double raw = GetRaw(type);
+            if (DirectInputHelper.Instance.IsAxis(type))
+            {
+                Dictionary<Enum, InputSettings> settings = Tools.Settings.Instance.InputDevices.Where(id => id.Key == Id.ToString()).Select(id => id.Value).FirstOrDefault()?.InputSettings;
+                InputSettings setting;
+                settings.TryGetValue(type, out setting);
+                if (settings.TryGetValue(type, out setting) && Math.Abs(raw - 0.5) < setting.Deadzone)
+                {
+                    return 0.5;
+                }
+                if (settings.TryGetValue(type, out setting) && Math.Abs(raw) < setting.AntiDeadzone)
+                {
+                    return 0;
+                }
+                if (settings.TryGetValue(type, out setting) && Math.Abs(1 - raw) < setting.AntiDeadzone)
+                {
+                    return 1;
+                }
+            }
+            return raw;
+        }
+
+        /// <summary>
+        /// Gets the current raw state of the inputTpye.
+        /// <param>Implements <see cref="IInputDevice.GetRaw(Enum)"/></param>
+        /// </summary>
+        /// <param name="inputType">Type of input</param>
+        /// <returns>Value</returns>
+        public double GetRaw(Enum inputType)
         {
             if (!(inputType is DirectInputTypes))
                 throw new ArgumentException();

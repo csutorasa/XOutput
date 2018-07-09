@@ -11,5 +11,6 @@ namespace XOutput.Devices.Input.Settings
     public class InputSettings
     {
         public double Deadzone { get; set; }
+        public double AntiDeadzone { get; set; }
     }
 }

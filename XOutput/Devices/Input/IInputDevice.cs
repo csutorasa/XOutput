@@ -20,6 +20,10 @@ namespace XOutput.Devices.Input
         /// </summary>
         string DisplayName { get; }
         /// <summary>
+        /// The identification string of the device.
+        /// </summary>
+        string Id { get; }
+        /// <summary>
         /// Gets if the device is connected.
         /// </summary>
         bool Connected { get; }
@@ -33,5 +37,11 @@ namespace XOutput.Devices.Input
         /// <param name="big">Big motor value</param>
         /// <param name="small">Small motor value</param>
         void SetForceFeedback(double big, double small);
+        /// <summary>
+        /// Gets the current raw state of the <paramref name="inputType"/>.
+        /// </summary>
+        /// <param name="inputType">Type of input</param>
+        /// <returns>Value</returns>
+        double GetRaw(Enum inputType);
     }
 }

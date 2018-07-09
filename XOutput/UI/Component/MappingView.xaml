@@ -44,12 +44,6 @@
                 <TextBlock VerticalAlignment="Center" Text="{Binding Model.Max, Converter={StaticResource DecimalToStringConverter}}"/>
                 <TextBlock VerticalAlignment="Center" Text="%"/>
             </StackPanel>
-            <StackPanel Grid.Column="1" Margin="2" Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Deadzone'}"/>
-                <TextBlock VerticalAlignment="Center" Text=": "/>
-                <local:NumericTextBox VerticalAlignment="Center" Minimum="0" Maximum="50" Value="{Binding Model.Deadzone, Mode=TwoWay}"/>
-                <TextBlock VerticalAlignment="Center" Text="%"/>
-            </StackPanel>
             <Button Grid.Column="2" Margin="2" Click="InvertClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Invert'}"/>
         </Grid>
         <Button Grid.Column="4" Margin="2" Click="ConfigureClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Configure'}"/>

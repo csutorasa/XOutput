@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XOutput.Devices.Input;
+using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.Input.Settings;
 using XOutput.Devices.XInput.Settings;
 using XOutput.Logging;
@@ -31,6 +32,65 @@ namespace XOutput.Tools
         }
         public Dictionary<string, InputDeviceSettings> InputDevices { get; set; }
         public Dictionary<string, OutputDeviceSettings> OutputDevices { get; set; }
+
+        public Settings()
+        {
+            DirectInputDevices.Instance.DeviceConnected += Instance_DeviceConnected;
+            DirectInputDevices.Instance.DeviceDisconnected += Instance_DeviceDisconnected;
+        }
+
+        private void Instance_DeviceDisconnected(object sender, DeviceDisconnectedEventArgs e)
+        {
+            IInputDevice inputDevice = sender as IInputDevice;
+            InputDeviceSettings settings = InputDevices?.Where(id => id.Key == inputDevice.DisplayName).Select(id => id.Value).FirstOrDefault();
+            if (settings != null)
+            {
+                settings.Device = null;
+            }
+        }
+
+        private void Instance_DeviceConnected(object sender, DeviceConnectedEventArgs e)
+        {
+            IInputDevice inputDevice = sender as IInputDevice;
+            string name = inputDevice is DirectDevice ? (inputDevice as DirectDevice).Id.ToString() : inputDevice.DisplayName;
+            if (InputDevices != null)
+            {
+                InputDeviceSettings settings = InputDevices.Where(id => id.Key == name).Select(id => id.Value).FirstOrDefault();
+                if (settings == null)
+                {
+                    var inputSettings = new Dictionary<Enum, InputSettings>();
+                    foreach (var axis in inputDevice.Axes)
+                    {
+                        inputSettings[axis] = new InputSettings
+                        {
+                            Deadzone = 0,
+                            AntiDeadzone = 0,
+                        };
+                    }
+                    InputDevices[name] = new InputDeviceSettings
+                    {
+                        InputSettings = inputSettings,
+                        Device = inputDevice,
+                    };
+
+                }
+                else
+                {
+                    settings.Device = inputDevice;
+                    foreach (var axis in inputDevice.Axes)
+                    {
+                        if (!settings.InputSettings.ContainsKey(axis))
+                        {
+                            settings.InputSettings[axis] = new InputSettings
+                            {
+                                Deadzone = 0,
+                                AntiDeadzone = 0,
+                            };
+                        }
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Reads a new setting from a file.
@@ -89,11 +149,20 @@ namespace XOutput.Tools
             return OutputDevices[deviceName];
         }
 
-        public void LoadInputs(List<IInputDevice> inputDevices)
+        public void LoadInputs(IInputDevice inputDevice)
         {
-            foreach (var inputDevice in InputDevices)
+            InputDeviceSettings settings = InputDevices.Where(id => id.Key == inputDevice.DisplayName).Select(id => id.Value).FirstOrDefault();
+            if (settings == null)
             {
-                inputDevice.Value.Device = inputDevices.FirstOrDefault(id => id.DisplayName == inputDevice.Key);
+                InputDevices[inputDevice.DisplayName] = new InputDeviceSettings
+                {
+                    InputSettings = new Dictionary<Enum, InputSettings>(),
+                    Device = inputDevice,
+                };
+            }
+            else
+            {
+                settings.Device = inputDevice;
             }
         }
 
@@ -113,6 +182,16 @@ namespace XOutput.Tools
                     mapping.Value.InputType = device.Axes.Concat(device.Buttons).Concat(device.Sliders).FirstOrDefault(it => it.ToString() == mapping.Value.Type);
                 }
             }
+        }
+
+        public void WriteInputs()
+        {
+
+        }
+
+        public void WriteOutputs()
+        {
+
         }
     }
 }
