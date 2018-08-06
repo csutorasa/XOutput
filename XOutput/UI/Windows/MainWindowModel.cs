@@ -4,24 +4,38 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Properties;
 using XOutput.UI.Component;
 
 namespace XOutput.UI.Windows
 {
     public class MainWindowModel : ModelBase
     {
+        private Tools.Settings settings;
+        public Tools.Settings Settings
+        {
+            get => settings;
+            set
+            {
+                if (settings != value)
+                {
+                    settings = value;
+                    OnPropertyChanged(nameof(AllDevices));
+                }
+            }
+        }
+
         private readonly ObservableCollection<ControllerView> controllers = new ObservableCollection<ControllerView>();
         public ObservableCollection<ControllerView> Controllers { get { return controllers; } }
 
-        private bool allDevices;
         public bool AllDevices
         {
-            get => allDevices;
+            get => settings?.ShowAll ?? false;
             set
             {
-                if (allDevices != value)
+                if (settings != null && settings.ShowAll != value)
                 {
-                    allDevices = value;
+                    settings.ShowAll = value;
                     OnPropertyChanged(nameof(AllDevices));
                 }
             }
