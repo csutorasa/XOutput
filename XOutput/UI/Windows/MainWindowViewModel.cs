@@ -123,6 +123,7 @@ namespace XOutput.UI.Windows
                     MessageBox.Show(error, Translate("Error"));
                 }
             }
+            Model.Settings = settings;
             RefreshGameControllers();
 
             var keyboardGameController = new GameController(new Devices.Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard"));
