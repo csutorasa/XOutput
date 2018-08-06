@@ -46,6 +46,10 @@ namespace XOutput.Tools
                         {
                             settings.CloseToTray = section.Value[CloseToTrayKey] == "true";
                         }
+                        if (section.Value.ContainsKey(ShowAllKey))
+                        {
+                            settings.ShowAll = section.Value[ShowAllKey] == "true";
+                        }
                     }
                     else if (id == KeyboardKey)
                     {
