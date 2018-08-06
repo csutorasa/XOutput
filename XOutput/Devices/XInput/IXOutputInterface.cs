@@ -29,6 +29,6 @@ namespace XOutput.Devices.XInput
         /// <param name="controllerCount">Number of controller</param>
         /// <param name="values">values for each XInput</param>
         /// <returns>If it was successful</returns>
-        bool Report(int controllerCount, Dictionary<XInputTypes, double> values);
+        bool Report(int controllerCount, Dictionary<InputType, double> values);
     }
 }

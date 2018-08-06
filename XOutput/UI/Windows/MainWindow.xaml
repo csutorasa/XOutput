@@ -36,7 +36,11 @@
         </tb:TaskbarIcon>
         <Menu Grid.ColumnSpan="100">
             <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='FileMenu'}">
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveMenu'}" Click="SaveClick"/>
+                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveMenu'}" Click="SaveClick">
+                    <MenuItem.Icon>
+                        <component:Icon Text="save" FontSize="16" TextAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllersMenu'}" Click="GameControllersClick">
                     <MenuItem.Icon>
                         <component:Icon Text="gamepad" FontSize="12" TextAlignment="Center"/>
@@ -101,7 +105,12 @@
                     <component:Icon Text="sync" Padding="5 0 0 0" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
-            <Button Click="SaveClick" Width="150" Margin="10" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveConfiguration'}" DockPanel.Dock="Right"/>
+            <Button Click="SaveClick" Width="150" Margin="10" DockPanel.Dock="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveConfiguration'}" VerticalAlignment="Center"/>
+                    <component:Icon Text="save" Padding="5 0 0 0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
             <Grid/>
         </DockPanel>
     </Grid>

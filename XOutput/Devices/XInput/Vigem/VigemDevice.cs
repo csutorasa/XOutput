@@ -18,8 +18,8 @@ namespace XOutput.Devices.XInput.Vigem
     {
         private readonly ViGEmClient client;
         private readonly Dictionary<int, Xbox360Controller> controllers = new Dictionary<int, Xbox360Controller>();
-        private readonly Dictionary<XInputTypes, VigemXbox360ButtonMapping> buttonMappings = new Dictionary<XInputTypes, VigemXbox360ButtonMapping>();
-        private readonly Dictionary<XInputTypes, VigemXbox360AxisMapping> axisMappings = new Dictionary<XInputTypes, VigemXbox360AxisMapping>();
+        private readonly Dictionary<InputType, VigemXbox360ButtonMapping> buttonMappings = new Dictionary<InputType, VigemXbox360ButtonMapping>();
+        private readonly Dictionary<InputType, VigemXbox360AxisMapping> axisMappings = new Dictionary<InputType, VigemXbox360AxisMapping>();
 
         public VigemDevice()
         {
@@ -75,12 +75,12 @@ namespace XOutput.Devices.XInput.Vigem
         }
 
         /// <summary>
-        /// Implements <see cref="IXOutputInterface.Report(int, Dictionary{XInputTypes, double})"/>
+        /// Implements <see cref="IXOutputInterface.Report(int, Dictionary{InputType, double})"/>
         /// </summary>
         /// <param name="controllerCount">Number of controller</param>
         /// <param name="values">values for each XInput</param>
         /// <returns>If it was successful</returns>
-        public bool Report(int controllerCount, Dictionary<XInputTypes, double> values)
+        public bool Report(int controllerCount, Dictionary<InputType, double> values)
         {
             if (controllers.ContainsKey(controllerCount))
             {
@@ -120,7 +120,7 @@ namespace XOutput.Devices.XInput.Vigem
 
         private void InitMapping()
         {
-            buttonMappings.Add(XInputTypes.A, new VigemXbox360ButtonMapping(Xbox360Buttons.A));
+            /*buttonMappings.Add(XInputTypes.A, new VigemXbox360ButtonMapping(Xbox360Buttons.A));
             buttonMappings.Add(XInputTypes.B, new VigemXbox360ButtonMapping(Xbox360Buttons.B));
             buttonMappings.Add(XInputTypes.X, new VigemXbox360ButtonMapping(Xbox360Buttons.X));
             buttonMappings.Add(XInputTypes.Y, new VigemXbox360ButtonMapping(Xbox360Buttons.Y));
@@ -142,7 +142,7 @@ namespace XOutput.Devices.XInput.Vigem
             axisMappings.Add(XInputTypes.RX, new VigemXbox360AxisMapping(Xbox360Axes.RightThumbX));
             axisMappings.Add(XInputTypes.RY, new VigemXbox360AxisMapping(Xbox360Axes.RightThumbY));
             axisMappings.Add(XInputTypes.L2, new VigemXbox360AxisMapping(Xbox360Axes.LeftTrigger));
-            axisMappings.Add(XInputTypes.R2, new VigemXbox360AxisMapping(Xbox360Axes.RightTrigger));
+            axisMappings.Add(XInputTypes.R2, new VigemXbox360AxisMapping(Xbox360Axes.RightTrigger));*/
         }
     }
 }

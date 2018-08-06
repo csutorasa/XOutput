@@ -11,7 +11,7 @@ namespace XOutput.UI.Component
 {
     public class InputAxisViewModel : ViewModelBase<InputAxisModel>
     {
-        public InputAxisViewModel(InputAxisModel model, Enum type, int max = 1000) : base(model)
+        public InputAxisViewModel(InputAxisModel model, InputType type, int max = 1000) : base(model)
         {
             Model.Type = type;
             Model.Max = max;

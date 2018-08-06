@@ -7,10 +7,7 @@ using System.Windows.Input;
 
 namespace XOutput.Devices.Input.Keyboard
 {
-    /// <summary>
-    /// <see cref="IInputHelper{T}"/> for <see cref="Key"/>.
-    /// </summary>
-    public class KeyboardInputHelper : AbstractInputHelper<Key>
+    public class KeyboardInputHelper
     {
         protected static readonly KeyboardInputHelper instance = new KeyboardInputHelper();
         /// <summary>
@@ -18,48 +15,19 @@ namespace XOutput.Devices.Input.Keyboard
         /// </summary>
         public static KeyboardInputHelper Instance => instance;
 
-        /// <summary>
-        /// Returns false. Keyboards have no axes.
-        /// <para>Implements <see cref="IInputHelper{T}.IsAxis(T)"/> enum value</para>
-        /// </summary>
-        /// <param name="type"><see cref="DirectInputTypes"/> enum value</param>
-        /// <returns></returns>
-        public override bool IsAxis(Key type)
+        public int ToInt(Key key)
         {
-            return false;
+            return (int)key;
         }
 
-        /// <summary>
-        /// Return true. Keyboards have only buttons.
-        /// <para>Implements <see cref="IInputHelper{T}.IsButton(T)"/> enum value</para>
-        /// </summary>
-        /// <param name="type"><see cref="DirectInputTypes"/> enum value</param>
-        /// <returns></returns>
-        public override bool IsButton(Key type)
+        public Key ToKey(int key)
         {
-            return true;
+            return (Key)key;
         }
 
-        /// <summary>
-        /// Returns false. Keyboards have no DPads.
-        /// <para>Implements <see cref="IInputHelper{T}.IsDPad(T)"/> enum value</para>
-        /// </summary>
-        /// <param name="type"><see cref="DirectInputTypes"/> enum value</param>
-        /// <returns></returns>
-        public override bool IsDPad(Key type)
+        public string ConvertToString(InputType type)
         {
-            return false;
-        }
-
-        /// <summary>
-        /// Returns false. Keyboards have no sliders.
-        /// <para>Implements <see cref="IInputHelper{T}.IsSlider(T)"/> enum value</para>
-        /// </summary>
-        /// <param name="type"><see cref="DirectInputTypes"/> enum value</param>
-        /// <returns></returns>
-        public override bool IsSlider(Key type)
-        {
-            return false;
+            return ((Key)type.Count).ToString();
         }
     }
 }

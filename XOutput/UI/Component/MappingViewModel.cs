@@ -21,7 +21,7 @@ namespace XOutput.UI.Component
     {
         private GameController controller;
 
-        public MappingViewModel(MappingModel model, GameController controller, XInputTypes inputType) : base(model)
+        public MappingViewModel(MappingModel model, GameController controller, InputType inputType) : base(model)
         {
             this.controller = controller;
             var mapperData = controller.XInput.GetMapping(inputType);
@@ -48,7 +48,7 @@ namespace XOutput.UI.Component
 
         public void Configure()
         {
-            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), controller, new XInputTypes[] { Model.XInputType }), false).ShowDialog();
+            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), controller, new InputType[] { Model.XInputType }), false).ShowDialog();
             SetSelected(GetMapperData());
         }
 
@@ -74,7 +74,7 @@ namespace XOutput.UI.Component
         {
             if (Helper.DoubleEquals(mapperData.MinValue, Model.XInputType.GetDisableValue()) && Helper.DoubleEquals(mapperData.MaxValue, Model.XInputType.GetDisableValue()))
             {
-                Model.SelectedInput = MappingTypes.Disabled;
+                Model.SelectedInput = new InputType { Type = InputTypes.Disabled };
                 Model.ConfigVisibility = System.Windows.Visibility.Collapsed;
             }
             else
@@ -85,7 +85,7 @@ namespace XOutput.UI.Component
             SelectionChanged(Model.SelectedInput);
         }
 
-        protected void SelectionChanged(Enum type)
+        protected void SelectionChanged(InputType type)
         {
             if (type.Equals(MappingTypes.Disabled))
             {

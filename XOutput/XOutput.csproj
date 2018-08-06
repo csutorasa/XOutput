@@ -82,6 +82,7 @@
     <Compile Include="Devices\DeviceState.cs" />
     <Compile Include="Devices\Input\DirectInput\DeviceConnectedEventArgs.cs" />
     <Compile Include="Devices\Input\Diagnostics\InputDiagnosticsTypes.cs" />
+    <Compile Include="Devices\InputType.cs" />
     <Compile Include="Devices\Input\Settings\MapperSettings.cs" />
     <Compile Include="Devices\Input\Settings\InputDeviceSettings.cs" />
     <Compile Include="Devices\XInput\Diagnostics\XInputDiagnostics.cs" />
@@ -102,12 +103,9 @@
     <Compile Include="Devices\DeviceInputChangedEventArgs.cs" />
     <Compile Include="Tools\Helper.cs" />
     <Compile Include="Devices\Controllers.cs" />
-    <Compile Include="Devices\Input\DeviceDisconnectedEventArgs.cs" />
-    <Compile Include="Devices\Input\DirectInput\DirectInputHelper.cs" />
+    <Compile Include="Devices\DeviceDisconnectedEventArgs.cs" />
     <Compile Include="Devices\IDevice.cs" />
     <Compile Include="Devices\Input\IInputDevice.cs" />
-    <Compile Include="Devices\AbstractInputHelper.cs" />
-    <Compile Include="Devices\IInputHelper.cs" />
     <Compile Include="Devices\Input\Keyboard\KeyboardInputHelper.cs" />
     <Compile Include="Devices\Input\Keyboard\Keyboard.cs" />
     <Compile Include="Devices\XInput\IXOutputInterface.cs" />
@@ -115,7 +113,6 @@
     <Compile Include="Devices\XInput\SCPToolkit\ScpDevice.cs" />
     <Compile Include="Devices\XInput\Vigem\VigemXBox360Mappings.cs" />
     <Compile Include="Devices\XInput\Vigem\VigemDevice.cs" />
-    <Compile Include="Devices\XInput\XInputHelper.cs" />
     <Compile Include="Logging\AbstractLogger.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
@@ -175,7 +172,6 @@
     <Compile Include="UI\Converters\LanguageConverter.cs" />
     <Compile Include="UI\Converters\BoolInverterConverter.cs" />
     <Compile Include="UI\Converters\BoolToBrushConverter.cs" />
-    <Compile Include="Devices\Input\DirectInput\DirectInputTypes.cs" />
     <Compile Include="Devices\DPadDirection.cs" />
     <Compile Include="Devices\GameController.cs" />
     <Compile Include="UI\Component\NumericTextBox.cs" />
@@ -214,7 +210,6 @@
     <Compile Include="Devices\Input\DirectInput\DirectInputDevices.cs" />
     <Compile Include="Tools\Settings.cs" />
     <Compile Include="Devices\XInput\XOutputDevice.cs" />
-    <Compile Include="Devices\XInput\XInputTypes.cs" />
     <Compile Include="UI\Component\ControllerView.xaml.cs">
       <DependentUpon>ControllerView.xaml</DependentUpon>
     </Compile>

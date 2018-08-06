@@ -92,12 +92,12 @@ namespace XOutput.Devices.XInput.SCPToolkit
         }
 
         /// <summary>
-        /// Implements <see cref="IXOutputInterface.Report(int, Dictionary{XInputTypes, double})"/>
+        /// Implements <see cref="IXOutputInterface.Report(int, Dictionary{InputType, double})"/>
         /// </summary>
         /// <param name="controllerCount">Number of controller</param>
         /// <param name="values">values for each XInput</param>
         /// <returns>If it was successful</returns>
-        public bool Report(int controller, Dictionary<XInputTypes, double> values)
+        public bool Report(int controller, Dictionary<InputType, double> values)
         {
             return sendToDevice(NativeMethods.MessageType.Report, controller, GetBinaryData(values), null);
         }
@@ -115,14 +115,14 @@ namespace XOutput.Devices.XInput.SCPToolkit
         /// </summary>
         /// <param name="values">current values to convert</param>
         /// <returns></returns>
-        private byte[] GetBinaryData(Dictionary<XInputTypes, double> values)
+        private byte[] GetBinaryData(Dictionary<InputType, double> values)
         {
             byte[] report = new byte[20];
             report[0] = 0; // Input report
             report[1] = 20; // Message length
 
             // Buttons
-            if (values[XInputTypes.UP] > 0.5) report[2] |= 1 << 0;
+            /*if (values[XInputTypes.UP] > 0.5) report[2] |= 1 << 0;
             if (values[XInputTypes.DOWN] > 0.5) report[2] |= 1 << 1;
             if (values[XInputTypes.LEFT] > 0.5) report[2] |= 1 << 2;
             if (values[XInputTypes.RIGHT] > 0.5) report[2] |= 1 << 3;
@@ -158,7 +158,7 @@ namespace XOutput.Devices.XInput.SCPToolkit
             report[11] = (byte)((rx >> 8) & 0xFF);
             ushort ry = (ushort)((values[XInputTypes.RY] - 0.5) * ushort.MaxValue);
             report[12] = (byte)(ry & 0xFF);
-            report[13] = (byte)((ry >> 8) & 0xFF);
+            report[13] = (byte)((ry >> 8) & 0xFF);*/
 
             return report;
         }

@@ -39,7 +39,7 @@ namespace XOutput.UI.Windows
 
         public void ConfigureAll()
         {
-            var types = XInputHelper.Instance.Values;
+            var types = controller.XInput.Values;
             /*if (controller.InputDevice.DPads.Any())
             {
                 types = types.Where(t => !t.IsDPad());
@@ -151,7 +151,7 @@ namespace XOutput.UI.Windows
 
         private void CreateMappingControls()
         {
-            foreach (var xInputType in XInputHelper.Instance.Buttons)
+            foreach (var xInputType in controller.XInput.Buttons)
             {
                 Model.MapperButtonViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
             }
@@ -162,7 +162,7 @@ namespace XOutput.UI.Windows
                     Model.MapperDPadViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
                 }
             }*/
-            foreach (var xInputType in XInputHelper.Instance.Axes)
+            foreach (var xInputType in controller.XInput.Axes)
             {
                 Model.MapperAxisViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
             }
@@ -170,7 +170,7 @@ namespace XOutput.UI.Windows
 
         private void CreateXInputControls()
         {
-            foreach (var buttonInput in XInputHelper.Instance.Buttons)
+            /*foreach (var buttonInput in XInputHelper.Instance.Buttons)
             {
                 Model.XInputButtonViews.Add(new ButtonView(new ButtonViewModel(new ButtonModel(), buttonInput)));
             }
@@ -179,7 +179,7 @@ namespace XOutput.UI.Windows
             Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), XInputTypes.LX, XInputTypes.LY)));
             Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), XInputTypes.RX, XInputTypes.RY)));
             Model.XInputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), XInputTypes.L2)));
-            Model.XInputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), XInputTypes.R2)));
+            Model.XInputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), XInputTypes.R2)));*/
         }
 
         private void UpdateXInputControls()

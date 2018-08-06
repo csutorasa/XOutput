@@ -9,7 +9,7 @@ namespace XOutput.Devices.Input.Settings
 {
     public class InputDeviceSettings
     {
-        public Dictionary<Enum, InputSettings> InputSettings { get; set; }
+        public Dictionary<InputType, InputSettings> InputSettings { get; set; }
         [JsonIgnore]
         public IInputDevice Device { get; set; }
     }

@@ -17,7 +17,7 @@ namespace XOutput.Devices.XInput.Settings
         [JsonIgnore]
         public IInputDevice Device { get; set; }
         [JsonIgnore]
-        public Enum InputType { get; set; }
+        public InputType InputType { get; set; }
 
         /// <summary>
         /// Gets the value based on minimum and maximum values.

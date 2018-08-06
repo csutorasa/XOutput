@@ -75,15 +75,19 @@ namespace XOutput.Devices.Input.DirectInput
         /// <summary>
         /// <para>Implements <see cref="IDevice.Buttons"/></para>
         /// </summary>
-        public IEnumerable<Enum> Buttons => buttons;
+        public IEnumerable<InputType> Buttons => buttons;
         /// <summary>
         /// <para>Implements <see cref="IDevice.Axes"/></para>
         /// </summary>
-        public IEnumerable<Enum> Axes => axes;
+        public IEnumerable<InputType> Axes => axes;
         /// <summary>
         /// <para>Implements <see cref="IDevice.Sliders"/></para>
         /// </summary>
-        public IEnumerable<Enum> Sliders => sliders;
+        public IEnumerable<InputType> Sliders => sliders;
+        /// <summary>
+        /// <para>Implements <see cref="IDevice.Values"/></para>
+        /// </summary>
+        public IEnumerable<InputType> Values => allTypes;
         /// <summary>
         /// <para>Implements <see cref="IInputDevice.ForceFeedbackCount"/></para>
         /// </summary>
@@ -93,10 +97,10 @@ namespace XOutput.Devices.Input.DirectInput
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(DirectDevice));
         private readonly DeviceInstance deviceInstance;
         private readonly Joystick joystick;
-        private readonly Enum[] buttons;
-        private readonly Enum[] axes;
-        private readonly Enum[] sliders;
-        private readonly Enum[] allTypes;
+        private readonly InputType[] buttons;
+        private readonly InputType[] axes;
+        private readonly InputType[] sliders;
+        private readonly InputType[] allTypes;
         private readonly DeviceState state;
         private readonly EffectInfo force;
         private readonly Dictionary<DeviceObjectInstance, Effect> actuators;
@@ -113,7 +117,7 @@ namespace XOutput.Devices.Input.DirectInput
         {
             this.deviceInstance = deviceInstance;
             this.joystick = joystick;
-            buttons = DirectInputHelper.Instance.Buttons.Take(joystick.Capabilities.ButtonCount).OfType<Enum>().ToArray();
+            buttons = Enumerable.Range(0, joystick.Capabilities.ButtonCount).Select(b => new InputType { Type = InputTypes.Button, Count = b + 1 }).ToArray();
             axes = GetAxes();
             sliders = GetSliders();
 
@@ -196,17 +200,14 @@ namespace XOutput.Devices.Input.DirectInput
         /// Gets the current state of the inputTpye.
         /// <para>Implements <see cref="IDevice.Get(Enum)"/></para>
         /// </summary>
-        /// <param name="inputType">Type of input</param>
+        /// <param name="type">Type of input</param>
         /// <returns>Value</returns>
-        public double Get(Enum inputType)
+        public double Get(InputType type)
         {
-            if (!(inputType is DirectInputTypes))
-                throw new ArgumentException();
-            var type = (DirectInputTypes)inputType;
             double raw = GetRaw(type);
-            if (DirectInputHelper.Instance.IsAxis(type))
+            if (type.IsAxis())
             {
-                Dictionary<Enum, InputSettings> settings = Tools.Settings.Instance.InputDevices.Where(id => id.Key == Id.ToString()).Select(id => id.Value).FirstOrDefault()?.InputSettings;
+                Dictionary<InputType, InputSettings> settings = Tools.Settings.Instance.GetInputSettings(Id)?.InputSettings;
                 InputSettings setting;
                 settings.TryGetValue(type, out setting);
                 if (settings.TryGetValue(type, out setting) && Math.Abs(raw - 0.5) < setting.Deadzone)
@@ -229,24 +230,21 @@ namespace XOutput.Devices.Input.DirectInput
         /// Gets the current raw state of the inputTpye.
         /// <param>Implements <see cref="IInputDevice.GetRaw(Enum)"/></param>
         /// </summary>
-        /// <param name="inputType">Type of input</param>
+        /// <param name="type">Type of input</param>
         /// <returns>Value</returns>
-        public double GetRaw(Enum inputType)
+        public double GetRaw(InputType type)
         {
-            if (!(inputType is DirectInputTypes))
-                throw new ArgumentException();
-            var type = (DirectInputTypes)inputType;
-            if (DirectInputHelper.Instance.IsAxis(type))
+            if (type.IsAxis())
             {
-                return (GetAxisValue(type - DirectInputTypes.Axis1 + 1)) / (double)ushort.MaxValue;
+                return GetAxisValue(type.Count) / (double)ushort.MaxValue;
             }
-            if (DirectInputHelper.Instance.IsButton(type))
+            if (type.IsButton())
             {
-                return GetButtonValue(type - DirectInputTypes.Button1 + 1) ? 1d : 0d;
+                return GetButtonValue(type.Count) ? 1d : 0d;
             }
-            if (DirectInputHelper.Instance.IsSlider(type))
+            if (type.IsSlider())
             {
-                return GetSliderValue(type - DirectInputTypes.Slider1 + 1) / (double)ushort.MaxValue;
+                return GetSliderValue(type.Count) / (double)ushort.MaxValue;
             }
             return 0;
         }
@@ -447,7 +445,7 @@ namespace XOutput.Devices.Input.DirectInput
         /// Gets and initializes available axes for the device.
         /// </summary>
         /// <returns><see cref="DirectInputTypes"/> of the axes</returns>
-        private Enum[] GetAxes()
+        private InputType[] GetAxes()
         {
             var axes = joystick.GetObjects(DeviceObjectTypeFlags.Axis).ToArray();
             foreach (var axis in axes)
@@ -460,26 +458,27 @@ namespace XOutput.Devices.Input.DirectInput
             return axes
                 .Select(MapAxisByInstanceNumber)
                 .Where(a => a != null)
-                .OrderBy(a => (int)a)
-                .OfType<Enum>()
+                .Select(a => (int)a)
+                .OrderBy(a => a)
+                .Select(a => new InputType { Type = InputTypes.Slider, Count = a + 1 })
                 .ToArray();
         }
 
-        private DirectInputTypes? MapAxisByInstanceNumber(DeviceObjectInstance instance)
+        private int? MapAxisByInstanceNumber(DeviceObjectInstance instance)
         {
-            return DirectInputHelper.Instance.Axes.ElementAtOrDefault(instance.ObjectId.InstanceNumber);
+            return instance.ObjectId.InstanceNumber;
         }
 
-        private DirectInputTypes? MapAxisByOffset(DeviceObjectInstance instance)
+        private int? MapAxisByOffset(DeviceObjectInstance instance)
         {
             if (joystick.Information.Type == DeviceType.Mouse)
             {
                 MouseOffset offset = (MouseOffset)instance.Offset;
                 switch (offset)
                 {
-                    case MouseOffset.X: return DirectInputTypes.Axis1;
-                    case MouseOffset.Y: return DirectInputTypes.Axis2;
-                    case MouseOffset.Z: return DirectInputTypes.Axis3;
+                    case MouseOffset.X: return 1;
+                    case MouseOffset.Y: return 2;
+                    case MouseOffset.Z: return 3;
                     default: return null;
                 }
             }
@@ -488,30 +487,30 @@ namespace XOutput.Devices.Input.DirectInput
                 JoystickOffset offset = (JoystickOffset)instance.Offset;
                 switch (offset)
                 {
-                    case JoystickOffset.X: return DirectInputTypes.Axis1;
-                    case JoystickOffset.Y: return DirectInputTypes.Axis2;
-                    case JoystickOffset.Z: return DirectInputTypes.Axis3;
-                    case JoystickOffset.RotationX: return DirectInputTypes.Axis4;
-                    case JoystickOffset.RotationY: return DirectInputTypes.Axis5;
-                    case JoystickOffset.RotationZ: return DirectInputTypes.Axis6;
-                    case JoystickOffset.AccelerationX: return DirectInputTypes.Axis7;
-                    case JoystickOffset.AccelerationY: return DirectInputTypes.Axis8;
-                    case JoystickOffset.AccelerationZ: return DirectInputTypes.Axis9;
-                    case JoystickOffset.AngularAccelerationX: return DirectInputTypes.Axis10;
-                    case JoystickOffset.AngularAccelerationY: return DirectInputTypes.Axis11;
-                    case JoystickOffset.AngularAccelerationZ: return DirectInputTypes.Axis12;
-                    case JoystickOffset.ForceX: return DirectInputTypes.Axis13;
-                    case JoystickOffset.ForceY: return DirectInputTypes.Axis14;
-                    case JoystickOffset.ForceZ: return DirectInputTypes.Axis15;
-                    case JoystickOffset.TorqueX: return DirectInputTypes.Axis16;
-                    case JoystickOffset.TorqueY: return DirectInputTypes.Axis17;
-                    case JoystickOffset.TorqueZ: return DirectInputTypes.Axis18;
-                    case JoystickOffset.VelocityX: return DirectInputTypes.Axis19;
-                    case JoystickOffset.VelocityY: return DirectInputTypes.Axis20;
-                    case JoystickOffset.VelocityZ: return DirectInputTypes.Axis21;
-                    case JoystickOffset.AngularVelocityX: return DirectInputTypes.Axis22;
-                    case JoystickOffset.AngularVelocityY: return DirectInputTypes.Axis23;
-                    case JoystickOffset.AngularVelocityZ: return DirectInputTypes.Axis24;
+                    case JoystickOffset.X: return 1;
+                    case JoystickOffset.Y: return 2;
+                    case JoystickOffset.Z: return 3;
+                    case JoystickOffset.RotationX: return 4;
+                    case JoystickOffset.RotationY: return 5;
+                    case JoystickOffset.RotationZ: return 6;
+                    case JoystickOffset.AccelerationX: return 7;
+                    case JoystickOffset.AccelerationY: return 8;
+                    case JoystickOffset.AccelerationZ: return 9;
+                    case JoystickOffset.AngularAccelerationX: return 10;
+                    case JoystickOffset.AngularAccelerationY: return 11;
+                    case JoystickOffset.AngularAccelerationZ: return 12;
+                    case JoystickOffset.ForceX: return 13;
+                    case JoystickOffset.ForceY: return 14;
+                    case JoystickOffset.ForceZ: return 15;
+                    case JoystickOffset.TorqueX: return 16;
+                    case JoystickOffset.TorqueY: return 17;
+                    case JoystickOffset.TorqueZ: return 18;
+                    case JoystickOffset.VelocityX: return 19;
+                    case JoystickOffset.VelocityY: return 20;
+                    case JoystickOffset.VelocityZ: return 21;
+                    case JoystickOffset.AngularVelocityX: return 22;
+                    case JoystickOffset.AngularVelocityY: return 23;
+                    case JoystickOffset.AngularVelocityZ: return 24;
                     default: return null;
                 }
             }
@@ -521,10 +520,10 @@ namespace XOutput.Devices.Input.DirectInput
         /// Gets available sliders for the device.
         /// </summary>
         /// <returns><see cref="DirectInputTypes"/> of the axes</returns>
-        private Enum[] GetSliders()
+        private InputType[] GetSliders()
         {
             int slidersCount = joystick.GetObjects().Where(o => o.ObjectType == ObjectGuid.Slider).Count();
-            return DirectInputHelper.Instance.Sliders.Take(slidersCount).OfType<Enum>().ToArray();
+            return Enumerable.Range(0, slidersCount).Select(b => new InputType { Type = InputTypes.Slider, Count = b + 1 }).ToArray();
         }
 
         /// <summary>
@@ -552,6 +551,23 @@ namespace XOutput.Devices.Input.DirectInput
         private int CalculateMagnitude(double value)
         {
             return (int)(10000 * value);
+        }
+
+        public string ConvertToString(InputType type)
+        {
+            if (type.IsAxis())
+            {
+                return "A" + type.Count;
+            }
+            else if (type.IsButton())
+            {
+                return "B" + type.Count;
+            }
+            else if (type.IsSlider())
+            {
+                return "S" + type.Count;
+            }
+            return "DISABLED";
         }
     }
 }

@@ -12,14 +12,6 @@ namespace XOutput.Devices.Input
     public interface IInputDevice : IDevice, IDisposable
     {
         /// <summary>
-        /// This event is invoked if the device is disconnected.
-        /// </summary>
-        event DeviceDisconnectedHandler Disconnected;
-        /// <summary>
-        /// The friendly display name of the controller.
-        /// </summary>
-        string DisplayName { get; }
-        /// <summary>
         /// The identification string of the device.
         /// </summary>
         string Id { get; }
@@ -42,6 +34,6 @@ namespace XOutput.Devices.Input
         /// </summary>
         /// <param name="inputType">Type of input</param>
         /// <returns>Value</returns>
-        double GetRaw(Enum inputType);
+        double GetRaw(InputType inputType);
     }
 }

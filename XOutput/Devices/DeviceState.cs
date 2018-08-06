@@ -14,17 +14,17 @@ namespace XOutput.Devices
         /// <summary>
         /// Gets the current values.
         /// </summary>
-        public Dictionary<Enum, double> Values => values;
+        public Dictionary<InputType, double> Values => values;
         /// <summary>
         /// Gets the current DPad values.
         /// </summary>
         public IEnumerable<DPadDirection> DPads => dPads;
-        protected Dictionary<Enum, double> values = new Dictionary<Enum, double>();
+        protected Dictionary<InputType, double> values = new Dictionary<InputType, double>();
         protected DPadDirection[] dPads;
 
-        public DeviceState(IEnumerable<Enum> types, int dPadCount)
+        public DeviceState(IEnumerable<InputType> types, int dPadCount)
         {
-            foreach (Enum type in types)
+            foreach (InputType type in types)
             {
                 values.Add(type, 0);
             }
@@ -57,9 +57,9 @@ namespace XOutput.Devices
         /// </summary>
         /// <param name="newValues">new values</param>
         /// <returns>changed value types</returns>
-        public IEnumerable<Enum> SetValues(Dictionary<Enum, double> newValues)
+        public IEnumerable<InputType> SetValues(Dictionary<InputType, double> newValues)
         {
-            ICollection<Enum> changed = new HashSet<Enum>();
+            ICollection<InputType> changed = new HashSet<InputType>();
             foreach (var x in newValues.Select((d, i) => new { New = d.Value, Old = values[d.Key], Type = d.Key }).ToArray())
             {
                 if (x.New != x.Old)

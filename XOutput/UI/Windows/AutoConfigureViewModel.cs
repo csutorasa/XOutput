@@ -18,15 +18,15 @@ namespace XOutput.UI.Windows
         private const int ShortAxisWaitTime = 3000;
         private const int ShortWaitTime = 1000;
         private const int BlinkTime = 500;
-        private readonly Dictionary<Enum, double> referenceValues = new Dictionary<Enum, double>();
+        private readonly Dictionary<InputType, double> referenceValues = new Dictionary<InputType, double>();
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly GameController controller;
-        private readonly XInputTypes[] valuesToRead;
-        private XInputTypes xInputType;
-        private readonly Enum[] inputTypes;
+        private readonly InputType[] valuesToRead;
+        private InputType xInputType;
+        private readonly InputType[] inputTypes;
         private DateTime lastTime;
 
-        public AutoConfigureViewModel(AutoConfigureModel model, GameController controller, XInputTypes[] valuesToRead) : base(model)
+        public AutoConfigureViewModel(AutoConfigureModel model, GameController controller, InputType[] valuesToRead) : base(model)
         {
             this.controller = controller;
             this.valuesToRead = valuesToRead;
@@ -73,7 +73,7 @@ namespace XOutput.UI.Windows
         /// </summary>
         private void ReadValues(object sender, DeviceInputChangedEventArgs e)
         {
-            Enum maxType = null;
+            InputType maxType = null;
             double maxDiff = 0;
             foreach (var type in e.ChangedValues)
             {
@@ -103,13 +103,13 @@ namespace XOutput.UI.Windows
 
         public bool SaveDisableValues()
         {
-            MapperSettings md = controller.XInput.GetMapping(xInputType);
+            /*MapperSettings md = controller.XInput.GetMapping(xInputType);
             if (md.InputType == null)
             {
                 md.InputType = inputTypes.First();
             }
             md.MinValue = Model.XInput.GetDisableValue();
-            md.MaxValue = Model.XInput.GetDisableValue();
+            md.MaxValue = Model.XInput.GetDisableValue();*/
             return Next();
         }
 
@@ -117,10 +117,10 @@ namespace XOutput.UI.Windows
         {
             if (Model.MaxType != null)
             {
-                MapperSettings md = controller.XInput.GetMapping(xInputType);
+                /*MapperSettings md = controller.XInput.GetMapping(xInputType);
                 md.InputType = Model.MaxType;
                 md.MinValue = Model.MinValue / 100;
-                md.MaxValue = Model.MaxValue / 100;
+                md.MaxValue = Model.MaxValue / 100;*/
                 return Next();
             }
             else

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Devices;
 using XOutput.Devices.Input.Settings;
 
 namespace XOutput.UI.Component
@@ -11,8 +12,8 @@ namespace XOutput.UI.Component
     {
         private readonly InputSettings settings;
 
-        private Enum type;
-        public Enum Type
+        private InputType type;
+        public InputType Type
         {
             get => type;
             set

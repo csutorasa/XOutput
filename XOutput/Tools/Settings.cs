@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.Input.Settings;
@@ -58,7 +59,7 @@ namespace XOutput.Tools
                 InputDeviceSettings settings = InputDevices.Where(id => id.Key == name).Select(id => id.Value).FirstOrDefault();
                 if (settings == null)
                 {
-                    var inputSettings = new Dictionary<Enum, InputSettings>();
+                    var inputSettings = new Dictionary<InputType, InputSettings>();
                     foreach (var axis in inputDevice.Axes)
                     {
                         inputSettings[axis] = new InputSettings
@@ -141,7 +142,6 @@ namespace XOutput.Tools
                 {
                     settings.Mapping[xInputType] = new MapperSettings
                     {
-                        InputType = xInputType,
                     };
                 }
                 OutputDevices[deviceName] = settings;
@@ -156,7 +156,7 @@ namespace XOutput.Tools
             {
                 InputDevices[inputDevice.DisplayName] = new InputDeviceSettings
                 {
-                    InputSettings = new Dictionary<Enum, InputSettings>(),
+                    InputSettings = new Dictionary<InputType, InputSettings>(),
                     Device = inputDevice,
                 };
             }
@@ -179,9 +179,14 @@ namespace XOutput.Tools
                 {
                     var device = inputDevices.FirstOrDefault(id => id.DisplayName == mapping.Value.DeviceName);
                     mapping.Value.Device = device;
-                    mapping.Value.InputType = device.Axes.Concat(device.Buttons).Concat(device.Sliders).FirstOrDefault(it => it.ToString() == mapping.Value.Type);
+                    mapping.Value.InputType = device.Values.FirstOrDefault(it => it.ToString() == mapping.Value.Type);
                 }
             }
+        }
+
+        public InputDeviceSettings GetInputSettings(string deviceId)
+        {
+            return InputDevices.Where(id => id.Key == deviceId).Select(id => id.Value).FirstOrDefault();
         }
 
         public void WriteInputs()

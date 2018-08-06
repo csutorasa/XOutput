@@ -60,17 +60,22 @@ namespace XOutput.Devices.Input.Keyboard
         /// Returns all know keys to keyboard.
         /// <para>Implements <see cref="IDevice.Buttons"/></para>
         /// </summary>
-        public IEnumerable<Enum> Buttons => buttons;
+        public IEnumerable<InputType> Buttons => buttons;
         /// <summary>
         /// Keyboards have no axes.
         /// <para>Implements <see cref="IDevice.Axes"/></para>
         /// </summary>
-        public IEnumerable<Enum> Axes => new Enum[0];
+        public IEnumerable<InputType> Axes => new InputType[0];
         /// <summary>
         /// Keyboards have no sliders.
         /// <para>Implements <see cref="IDevice.Sliders"/></para>
         /// </summary>
-        public IEnumerable<Enum> Sliders => new Enum[0];
+        public IEnumerable<InputType> Sliders => new InputType[0];
+        /// <summary>
+        /// Returns all know keys to keyboard.
+        /// <para>Implements <see cref="IDevice.Values"/></para>
+        /// </summary>
+        public IEnumerable<InputType> Values => buttons;
         /// <summary>
         /// Keyboards have no force feedback motors.
         /// <para>Implements <see cref="IInputDevice.ForceFeedbackCount"/></para>
@@ -81,7 +86,7 @@ namespace XOutput.Devices.Input.Keyboard
         private static readonly Keyboard instance = new Keyboard();
         public static Keyboard Instance => instance;
         private Thread inputRefresher;
-        private readonly Enum[] buttons;
+        private readonly InputType[] buttons;
         private readonly DeviceState state;
 
         /// <summary>
@@ -89,7 +94,11 @@ namespace XOutput.Devices.Input.Keyboard
         /// </summary>
         private Keyboard()
         {
-            buttons = KeyboardInputHelper.Instance.Buttons.Where(x => x != Key.None).OrderBy(x => x.ToString()).OfType<Enum>().ToArray();
+            buttons = ((Key[])Enum.GetValues(typeof(Key))).Where(x => x != Key.None).OrderBy(x => x.ToString()).Select(b => new InputType
+            {
+                Type = InputTypes.Button,
+                Count = KeyboardInputHelper.Instance.ToInt(b + 1),
+            }).ToArray();
             state = new DeviceState(buttons, 0);
             inputRefresher = new Thread(InputRefresher);
             inputRefresher.Name = "Keyboard input notification";
@@ -117,11 +126,9 @@ namespace XOutput.Devices.Input.Keyboard
         /// </summary>
         /// <param name="inputType">Type of input</param>
         /// <returns>Value</returns>
-        public double Get(Enum inputType)
+        public double Get(InputType inputType)
         {
-            if (!(inputType is Key))
-                throw new ArgumentException();
-            return System.Windows.Input.Keyboard.IsKeyDown((Key)inputType) ? 1 : 0;
+            return System.Windows.Input.Keyboard.IsKeyDown(KeyboardInputHelper.Instance.ToKey(inputType.Count)) ? 1 : 0;
         }
 
         /// <summary>
@@ -130,7 +137,7 @@ namespace XOutput.Devices.Input.Keyboard
         /// </summary>
         /// <param name="inputType">Type of input</param>
         /// <returns>Value</returns>
-        public double GetRaw(Enum inputType)
+        public double GetRaw(InputType inputType)
         {
             return Get(inputType);
         }
@@ -173,6 +180,11 @@ namespace XOutput.Devices.Input.Keyboard
                 }
             }
             catch (ThreadAbortException) { }
+        }
+
+        public string ConvertToString(InputType type)
+        {
+            return KeyboardInputHelper.Instance.ConvertToString(type);
         }
     }
 }

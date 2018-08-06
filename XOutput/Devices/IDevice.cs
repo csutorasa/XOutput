@@ -16,26 +16,42 @@ namespace XOutput.Devices
         /// </summary>
         event DeviceInputChangedHandler InputChanged;
         /// <summary>
-        /// Gets the current state of the DPads.
+        /// This event is invoked if the device is disconnected.
+        /// </summary>
+        event DeviceDisconnectedHandler Disconnected;
+        /// <summary>
+        /// The friendly display name of the controller.
+        /// </summary>
+        string DisplayName { get; }
+        /// <summary>
+        /// Gets all values of the enum
+        /// </summary>
+        IEnumerable<InputType> Values { get; }
+        /// <summary>
+        /// Gets all button values of the enum
+        /// </summary>
+        IEnumerable<InputType> Buttons { get; }
+        /// <summary>
+        /// Gets all axis values of the enum
+        /// </summary>
+        IEnumerable<InputType> Axes { get; }
+        /// <summary>
+        /// Gets all DPad values of the enum
         /// </summary>
         IEnumerable<DPadDirection> DPads { get; }
         /// <summary>
-        /// Gets all Enum values that represent button.
+        /// Gets all Slider values of the enum
         /// </summary>
-        IEnumerable<Enum> Buttons { get; }
+        IEnumerable<InputType> Sliders { get; }
         /// <summary>
-        /// Gets all Enum values that represent axis.
+        /// Gets all Slider values of the enum
         /// </summary>
-        IEnumerable<Enum> Axes { get; }
-        /// <summary>
-        /// Gets all Enum values that represent slider.
-        /// </summary>
-        IEnumerable<Enum> Sliders { get; }
+        string ConvertToString(InputType type);
         /// <summary>
         /// Gets the current state of the <paramref name="inputType"/>.
         /// </summary>
         /// <param name="inputType">Type of input</param>
         /// <returns>Value</returns>
-        double Get(Enum inputType);
+        double Get(InputType inputType);
     }
 }

@@ -5,14 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using XOutput.Devices;
 using XOutput.Devices.XInput;
 
 namespace XOutput.UI.Windows
 {
     public class AutoConfigureModel : ModelBase
     {
-        private XInputTypes xInput;
-        public XInputTypes XInput
+        private InputType xInput;
+        public InputType XInput
         {
             get => xInput;
             set { if (xInput != value) { xInput = value; OnPropertyChanged(nameof(XInput)); } }
@@ -29,8 +30,8 @@ namespace XOutput.UI.Windows
             get => highlight;
             set { if (highlight != value) { highlight = value; OnPropertyChanged(nameof(Highlight)); } }
         }
-        private Enum maxType;
-        public Enum MaxType
+        private InputType maxType;
+        public InputType MaxType
         {
             get => maxType;
             set { if (maxType != value) { maxType = value; OnPropertyChanged(nameof(MaxType)); } }

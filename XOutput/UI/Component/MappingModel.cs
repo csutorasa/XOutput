@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using XOutput.Devices;
 using XOutput.Devices.XInput;
 using XOutput.Devices.XInput.Settings;
 
@@ -12,8 +13,8 @@ namespace XOutput.UI
 {
     public class MappingModel : ModelBase
     {
-        private XInputTypes xInputType;
-        public XInputTypes XInputType
+        private InputType xInputType;
+        public InputType XInputType
         {
             get => xInputType;
             set
@@ -29,8 +30,8 @@ namespace XOutput.UI
         private readonly ObservableCollection<Enum> inputs = new ObservableCollection<Enum>();
         public ObservableCollection<Enum> Inputs { get { return inputs; } }
 
-        private Enum selectedInput;
-        public Enum SelectedInput
+        private InputType selectedInput;
+        public InputType SelectedInput
         {
             get => selectedInput;
             set

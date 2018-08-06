@@ -50,7 +50,7 @@ namespace XOutput.Devices
         private int controllerCount = 0;
         private Nefarius.ViGEm.Client.Targets.Xbox360Controller controller;
 
-        public GameController(Dictionary<XInputTypes, MapperSettings> mappers, DPadSettings dpad, IEnumerable<ForceFeedbackSettings> forceFeedbackDevices)
+        public GameController(Dictionary<InputType, MapperSettings> mappers, DPadSettings dpad, IEnumerable<ForceFeedbackSettings> forceFeedbackDevices)
         {
             xOutputInterface = createXOutput();
             xInput = new XOutputDevice(mappers, dpad);
@@ -152,7 +152,7 @@ namespace XOutput.Devices
             }
         }
 
-        public MapperSettings GetMapping(XInputTypes type)
+        public MapperSettings GetMapping(InputType type)
         {
             return XInput.GetMapping(type);
         }
