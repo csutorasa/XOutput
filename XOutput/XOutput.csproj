@@ -89,6 +89,7 @@
     <Compile Include="Devices\XInput\Diagnostics\XInputDiagnosticsTypes.cs" />
     <Compile Include="Devices\XInput\Settings\ForceFeedbackSettings.cs" />
     <Compile Include="Devices\XInput\Settings\DPadSettings.cs" />
+    <Compile Include="Devices\XInput\XInputTypes.cs" />
     <Compile Include="Diagnostics\DiagnosticsResultState.cs" />
     <Compile Include="Diagnostics\DiagnosticsResult.cs" />
     <Compile Include="Devices\Input\Diagnostics\InputDiagnostics.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Devices\XInput\Settings\MapperSettings.cs" />
     <Compile Include="Devices\XInput\Settings\OutputDeviceSettings.cs" />
+    <Compile Include="Tools\JsonConverters.cs" />
     <Compile Include="Tools\RegistryModifier.cs" />
     <Compile Include="UI\Component\InputAxisModel.cs" />
     <Compile Include="UI\Component\InputAxisView.xaml.cs">
@@ -335,15 +337,15 @@
     <Resource Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Costura.Fody.3.0.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.3.0.0\build\Costura.Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Costura.Fody.3.0.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.3.0.0\build\Costura.Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\Fody.3.0.4\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.3.0.4\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.3.1.4\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.3.1.4\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets'))" />
   </Target>
-  <Import Project="..\packages\Fody.3.0.4\build\Fody.targets" Condition="Exists('..\packages\Fody.3.0.4\build\Fody.targets')" />
+  <Import Project="..\packages\Fody.3.1.4\build\Fody.targets" Condition="Exists('..\packages\Fody.3.1.4\build\Fody.targets')" />
+  <Import Project="..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

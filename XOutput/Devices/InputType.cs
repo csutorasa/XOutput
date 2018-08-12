@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -68,11 +69,45 @@ namespace XOutput.Devices
             {
                 return "S" + Count;
             }
-            else if (IsSlider())
+            else if (IsOther())
             {
                 return "O" + Count;
             }
             return "DISABLED";
+        }
+
+        public static InputType Parse(string text)
+        {
+            if (text.Length > 2 && text != "DISABLED")
+            {
+                int number;
+                if (int.TryParse(text.Substring(1), out number))
+                {
+                    switch (text[0])
+                    {
+                        case 'A':
+                            return new InputType { Type = InputTypes.Axis, Count = number };
+                        case 'B':
+                            return new InputType { Type = InputTypes.Button, Count = number };
+                        case 'S':
+                            return new InputType { Type = InputTypes.Slider, Count = number };
+                        case 'O':
+                            return new InputType { Type = InputTypes.Other, Count = number };
+                        default:
+                            break;
+                    }
+                }
+            }
+            return new InputType { Type = InputTypes.Disabled };
+        }
+
+        public double GetDisableValue()
+        {
+            if (IsAxis())
+            {
+                return 0.5;
+            }
+            return 0;
         }
     }
 

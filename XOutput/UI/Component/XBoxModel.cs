@@ -6,14 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using XOutput.Devices;
 using XOutput.Devices.XInput;
 
 namespace XOutput.UI
 {
     public class XBoxModel : ModelBase
     {
-        private XInputTypes xInputType;
-        public XInputTypes XInputType
+        private InputType xInputType;
+        public InputType XInputType
         {
             get => xInputType;
             set

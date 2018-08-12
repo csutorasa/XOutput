@@ -51,11 +51,11 @@ namespace XOutput.Devices.XInput
         /// <summary>
         /// <para>Implements <see cref="IDevice.Buttons"/></para>
         /// </summary>
-        public IEnumerable<InputType> Buttons => XInputHelper.Instance.Buttons.OfType<InputType>();
+        public IEnumerable<InputType> Buttons => XInputTypes.Buttons;
         /// <summary>
         /// <para>Implements <see cref="IDevice.Axes"/></para>
         /// </summary>
-        public IEnumerable<InputType> Axes => XInputHelper.Instance.Axes.OfType<InputType>();
+        public IEnumerable<InputType> Axes => XInputTypes.Axes;
         /// <summary>
         /// XInput devices have no sliders.
         /// <para>Implements <see cref="IDevice.Sliders"/></para>
@@ -82,7 +82,7 @@ namespace XOutput.Devices.XInput
         /// <param name="mapper">DirectInput to XInput mapper</param>
         public XOutputDevice(Dictionary<InputType, MapperSettings> mappers, DPadSettings dPadData)
         {
-            alltypes = XInputHelper.Instance.Values.OfType<InputType>().ToArray();
+            alltypes = XInputTypes.Values.ToArray();
             state = new DeviceState(alltypes.ToArray(), DPadCount);
             this.mappers = mappers;
             this.dPadData = dPadData;

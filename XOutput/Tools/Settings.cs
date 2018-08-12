@@ -9,6 +9,7 @@ using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.Input.Settings;
+using XOutput.Devices.XInput;
 using XOutput.Devices.XInput.Settings;
 using XOutput.Logging;
 
@@ -101,18 +102,22 @@ namespace XOutput.Tools
         public static Settings Load(string filePath)
         {
             var settings = new Settings();
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Converters = new List<JsonConverter> { new InputTypeConverter() },
+            };
             if (File.Exists(filePath))
             {
                 var text = File.ReadAllText(filePath);
                 settings = JsonConvert.DeserializeObject<Settings>(text);
-                if (settings.OutputDevices == null)
-                {
-                    settings.OutputDevices = new Dictionary<string, OutputDeviceSettings>();
-                }
-                if (settings.InputDevices == null)
-                {
-                    settings.InputDevices = new Dictionary<string, InputDeviceSettings>();
-                }
+            }
+            if (settings.OutputDevices == null)
+            {
+                settings.OutputDevices = new Dictionary<string, OutputDeviceSettings>();
+            }
+            if (settings.InputDevices == null)
+            {
+                settings.InputDevices = new Dictionary<string, InputDeviceSettings>();
             }
             instance = settings;
             return settings;
@@ -136,9 +141,9 @@ namespace XOutput.Tools
                     StartWhenConnected = false,
                     DPadSettings = new DPadSettings(),
                     ForceFeedbackDevices = new List<ForceFeedbackSettings>(),
-                    Mapping = new Dictionary<Devices.XInput.XInputTypes, MapperSettings>()
+                    Mapping = new Dictionary<InputType, MapperSettings>()
                 };
-                foreach (var xInputType in Devices.XInput.XInputHelper.Instance.Values)
+                foreach (var xInputType in XInputTypes.Values)
                 {
                     settings.Mapping[xInputType] = new MapperSettings
                     {

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using XOutput.Devices;
 using XOutput.Devices.XInput;
 
 namespace XOutput.UI.Converters
@@ -23,9 +24,9 @@ namespace XOutput.UI.Converters
         protected static readonly Brush HighlightBackBrush = CreateBrush(128, 0, 0);
         protected static readonly Brush HighlightLabelBrush = CreateBrush(255, 255, 255);
         protected static readonly Brush DPadBackBrush = CreateBrush(134, 134, 134);
-        protected Dictionary<XInputTypes, Brush> foregroundColors = new Dictionary<XInputTypes, Brush>();
-        protected Dictionary<XInputTypes, Brush> backgroundColors = new Dictionary<XInputTypes, Brush>();
-        protected Dictionary<XInputTypes, Brush> labelColors = new Dictionary<XInputTypes, Brush>();
+        protected Dictionary<InputType, Brush> foregroundColors = new Dictionary<InputType, Brush>();
+        protected Dictionary<InputType, Brush> backgroundColors = new Dictionary<InputType, Brush>();
+        protected Dictionary<InputType, Brush> labelColors = new Dictionary<InputType, Brush>();
 
         public ColorConverter()
         {
@@ -83,7 +84,7 @@ namespace XOutput.UI.Converters
         /// <returns></returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            XInputTypes? activeType = values[0] as XInputTypes?;
+            InputType activeType = values[0] as InputType;
             bool? highlight = values[1] as bool?;
             var parameters = (parameter as string).Split('|');
             bool back = parameters.Length > 1 && parameters[1] == "back";
@@ -92,14 +93,14 @@ namespace XOutput.UI.Converters
             {
                 if (back)
                 {
-                    if (highlight == true && XInputHelper.Instance.IsDPad(activeType.Value))
+                    if (highlight == true && activeType.IsOther())
                         return HighlightBackBrush;
                     return DPadBackBrush;
                 }
             }
             else
             {
-                var currentType = (XInputTypes)Enum.Parse(typeof(XInputTypes), parameters[0]);
+                var currentType = InputType.Parse(parameters[0]);
                 if (back)
                 {
                     if (highlight == true && currentType == activeType)

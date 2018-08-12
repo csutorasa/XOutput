@@ -7,11 +7,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using XOutput.Devices;
 using XOutput.Devices.XInput;
 
 namespace XOutput.UI.Component
@@ -27,7 +27,7 @@ namespace XOutput.UI.Component
         private static void OnXInputTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var xbox = (XBox)d;
-            xbox.ViewModel.Model.XInputType = (XInputTypes)e.NewValue;
+            xbox.ViewModel.Model.XInputType = (InputType)e.NewValue;
         }
 
         private static void OnHightlightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -36,9 +36,9 @@ namespace XOutput.UI.Component
             xbox.ViewModel.Model.Highlight = (bool)e.NewValue;
         }
 
-        public XInputTypes XInputType
+        public InputType XInputType
         {
-            get { return (XInputTypes)GetValue(XInputTypeProperty); }
+            get { return (InputType)GetValue(XInputTypeProperty); }
             set { SetValue(XInputTypeProperty, value); ViewModel.Model.XInputType = value; }
         }
         public bool Highlight

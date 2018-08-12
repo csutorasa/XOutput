@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using XOutput.Devices;
 using XOutput.Devices.XInput;
 
 namespace XOutput.UI.Converters
@@ -28,10 +29,10 @@ namespace XOutput.UI.Converters
         /// <returns></returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            XInputTypes? activeType = values[0] as XInputTypes?;
+            InputType activeType = values[0] as InputType;
             bool? highlight = values[1] as bool?;
             var parameters = (parameter as string).Split('|');
-            var currentType = (XInputTypes)Enum.Parse(typeof(XInputTypes), parameters[0]);
+            var currentType = InputType.Parse(parameters[0]);
             bool back = parameters.Length > 1 && parameters[1] == "back";
             if (back)
             {
