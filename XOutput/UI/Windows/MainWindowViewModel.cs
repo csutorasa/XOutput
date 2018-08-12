@@ -82,7 +82,6 @@ namespace XOutput.UI.Windows
             try
             {
                 settings = Settings.Load(settingsFilePath);
-                Model.AllDevices = Settings.Instance.ShowAllDevices;
             }
             catch
             {
@@ -136,6 +135,7 @@ namespace XOutput.UI.Windows
                 }
             }
             DirectInputDevices.Instance.DeviceConnected += DirectInputDevices_DeviceConnected;
+            Model.AllDevices = Settings.Instance.ShowAllDevices;
             RefreshGameControllers();
 
             var keyboardView = new InputDeviceView(new InputDeviceViewModel(new InputDeviceModel(), Keyboard.Instance));
