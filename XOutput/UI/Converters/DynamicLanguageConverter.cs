@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using XOutput.Devices;
 
 namespace XOutput.UI.Converters
 {
@@ -33,6 +34,12 @@ namespace XOutput.UI.Converters
             {
                 key = values[1].GetType().Name + "." + values[1].ToString();
                 return getTranslation(translations, key) ?? values[1].ToString();
+            }
+            else if (values[1] is InputType)
+            {
+                InputType inputType = (values[1] as InputType);
+                key = inputType.GetType().Name + "." + inputType.Type.ToString();
+                return (getTranslation(translations, key) ?? key) + inputType.Count;
             }
             else if (values[1] is string)
                 key = values[1] as string;

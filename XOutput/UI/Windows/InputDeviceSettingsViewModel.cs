@@ -132,9 +132,9 @@ namespace XOutput.UI.Windows
         private void CreateInputAxes()
         {
             var axes = inputDevice.Axes;
-            var xAxes = Enumerable.Range(0, 8).Select(x => new InputType { Type = InputTypes.Axis, Count = x * 3 });
-            var yAxes = Enumerable.Range(0, 8).Select(x => new InputType { Type = InputTypes.Axis, Count = x * 3 + 1 });
-            var zAxes = Enumerable.Range(0, 8).Select(x => new InputType { Type = InputTypes.Axis, Count = x * 3 + 2 });
+            var xAxes = Enumerable.Range(0, 8).Select(x => new InputType { Type = InputTypes.Axis, Count = x * 3 + 1 });
+            var yAxes = Enumerable.Range(0, 8).Select(x => new InputType { Type = InputTypes.Axis, Count = x * 3 + 2 });
+            var zAxes = Enumerable.Range(0, 8).Select(x => new InputType { Type = InputTypes.Axis, Count = x * 3 + 3 });
             for (int i = 0; i < xAxes.Count(); i++)
             {
                 var x = xAxes.ElementAt(i);

@@ -460,7 +460,7 @@ namespace XOutput.Devices.Input.DirectInput
                 .Where(a => a != null)
                 .Select(a => (int)a)
                 .OrderBy(a => a)
-                .Select(a => new InputType { Type = InputTypes.Slider, Count = a + 1 })
+                .Select(a => new InputType { Type = InputTypes.Axis, Count = a + 1 })
                 .ToArray();
         }
 

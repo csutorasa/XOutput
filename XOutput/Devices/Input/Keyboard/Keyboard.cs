@@ -94,11 +94,16 @@ namespace XOutput.Devices.Input.Keyboard
         /// </summary>
         private Keyboard()
         {
-            buttons = ((Key[])Enum.GetValues(typeof(Key))).Where(x => x != Key.None).OrderBy(x => x.ToString()).Select(b => new InputType
-            {
-                Type = InputTypes.Button,
-                Count = KeyboardInputHelper.Instance.ToInt(b + 1),
-            }).ToArray();
+            buttons = ((Key[])Enum.GetValues(typeof(Key)))
+                .Where(x => x != Key.None)
+                .OrderBy(x => x.ToString())
+                .Select(b => KeyboardInputHelper.Instance.ToInt(b + 1))
+                .Distinct()
+                .Select(b => new InputType
+                {
+                    Type = InputTypes.Button,
+                    Count = b,
+                }).ToArray();
             state = new DeviceState(buttons, 0);
             inputRefresher = new Thread(InputRefresher);
             inputRefresher.Name = "Keyboard input notification";

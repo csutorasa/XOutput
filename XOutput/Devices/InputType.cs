@@ -30,6 +30,42 @@ namespace XOutput.Devices
             return Type == other.Type && Count == other.Count;
         }
 
+        public static bool operator ==(InputType a, InputType b)
+        {
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+            if (ReferenceEquals(a, null))
+            {
+                return false;
+            }
+            if (ReferenceEquals(b, null))
+            {
+                return false;
+            }
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(InputType a, InputType b)
+        {
+            return !(a == b);
+        }
+
+        public override bool Equals(object other)
+        {
+            if (!(other is InputType))
+            {
+                return false;
+            }
+            return Equals(other as InputType);
+        }
+
+        public override int GetHashCode()
+        {
+            return Type.GetHashCode() ^ Count;
+        }
+
         public bool IsAxis()
         {
             return Type == InputTypes.Axis;
@@ -78,7 +114,7 @@ namespace XOutput.Devices
 
         public static InputType Parse(string text)
         {
-            if (text.Length > 2 && text != "DISABLED")
+            if (text.Length > 1 && text != "DISABLED")
             {
                 int number;
                 if (int.TryParse(text.Substring(1), out number))
