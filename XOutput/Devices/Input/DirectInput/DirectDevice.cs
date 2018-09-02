@@ -138,6 +138,11 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 actuators = new Dictionary<DeviceObjectInstance, Effect>();
             }
+            logger.Info(ToString());
+            foreach (var obj in joystick.GetObjects())
+            {
+                logger.Info("  " + obj.Name + " " + obj.ObjectId + " offset: " + obj.Offset);
+            }
             allTypes = buttons.Concat(axes).Concat(sliders).ToArray();
             state = new DeviceState(allTypes, joystick.Capabilities.PovCount);
             inputRefresher = new Thread(InputRefresher);
