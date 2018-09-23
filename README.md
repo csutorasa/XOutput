@@ -1,4 +1,7 @@
-# XOutput
+[![Build](https://ci.appveyor.com/api/projects/status/github/csutorasa/XOutput?branch=master&svg=true)](https://ci.appveyor.com/project/csutorasa/xoutput/)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/csutorasa)
+
+# XOutput 
 
 If you have an older or not supported game controller (gamepad, wheel, joystick, etc.), but XBox 360 controllers are supported you can use this software and enjoy gaming with your controller.
 
@@ -57,6 +60,6 @@ XOutput has a diagnostics screen. A few tests are run to check if the applicatio
 - `--start="controller-displayname"` - defines a part of the display name of the controller to be started on application startup.
 - `--minimized` - starts the application minimized to tray
 
-## Developer release [![Build](https://ci.appveyor.com/api/projects/status/github/csutorasa/XOutput?branch=master&svg=true)](https://ci.appveyor.com/project/csutorasa/xoutput/)
+## Developer release
 
 If you want to test the latest, often unstable, features before the stable releases, you can check the [AppVeyor](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts) builds.
