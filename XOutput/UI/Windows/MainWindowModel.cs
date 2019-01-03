@@ -32,5 +32,67 @@ namespace XOutput.UI.Windows
                 }
             }
         }
+
+        #region Settings
+        public Settings Settings { get; set; }
+
+        private bool settingsOpen;
+        public bool SettingsOpen
+        {
+            get => settingsOpen;
+            set
+            {
+                if (settingsOpen != value)
+                {
+                    settingsOpen = value;
+                    OnPropertyChanged(nameof(SettingsOpen));
+                }
+            }
+        }
+
+        private readonly ObservableCollection<string> languages = new ObservableCollection<string>();
+        public ObservableCollection<string> Languages => languages;
+
+        private string selectedLanguage;
+        public string SelectedLanguage
+        {
+            get => LanguageManager.Instance.Language;
+            set
+            {
+                if (selectedLanguage != value)
+                {
+                    selectedLanguage = value;
+                    LanguageManager.Instance.Language = value;
+                    OnPropertyChanged(nameof(SelectedLanguage));
+                }
+            }
+        }
+
+        public bool CloseToTray
+        {
+            get => Settings.CloseToTray;
+            set
+            {
+                if (Settings.CloseToTray != value)
+                {
+                    Settings.CloseToTray = value;
+                    OnPropertyChanged(nameof(CloseToTray));
+                }
+            }
+        }
+
+        public bool RunAtStartup
+        {
+            get => RegistryModifier.Instance.Autostart;
+            set
+            {
+                if (RegistryModifier.Instance.Autostart != value)
+                {
+                    RegistryModifier.Instance.Autostart = value;
+                    OnPropertyChanged(nameof(RunAtStartup));
+                }
+            }
+        }
+        #endregion
     }
 }

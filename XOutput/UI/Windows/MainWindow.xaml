@@ -1,117 +1,116 @@
-﻿<Window x:Class="XOutput.UI.Windows.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:tb="http://www.hardcodet.net/taskbar"
-        xmlns:component="clr-namespace:XOutput.UI.Component"
-        xmlns:local="clr-namespace:XOutput.UI.Windows"
-        mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel, IsDesignTimeCreatable=False}"
-        Loaded="WindowLoaded"
-        Closed="WindowClosed"
-        Closing="WindowClosing"
-        Title="XOutput" Width="700" Height="500">
+﻿<Controls:MetroWindow x:Class="XOutput.UI.Windows.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:tb="http://www.hardcodet.net/taskbar"
+                      xmlns:component="clr-namespace:XOutput.UI.Component"
+                      xmlns:local="clr-namespace:XOutput.UI.Windows"
+                      mc:Ignorable="d"
+                      d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel, IsDesignTimeCreatable=False}"
+                      Loaded="WindowLoaded"
+                      Closed="WindowClosed"
+                      Closing="WindowClosing"
+                      Title="XOutput" Width="1000" Height="700">
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SettingsMenu'}" Position="Right" Width="450"
+                             IsOpen="{Binding Model.SettingsOpen}">
+                <StackPanel Margin="0,10">
+                    <DockPanel Margin="20,10">
+                        <Label DockPanel.Dock="Left" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Language'}" Width="200"/>
+                        <ComboBox HorizontalAlignment="Left" Width="200" ItemsSource="{Binding SettingsModel.Languages}" SelectedItem="{Binding SettingsModel.SelectedLanguage}"/>
+                    </DockPanel>
+                    <DockPanel Margin="20,10">
+                        <Label DockPanel.Dock="Left" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='CloseToTray'}" Width="200"/>
+                        <Controls:ToggleSwitch HorizontalAlignment="Left" Width="200" VerticalAlignment="Center" IsChecked="{Binding SettingsModel.CloseToTray}" OnLabel="" OffLabel=""/>
+                    </DockPanel>
+                    <DockPanel Margin="20,10">
+                        <Label DockPanel.Dock="Left" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='RunAtStartup'}" Width="200"/>
+                        <Controls:ToggleSwitch HorizontalAlignment="Left" Width="200" VerticalAlignment="Center" IsChecked="{Binding SettingsModel.RunAtStartup}" OnLabel="" OffLabel=""/>
+                    </DockPanel>
+                </StackPanel>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="50"/>
-            <ColumnDefinition Width="*" MinWidth="50"/>
-        </Grid.ColumnDefinitions>
+        <!--#region TaskbarIcon-->
         <tb:TaskbarIcon Visibility="Visible" ToolTipText="XOutput" IconSource="/icon.ico" MenuActivation="RightClick" PopupActivation="LeftClick"
                         TrayMouseDoubleClick="TaskbarIconTrayMouseDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ExitMenu'}" Click="ExitClick">
                         <MenuItem.Icon>
-                            <component:Icon Text="times" FontSize="16" TextAlignment="Center"/>
+                            <iconPacks:PackIconFontAwesome Kind="TimesSolid" Width="20" Margin="2 0 0 0"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
-        <Menu Grid.ColumnSpan="100">
-            <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='FileMenu'}">
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveMenu'}" Click="SaveClick">
-                    <MenuItem.Icon>
-                        <component:Icon Text="save" FontSize="16" TextAlignment="Center"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllersMenu'}" Click="GameControllersClick">
-                    <MenuItem.Icon>
-                        <component:Icon Text="gamepad" FontSize="12" TextAlignment="Center"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator/>
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ExitMenu'}" Click="ExitClick">
-                    <MenuItem.Icon>
-                        <component:Icon Text="times" FontSize="16" TextAlignment="Center"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ToolsMenu'}">
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SettingsMenu'}" Click="SettingsClick">
-                    <MenuItem.Icon>
-                        <component:Icon Text="cog" FontSize="16" TextAlignment="Center"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DiagnosticsMenu'}" Click="DiagnosticsClick">
-                    <MenuItem.Icon>
-                        <component:Icon Text="wrench" FontSize="16" TextAlignment="Center"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HelpMenu'}">
-                <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AboutMenu'}" Click="AboutClick">
-                    <MenuItem.Icon>
-                        <component:Icon Text="question" FontSize="16" TextAlignment="Center"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
-
-        <GroupBox Grid.Row="1" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllers'}" Margin="3,3,8,3">
-            <DockPanel>
-                <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding Model.AllDevices}" Checked="CheckBoxChecked" Unchecked="CheckBoxChecked" Margin="10"
+        <!--#endregion-->
+        <Canvas>
+            <Controls:MetroAnimatedTabControl Canvas.Bottom="0" Canvas.Left="0" Canvas.Top="0" Canvas.Right="0">
+                <TabItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllers'}">
+                    <DockPanel>
+                        <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding Model.AllDevices}" Checked="CheckBoxChecked" Unchecked="CheckBoxChecked" Margin="10"
                           Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ShowAllDevices'}"/>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding Model.InputDevices}"/>
-                </ScrollViewer>
-            </DockPanel>
-        </GroupBox>
-        <GridSplitter Grid.Row="1" Grid.Column="0" Width="5" VerticalAlignment="Stretch"/>
-        <GroupBox Grid.Row="1" Grid.Column="1" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Output'}"
-                  Margin="3">
-            <DockPanel>
-                <Button DockPanel.Dock="Bottom" Width="150" Height="30" Margin="5">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AddNewDevice'}" VerticalAlignment="Center"/>
-                        <component:Icon Text="plus" Padding="5 0 0 0" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding Model.Controllers}"/>
-                </ScrollViewer>
-            </DockPanel>
-        </GroupBox>
-        <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="100">
-            <Button Click="RefreshClick" Width="150" Margin="10" DockPanel.Dock="Left">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceRefresh'}" VerticalAlignment="Center"/>
-                    <component:Icon Text="sync" Padding="5 0 0 0" VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
-            <Button Click="SaveClick" Width="150" Margin="10" DockPanel.Dock="Right">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveConfiguration'}" VerticalAlignment="Center"/>
-                    <component:Icon Text="save" Padding="5 0 0 0" VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
-            <Grid/>
-        </DockPanel>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding Model.InputDevices}"/>
+                        </ScrollViewer>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Output'}">
+                    <DockPanel>
+                        <Button DockPanel.Dock="Bottom" Width="150" Height="30" Margin="5">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AddNewDevice'}" VerticalAlignment="Center"/>
+                                <iconPacks:PackIconFontAwesome Kind="PlusSolid" Height="16"/>
+                            </StackPanel>
+                        </Button>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding Model.Controllers}"/>
+                        </ScrollViewer>
+                    </DockPanel>
+                </TabItem>
+            </Controls:MetroAnimatedTabControl>
+            <!--#region MenuIcon-->
+            <Menu Canvas.Top="0" Canvas.Right="0" Width="50" Height="50">
+                <MenuItem Width="50" Height="50">
+                    <MenuItem.Header>
+                        <iconPacks:PackIconFontAwesome Kind="EllipsisHSolid" Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </MenuItem.Header>
+                    <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SaveMenu'}" Click="SaveClick">
+                        <MenuItem.Icon>
+                            <iconPacks:PackIconFontAwesome Kind="SaveSolid" Height="16" Margin="2 0 0 0"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllersMenu'}" Click="GameControllersClick">
+                        <MenuItem.Icon>
+                            <iconPacks:PackIconFontAwesome Kind="GamepadSolid" Height="16" Margin="2 0 0 0"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SettingsMenu'}" Click="SettingsClick">
+                        <MenuItem.Icon>
+                            <iconPacks:PackIconFontAwesome Kind="CogSolid" Height="16" Margin="2 0 0 0"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DiagnosticsMenu'}" Click="DiagnosticsClick">
+                        <MenuItem.Icon>
+                            <iconPacks:PackIconFontAwesome Kind="WrenchSolid" Height="16" Margin="2 0 0 0"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AboutMenu'}" Click="AboutClick">
+                        <MenuItem.Icon>
+                            <iconPacks:PackIconFontAwesome Kind="QuestionSolid" Height="16" Margin="2 0 0 0"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+            <!--#endregion-->
+        </Canvas>
     </Grid>
-</Window>
+</Controls:MetroWindow>

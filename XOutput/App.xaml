@@ -5,24 +5,35 @@
              xmlns:Converters="clr-namespace:XOutput.UI.Converters"
              StartupUri="UI/Windows/MainWindow.xaml">
     <Application.Resources>
-        <ItemsPanelTemplate x:Key="VerticalStackPanel">
-            <StackPanel Orientation="Vertical" Focusable="False"/>
-        </ItemsPanelTemplate>
-        <Converters:BoolToBrushConverter x:Key="BoolToBrushConverter"></Converters:BoolToBrushConverter>
-        <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <Converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
-        <Converters:MultiConverter x:Key="InvertAndVisibilityConverter">
-            <Converters:BoolInverterConverter/>
-            <Converters:BoolToVisibilityConverter/>
-        </Converters:MultiConverter>
-        <Converters:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
-        <Converters:DynamicLanguageConverter x:Key="DynamicLanguageConverter"/>
-        <Converters:EnumerableNotEmptyToVisibilityConverter x:Key="EnumerableNotEmptyToVisibilityConverter"/>
-        <Converters:EnumerableCountToVisibilityConverter x:Key="EnumerableCountToVisibilityConverter"/>
-        <Converters:LanguageConverter x:Key="LanguageConverter"/>
-        <Converters:ColorConverter x:Key="ColorConverter"/>
-        <Converters:BlinkConverter x:Key="BlinkConverter"/>
-        <Converters:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
-        <Converters:EqualsToVisibilityConverter x:Key="EqualsToVisibilityConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <!-- Accent and AppTheme setting -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <ItemsPanelTemplate x:Key="VerticalStackPanel">
+                <StackPanel Orientation="Vertical" Focusable="False"/>
+            </ItemsPanelTemplate>
+            <Converters:BoolToBrushConverter x:Key="BoolToBrushConverter"></Converters:BoolToBrushConverter>
+            <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <Converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
+            <Converters:MultiConverter x:Key="InvertAndVisibilityConverter">
+                <Converters:BoolInverterConverter/>
+                <Converters:BoolToVisibilityConverter/>
+            </Converters:MultiConverter>
+            <Converters:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
+            <Converters:DynamicLanguageConverter x:Key="DynamicLanguageConverter"/>
+            <Converters:EnumerableNotEmptyToVisibilityConverter x:Key="EnumerableNotEmptyToVisibilityConverter"/>
+            <Converters:EnumerableCountToVisibilityConverter x:Key="EnumerableCountToVisibilityConverter"/>
+            <Converters:LanguageConverter x:Key="LanguageConverter"/>
+            <Converters:ColorConverter x:Key="ColorConverter"/>
+            <Converters:BlinkConverter x:Key="BlinkConverter"/>
+            <Converters:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
+            <Converters:EqualsToVisibilityConverter x:Key="EqualsToVisibilityConverter"/>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

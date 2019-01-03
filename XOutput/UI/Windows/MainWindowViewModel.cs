@@ -29,6 +29,7 @@ namespace XOutput.UI.Windows
         private const string SettingsFilePath = "settings.json";
         private const string GameControllersSettings = "joy.cpl";
 
+        public SettingsModel SettingsModel { get; set; }
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindowViewModel));
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly Dispatcher dispatcher;
@@ -38,6 +39,7 @@ namespace XOutput.UI.Windows
         public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher) : base(model)
         {
             this.dispatcher = dispatcher;
+            SettingsModel = new SettingsModel();
         }
 
         private void DirectInputDevices_DeviceConnected(object sender, DeviceConnectedEventArgs e)
@@ -144,6 +146,7 @@ namespace XOutput.UI.Windows
             Model.Controllers.Add(controllerView);*/
 
             HandleArgs();
+            InitializeSettings();
 
             timer.Interval = TimeSpan.FromMilliseconds(10000);
             timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
@@ -208,7 +211,8 @@ namespace XOutput.UI.Windows
 
         public void OpenSettings()
         {
-            new SettingsWindow(new SettingsViewModel(new SettingsModel(settings))).ShowDialog();
+            Model.SettingsOpen = true;
+            //new SettingsWindow(new SettingsViewModel(new SettingsModel(settings))).ShowDialog();
         }
 
         public void OpenDiagnostics()
@@ -255,6 +259,18 @@ namespace XOutput.UI.Windows
                         break;
                     }
                 }
+            }
+        }
+
+        private void InitializeSettings()
+        {
+
+            SettingsModel.Settings = settings;
+            var languages = LanguageManager.Instance.GetLanguages().ToList();
+            languages.Sort();
+            foreach (var language in languages)
+            {
+                SettingsModel.Languages.Add(language);
             }
         }
     }

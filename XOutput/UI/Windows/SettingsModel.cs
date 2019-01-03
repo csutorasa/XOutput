@@ -11,7 +11,7 @@ namespace XOutput.UI.Windows
 {
     public class SettingsModel : ModelBase
     {
-        private readonly Settings settings;
+        public Settings Settings { get; set; }
 
         private readonly ObservableCollection<string> languages = new ObservableCollection<string>();
         public ObservableCollection<string> Languages => languages;
@@ -33,12 +33,12 @@ namespace XOutput.UI.Windows
 
         public bool CloseToTray
         {
-            get => settings.CloseToTray;
+            get => Settings.CloseToTray;
             set
             {
-                if (settings.CloseToTray != value)
+                if (Settings.CloseToTray != value)
                 {
-                    settings.CloseToTray = value;
+                    Settings.CloseToTray = value;
                     OnPropertyChanged(nameof(CloseToTray));
                 }
             }
@@ -55,11 +55,6 @@ namespace XOutput.UI.Windows
                     OnPropertyChanged(nameof(RunAtStartup));
                 }
             }
-        }
-
-        public SettingsModel(Settings settings)
-        {
-            this.settings = settings;
         }
     }
 }

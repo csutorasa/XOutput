@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -24,7 +25,7 @@ namespace XOutput.UI.Windows
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IViewBase<MainWindowViewModel, MainWindowModel>
+    public partial class MainWindow : MetroWindow, IViewBase<MainWindowViewModel, MainWindowModel>
     {
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindow));
         private readonly MainWindowViewModel viewModel;
