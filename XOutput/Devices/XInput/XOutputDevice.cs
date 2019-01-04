@@ -83,7 +83,7 @@ namespace XOutput.Devices.XInput
         public XOutputDevice(Dictionary<InputType, MapperSettings> mappers, DPadSettings dPadData)
         {
             alltypes = XInputTypes.Values.ToArray();
-            state = new DeviceState(alltypes.ToArray(), DPadCount);
+            state = new DeviceState(alltypes.ToArray(), DPadCount, (x) => values[x], (x) => dPadData.GetDirection());
             this.mappers = mappers;
             this.dPadData = dPadData;
             inputRefresher = new Thread(InputRefresher);
@@ -156,8 +156,8 @@ namespace XOutput.Devices.XInput
             {
                 //dPads[0] = DPadHelper.GetDirection(GetBool(XInputTypes.UP), GetBool(XInputTypes.DOWN), GetBool(XInputTypes.LEFT), GetBool(XInputTypes.RIGHT));
             }
-            var changedDPads = state.SetDPads(dPads);
-            var changedValues = state.SetValues(values.Where(t => !t.Key.IsOther()).ToDictionary(x => x.Key, x => x.Value));
+            var changedDPads = state.SetDPads();
+            var changedValues = state.SetValues();
             if (changedDPads.Any() || changedValues.Any())
                 InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changedValues, changedDPads));
             return true;

@@ -107,6 +107,7 @@ namespace XOutput.Devices.Input.DirectInput
         private bool connected = false;
         private Thread inputRefresher;
         private bool disposed = false;
+        private JoystickState joystickState = new JoystickState();
 
         /// <summary>
         /// Creates a new DirectDevice instance.
@@ -145,7 +146,7 @@ namespace XOutput.Devices.Input.DirectInput
                 actuators = new Dictionary<DeviceObjectInstance, Effect>();
             }
             allTypes = buttons.Concat(axes).Concat(sliders).ToArray();
-            state = new DeviceState(allTypes, joystick.Capabilities.PovCount);
+            state = new DeviceState(allTypes, joystick.Capabilities.PovCount, Get, GetDPadValue);
             inputRefresher = new Thread(InputRefresher);
             inputRefresher.Name = ToString() + " input reader";
             inputRefresher.SetApartmentState(ApartmentState.STA);
@@ -209,16 +210,19 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 Dictionary<InputType, InputSettings> settings = Tools.Settings.Instance.GetInputSettings(Id)?.InputSettings;
                 InputSettings setting;
-                settings.TryGetValue(type, out setting);
-                if (settings.TryGetValue(type, out setting) && Math.Abs(raw - 0.5) < setting.Deadzone)
+                if (!settings.TryGetValue(type, out setting))
+                {
+                    return raw;
+                }
+                if (Math.Abs(raw - 0.5) < setting.Deadzone)
                 {
                     return 0.5;
                 }
-                if (settings.TryGetValue(type, out setting) && Math.Abs(raw) < setting.AntiDeadzone)
+                if (Math.Abs(raw) < setting.AntiDeadzone)
                 {
                     return 0;
                 }
-                if (settings.TryGetValue(type, out setting) && Math.Abs(1 - raw) < setting.AntiDeadzone)
+                if (Math.Abs(1 - raw) < setting.AntiDeadzone)
                 {
                     return 1;
                 }
@@ -308,11 +312,9 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 try
                 {
-                    joystick.Poll();
-                    var newDPads = Enumerable.Range(0, state.DPads.Count()).Select(i => GetDPadValue(i));
-                    var newValues = allTypes.ToDictionary(t => t, t => Get(t));
-                    var changedDPads = state.SetDPads(newDPads);
-                    var changedValues = state.SetValues(newValues);
+                    joystickState = GetCurrentState();
+                    var changedDPads = state.SetDPads();
+                    var changedValues = state.SetValues();
                     if (changedDPads.Any() || changedValues.Any())
                         InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changedValues, changedDPads));
                     return true;
@@ -333,7 +335,7 @@ namespace XOutput.Devices.Input.DirectInput
         /// <returns>Value</returns>
         private int GetAxisValue(int axis)
         {
-            var state = GetCurrentState();
+            var state = joystickState;
             if (axis < 1)
                 throw new ArgumentException();
             switch (axis)
@@ -398,7 +400,7 @@ namespace XOutput.Devices.Input.DirectInput
         /// <returns>Value</returns>
         private bool GetButtonValue(int button)
         {
-            var state = GetCurrentState();
+            var state = joystickState;
             if (button < 1)
                 throw new ArgumentException();
             return state.Buttons[button - 1];
@@ -411,7 +413,7 @@ namespace XOutput.Devices.Input.DirectInput
         /// <returns>Value</returns>
         private int GetSliderValue(int slider)
         {
-            var state = GetCurrentState();
+            var state = joystickState;
             if (slider < 1)
                 throw new ArgumentException();
             return state.Sliders[slider - 1];
@@ -424,7 +426,7 @@ namespace XOutput.Devices.Input.DirectInput
         /// <returns>Value</returns>
         private DPadDirection GetDPadValue(int dpad)
         {
-            JoystickState state = GetCurrentState();
+            JoystickState state = joystickState;
             switch (state.PointOfViewControllers[dpad])
             {
                 case -1: return DPadDirection.None;
@@ -534,7 +536,9 @@ namespace XOutput.Devices.Input.DirectInput
         {
             try
             {
-                return joystick.GetCurrentState();
+                joystick.Poll();
+                joystick.GetCurrentState(ref joystickState);
+                return joystickState;
             }
             catch (Exception)
             {

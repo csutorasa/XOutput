@@ -19,56 +19,63 @@ namespace XOutput.Devices
         /// Gets the current DPad values.
         /// </summary>
         public IEnumerable<DPadDirection> DPads => dPads;
-        protected Dictionary<InputType, double> values = new Dictionary<InputType, double>();
-        protected DPadDirection[] dPads;
+        protected readonly InputType[] valueTypes;
+        protected readonly Dictionary<InputType, double> values = new Dictionary<InputType, double>();
+        protected readonly DPadDirection[] dPads;
+        protected readonly Func<InputType, double> typeGetter;
+        protected readonly Func<int, DPadDirection> dPadGetter;
+        protected readonly ICollection<int> changedDPads = new HashSet<int>();
+        protected readonly ICollection<InputType> changedValues = new HashSet<InputType>();
 
-        public DeviceState(IEnumerable<InputType> types, int dPadCount)
+        public DeviceState(IEnumerable<InputType> types, int dPadCount, Func<InputType, double> typeGetter, Func<int, DPadDirection> dPadGetter)
         {
             foreach (InputType type in types)
             {
                 values.Add(type, 0);
             }
             dPads = new DPadDirection[dPadCount];
+            this.typeGetter = typeGetter;
+            this.dPadGetter = dPadGetter;
+            valueTypes = values.Keys.ToArray();
         }
 
         /// <summary>
         /// Sets new DPad values.
         /// </summary>
-        /// <param name="newDPads">new values</param>
         /// <returns>changed DPad indices</returns>
-        public IEnumerable<int> SetDPads(IEnumerable<DPadDirection> newDPads)
+        public IEnumerable<int> SetDPads()
         {
-            if (newDPads.Count() != dPads.Length)
-                throw new ArgumentException();
-            ICollection<int> changed = new HashSet<int>();
-            foreach (var x in newDPads.Select((d, i) => new { New = d, Old = dPads[i], Index = i }).ToArray())
+            changedDPads.Clear();
+            for (int i = 0; i < dPads.Length; i++)
             {
-                if (x.New != x.Old)
+                DPadDirection newValue = dPadGetter(i);
+                if (dPads[i] != newValue)
                 {
-                    dPads[x.Index] = x.New;
-                    changed.Add(x.Index);
+                    dPads[i] = newValue;
+                    changedDPads.Add(i);
                 }
             }
-            return changed;
+            return changedDPads;
         }
 
         /// <summary>
         /// Sets new values.
         /// </summary>
-        /// <param name="newValues">new values</param>
         /// <returns>changed value types</returns>
-        public IEnumerable<InputType> SetValues(Dictionary<InputType, double> newValues)
+        public IEnumerable<InputType> SetValues()
         {
-            ICollection<InputType> changed = new HashSet<InputType>();
-            foreach (var x in newValues.Select((d, i) => new { New = d.Value, Old = values[d.Key], Type = d.Key }).ToArray())
+            changedValues.Clear();
+            foreach (var key in valueTypes)
             {
-                if (x.New != x.Old)
+                double newValue = typeGetter(key);
+                double oldValue = values[key];
+                if (oldValue != newValue)
                 {
-                    values[x.Type] = x.New;
-                    changed.Add(x.Type);
+                    values[key] = newValue;
+                    changedValues.Add(key);
                 }
             }
-            return changed;
+            return changedValues;
         }
     }
 }

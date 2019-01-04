@@ -140,10 +140,8 @@ namespace XOutput.UI.Windows
             Model.AllDevices = Settings.Instance.ShowAllDevices;
             RefreshGameControllers();
 
-            var keyboardView = new InputDeviceView(new InputDeviceViewModel(new InputDeviceModel(), Keyboard.Instance));
-            Model.InputDevices.Add(keyboardView);
-            /*controllerView.ViewModel.Model.CanStart = installed;
-            Model.Controllers.Add(controllerView);*/
+            //var keyboardView = new InputDeviceView(new InputDeviceViewModel(new InputDeviceModel(), Keyboard.Instance));
+            //Model.InputDevices.Add(keyboardView);
 
             HandleArgs();
             InitializeSettings();
@@ -212,7 +210,6 @@ namespace XOutput.UI.Windows
         public void OpenSettings()
         {
             Model.SettingsOpen = true;
-            //new SettingsWindow(new SettingsViewModel(new SettingsModel(settings))).ShowDialog();
         }
 
         public void OpenDiagnostics()

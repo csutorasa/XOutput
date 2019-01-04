@@ -58,7 +58,7 @@ namespace XOutput.Devices
             {
                 return false;
             }
-            return Equals(other as InputType);
+            return Equals((InputType)other);
         }
 
         public override int GetHashCode()

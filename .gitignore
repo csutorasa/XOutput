@@ -1,4 +1,12 @@
-.vs/
+# Output
 XOutput/bin/
 XOutput/obj/
+
+# Visual Studio
+.vs/
+
+# NuGet
 packages/
+
+# User settings
+*.csproj.user

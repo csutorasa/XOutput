@@ -104,7 +104,7 @@ namespace XOutput.Devices.Input.Keyboard
                     Type = InputTypes.Button,
                     Count = b,
                 }).ToArray();
-            state = new DeviceState(buttons, 0);
+            state = new DeviceState(buttons, 0, Get, null);
             inputRefresher = new Thread(InputRefresher);
             inputRefresher.Name = "Keyboard input notification";
             inputRefresher.SetApartmentState(ApartmentState.STA);
@@ -177,8 +177,7 @@ namespace XOutput.Devices.Input.Keyboard
             {
                 while (true)
                 {
-                    var newValues = buttons.ToDictionary(t => t, t => Get(t));
-                    var changedValues = state.SetValues(newValues);
+                    var changedValues = state.SetValues();
                     if (changedValues.Any())
                         InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changedValues, new int[0]));
                     Thread.Sleep(ReadDelayMs);

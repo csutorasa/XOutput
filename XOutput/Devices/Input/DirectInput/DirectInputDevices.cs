@@ -99,7 +99,9 @@ namespace XOutput.Devices.Input.DirectInput
             try
             {
                 var joystick = new Joystick(directInput, deviceInstance.InstanceGuid);
-                if (joystick.Information.ProductGuid.ToString() == EmulatedSCPID || (joystick.Capabilities.AxeCount < 1 && joystick.Capabilities.ButtonCount < 1))
+                if (joystick.Information.ProductGuid.ToString() == EmulatedSCPID ||
+                    (joystick.Capabilities.AxeCount < 1 && joystick.Capabilities.ButtonCount < 1)
+                    || joystick.Capabilities.ButtonCount > 128)
                 {
                     joystick.Dispose();
                     return null;
