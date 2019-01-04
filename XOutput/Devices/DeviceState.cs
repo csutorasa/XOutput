@@ -20,6 +20,7 @@ namespace XOutput.Devices
         /// </summary>
         public IEnumerable<DPadDirection> DPads => dPads;
         protected readonly InputType[] valueTypes;
+        protected readonly KeyValuePair<InputType, double>[] valueData;
         protected readonly Dictionary<InputType, double> values = new Dictionary<InputType, double>();
         protected readonly DPadDirection[] dPads;
         protected readonly Func<InputType, double> typeGetter;
@@ -33,6 +34,7 @@ namespace XOutput.Devices
             {
                 values.Add(type, 0);
             }
+            valueData = values.ToArray();
             dPads = new DPadDirection[dPadCount];
             this.typeGetter = typeGetter;
             this.dPadGetter = dPadGetter;
@@ -65,13 +67,15 @@ namespace XOutput.Devices
         public IEnumerable<InputType> SetValues()
         {
             changedValues.Clear();
-            foreach (var key in valueTypes)
+            for (int i = 0; i < valueData.Length; i++)
             {
+                var key = valueData[i].Key;
                 double newValue = typeGetter(key);
-                double oldValue = values[key];
+                double oldValue = valueData[i].Value;
                 if (oldValue != newValue)
                 {
                     values[key] = newValue;
+                    valueData[i] = new KeyValuePair<InputType, double>(key, newValue);
                     changedValues.Add(key);
                 }
             }

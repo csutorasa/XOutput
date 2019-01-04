@@ -191,7 +191,11 @@ namespace XOutput.Tools
 
         public InputDeviceSettings GetInputSettings(string deviceId)
         {
-            return InputDevices.Where(id => id.Key == deviceId).Select(id => id.Value).FirstOrDefault();
+            if (InputDevices.ContainsKey(deviceId))
+            {
+                return InputDevices[deviceId];
+            }
+            return null;
         }
 
         public void WriteInputs()

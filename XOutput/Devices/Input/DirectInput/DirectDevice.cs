@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Interop;
 using XOutput.Devices.Input.Settings;
 using XOutput.Logging;
+using XOutput.Tools;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -43,12 +44,12 @@ namespace XOutput.Devices.Input.DirectInput
         /// Gets the GUID of the controller.
         /// <para>Implements <see cref="IInputDevice.Id"/></para>
         /// </summary>
-        public string Id => deviceInstance.InstanceGuid.ToString();
+        public string Id => id;
         /// <summary>
         /// Gets the product name of the device.
         /// <para>Implements <see cref="IInputDevice.DisplayName"/></para>
         /// </summary>
-        public string DisplayName => deviceInstance.ProductName;
+        public string DisplayName => name;
         /// <summary>
         /// Gets or sets if the device is connected and ready to use.
         /// <para>Implements <see cref="IInputDevice.Connected"/></para>
@@ -107,6 +108,8 @@ namespace XOutput.Devices.Input.DirectInput
         private bool connected = false;
         private Thread inputRefresher;
         private bool disposed = false;
+        private readonly string id;
+        private readonly string name;
         private JoystickState joystickState = new JoystickState();
 
         /// <summary>
@@ -118,6 +121,8 @@ namespace XOutput.Devices.Input.DirectInput
         {
             this.deviceInstance = deviceInstance;
             this.joystick = joystick;
+            id = deviceInstance.InstanceGuid.ToString();
+            name = deviceInstance.ProductName;
             buttons = Enumerable.Range(0, joystick.Capabilities.ButtonCount).Select(b => new InputType { Type = InputTypes.Button, Count = b + 1 }).ToArray();
             axes = GetAxes();
             sliders = GetSliders();
@@ -209,11 +214,11 @@ namespace XOutput.Devices.Input.DirectInput
             if (type.IsAxis())
             {
                 Dictionary<InputType, InputSettings> settings = Tools.Settings.Instance.GetInputSettings(Id)?.InputSettings;
-                InputSettings setting;
-                if (!settings.TryGetValue(type, out setting))
+                if (!settings.ContainsKey(type))
                 {
                     return raw;
                 }
+                InputSettings setting = settings[type];
                 if (Math.Abs(raw - 0.5) < setting.Deadzone)
                 {
                     return 0.5;
@@ -315,7 +320,7 @@ namespace XOutput.Devices.Input.DirectInput
                     joystickState = GetCurrentState();
                     var changedDPads = state.SetDPads();
                     var changedValues = state.SetValues();
-                    if (changedDPads.Any() || changedValues.Any())
+                    if (changedDPads.Count() > 0 || changedValues.Count() > 0)
                         InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changedValues, changedDPads));
                     return true;
                 }

@@ -114,6 +114,8 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Tools\ArgumentParser.cs" />
     <Compile Include="Devices\DeviceInputChangedEventArgs.cs" />
+    <Compile Include="Tools\DispatcherHelper.cs" />
+    <Compile Include="Tools\GarbageFreeDictionary.cs" />
     <Compile Include="Tools\Helper.cs" />
     <Compile Include="Devices\Controllers.cs" />
     <Compile Include="Devices\DeviceDisconnectedEventArgs.cs" />

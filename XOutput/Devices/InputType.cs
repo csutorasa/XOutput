@@ -63,7 +63,7 @@ namespace XOutput.Devices
 
         public override int GetHashCode()
         {
-            return Type.GetHashCode() ^ Count;
+            return (int)Type ^ Count;
         }
 
         public bool IsAxis()
