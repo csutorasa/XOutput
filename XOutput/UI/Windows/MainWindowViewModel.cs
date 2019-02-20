@@ -30,14 +30,13 @@ namespace XOutput.UI.Windows
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindowViewModel));
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly DirectInputDevices directInputDevices = new DirectInputDevices();
-        private readonly Action<string> log;
+        private Action<string> log;
         private readonly Dispatcher dispatcher;
         private Settings settings;
         private bool installed;
 
-        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher, Action<string> logger) : base(model)
+        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher) : base(model)
         {
-            log = logger;
             this.dispatcher = dispatcher;
             timer.Interval = TimeSpan.FromMilliseconds(10000);
             timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
@@ -79,8 +78,9 @@ namespace XOutput.UI.Windows
             return settings;
         }
 
-        public void Initialize()
+        public void Initialize(Action<string> log)
         {
+            this.log = log;
             LanguageManager languageManager = LanguageManager.Instance;
             try
             {
