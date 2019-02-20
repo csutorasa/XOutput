@@ -42,7 +42,7 @@ namespace XOutput.UI.Windows
             DataContext = viewModel;
             if (ArgumentParser.Instance.Minimized)
             {
-                WindowState = WindowState.Minimized;
+                Visibility = Visibility.Hidden;
                 ShowInTaskbar = false;
             }
             else
@@ -119,7 +119,7 @@ namespace XOutput.UI.Windows
             {
                 e.Cancel = true;
                 restoreState = WindowState;
-                WindowState = WindowState.Minimized;
+                Visibility = Visibility.Hidden;
                 ShowInTaskbar = false;
             }
         }
@@ -140,17 +140,21 @@ namespace XOutput.UI.Windows
         {
             if (WindowState == WindowState.Minimized)
             {
+                WindowState = restoreState;
+            }
+            else if (Visibility == Visibility.Hidden)
+            {
                 if (!IsLoaded)
                 {
                     Show();
                 }
-                WindowState = restoreState;
-                Activate();
-                Topmost = true;
-                Topmost = false;
-                Focus();
                 ShowInTaskbar = true;
+                Visibility = Visibility.Visible;
             }
+            Activate();
+            Topmost = true;
+            Topmost = false;
+            Focus();
         }
     }
 }
