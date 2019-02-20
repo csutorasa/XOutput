@@ -8,6 +8,8 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using XOutput.Tools;
+using XOutput.UI.Windows;
 
 namespace XOutput
 {
@@ -47,6 +49,15 @@ namespace XOutput
                     mutex.Close();
                     mutex = null;
                 }
+            }
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow(new MainWindowViewModel(new MainWindowModel(), Dispatcher));
+            if (!ArgumentParser.Instance.Minimized)
+            {
+                mainWindow.Show();
             }
         }
     }
