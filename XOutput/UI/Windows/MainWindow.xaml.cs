@@ -32,28 +32,28 @@ namespace XOutput.UI.Windows
         private bool hardExit = false;
         private WindowState restoreState = WindowState.Normal;
 
-        public MainWindow()
+        public MainWindow(MainWindowViewModel viewModel)
         {
 #if DEBUG == false
             Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => viewModel.UnhandledException(e.Exception);
 #endif
-            viewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher, Log);
+            this.viewModel = viewModel;
             DataContext = viewModel;
             if (ArgumentParser.Instance.Minimized)
             {
-                restoreState = WindowState;
                 Visibility = Visibility.Hidden;
+                ShowInTaskbar = false;
             }
+            else
+            {
+                ShowInTaskbar = true;
+            }
+            viewModel.Initialize(Log);
             InitializeComponent();
         }
 
         private async void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            if (ArgumentParser.Instance.Minimized)
-            {
-                ShowInTaskbar = false;
-            }
-            viewModel.Initialize();
             await logger.Info("The application has started.");
             await GetData();
         }
@@ -81,7 +81,17 @@ namespace XOutput.UI.Windows
         private void ExitClick(object sender, RoutedEventArgs e)
         {
             hardExit = true;
-            Close();
+            if (IsLoaded)
+            {
+                Close();
+            }
+            else
+            {
+                viewModel.Finalizer();
+                viewModel.Dispose();
+                Environment.Exit(0);
+            }
+
         }
         private void GameControllersClick(object sender, RoutedEventArgs e)
         {
@@ -139,6 +149,10 @@ namespace XOutput.UI.Windows
             }
             else if (Visibility == Visibility.Hidden)
             {
+                if (!IsLoaded)
+                {
+                    Show();
+                }
                 ShowInTaskbar = true;
                 Visibility = Visibility.Visible;
             }
