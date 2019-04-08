@@ -1,4 +1,5 @@
 [![Build](https://ci.appveyor.com/api/projects/status/github/csutorasa/XOutput?branch=master&svg=true)](https://ci.appveyor.com/project/csutorasa/xoutput/)
+[![Github All Releases](https://img.shields.io/github/downloads/csutorasa/XOutput/total.svg)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/csutorasa)
 
 # XOutput 
