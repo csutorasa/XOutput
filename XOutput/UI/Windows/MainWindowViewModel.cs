@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Microsoft.Win32;
 using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Devices.Input.DirectInput;
@@ -24,6 +25,7 @@ namespace XOutput.UI.Windows
 {
     public class MainWindowViewModel : ViewModelBase<MainWindowModel>, IDisposable
     {
+        private int pid = Process.GetCurrentProcess().Id;
         private const string SettingsFilePath = "settings.txt";
         private const string GameControllersSettings = "joy.cpl";
 
@@ -80,6 +82,27 @@ namespace XOutput.UI.Windows
 
         public void Initialize(Action<string> log)
         {
+            try
+            {
+                RegistryKey RegKeyDelCH = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Services\\HidGuardian\\Parameters\\Whitelist");
+                if (RegKeyDelCH == null)
+                {
+                    RegKeyDelCH.Close();
+                    RegistryKey RegKeyAdd = Registry.LocalMachine.CreateSubKey("SYSTEM\\CurrentControlSet\\Services\\HidGuardian\\Parameters\\Whitelist\\" + pid);
+                }
+                else
+                {
+                    RegKeyDelCH.Close();
+                    RegistryKey RegKeyDel = Registry.LocalMachine;
+                    RegKeyDel.DeleteSubKeyTree("SYSTEM\\CurrentControlSet\\Services\\HidGuardian\\Parameters\\Whitelist");
+                    RegKeyDel.Close();
+                    RegistryKey RegKeyAdd = Registry.LocalMachine.CreateSubKey("SYSTEM\\CurrentControlSet\\Services\\HidGuardian\\Parameters\\Whitelist\\" + pid);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
             this.log = log;
             LanguageManager languageManager = LanguageManager.Instance;
             try
