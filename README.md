@@ -12,12 +12,19 @@ XOutput is a software that can convert DirectInput into XInput. DirectInput data
 
 Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, legacy)
 
-  a) Install [VIGEm framework](https://github.com/nefarius/ViGEm/wiki/Driver-Installation) (Recommended)
-  b) Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
-
+  1) Install [VIGEm framework](https://docs.vigem.org/#!vigem-bus-driver-installation.md)
+  2) Install [HidGuardian](https://docs.vigem.org/#!hidguardian-v1-installation.md)
+  3) Press Win+R, type "regedit" and go to "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters"
+  4) Create multi string value with name "AffectedDevices"
+  5) Open Device manager, find your dinput device and open properties
+  6) Go to Details, in property select hardware ID and copy string looks like `HID\VID_046D&PID_C219&REV_0200` and `HID\VID_046D&PID_C219` in "AffectedDevices"
+  7) Press OK in "AffectedDevices" and reconnect device
+  
+  [Youtube - video guide]( https://youtu.be/QfYxjMWLVYw)
+  
 Download the application:
 
-* Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
+* Download the [latest release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts)
 * Unzip to any directory
 
 Install all the drivers for your contollers.
