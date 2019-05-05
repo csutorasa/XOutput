@@ -25,6 +25,7 @@ Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, 
 Download the application:
 
 * Download the [latest release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts)
+* Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
 * Unzip to any directory
 
 Install all the drivers for your contollers.
