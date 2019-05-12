@@ -24,6 +24,10 @@ namespace XOutput.Devices.Input
         /// </summary>
         bool Connected { get; }
         /// <summary>
+        /// Gets the hardware ID of the device.
+        /// </summary>
+        string HardwareID { get; }
+        /// <summary>
         /// Gets the number of force feedback motors.
         /// </summary>
         int ForceFeedbackCount { get; }

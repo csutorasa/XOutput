@@ -40,5 +40,19 @@ namespace XOutput.UI.Windows
                 }
             }
         }
+
+        private bool isAdmin;
+        public bool IsAdmin
+        {
+            get => isAdmin;
+            set
+            {
+                if (isAdmin != value)
+                {
+                    isAdmin = value;
+                    OnPropertyChanged(nameof(IsAdmin));
+                }
+            }
+        }
     }
 }

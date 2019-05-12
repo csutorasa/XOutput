@@ -82,6 +82,13 @@
                         <StackPanel>
                             <CheckBox Margin="5" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='StartWhenConnected'}"
                                       IsChecked="{Binding Model.StartWhenConnected}" Checked="CheckBoxChecked" Unchecked="CheckBoxChecked"/>
+                            <StackPanel Visibility="{Binding Model.IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Button Height="30" Margin="5" Click="AddHidGuardianButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HidGuardianAdd'}"
+                                        Visibility="{Binding Model.HidGuardianAdded, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource True}}">
+                                </Button>
+                                <Button Height="30" Margin="5" Click="RemoveHidGuardianButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HidGuardianRemove'}"
+                                        Visibility="{Binding Model.HidGuardianAdded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            </StackPanel>
                             <Button Height="30" Margin="5" Click="ConfigureAllButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ConfigureAll'}"/>
                         </StackPanel>
                     </GroupBox>
