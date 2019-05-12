@@ -2,7 +2,7 @@
 [![Github All Releases](https://img.shields.io/github/downloads/csutorasa/XOutput/total.svg)]()
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/csutorasa)
 
-# XOutput 
+# XOutput
 
 If you have an older or not supported game controller (gamepad, wheel, joystick, etc.), but XBox 360 controllers are supported you can use this software and enjoy gaming with your controller.
 
@@ -18,6 +18,7 @@ Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, 
 Download the application:
 
 * Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
+* Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts)
 * Unzip to any directory
 
 Install all the drivers for your contollers.
@@ -42,6 +43,32 @@ On the configuration screen there are 3 blocks. The left block shows the input, 
 
 You can check if it is working in the Windows settings, or just select 'File->Game controllers', that opens the Windows calibration for you. An Xbox gamepad should have appeared in the list.
 
+## HidGuardian (exclusive mode)
+
+* Install [HidGuardian](https://docs.vigem.org/#!hidguardian-v1-installation.md).
+
+Add affected device manually:
+
+1. Run `regedit` and go to `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters`
+2. Create `multi-string` value with the name `AffectedDevices`
+3. Open Device Manager, find your input device and open properties
+4. Go to details, select `Hardware ID` and copy string that looks like `HID\VID_046D&PID_C219&REV_0200` and `HID\VID_046D&PID_C219`
+5. Paste the values into `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters`
+6. Reconnect devices
+
+Manage process whitelist manually:
+
+1. Start XOutput (or any other application)
+2. Open Task Manager, find your application, then go to details.
+3. Remember the value of the PID column.
+4. Run `regedit` and go to `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters\Whitelist`
+5. Create subkey with the PID you found before.
+
+## Command line arguments
+
+* `--start="controller-displayname"` - defines a part of the display name of the controller to be started on application startup.
+* `--minimized` - starts the application minimized to tray
+
 ### Deadzone
 
 If your analogue stick isn't in perfect condition, you may have what is called a deadzone, which means that a part of the axis isn't working right, usually it's the center part, syndromes of this are: wrong center position and unwanted movement of the camera, character, etc. To solve apply a bit of deadzone in the mapping settings, how much depends on the device in question.
@@ -55,12 +82,3 @@ XOutput has a diagnostics screen. A few tests are run to check if the applicatio
 | green circle with a tick                 | Everything is optimal.                                                                                  |
 | yellow triangle with an exclamation mark | The experience may be sub-optimal. Some functions may not work, but the application is functional.  |
 | red circle with a minus sign             | Something is not working, the application cannot function properly. Some core features may be unusable. |
-
-## Command line arguments
-
-- `--start="controller-displayname"` - defines a part of the display name of the controller to be started on application startup.
-- `--minimized` - starts the application minimized to tray
-
-## Developer release
-
-If you want to test the latest, often unstable, features before the stable releases, you can check the [AppVeyor](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts) builds.
