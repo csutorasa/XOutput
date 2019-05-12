@@ -24,6 +24,7 @@ namespace XOutput.UI.Windows
 {
     public class MainWindowViewModel : ViewModelBase<MainWindowModel>, IDisposable
     {
+        private readonly int pid = Process.GetCurrentProcess().Id;
         private const string SettingsFilePath = "settings.txt";
         private const string GameControllersSettings = "joy.cpl";
 
@@ -95,6 +96,26 @@ namespace XOutput.UI.Windows
                 log(error);
                 MessageBox.Show(error, Translate("Warning"));
             }
+            if (settings.HidGuardianEnabled)
+            {
+                try
+                {
+                    HidGuardianManager.Instance.ResetPid(pid);
+                    Model.IsAdmin = true;
+                    logger.Info("HidGuardian registry is set");
+                    log(string.Format(Translate("HidGuardianEnabledSuccessfully"), pid.ToString()));
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Model.IsAdmin = false;
+                    logger.Warning("Not running in elevated mode.");
+                    log(Translate("HidGuardianNotAdmin"));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
             bool vigem = VigemDevice.IsAvailable();
             bool scp = ScpDevice.IsAvailable();
             if (vigem)
@@ -127,7 +148,7 @@ namespace XOutput.UI.Windows
             RefreshGameControllers();
 
             var keyboardGameController = new GameController(new Devices.Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard"));
-            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, log));
+            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, Model.IsAdmin, log));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
@@ -214,7 +235,7 @@ namespace XOutput.UI.Windows
                         continue;
                     InputMapperBase mapper = settings.GetMapper(device.ToString());
                     GameController controller = new GameController(device, mapper);
-                    var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, log));
+                    var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, Model.IsAdmin, log));
                     controllerView.ViewModel.Model.CanStart = installed;
                     Model.Controllers.Add(controllerView);
                     device.Disconnected -= DispatchRefreshGameControllers;

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XOutput.UI.Windows"
         mc:Ignorable="d"
-        Title="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SettingsMenu'}" Width="460" Height="200" MinWidth="460"
+        Title="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SettingsMenu'}" Width="460" Height="240" MinWidth="460"
         d:DataContext="{d:DesignInstance Type=local:SettingsViewModel, IsDesignTimeCreatable=False}">
     <StackPanel Margin="0,10">
         <DockPanel Margin="20,10">
@@ -19,6 +19,10 @@
         <DockPanel Margin="20,10">
             <Label DockPanel.Dock="Left" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='RunAtStartup'}" Width="200"/>
             <CheckBox HorizontalAlignment="Left" Width="200" VerticalAlignment="Center" IsChecked="{Binding Model.RunAtStartup}"/>
+        </DockPanel>
+        <DockPanel Margin="20,10">
+            <Label DockPanel.Dock="Left" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HidGuardianEnabled'}" Width="200"/>
+            <CheckBox HorizontalAlignment="Left" Width="200" VerticalAlignment="Center" IsChecked="{Binding Model.HidGuardianEnabled}"/>
         </DockPanel>
     </StackPanel>
 </Window>

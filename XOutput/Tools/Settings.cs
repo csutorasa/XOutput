@@ -17,6 +17,7 @@ namespace XOutput.Tools
         private const string LanguageKey = "Language";
         private const string CloseToTrayKey = "CloseToTray";
         private const string ShowAllKey = "ShowAll";
+        private const string HidGuardianEnabledKey = "HidGuardianEnabled";
         private const string General = "General";
         private const string KeyboardKey = "Keyboard";
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(Settings));
@@ -50,6 +51,10 @@ namespace XOutput.Tools
                         {
                             settings.ShowAll = section.Value[ShowAllKey] == "true";
                         }
+                        if (section.Value.ContainsKey(HidGuardianEnabledKey))
+                        {
+                            settings.HidGuardianEnabled = section.Value[HidGuardianEnabledKey] == "true";
+                        }
                     }
                     else if (id == KeyboardKey)
                     {
@@ -69,6 +74,7 @@ namespace XOutput.Tools
         private Dictionary<string, InputMapperBase> mappers;
         public bool CloseToTray { get; set; }
         public bool ShowAll { get; set; }
+        public bool HidGuardianEnabled { get; set; }
 
         public Settings()
         {
@@ -90,6 +96,7 @@ namespace XOutput.Tools
             generalSettings[LanguageKey] = LanguageManager.Instance.Language;
             generalSettings[CloseToTrayKey] = CloseToTray ? "true" : "false";
             generalSettings[ShowAllKey] = ShowAll ? "true" : "false";
+            generalSettings[HidGuardianEnabledKey] = HidGuardianEnabled ? "true" : "false";
             ini.AddSection(General, generalSettings);
             File.WriteAllText(filePath, ini.Serialize());
         }

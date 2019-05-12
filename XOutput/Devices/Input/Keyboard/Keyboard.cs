@@ -71,6 +71,7 @@ namespace XOutput.Devices.Input.Keyboard
         /// <para>Implements <see cref="IInputDevice.ForceFeedbackCount"/></para>
         /// </summary>
         public int ForceFeedbackCount => 0;
+        public string HardwareID => null;
         #endregion
 
         private Thread inputRefresher;

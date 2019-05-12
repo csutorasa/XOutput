@@ -1,6 +1,7 @@
 ﻿<Application x:Class="XOutput.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:XOutput"
              xmlns:Converters="clr-namespace:XOutput.UI.Converters"
              Startup="Application_Startup">
@@ -25,5 +26,7 @@
         <Converters:BlinkConverter x:Key="BlinkConverter"/>
         <Converters:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
         <Converters:EqualsToVisibilityConverter x:Key="EqualsToVisibilityConverter"/>
+        <s:Boolean x:Key="True">True</s:Boolean>
+        <s:Boolean x:Key="False">False</s:Boolean>
     </Application.Resources>
 </Application>

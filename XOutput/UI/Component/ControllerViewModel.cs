@@ -16,10 +16,12 @@ namespace XOutput.UI.Component
         private const int BackgroundDelayMS = 500;
         private readonly Action<string> log;
         private readonly DispatcherTimer timer = new DispatcherTimer();
+        private readonly bool isAdmin;
 
-        public ControllerViewModel(ControllerModel model, GameController controller, Action<string> log) : base(model)
+        public ControllerViewModel(ControllerModel model, GameController controller, bool isAdmin, Action<string> log) : base(model)
         {
             this.log = log;
+            this.isAdmin = isAdmin;
             Model.Controller = controller;
             Model.ButtonText = "Start";
             Model.Background = Brushes.White;
@@ -30,7 +32,7 @@ namespace XOutput.UI.Component
 
         public void Edit()
         {
-            var controllerSettingsWindow = new ControllerSettingsWindow(new ControllerSettingsViewModel(new ControllerSettingsModel(), Model.Controller), Model.Controller);
+            var controllerSettingsWindow = new ControllerSettingsWindow(new ControllerSettingsViewModel(new ControllerSettingsModel(), Model.Controller, isAdmin), Model.Controller);
             controllerSettingsWindow.ShowDialog();
         }
 

@@ -86,6 +86,29 @@ namespace XOutput.Devices.Input.DirectInput
         /// <para>Implements <see cref="IInputDevice.ForceFeedbackCount"/></para>
         /// </summary>
         public int ForceFeedbackCount => actuators.Count;
+
+        public string HardwareID
+        {
+            get
+            {
+                if (deviceInstance.IsHumanInterfaceDevice)
+                {
+                    string path = joystick.Properties.InterfacePath;
+                    if (path.Contains("hid#"))
+                    {
+                        path = path.Substring(path.IndexOf("hid#"));
+                        path = path.Replace('#', '\\');
+                        int first = path.IndexOf('\\');
+                        int second = path.IndexOf('\\', first + 1);
+                        if (second > 0)
+                        {
+                            return path.Remove(second).ToUpper();
+                        }
+                    }
+                }
+                return null;
+            }
+        }
         #endregion
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(DirectDevice));
