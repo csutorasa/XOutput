@@ -21,7 +21,7 @@ Download the application:
 * Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts)
 * Unzip to any directory
 
-Install all the drivers for your contollers.
+Install all the drivers for your controllers.
 
 If you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
