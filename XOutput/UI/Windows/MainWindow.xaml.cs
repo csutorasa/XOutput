@@ -48,6 +48,7 @@ namespace XOutput.UI.Windows
             {
                 ShowInTaskbar = true;
             }
+            new WindowInteropHelper(this).EnsureHandle();
             viewModel.Initialize(Log);
             InitializeComponent();
         }
