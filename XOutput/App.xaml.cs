@@ -55,6 +55,7 @@ namespace XOutput
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             MainWindow mainWindow = new MainWindow(new MainWindowViewModel(new MainWindowModel(), Dispatcher));
+            MainWindow = mainWindow;
             if (!ArgumentParser.Instance.Minimized)
             {
                 mainWindow.Show();
