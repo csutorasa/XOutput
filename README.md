@@ -46,7 +46,7 @@ You can check if it is working in the Windows settings, or just select 'File->Ga
 
 ## HidGuardian (exclusive mode)
 
-* Install [HidGuardian](https://docs.vigem.org/#!hidguardian-v1-installation.md).
+* Install [HidGuardian](https://forums.vigem.org/topic/271/hidguardian-v1-driver-installation).
 
 Add affected device manually:
 
