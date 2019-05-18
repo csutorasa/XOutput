@@ -13,7 +13,7 @@ XOutput is a software that can convert DirectInput into XInput. DirectInput data
 
 Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, legacy)
 
-  a) Install [VIGEm framework](https://github.com/nefarius/ViGEm/wiki/Driver-Installation) (Recommended)
+  a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases) (Recommended)
   b) Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
 
 Download the application:
