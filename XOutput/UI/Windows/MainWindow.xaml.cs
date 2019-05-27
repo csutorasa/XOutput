@@ -43,18 +43,20 @@ namespace XOutput.UI.Windows
             {
                 Visibility = Visibility.Hidden;
                 ShowInTaskbar = false;
+                logger.Info("Starting XOutput in minimized to taskbar");
             }
             else
             {
                 ShowInTaskbar = true;
+                logger.Info("Starting XOutput in normal window");
             }
             new WindowInteropHelper(this).EnsureHandle();
-            viewModel.Initialize(Log);
             InitializeComponent();
         }
 
         private async void WindowLoaded(object sender, RoutedEventArgs e)
         {
+            viewModel.Initialize(Log);
             await logger.Info("The application has started.");
             await GetData();
         }
@@ -72,7 +74,18 @@ namespace XOutput.UI.Windows
 
         public void Log(string msg)
         {
-            Dispatcher.BeginInvoke((Action)(() => logBox.AppendText(msg + Environment.NewLine)));
+            Dispatcher.BeginInvoke((Action)(() =>
+            {
+                try
+                {
+                    logBox.AppendText(msg + Environment.NewLine);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error("Cannot log into the log box");
+                    logger.Error(ex);
+                }
+            }));
         }
 
         private void RefreshClick(object sender, RoutedEventArgs e)
@@ -90,6 +103,7 @@ namespace XOutput.UI.Windows
             {
                 viewModel.Finalizer();
                 viewModel.Dispose();
+                logger.Info("The application will exit.");
                 Environment.Exit(0);
             }
 
@@ -127,6 +141,7 @@ namespace XOutput.UI.Windows
                 restoreState = WindowState;
                 Visibility = Visibility.Hidden;
                 ShowInTaskbar = false;
+                logger.Info("The application is closed to tray.");
             }
         }
 
@@ -134,7 +149,7 @@ namespace XOutput.UI.Windows
         {
             viewModel.Finalizer();
             viewModel.Dispose();
-            await logger.Info("The application has exited.");
+            await logger.Info("The application will exit.");
         }
 
         private void CheckBoxChecked(object sender, RoutedEventArgs e)

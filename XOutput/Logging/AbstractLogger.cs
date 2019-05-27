@@ -85,6 +85,11 @@ namespace XOutput.Logging
             return LogCheck(LogLevel.Warning, GetCallerMethodName(), log);
         }
 
+        public Task Warning(Exception ex)
+        {
+            return LogCheck(LogLevel.Warning, GetCallerMethodName(), ex.ToString());
+        }
+
         public Task Error(string log)
         {
             return LogCheck(LogLevel.Error, GetCallerMethodName(), log);
