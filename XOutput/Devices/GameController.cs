@@ -102,7 +102,7 @@ namespace XOutput.Devices
             Stop();
             inputDevice.Dispose();
             xInput.Dispose();
-            xOutputInterface.Dispose();
+            xOutputInterface?.Dispose();
         }
 
         /// <summary>
