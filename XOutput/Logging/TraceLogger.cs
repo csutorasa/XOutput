@@ -29,9 +29,11 @@ namespace XOutput.Logging
             System.Diagnostics.Trace.Listeners.Add(new TextWriterTraceListener(LogFile));
         }
 
+        public Task currentTask;
+
         public TraceLogger(Type loggerType, int level) : base(loggerType, level)
         {
-
+            currentTask = Task.Run(() => { });
         }
 
         /// <summary>
@@ -44,7 +46,12 @@ namespace XOutput.Logging
         /// <returns></returns>
         protected override Task Log(LogLevel loglevel, string methodName, string log)
         {
-            return Task.Run(() => System.Diagnostics.Trace.WriteLine(CreatePrefix(DateTime.Now, loglevel, LoggerType.Name, methodName) + log));
+            return currentTask.ContinueWith((t) => Task.Run(() => DoLog(loglevel, methodName, log)));
+        }
+
+        private void DoLog(LogLevel loglevel, string methodName, string log)
+        {
+            System.Diagnostics.Trace.WriteLine(CreatePrefix(DateTime.Now, loglevel, LoggerType.FullName, methodName) + log);
         }
     }
 }

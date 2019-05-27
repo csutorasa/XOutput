@@ -57,6 +57,12 @@ namespace XOutput.Logging
         /// <returns></returns>
         Task Warning(Func<string> log);
         /// <summary>
+        /// Writes a warning log.
+        /// </summary>
+        /// <param name="ex">exception</param>
+        /// <returns></returns>
+        Task Warning(Exception ex);
+        /// <summary>
         /// Writes a error log.
         /// </summary>
         /// <param name="log">log message</param>

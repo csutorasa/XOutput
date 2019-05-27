@@ -113,6 +113,7 @@ namespace XOutput.UI.Windows
                 }
                 catch (Exception ex)
                 {
+                    logger.Error(ex);
                     MessageBox.Show(ex.ToString());
                 }
             }
@@ -147,11 +148,13 @@ namespace XOutput.UI.Windows
             Model.Settings = settings;
             RefreshGameControllers();
 
+            logger.Debug("Creating keyboard controller");
             var keyboardGameController = new GameController(new Devices.Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard"));
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, Model.IsAdmin, log));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
+            logger.Info("Keyboard controller is connected");
 
             HandleArgs();
         }
@@ -175,6 +178,7 @@ namespace XOutput.UI.Windows
             catch (Exception ex)
             {
                 logger.Warning("Saving settings was unsuccessful.");
+                logger.Warning(ex);
                 string error = string.Format(Translate("SaveSettingsError"), SettingsFilePath) + Environment.NewLine + ex.Message;
                 log(error);
                 MessageBox.Show(error, Translate("Warning"));
@@ -255,6 +259,7 @@ namespace XOutput.UI.Windows
         {
             logger.Debug("Starting " + GameControllersSettings);
             Process.Start(GameControllersSettings);
+            logger.Debug("Started " + GameControllersSettings);
         }
 
         public void OpenSettings()
