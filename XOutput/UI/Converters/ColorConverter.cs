@@ -14,7 +14,8 @@ using XOutput.Devices.XInput;
 namespace XOutput.UI.Converters
 {
     /// <summary>
-    /// Translates a text.
+    /// Calculates the color of the elements.
+    /// Cannot be used backwards.
     /// </summary>
     public class ColorConverter : IMultiValueConverter
     {
@@ -73,11 +74,11 @@ namespace XOutput.UI.Converters
         }
 
         /// <summary>
-        /// Translates a text.
+        /// Calculates the color of the elements.
         /// </summary>
-        /// <param name="values">Ignored</param>
+        /// <param name="values">XInput type and highlight value</param>
         /// <param name="targetType">Ignored</param>
-        /// <param name="parameter">Text key</param>
+        /// <param name="parameter">XInput type to compare and back/label values</param>
         /// <param name="culture">Ignored</param>
         /// <returns></returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

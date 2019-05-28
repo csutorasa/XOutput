@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using XOutput.Devices;
 using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.XInput;
+using XOutput.Tools;
 using XOutput.UI.Component;
 
 namespace XOutput.UI.Windows
@@ -18,9 +19,14 @@ namespace XOutput.UI.Windows
         private readonly DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private int state = 0;
 
-        public ControllerSettingsViewModel(ControllerSettingsModel model, GameController controller) : base(model)
+        public ControllerSettingsViewModel(ControllerSettingsModel model, GameController controller, bool isAdmin) : base(model)
         {
             this.controller = controller;
+            Model.IsAdmin = isAdmin && controller.InputDevice.HardwareID != null;
+            if (Model.IsAdmin)
+            {
+                Model.HidGuardianAdded = HidGuardianManager.Instance.IsAffected(controller.InputDevice.HardwareID);
+            }
             Model.Title = controller.DisplayName;
             if (controller.InputDevice.DPads.Any())
             {
@@ -87,6 +93,24 @@ namespace XOutput.UI.Windows
         public void SetStartWhenConnected()
         {
             controller.Mapper.StartWhenConnected = Model.StartWhenConnected;
+        }
+
+        public void AddHidGuardian()
+        {
+            HidGuardianManager.Instance.AddAffectedDevice(controller.InputDevice.HardwareID);
+            if (Model.IsAdmin)
+            {
+                Model.HidGuardianAdded = HidGuardianManager.Instance.IsAffected(controller.InputDevice.HardwareID);
+            }
+        }
+
+        public void RemoveHidGuardian()
+        {
+            HidGuardianManager.Instance.RemoveAffectedDevice(controller.InputDevice.HardwareID);
+            if (Model.IsAdmin)
+            {
+                Model.HidGuardianAdded = HidGuardianManager.Instance.IsAffected(controller.InputDevice.HardwareID);
+            }
         }
 
         private void DispatcherTimerTick(object sender, EventArgs e)
@@ -174,8 +198,7 @@ namespace XOutput.UI.Windows
             {
                 Model.XInputButtonViews.Add(new ButtonView(new ButtonViewModel(new ButtonModel(), buttonInput)));
             }
-            foreach (var dPadIndex in Model.Dpads)
-                Model.XInputDPadViews.Add(new DPadView(new DPadViewModel(new DPadModel(), dPadIndex - 1, false)));
+            Model.XInputDPadViews.Add(new DPadView(new DPadViewModel(new DPadModel(), 0, false)));
             Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), XInputTypes.LX, XInputTypes.LY)));
             Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), XInputTypes.RX, XInputTypes.RY)));
             Model.XInputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), XInputTypes.L2)));

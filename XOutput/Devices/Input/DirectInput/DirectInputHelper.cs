@@ -6,11 +6,23 @@ using System.Threading.Tasks;
 
 namespace XOutput.Devices.Input.DirectInput
 {
+    /// <summary>
+    /// <see cref="IInputHelper{T}"/> for <see cref="DirectInputTypes"/>.
+    /// </summary>
     public class DirectInputHelper : AbstractInputHelper<DirectInputTypes>
     {
-        public static readonly DirectInputHelper instance = new DirectInputHelper();
+        protected static readonly DirectInputHelper instance = new DirectInputHelper();
+        /// <summary>
+        /// Gets the singleton instance of the class.
+        /// </summary>
         public static DirectInputHelper Instance => instance;
 
+        /// <summary>
+        /// Gets if the value is axis type.
+        /// <para>Implements <see cref="IInputHelper{T}.IsAxis(T)"/> enum value</para>
+        /// </summary>
+        /// <param name="type"><see cref="DirectInputTypes"/> enum value</param>
+        /// <returns></returns>
         public override bool IsAxis(DirectInputTypes type)
         {
             switch (type)
@@ -45,6 +57,12 @@ namespace XOutput.Devices.Input.DirectInput
             }
         }
 
+        /// <summary>
+        /// Gets if the value is button type.
+        /// <para>Implements <see cref="IInputHelper{T}.IsButton(T)"/> enum value</para>
+        /// </summary>
+        /// <param name="type"><see cref="DirectInputTypes"/> enum value</param>
+        /// <returns></returns>
         public override bool IsButton(DirectInputTypes type)
         {
             switch (type)
@@ -183,11 +201,23 @@ namespace XOutput.Devices.Input.DirectInput
             }
         }
 
+        /// <summary>
+        /// Returns false always, no DPad value is available in <see cref="DirectInputTypes"/>.
+        /// <para>Implements <see cref="IInputHelper{T}.IsDPad(T)"/> enum value</para>
+        /// </summary>
+        /// <param name="type"><see cref="DirectInputTypes"/> enum value</param>
+        /// <returns></returns>
         public override bool IsDPad(DirectInputTypes type)
         {
             return false;
         }
 
+        /// <summary>
+        /// Gets if the value is slider type.
+        /// <para>Implements <see cref="IInputHelper{T}.IsSlider(T)"/> enum value</para>
+        /// </summary>
+        /// <param name="type"><see cref="DirectInputTypes"/> enum value</param>
+        /// <returns></returns>
         public override bool IsSlider(DirectInputTypes type)
         {
             switch (type)

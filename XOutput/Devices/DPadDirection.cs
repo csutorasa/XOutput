@@ -19,10 +19,13 @@ namespace XOutput.Devices
         Right = 1 << 3
     }
 
+    /// <summary>
+    /// Helper for <see cref="DPadDirection"/>.
+    /// </summary>
     public static class DPadHelper
     {
         /// <summary>
-        /// Gets all <code>DPadDirection</code> values.
+        /// Gets all <see cref="DPadDirection"/> values.
         /// </summary>
         public static DPadDirection[] Values => values;
 

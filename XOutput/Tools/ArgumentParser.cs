@@ -7,16 +7,28 @@ using XOutput.Logging;
 
 namespace XOutput.Tools
 {
+    /// <summary>
+    /// Parses command line arguments.
+    /// </summary>
     public class ArgumentParser
     {
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(ArgumentParser));
 
         private static ArgumentParser instance = new ArgumentParser();
+        /// <summary>
+        /// Gets the singleton instance of the class.
+        /// </summary>
         public static ArgumentParser Instance => instance;
 
         private readonly IEnumerable<string> startControllers;
+        /// <summary>
+        /// Gets the controller names to start additionally.
+        /// </summary>
         public IEnumerable<string> StartControllers => startControllers;
         private readonly bool minimized;
+        /// <summary>
+        /// Gets if the application should start in silent mode.
+        /// </summary>
         public bool Minimized => minimized;
 
         protected ArgumentParser()

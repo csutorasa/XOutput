@@ -19,28 +19,32 @@ namespace XOutput.Devices
     public sealed class GameController : IDisposable
     {
         /// <summary>
-        /// Gets the input device
+        /// Gets the input device.
         /// </summary>
         public IInputDevice InputDevice => inputDevice;
         /// <summary>
-        /// Gets the output device
+        /// Gets the output device.
         /// </summary>
         public XOutputDevice XInput => xInput;
         /// <summary>
-        /// Gets the mapping of the input device
+        /// Gets the mapping of the input device.
         /// </summary>
         public InputMapperBase Mapper => mapper;
         /// <summary>
-        /// Gets the name of the input device
+        /// Gets the name of the input device.
         /// </summary>
         public string DisplayName => inputDevice.DisplayName;
         /// <summary>
-        /// Gets the number of the controller
+        /// Gets the number of the controller.
         /// </summary>
         public int ControllerCount => controllerCount;
-
+        /// <summary>
+        /// Gets if any XInput emulation is installed.
+        /// </summary>
         public bool HasXOutputInstalled => xOutputInterface != null;
-
+        /// <summary>
+        /// Gets if force feedback is supported.
+        /// </summary>
         public bool ForceFeedbackSupported => xOutputInterface is VigemDevice && inputDevice.ForceFeedbackCount > 0;
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(GameController));
@@ -98,7 +102,7 @@ namespace XOutput.Devices
             Stop();
             inputDevice.Dispose();
             xInput.Dispose();
-            xOutputInterface.Dispose();
+            xOutputInterface?.Dispose();
         }
 
         /// <summary>

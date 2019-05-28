@@ -26,7 +26,12 @@ namespace XOutput.UI.Converters
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value as bool? == true ? Visibility.Visible : Visibility.Collapsed;
+            bool x = value as bool? == true;
+            if ((parameter as bool?) == true)
+            {
+                x = !x;
+            }
+            return x ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

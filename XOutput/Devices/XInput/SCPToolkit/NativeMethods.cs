@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace XOutput.Devices.XInput.SCPToolkit
 {
+    /// <summary>
+    /// Native methods to call when using SCP Toolkit.
+    /// </summary>
     static class NativeMethods
     {
         public enum MessageType

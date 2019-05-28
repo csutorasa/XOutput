@@ -12,7 +12,7 @@ namespace XOutput.Devices.Input
     public interface IInputDevice : IDevice, IDisposable
     {
         /// <summary>
-        /// This event is invoked if the device is disconnected
+        /// This event is invoked if the device is disconnected.
         /// </summary>
         event DeviceDisconnectedHandler Disconnected;
         /// <summary>
@@ -22,8 +22,11 @@ namespace XOutput.Devices.Input
         /// <summary>
         /// Gets if the device is connected.
         /// </summary>
-        /// <returns></returns>
         bool Connected { get; }
+        /// <summary>
+        /// Gets the hardware ID of the device.
+        /// </summary>
+        string HardwareID { get; }
         /// <summary>
         /// Gets the number of force feedback motors.
         /// </summary>

@@ -9,10 +9,21 @@ using XOutput.Diagnostics;
 
 namespace XOutput.Devices.XInput
 {
+    /// <summary>
+    /// Tests the XInput emulation devices.
+    /// </summary>
     public class XInputDiagnostics : IDiagnostics
     {
+        /// <summary>
+        /// Returns null as no object can be associated with this test.
+        /// <para>Implements <see cref="IDiagnostics.Source"/></para>
+        /// </summary>
         public object Source => null;
 
+        /// <summary>
+        /// <para>Implements <see cref="IDiagnostics.GetResults()"/></para>
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<DiagnosticsResult> GetResults()
         {
             return new DiagnosticsResult[]

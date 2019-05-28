@@ -32,7 +32,7 @@ namespace XOutput.UI.Converters
             }
             else
             {
-                if(b == true)
+                if (b == true)
                 {
                     return new SolidColorBrush(Color.FromRgb(100, 255, 100));
                 }
