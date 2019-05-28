@@ -13,15 +13,16 @@ namespace XOutput.UI.Converters
 {
     /// <summary>
     /// Translates a text.
+    /// Cannot be used backwards.
     /// </summary>
     public class DynamicLanguageConverter : IMultiValueConverter
     {
         /// <summary>
         /// Translates a text.
         /// </summary>
-        /// <param name="values">Ignored</param>
+        /// <param name="values">translation values and text to translate</param>
         /// <param name="targetType">Ignored</param>
-        /// <param name="parameter">Text key</param>
+        /// <param name="parameter">Ignored</param>
         /// <param name="culture">Ignored</param>
         /// <returns></returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

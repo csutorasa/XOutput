@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using XOutput.Devices;
 using XOutput.Devices.Input;
+using XOutput.Tools;
 
 namespace XOutput.UI.Windows
 {
@@ -85,6 +86,16 @@ namespace XOutput.UI.Windows
         private void CheckBoxChecked(object sender, RoutedEventArgs e)
         {
             viewModel.SetStartWhenConnected();
+        }
+
+        private void AddHidGuardianButtonClick(object sender, RoutedEventArgs e)
+        {
+            viewModel.AddHidGuardian();
+        }
+
+        private void RemoveHidGuardianButtonClick(object sender, RoutedEventArgs e)
+        {
+            viewModel.RemoveHidGuardian();
         }
     }
 }

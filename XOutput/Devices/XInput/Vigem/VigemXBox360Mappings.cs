@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace XOutput.Devices.XInput.Vigem
 {
+    /// <summary>
+    /// Mapping value helper for Vigem buttons
+    /// </summary>
     public class VigemXbox360ButtonMapping
     {
         public Xbox360Buttons Type { get; set; }
@@ -22,6 +25,9 @@ namespace XOutput.Devices.XInput.Vigem
         }
     }
 
+    /// <summary>
+    /// Mapping value helper for Vigem axes
+    /// </summary>
     public class VigemXbox360AxisMapping
     {
         public Xbox360Axes Type { get; set; }

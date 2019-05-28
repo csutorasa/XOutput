@@ -24,20 +24,20 @@ namespace XOutput.UI.Windows
 {
     public class MainWindowViewModel : ViewModelBase<MainWindowModel>, IDisposable
     {
+        private readonly int pid = Process.GetCurrentProcess().Id;
         private const string SettingsFilePath = "settings.txt";
         private const string GameControllersSettings = "joy.cpl";
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindowViewModel));
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly DirectInputDevices directInputDevices = new DirectInputDevices();
-        private readonly Action<string> log;
+        private Action<string> log;
         private readonly Dispatcher dispatcher;
         private Settings settings;
         private bool installed;
 
-        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher, Action<string> logger) : base(model)
+        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher) : base(model)
         {
-            log = logger;
             this.dispatcher = dispatcher;
             timer.Interval = TimeSpan.FromMilliseconds(10000);
             timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
@@ -79,8 +79,9 @@ namespace XOutput.UI.Windows
             return settings;
         }
 
-        public void Initialize()
+        public void Initialize(Action<string> log)
         {
+            this.log = log;
             LanguageManager languageManager = LanguageManager.Instance;
             try
             {
@@ -94,6 +95,27 @@ namespace XOutput.UI.Windows
                 string error = string.Format(Translate("LoadSettingsError"), SettingsFilePath) + Environment.NewLine + ex.Message;
                 log(error);
                 MessageBox.Show(error, Translate("Warning"));
+            }
+            if (settings.HidGuardianEnabled)
+            {
+                try
+                {
+                    HidGuardianManager.Instance.ResetPid(pid);
+                    Model.IsAdmin = true;
+                    logger.Info("HidGuardian registry is set");
+                    log(string.Format(Translate("HidGuardianEnabledSuccessfully"), pid.ToString()));
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Model.IsAdmin = false;
+                    logger.Warning("Not running in elevated mode.");
+                    log(Translate("HidGuardianNotAdmin"));
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex);
+                    MessageBox.Show(ex.ToString());
+                }
             }
             bool vigem = VigemDevice.IsAvailable();
             bool scp = ScpDevice.IsAvailable();
@@ -123,13 +145,16 @@ namespace XOutput.UI.Windows
                     MessageBox.Show(error, Translate("Error"));
                 }
             }
+            Model.Settings = settings;
             RefreshGameControllers();
 
+            logger.Debug("Creating keyboard controller");
             var keyboardGameController = new GameController(new Devices.Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard"));
-            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, log));
+            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, Model.IsAdmin, log));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
+            logger.Info("Keyboard controller is connected");
 
             HandleArgs();
         }
@@ -153,6 +178,7 @@ namespace XOutput.UI.Windows
             catch (Exception ex)
             {
                 logger.Warning("Saving settings was unsuccessful.");
+                logger.Warning(ex);
                 string error = string.Format(Translate("SaveSettingsError"), SettingsFilePath) + Environment.NewLine + ex.Message;
                 log(error);
                 MessageBox.Show(error, Translate("Warning"));
@@ -213,7 +239,7 @@ namespace XOutput.UI.Windows
                         continue;
                     InputMapperBase mapper = settings.GetMapper(device.ToString());
                     GameController controller = new GameController(device, mapper);
-                    var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, log));
+                    var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, Model.IsAdmin, log));
                     controllerView.ViewModel.Model.CanStart = installed;
                     Model.Controllers.Add(controllerView);
                     device.Disconnected -= DispatchRefreshGameControllers;
@@ -233,6 +259,7 @@ namespace XOutput.UI.Windows
         {
             logger.Debug("Starting " + GameControllersSettings);
             Process.Start(GameControllersSettings);
+            logger.Debug("Started " + GameControllersSettings);
         }
 
         public void OpenSettings()
@@ -268,7 +295,7 @@ namespace XOutput.UI.Windows
 
         private void HandleArgs()
         {
-            foreach (var viewModel in Model.Controllers.Select(v => v.ViewModel))
+            foreach (var viewModel in Model.Controllers.Select(v => v.ViewModel).OrderBy(v => v.Model.Controller.DisplayName).ToArray())
             {
                 var displayName = viewModel.Model.DisplayName;
                 foreach (var startupController in ArgumentParser.Instance.StartControllers)

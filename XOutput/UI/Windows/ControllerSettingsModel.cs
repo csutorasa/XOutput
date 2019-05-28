@@ -117,5 +117,33 @@ namespace XOutput.UI.Windows
                 }
             }
         }
+
+        private bool isAdmin;
+        public bool IsAdmin
+        {
+            get => isAdmin;
+            set
+            {
+                if (isAdmin != value)
+                {
+                    isAdmin = value;
+                    OnPropertyChanged(nameof(IsAdmin));
+                }
+            }
+        }
+
+        private bool hidGuardianAdded;
+        public bool HidGuardianAdded
+        {
+            get => hidGuardianAdded;
+            set
+            {
+                if (hidGuardianAdded != value)
+                {
+                    hidGuardianAdded = value;
+                    OnPropertyChanged(nameof(HidGuardianAdded));
+                }
+            }
+        }
     }
 }

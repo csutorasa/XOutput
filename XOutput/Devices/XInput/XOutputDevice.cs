@@ -13,17 +13,40 @@ namespace XOutput.Devices.XInput
     /// </summary>
     public sealed class XOutputDevice : IDevice
     {
+        #region Constants
+        /// <summary>
+        /// XInput devices has 1 DPad.
+        /// </summary>
         public const int DPadCount = 1;
+        #endregion
 
+        #region Events
         /// <summary>
         /// This event is invoked if the data from the device was updated
+        /// <para>Implements <see cref="IDevice.InputChanged"/></para>
         /// </summary>
         public event DeviceInputChangedHandler InputChanged;
+        #endregion
 
+        #region Properties
+        /// <summary>
+        /// <para>Implements <see cref="IDevice.DPads"/></para>
+        /// </summary>
         public IEnumerable<DPadDirection> DPads => dPads;
+        /// <summary>
+        /// <para>Implements <see cref="IDevice.Buttons"/></para>
+        /// </summary>
         public IEnumerable<Enum> Buttons => XInputHelper.Instance.Buttons.OfType<Enum>();
+        /// <summary>
+        /// <para>Implements <see cref="IDevice.Axes"/></para>
+        /// </summary>
         public IEnumerable<Enum> Axes => XInputHelper.Instance.Axes.OfType<Enum>();
+        /// <summary>
+        /// XInput devices have no sliders.
+        /// <para>Implements <see cref="IDevice.Sliders"/></para>
+        /// </summary>
         public IEnumerable<Enum> Sliders => new Enum[0];
+        #endregion
 
         private readonly Dictionary<XInputTypes, double> values = new Dictionary<XInputTypes, double>();
         private readonly IInputDevice source;
@@ -56,6 +79,7 @@ namespace XOutput.Devices.XInput
 
         /// <summary>
         /// Gets the current state of the inputTpye.
+        /// <para>Implements <see cref="IDevice.Get(Enum)"/></para>
         /// </summary>
         /// <param name="inputType">Type of input</param>
         /// <returns>Value</returns>
@@ -74,9 +98,9 @@ namespace XOutput.Devices.XInput
         }
 
         /// <summary>
-        /// Refreshes the current state.
+        /// Refreshes the current state. Triggers <see cref="InputChanged"/> event.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>if the input was available</returns>
         public bool RefreshInput()
         {
             foreach (var type in XInputHelper.Instance.Values)
@@ -119,11 +143,22 @@ namespace XOutput.Devices.XInput
             return newValues;
         }
 
+        /// <summary>
+        /// Gets boolean output.
+        /// </summary>
+        /// <param name="inputType">Type of input</param>
+        /// <returns>boolean value</returns>
         public bool GetBool(XInputTypes inputType)
         {
             return Get(inputType) > 0.5;
         }
 
+        /// <summary>
+        /// Gets the current state of the inputTpye.
+        /// <para>Implements <see cref="IDevice.Get(Enum)"/></para>
+        /// </summary>
+        /// <param name="inputType">Type of input</param>
+        /// <returns>Value</returns>
         public double Get(Enum inputType)
         {
             if (inputType is XInputTypes)

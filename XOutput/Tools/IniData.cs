@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace XOutput.Tools
 {
+    /// <summary>
+    /// Reads ini-line data.
+    /// </summary>
     public class IniData
     {
         private static readonly Dictionary<string, string> escapes = new Dictionary<string, string>(){
@@ -22,34 +25,58 @@ namespace XOutput.Tools
         };
 
         private readonly Dictionary<string, Dictionary<string, string>> content = new Dictionary<string, Dictionary<string, string>>();
-
-        public Dictionary<string, Dictionary<string, string>> Content { get { return content; } }
+        /// <summary>
+        /// Gets the content of the file.
+        /// </summary>
+        public Dictionary<string, Dictionary<string, string>> Content => content;
 
         public IniData()
         {
 
         }
 
+        /// <summary>
+        /// Adds a new section. <c>[Section]</c>
+        /// </summary>
+        /// <param name="sectionName">name of the section</param>
         public void AddSection(string sectionName)
         {
             content.Add(sectionName, new Dictionary<string, string>());
         }
 
+        /// <summary>
+        /// Adds a new section with predefined data. <c>[Section]</c>
+        /// </summary>
+        /// <param name="sectionName">name of the section</param>
+        /// <param name="data">predefined data</param>
         public void AddSection(string sectionName, Dictionary<string, string> data)
         {
             content.Add(sectionName, data);
         }
 
+        /// <summary>
+        /// Gets the content of a section.
+        /// </summary>
+        /// <param name="sectionName">name of the section</param>
+        /// <returns></returns>
         public Dictionary<string, string> GetSection(string sectionName)
         {
             return content[sectionName];
         }
 
+        /// <summary>
+        /// Gets the content in string format.
+        /// </summary>
+        /// <returns></returns>
         public string Serialize()
         {
             return string.Join(Environment.NewLine, content.Select(section => string.Join(Environment.NewLine, new string[] { $"[{section.Key}]" }.Concat(section.Value.Select(valuePair => $"{EscapeText(valuePair.Key)}={EscapeText(valuePair.Value)}")).ToArray())));
         }
 
+        /// <summary>
+        /// Writes the content into the steam.
+        /// </summary>
+        /// <param name="sw">stream to write</param>
         public void Serialize(StreamWriter sw)
         {
             foreach (var section in content)
@@ -76,6 +103,11 @@ namespace XOutput.Tools
             return newText;
         }
 
+        /// <summary>
+        /// Parses the text.
+        /// </summary>
+        /// <param name="text">ini-like content</param>
+        /// <returns></returns>
         public static IniData Deserialize(string text)
         {
             using (var reader = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(text))))
@@ -84,6 +116,11 @@ namespace XOutput.Tools
             }
         }
 
+        /// <summary>
+        /// Parses the text.
+        /// </summary>
+        /// <param name="sr">stream to read</param>
+        /// <returns></returns>
         public static IniData Deserialize(StreamReader sr)
         {
             var ini = new IniData();

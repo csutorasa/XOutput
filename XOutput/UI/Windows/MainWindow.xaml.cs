@@ -32,28 +32,31 @@ namespace XOutput.UI.Windows
         private bool hardExit = false;
         private WindowState restoreState = WindowState.Normal;
 
-        public MainWindow()
+        public MainWindow(MainWindowViewModel viewModel)
         {
 #if DEBUG == false
             Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => viewModel.UnhandledException(e.Exception);
 #endif
-            viewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher, Log);
+            this.viewModel = viewModel;
             DataContext = viewModel;
             if (ArgumentParser.Instance.Minimized)
             {
-                restoreState = WindowState;
-                WindowState = WindowState.Minimized;
+                Visibility = Visibility.Hidden;
+                ShowInTaskbar = false;
+                logger.Info("Starting XOutput in minimized to taskbar");
             }
+            else
+            {
+                ShowInTaskbar = true;
+                logger.Info("Starting XOutput in normal window");
+            }
+            new WindowInteropHelper(this).EnsureHandle();
             InitializeComponent();
         }
 
         private async void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            if (ArgumentParser.Instance.Minimized)
-            {
-                ShowInTaskbar = false;
-            }
-            viewModel.Initialize();
+            viewModel.Initialize(Log);
             await logger.Info("The application has started.");
             await GetData();
         }
@@ -71,7 +74,18 @@ namespace XOutput.UI.Windows
 
         public void Log(string msg)
         {
-            Dispatcher.BeginInvoke((Action)(() => logBox.AppendText(msg + Environment.NewLine)));
+            Dispatcher.BeginInvoke((Action)(() =>
+            {
+                try
+                {
+                    logBox.AppendText(msg + Environment.NewLine);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error("Cannot log into the log box");
+                    logger.Error(ex);
+                }
+            }));
         }
 
         private void RefreshClick(object sender, RoutedEventArgs e)
@@ -81,7 +95,18 @@ namespace XOutput.UI.Windows
         private void ExitClick(object sender, RoutedEventArgs e)
         {
             hardExit = true;
-            Close();
+            if (IsLoaded)
+            {
+                Close();
+            }
+            else
+            {
+                viewModel.Finalizer();
+                viewModel.Dispose();
+                logger.Info("The application will exit.");
+                Environment.Exit(0);
+            }
+
         }
         private void GameControllersClick(object sender, RoutedEventArgs e)
         {
@@ -114,8 +139,9 @@ namespace XOutput.UI.Windows
             {
                 e.Cancel = true;
                 restoreState = WindowState;
-                WindowState = WindowState.Minimized;
+                Visibility = Visibility.Hidden;
                 ShowInTaskbar = false;
+                logger.Info("The application is closed to tray.");
             }
         }
 
@@ -123,7 +149,7 @@ namespace XOutput.UI.Windows
         {
             viewModel.Finalizer();
             viewModel.Dispose();
-            await logger.Info("The application has exited.");
+            await logger.Info("The application will exit.");
         }
 
         private void CheckBoxChecked(object sender, RoutedEventArgs e)
@@ -136,12 +162,20 @@ namespace XOutput.UI.Windows
             if (WindowState == WindowState.Minimized)
             {
                 WindowState = restoreState;
-                Activate();
-                Topmost = true;
-                Topmost = false;
-                Focus();
-                ShowInTaskbar = true;
             }
+            else if (Visibility == Visibility.Hidden)
+            {
+                if (!IsLoaded)
+                {
+                    Show();
+                }
+                ShowInTaskbar = true;
+                Visibility = Visibility.Visible;
+            }
+            Activate();
+            Topmost = true;
+            Topmost = false;
+            Focus();
         }
     }
 }

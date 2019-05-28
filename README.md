@@ -1,3 +1,8 @@
+[![Build](https://ci.appveyor.com/api/projects/status/github/csutorasa/XOutput?branch=master&svg=true)](https://ci.appveyor.com/project/csutorasa/xoutput/)
+[![Github All Releases](https://img.shields.io/github/downloads/csutorasa/XOutput/total.svg)]()
+[![Download XOutput](https://img.shields.io/sourceforge/dt/xoutput.svg)](https://sourceforge.net/projects/xoutput/files/latest/download)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/csutorasa)
+
 # XOutput
 
 If you have an older or not supported game controller (gamepad, wheel, joystick, etc.), but XBox 360 controllers are supported you can use this software and enjoy gaming with your controller.
@@ -8,12 +13,18 @@ XOutput is a software that can convert DirectInput into XInput. DirectInput data
 
 Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, legacy)
 
-  a) Install [VIGEm framework](https://github.com/nefarius/ViGEm/wiki/Driver-Installation) (Recommended)
+  a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases) (Recommended)
   b) Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
 
 Download the application:
 
 * Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
+* Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts)
+* Unzip to any directory
+
+Install all the drivers for your controllers.
+
+If you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
 ## How to use
 
@@ -33,6 +44,32 @@ On the configuration screen there are 3 blocks. The left block shows the input, 
 
 You can check if it is working in the Windows settings, or just select 'File->Game controllers', that opens the Windows calibration for you. An Xbox gamepad should have appeared in the list.
 
+## HidGuardian (exclusive mode)
+
+* Install [HidGuardian](https://forums.vigem.org/topic/271/hidguardian-v1-driver-installation).
+
+Add affected device manually:
+
+1. Run `regedit` and go to `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters`
+2. Create `multi-string` value with the name `AffectedDevices`
+3. Open Device Manager, find your input device and open properties
+4. Go to details, select `Hardware ID` and copy string that looks like `HID\VID_046D&PID_C219&REV_0200` and `HID\VID_046D&PID_C219`
+5. Paste the values into `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters`
+6. Reconnect devices
+
+Manage process whitelist manually:
+
+1. Start XOutput (or any other application)
+2. Open Task Manager, find your application, then go to details.
+3. Remember the value of the PID column.
+4. Run `regedit` and go to `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters\Whitelist`
+5. Create subkey with the PID you found before.
+
+## Command line arguments
+
+* `--start="controller-displayname"` - defines a part of the display name of the controller to be started on application startup.
+* `--minimized` - starts the application minimized to tray
+
 ### Deadzone
 
 If your analogue stick isn't in perfect condition, you may have what is called a deadzone, which means that a part of the axis isn't working right, usually it's the center part, syndromes of this are: wrong center position and unwanted movement of the camera, character, etc. To solve apply a bit of deadzone in the mapping settings, how much depends on the device in question.
@@ -46,12 +83,3 @@ XOutput has a diagnostics screen. A few tests are run to check if the applicatio
 | green circle with a tick                 | Everything is optimal.                                                                                  |
 | yellow triangle with an exclamation mark | The experience may be sub-optimal. Some functions may not work, but the application is functional.  |
 | red circle with a minus sign             | Something is not working, the application cannot function properly. Some core features may be unusable. |
-
-## Command line arguments
-
-- `--start="controller-displayname"` - defines a part of the display name of the controller to be started on application startup.
-- `--minimized` - starts the application minimized to tray
-
-## Developer release [![Build](https://ci.appveyor.com/api/projects/status/github/csutorasa/XOutput?branch=master&svg=true)](https://ci.appveyor.com/project/csutorasa/xoutput/)
-
-If you want to test the latest, often unstable, features before the stable releases, you can check the [AppVeyor](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts) builds.

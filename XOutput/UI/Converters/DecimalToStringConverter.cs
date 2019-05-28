@@ -13,16 +13,17 @@ using XOutput.Devices.XInput;
 namespace XOutput.UI.Converters
 {
     /// <summary>
-    /// Translates a text.
+    /// Converts decimals to round integer string.
+    /// Cannot be used backwards.
     /// </summary>
     public class DecimalToStringConverter : IValueConverter
     {
         /// <summary>
-        /// Translates a text.
+        /// Converts decimals to round integer string.
         /// </summary>
-        /// <param name="value">double value</param>
+        /// <param name="value">decimal value</param>
         /// <param name="targetType">Ignored</param>
-        /// <param name="parameter">Text key</param>
+        /// <param name="parameter">Ignored</param>
         /// <param name="culture">Ignored</param>
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

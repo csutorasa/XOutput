@@ -6,9 +6,18 @@ using System.Threading.Tasks;
 
 namespace XOutput.Devices
 {
+    /// <summary>
+    /// Holds a current state of the device.
+    /// </summary>
     public class DeviceState
     {
+        /// <summary>
+        /// Gets the current values.
+        /// </summary>
         public Dictionary<Enum, double> Values => values;
+        /// <summary>
+        /// Gets the current DPad values.
+        /// </summary>
         public IEnumerable<DPadDirection> DPads => dPads;
         protected Dictionary<Enum, double> values = new Dictionary<Enum, double>();
         protected DPadDirection[] dPads;
@@ -22,6 +31,11 @@ namespace XOutput.Devices
             dPads = new DPadDirection[dPadCount];
         }
 
+        /// <summary>
+        /// Sets new DPad values.
+        /// </summary>
+        /// <param name="newDPads">new values</param>
+        /// <returns>changed DPad indices</returns>
         public IEnumerable<int> SetDPads(IEnumerable<DPadDirection> newDPads)
         {
             if (newDPads.Count() != dPads.Length)
@@ -38,6 +52,11 @@ namespace XOutput.Devices
             return changed;
         }
 
+        /// <summary>
+        /// Sets new values.
+        /// </summary>
+        /// <param name="newValues">new values</param>
+        /// <returns>changed value types</returns>
         public IEnumerable<Enum> SetValues(Dictionary<Enum, double> newValues)
         {
             ICollection<Enum> changed = new HashSet<Enum>();

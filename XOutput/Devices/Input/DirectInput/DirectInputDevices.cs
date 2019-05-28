@@ -49,6 +49,11 @@ namespace XOutput.Devices.Input.DirectInput
             }
         }
 
+        /// <summary>
+        /// Creates a wrapper for the native <paramref name="deviceInstance"/>.
+        /// </summary>
+        /// <param name="deviceInstance">native instance</param>
+        /// <returns>Wrapped instance</returns>
         public DirectDevice CreateDirectDevice(DeviceInstance deviceInstance)
         {
             try

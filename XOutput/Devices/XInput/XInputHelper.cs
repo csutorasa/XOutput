@@ -7,13 +7,44 @@ using System.Threading.Tasks;
 namespace XOutput.Devices.XInput
 {
     /// <summary>
-    /// Key enum helper class.
+    /// <see cref="IInputHelper{T}"/> for <see cref="XInputTypes"/>.
     /// </summary>
     public class XInputHelper : AbstractInputHelper<XInputTypes>
     {
-        public static readonly XInputHelper instance = new XInputHelper();
+        protected static readonly XInputHelper instance = new XInputHelper();
+        /// <summary>
+        /// Gets the singleton instance of the class.
+        /// </summary>
         public static XInputHelper Instance => instance;
 
+        /// <summary>
+        /// Gets if the value is axis type.
+        /// <para>Implements <see cref="IInputHelper{T}.IsAxis(T)"/> enum value</para>
+        /// </summary>
+        /// <param name="type"><see cref="XInputTypes"/> enum value</param>
+        /// <returns></returns>
+        public override bool IsAxis(XInputTypes input)
+        {
+            switch (input)
+            {
+                case XInputTypes.LX:
+                case XInputTypes.LY:
+                case XInputTypes.RX:
+                case XInputTypes.RY:
+                case XInputTypes.L2:
+                case XInputTypes.R2:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets if the value is button type.
+        /// <para>Implements <see cref="IInputHelper{T}.IsButton(T)"/> enum value</para>
+        /// </summary>
+        /// <param name="type"><see cref="XInputTypes"/> enum value</param>
+        /// <returns></returns>
         public override bool IsButton(XInputTypes input)
         {
             switch (input)
@@ -35,22 +66,12 @@ namespace XOutput.Devices.XInput
             }
         }
 
-        public override bool IsAxis(XInputTypes input)
-        {
-            switch (input)
-            {
-                case XInputTypes.LX:
-                case XInputTypes.LY:
-                case XInputTypes.RX:
-                case XInputTypes.RY:
-                case XInputTypes.L2:
-                case XInputTypes.R2:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
+        /// <summary>
+        /// Gets if the value is DPad type.
+        /// <para>Implements <see cref="IInputHelper{T}.IsDPad(T)"/> enum value</para>
+        /// </summary>
+        /// <param name="type"><see cref="XInputTypes"/> enum value</param>
+        /// <returns></returns>
         public override bool IsDPad(XInputTypes input)
         {
             switch (input)
@@ -65,11 +86,22 @@ namespace XOutput.Devices.XInput
             }
         }
 
+        /// <summary>
+        /// Returns false. XInput devices has no sliders.
+        /// <para>Implements <see cref="IInputHelper{T}.IsSlider(T)"/> enum value</para>
+        /// </summary>
+        /// <param name="type"><see cref="XInputTypes"/> enum value</param>
+        /// <returns></returns>
         public override bool IsSlider(XInputTypes type)
         {
             return false;
         }
 
+        /// <summary>
+        /// Gets the value for disabled mapping.
+        /// </summary>
+        /// <param name="input"><see cref="XInputTypes"/> enum value</param>
+        /// <returns></returns>
         public double GetDisableValue(XInputTypes input)
         {
             switch (input)
@@ -85,6 +117,10 @@ namespace XOutput.Devices.XInput
         }
     }
 
+    /// <summary>
+    /// Extension helper class for <see cref="XInputTypes"/>.
+    /// It proxies all calls to <see cref="XInputHelper.Instance"/>.
+    /// </summary>
     public static class XInputExtension
     {
         public static bool IsAxis(this XInputTypes input)
