@@ -459,21 +459,6 @@ namespace XOutput.Devices.Input.DirectInput
 
         private DirectInputTypes? MapAxisByInstanceNumber(DeviceObjectInstance instance)
         {
-            if (joystick.Information.Type != DeviceType.Mouse)
-            {
-                JoystickOffset offset = (JoystickOffset)instance.Offset;
-                if (offset == JoystickOffset.Sliders0 ||
-                    offset == JoystickOffset.Sliders1 ||
-                    offset == JoystickOffset.VelocitySliders0 ||
-                    offset == JoystickOffset.VelocitySliders1 ||
-                    offset == JoystickOffset.AccelerationSliders0 ||
-                    offset == JoystickOffset.AccelerationSliders1 ||
-                    offset == JoystickOffset.ForceSliders0 ||
-                    offset == JoystickOffset.ForceSliders1)
-                {
-                    return null;
-                }
-            }
             return DirectInputHelper.Instance.Axes.ElementAtOrDefault(instance.ObjectId.InstanceNumber);
         }
 
