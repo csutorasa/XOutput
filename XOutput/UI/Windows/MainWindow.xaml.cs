@@ -82,7 +82,7 @@ namespace XOutput.UI.Windows
                 }
                 catch (Exception ex)
                 {
-                    logger.Error("Cannot log into the log box");
+                    logger.Error("Cannot log into the log box: " + msg + Environment.NewLine);
                     logger.Error(ex);
                 }
             }));
