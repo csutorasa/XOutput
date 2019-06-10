@@ -9,17 +9,10 @@
              d:DesignHeight="30" d:DesignWidth="150">
     <Grid Height="30">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label>
-            <Label.Content>
-                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
-                    <Binding Path="LanguageModel.Data" />
-                    <Binding Path="Model.Type" />
-                </MultiBinding>
-            </Label.Content>
-        </Label>
+        <Label Content="{Binding Model.Type}"/>
         <ProgressBar Grid.Column="1" Height="6" Value="{Binding Model.Value}" Maximum="{Binding Model.Max}"></ProgressBar>
     </Grid>
 </UserControl>

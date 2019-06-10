@@ -55,17 +55,7 @@ namespace XOutput.Devices.Input.Keyboard
         /// Returns all know keys to keyboard.
         /// <para>Implements <see cref="IDevice.Buttons"/></para>
         /// </summary>
-        public IEnumerable<Enum> Buttons => buttons;
-        /// <summary>
-        /// Keyboards have no axes.
-        /// <para>Implements <see cref="IDevice.Axes"/></para>
-        /// </summary>
-        public IEnumerable<Enum> Axes => new Enum[0];
-        /// <summary>
-        /// Keyboards have no sliders.
-        /// <para>Implements <see cref="IDevice.Sliders"/></para>
-        /// </summary>
-        public IEnumerable<Enum> Sliders => new Enum[0];
+        public IEnumerable<InputSource> Sources => sources;
         /// <summary>
         /// Keyboards have no force feedback motors.
         /// <para>Implements <see cref="IInputDevice.ForceFeedbackCount"/></para>
@@ -75,7 +65,7 @@ namespace XOutput.Devices.Input.Keyboard
         #endregion
 
         private Thread inputRefresher;
-        private readonly Enum[] buttons;
+        private readonly KeyboardSource[] sources;
         private readonly DeviceState state;
 
         /// <summary>
@@ -83,8 +73,8 @@ namespace XOutput.Devices.Input.Keyboard
         /// </summary>
         public Keyboard()
         {
-            buttons = KeyboardInputHelper.Instance.Buttons.Where(x => x != Key.None).OrderBy(x => x.ToString()).OfType<Enum>().ToArray();
-            state = new DeviceState(buttons, 0);
+            sources = Enum.GetValues(typeof(Key)).OfType<Key>().Where(x => x != Key.None).OrderBy(x => x.ToString()).Select(x => new KeyboardSource(x.ToString(), x)).ToArray();
+            state = new DeviceState(sources, 0);
             inputRefresher = new Thread(InputRefresher);
             inputRefresher.Name = "Keyboard input notification";
             inputRefresher.SetApartmentState(ApartmentState.STA);
@@ -107,15 +97,13 @@ namespace XOutput.Devices.Input.Keyboard
 
         /// <summary>
         /// Gets the current state of the inputTpye.
-        /// <para>Implements <see cref="IDevice.Get(Enum)"/></para>
+        /// <para>Implements <see cref="IDevice.Get(InputSource)"/></para>
         /// </summary>
-        /// <param name="inputType">Type of input</param>
+        /// <param name="inputType">Source of input</param>
         /// <returns>Value</returns>
-        public double Get(Enum inputType)
+        public double Get(InputSource inputType)
         {
-            if (!(inputType is Key))
-                throw new ArgumentException();
-            return System.Windows.Input.Keyboard.IsKeyDown((Key)inputType) ? 1 : 0;
+            return inputType.Value;
         }
 
         /// <summary>
@@ -148,14 +136,31 @@ namespace XOutput.Devices.Input.Keyboard
             {
                 while (true)
                 {
-                    var newValues = buttons.ToDictionary(t => t, t => Get(t));
-                    var changedValues = state.SetValues(newValues);
-                    if (changedValues.Any())
-                        InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changedValues, new int[0]));
+                    RefreshInput();
                     Thread.Sleep(ReadDelayMs);
                 }
             }
             catch (ThreadAbortException) { }
+        }
+
+        /// <summary>
+        /// Refreshes the current state. Triggers <see cref="InputChanged"/> event.
+        /// </summary>
+        /// <returns>if the input was available</returns>
+        public bool RefreshInput()
+        {
+            state.ResetChanges();
+            foreach (var source in sources)
+            {
+                if (source.Refresh())
+                {
+                    state.MarkChanged(source);
+                }
+            }
+            var changes = state.GetChanges();
+            if (changes.Any())
+                InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changes, new int[0]));
+            return true;
         }
     }
 }

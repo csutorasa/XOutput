@@ -71,17 +71,9 @@ namespace XOutput.Devices.Input.DirectInput
         /// </summary>
         public IEnumerable<DPadDirection> DPads => state.DPads;
         /// <summary>
-        /// <para>Implements <see cref="IDevice.Buttons"/></para>
+        /// <para>Implements <see cref="IDevice.Sources"/></para>
         /// </summary>
-        public IEnumerable<Enum> Buttons => buttons;
-        /// <summary>
-        /// <para>Implements <see cref="IDevice.Axes"/></para>
-        /// </summary>
-        public IEnumerable<Enum> Axes => axes;
-        /// <summary>
-        /// <para>Implements <see cref="IDevice.Sliders"/></para>
-        /// </summary>
-        public IEnumerable<Enum> Sliders => sliders;
+        public IEnumerable<InputSource> Sources => sources;
         /// <summary>
         /// <para>Implements <see cref="IInputDevice.ForceFeedbackCount"/></para>
         /// </summary>
@@ -114,10 +106,7 @@ namespace XOutput.Devices.Input.DirectInput
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(DirectDevice));
         private readonly DeviceInstance deviceInstance;
         private readonly Joystick joystick;
-        private readonly Enum[] buttons;
-        private readonly Enum[] axes;
-        private readonly Enum[] sliders;
-        private readonly Enum[] allTypes;
+        private readonly DirectInputSource[] sources;
         private readonly DeviceState state;
         private readonly EffectInfo force;
         private readonly Dictionary<DeviceObjectInstance, Effect> actuators;
@@ -134,9 +123,12 @@ namespace XOutput.Devices.Input.DirectInput
         {
             this.deviceInstance = deviceInstance;
             this.joystick = joystick;
-            buttons = DirectInputHelper.Instance.Buttons.Take(joystick.Capabilities.ButtonCount).OfType<Enum>().ToArray();
-            axes = GetAxes();
-            sliders = GetSliders();
+            var buttons = joystick.GetObjects(DeviceObjectTypeFlags.Button).Take(128).Select(b => new DirectInputSource(b.Name, InputSourceTypes.Button, state => state.Buttons[b.ObjectId.InstanceNumber] ? 1 : 0)).ToArray();
+            var axes = GetAxes().OrderBy(a => a.ObjectId.InstanceNumber).Take(24)
+                .Select(a => new DirectInputSource(a.Name, InputSourceTypes.Axis, state => (GetAxisValue(a.ObjectId.InstanceNumber)) / (double)ushort.MaxValue));
+            var sliders = GetSliders().OrderBy(a => a.ObjectId.InstanceNumber)
+                .Select((a, i) => new DirectInputSource(a.Name, InputSourceTypes.Slider, state => (GetSliderValue(i + 1)) / (double)ushort.MaxValue));
+            sources = buttons.Concat(axes).Concat(sliders).ToArray();
 
             joystick.Properties.AxisMode = DeviceAxisMode.Absolute;
             try
@@ -166,8 +158,7 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 logger.Info("  " + obj.Name + " " + obj.ObjectId + " offset: " + obj.Offset);
             }
-            allTypes = buttons.Concat(axes).Concat(sliders).ToArray();
-            state = new DeviceState(allTypes, joystick.Capabilities.PovCount);
+            state = new DeviceState(sources, joystick.Capabilities.PovCount);
             inputRefresher = new Thread(InputRefresher);
             inputRefresher.Name = ToString() + " input reader";
             inputRefresher.SetApartmentState(ApartmentState.STA);
@@ -223,24 +214,9 @@ namespace XOutput.Devices.Input.DirectInput
         /// </summary>
         /// <param name="inputType">Type of input</param>
         /// <returns>Value</returns>
-        public double Get(Enum inputType)
+        public double Get(InputSource inputType)
         {
-            if (!(inputType is DirectInputTypes))
-                throw new ArgumentException();
-            var type = (DirectInputTypes)inputType;
-            if (DirectInputHelper.Instance.IsAxis(type))
-            {
-                return (GetAxisValue(type - DirectInputTypes.Axis1 + 1)) / (double)ushort.MaxValue;
-            }
-            if (DirectInputHelper.Instance.IsButton(type))
-            {
-                return GetButtonValue(type - DirectInputTypes.Button1 + 1) ? 1d : 0d;
-            }
-            if (DirectInputHelper.Instance.IsSlider(type))
-            {
-                return GetSliderValue(type - DirectInputTypes.Slider1 + 1) / (double)ushort.MaxValue;
-            }
-            return 0;
+            return inputType.Value;
         }
 
         /// <summary>
@@ -298,20 +274,30 @@ namespace XOutput.Devices.Input.DirectInput
         /// <returns>if the input was available</returns>
         public bool RefreshInput()
         {
+            state.ResetChanges();
             if (!disposed)
             {
                 try
                 {
                     joystick.Poll();
-                    var newDPads = Enumerable.Range(0, state.DPads.Count()).Select(i => GetDPadValue(i));
-                    var newValues = allTypes.ToDictionary(t => t, t => Get(t));
-                    var changedDPads = state.SetDPads(newDPads);
-                    var changedValues = state.SetValues(newValues);
-                    if (changedDPads.Any() || changedValues.Any())
-                        InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changedValues, changedDPads));
+                    for (int i = 0; i < state.DPads.Count(); i++)
+                    {
+                        state.SetDPad(i, GetDPadValue(i));
+                    }
+                    foreach (var source in sources)
+                    {
+                        if (source.Refresh(GetCurrentState()))
+                        {
+                            state.MarkChanged(source);
+                        }
+                    }
+                    var changes = state.GetChanges();
+                    var dpadChanges = state.GetChangedDpads();
+                    if (changes.Any() || dpadChanges.Any())
+                        InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changes, dpadChanges));
                     return true;
                 }
-                catch
+                catch (Exception ex)
                 {
                     logger.Warning($"Poll failed for {ToString()}");
                     return false;
@@ -325,60 +311,60 @@ namespace XOutput.Devices.Input.DirectInput
         /// </summary>
         /// <param name="axis">Axis index</param>
         /// <returns>Value</returns>
-        private int GetAxisValue(int axis)
+        private int GetAxisValue(int instanceNumber)
         {
             var state = GetCurrentState();
-            if (axis < 1)
+            if (instanceNumber < 0)
                 throw new ArgumentException();
-            switch (axis)
+            switch (instanceNumber)
             {
-                case 1:
+                case 0:
                     return state.X;
-                case 2:
+                case 1:
                     return ushort.MaxValue - state.Y;
-                case 3:
+                case 2:
                     return state.Z;
-                case 4:
+                case 3:
                     return state.RotationX;
-                case 5:
+                case 4:
                     return ushort.MaxValue - state.RotationY;
-                case 6:
+                case 5:
                     return state.RotationZ;
-                case 7:
+                case 6:
                     return state.AccelerationX;
-                case 8:
+                case 7:
                     return ushort.MaxValue - state.AccelerationY;
-                case 9:
+                case 8:
                     return state.AccelerationZ;
-                case 10:
+                case 9:
                     return state.AngularAccelerationX;
-                case 11:
+                case 10:
                     return ushort.MaxValue - state.AngularAccelerationY;
-                case 12:
+                case 11:
                     return state.AngularAccelerationZ;
-                case 13:
+                case 12:
                     return state.ForceX;
-                case 14:
+                case 13:
                     return ushort.MaxValue - state.ForceY;
-                case 15:
+                case 14:
                     return state.ForceZ;
-                case 16:
+                case 15:
                     return state.TorqueX;
-                case 17:
+                case 16:
                     return ushort.MaxValue - state.TorqueY;
-                case 18:
+                case 17:
                     return state.TorqueZ;
-                case 19:
+                case 18:
                     return state.VelocityX;
-                case 20:
+                case 19:
                     return ushort.MaxValue - state.VelocityY;
-                case 21:
+                case 20:
                     return state.VelocityZ;
-                case 22:
+                case 21:
                     return state.AngularVelocityX;
-                case 23:
+                case 22:
                     return ushort.MaxValue - state.AngularVelocityY;
-                case 24:
+                case 23:
                     return state.AngularVelocityZ;
                 default:
                     return 0;
@@ -439,84 +425,33 @@ namespace XOutput.Devices.Input.DirectInput
         /// Gets and initializes available axes for the device.
         /// </summary>
         /// <returns><see cref="DirectInputTypes"/> of the axes</returns>
-        private Enum[] GetAxes()
+        private DeviceObjectInstance[] GetAxes()
         {
             var axes = joystick.GetObjects(DeviceObjectTypeFlags.Axis).Where(o => o.ObjectType != ObjectGuid.Slider).ToArray();
             foreach (var axis in axes)
             {
                 var properties = joystick.GetObjectPropertiesById(axis.ObjectId);
-                properties.Range = new InputRange(ushort.MinValue, ushort.MaxValue);
-                properties.DeadZone = 0;
-                properties.Saturation = 10000;
-            }
-            return axes
-                .Select(MapAxisByInstanceNumber)
-                .Where(a => a != null)
-                .OrderBy(a => (int)a)
-                .OfType<Enum>()
-                .ToArray();
-        }
-
-        private DirectInputTypes? MapAxisByInstanceNumber(DeviceObjectInstance instance)
-        {
-            return DirectInputHelper.Instance.Axes.ElementAtOrDefault(instance.ObjectId.InstanceNumber);
-        }
-
-        private DirectInputTypes? MapAxisByOffset(DeviceObjectInstance instance)
-        {
-            if (joystick.Information.Type == DeviceType.Mouse)
-            {
-                MouseOffset offset = (MouseOffset)instance.Offset;
-                switch (offset)
+                try
                 {
-                    case MouseOffset.X: return DirectInputTypes.Axis1;
-                    case MouseOffset.Y: return DirectInputTypes.Axis2;
-                    case MouseOffset.Z: return DirectInputTypes.Axis3;
-                    default: return null;
+                    properties.Range = new InputRange(ushort.MinValue, ushort.MaxValue);
+                    properties.DeadZone = 0;
+                    properties.Saturation = 10000;
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex);
                 }
             }
-            else
-            {
-                JoystickOffset offset = (JoystickOffset)instance.Offset;
-                switch (offset)
-                {
-                    case JoystickOffset.X: return DirectInputTypes.Axis1;
-                    case JoystickOffset.Y: return DirectInputTypes.Axis2;
-                    case JoystickOffset.Z: return DirectInputTypes.Axis3;
-                    case JoystickOffset.RotationX: return DirectInputTypes.Axis4;
-                    case JoystickOffset.RotationY: return DirectInputTypes.Axis5;
-                    case JoystickOffset.RotationZ: return DirectInputTypes.Axis6;
-                    case JoystickOffset.AccelerationX: return DirectInputTypes.Axis7;
-                    case JoystickOffset.AccelerationY: return DirectInputTypes.Axis8;
-                    case JoystickOffset.AccelerationZ: return DirectInputTypes.Axis9;
-                    case JoystickOffset.AngularAccelerationX: return DirectInputTypes.Axis10;
-                    case JoystickOffset.AngularAccelerationY: return DirectInputTypes.Axis11;
-                    case JoystickOffset.AngularAccelerationZ: return DirectInputTypes.Axis12;
-                    case JoystickOffset.ForceX: return DirectInputTypes.Axis13;
-                    case JoystickOffset.ForceY: return DirectInputTypes.Axis14;
-                    case JoystickOffset.ForceZ: return DirectInputTypes.Axis15;
-                    case JoystickOffset.TorqueX: return DirectInputTypes.Axis16;
-                    case JoystickOffset.TorqueY: return DirectInputTypes.Axis17;
-                    case JoystickOffset.TorqueZ: return DirectInputTypes.Axis18;
-                    case JoystickOffset.VelocityX: return DirectInputTypes.Axis19;
-                    case JoystickOffset.VelocityY: return DirectInputTypes.Axis20;
-                    case JoystickOffset.VelocityZ: return DirectInputTypes.Axis21;
-                    case JoystickOffset.AngularVelocityX: return DirectInputTypes.Axis22;
-                    case JoystickOffset.AngularVelocityY: return DirectInputTypes.Axis23;
-                    case JoystickOffset.AngularVelocityZ: return DirectInputTypes.Axis24;
-                    default: return null;
-                }
-            }
+            return axes;
         }
 
         /// <summary>
         /// Gets available sliders for the device.
         /// </summary>
         /// <returns><see cref="DirectInputTypes"/> of the axes</returns>
-        private Enum[] GetSliders()
+        private DeviceObjectInstance[] GetSliders()
         {
-            int slidersCount = joystick.GetObjects().Where(o => o.ObjectType == ObjectGuid.Slider).Count();
-            return DirectInputHelper.Instance.Sliders.Take(slidersCount).OfType<Enum>().ToArray();
+            return joystick.GetObjects().Where(o => o.ObjectType == ObjectGuid.Slider).ToArray();
         }
 
         /// <summary>

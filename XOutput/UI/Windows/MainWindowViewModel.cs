@@ -105,7 +105,7 @@ namespace XOutput.UI.Windows
                     logger.Info("HidGuardian registry is set");
                     log(string.Format(Translate("HidGuardianEnabledSuccessfully"), pid.ToString()));
                 }
-                catch (UnauthorizedAccessException ex)
+                catch (UnauthorizedAccessException)
                 {
                     Model.IsAdmin = false;
                     logger.Warning("Not running in elevated mode.");

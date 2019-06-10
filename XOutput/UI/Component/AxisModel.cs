@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Devices;
 
 namespace XOutput.UI.Component
 {
     public class AxisModel : ModelBase
     {
-        private Enum type;
-        public Enum Type
+        private InputSource type;
+        public InputSource Type
         {
             get => type;
             set

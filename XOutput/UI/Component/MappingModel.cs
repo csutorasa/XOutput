@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using XOutput.Devices;
 using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
 
@@ -26,11 +27,11 @@ namespace XOutput.UI
             }
         }
 
-        private readonly ObservableCollection<Enum> inputs = new ObservableCollection<Enum>();
-        public ObservableCollection<Enum> Inputs { get { return inputs; } }
+        private readonly ObservableCollection<InputSource> inputs = new ObservableCollection<InputSource>();
+        public ObservableCollection<InputSource> Inputs { get { return inputs; } }
 
-        private Enum selectedInput;
-        public Enum SelectedInput
+        private InputSource selectedInput;
+        public InputSource SelectedInput
         {
             get => selectedInput;
             set

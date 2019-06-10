@@ -10,7 +10,7 @@ namespace XOutput.UI.Component
 {
     public class ButtonViewModel : ViewModelBase<ButtonModel>
     {
-        public ButtonViewModel(ButtonModel model, Enum type) : base(model)
+        public ButtonViewModel(ButtonModel model, InputSource type) : base(model)
         {
             Model.Type = type;
         }
