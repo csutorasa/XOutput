@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using XOutput.Logging;
 
@@ -41,7 +45,13 @@ namespace XOutput.Tools
 
         private LanguageManager(string filePath)
         {
-            data = IniData.Deserialize(Properties.Resources.languages).Content;
+            ResourceSet resourceSet = Properties.Resources.ResourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
+            foreach (DictionaryEntry entry in resourceSet)
+            {
+                string resourceKey = entry.Key.ToString().Replace("_", " ");
+                string value = entry.Value as string;
+                data[resourceKey] = JsonConvert.DeserializeObject<Dictionary<string, string>>(value);
+            }
             Language = "English";
         }
 
