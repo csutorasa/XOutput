@@ -77,7 +77,13 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Devices\DeviceState.cs" />
+    <Compile Include="Devices\Input\DirectInput\DirectInputSource.cs" />
+    <Compile Include="Devices\InputSourceTypes.cs" />
+    <Compile Include="Devices\Input\Keyboard\KeyboardSource.cs" />
+    <Compile Include="Devices\SourceChangedEventArgs.cs" />
+    <Compile Include="Devices\InputSource.cs" />
     <Compile Include="Devices\Input\InputDiagnosticsTypes.cs" />
+    <Compile Include="Devices\XInput\XOutputSource.cs" />
     <Compile Include="Devices\XInput\XInputDiagnostics.cs" />
     <Compile Include="Devices\XInput\XInputDiagnosticsTypes.cs" />
     <Compile Include="Diagnostics\DiagnosticsResultState.cs" />
@@ -91,12 +97,8 @@
     <Compile Include="Tools\IniData.cs" />
     <Compile Include="Devices\Controllers.cs" />
     <Compile Include="Devices\Input\DeviceDisconnectedEventArgs.cs" />
-    <Compile Include="Devices\Input\DirectInput\DirectInputHelper.cs" />
     <Compile Include="Devices\IDevice.cs" />
     <Compile Include="Devices\Input\IInputDevice.cs" />
-    <Compile Include="Devices\AbstractInputHelper.cs" />
-    <Compile Include="Devices\IInputHelper.cs" />
-    <Compile Include="Devices\Input\Keyboard\KeyboardInputHelper.cs" />
     <Compile Include="Devices\Input\Keyboard\Keyboard.cs" />
     <Compile Include="Devices\Mapper\KeyboardToXInputMapper.cs" />
     <Compile Include="Devices\Mapper\InputMapperBase.cs" />
@@ -152,7 +154,6 @@
     <Compile Include="UI\Converters\LanguageConverter.cs" />
     <Compile Include="UI\Converters\BoolInverterConverter.cs" />
     <Compile Include="UI\Converters\BoolToBrushConverter.cs" />
-    <Compile Include="Devices\Input\DirectInput\DirectInputTypes.cs" />
     <Compile Include="Devices\DPadDirection.cs" />
     <Compile Include="Devices\Mapper\DirectToXInputMapper.cs" />
     <Compile Include="Devices\GameController.cs" />

@@ -14,7 +14,22 @@ namespace XOutput.Devices.Mapper
         /// <summary>
         /// From data type
         /// </summary>
-        public Enum InputType { get; set; }
+        public string InputType { get; set; }
+        /// <summary>
+        /// Data source
+        /// </summary>
+        public InputSource Source
+        {
+            get => source;
+            set
+            {
+                if (value != source)
+                {
+                    source = value;
+                    InputType = source.DisplayName;
+                }
+            }
+        }
         /// <summary>
         /// Minimum value
         /// </summary>
@@ -28,9 +43,12 @@ namespace XOutput.Devices.Mapper
         /// </summary>
         public double Deadzone { get; set; }
 
+        InputSource source;
+
         public MapperData()
         {
             InputType = null;
+            source = null;
             MinValue = 0;
             MaxValue = 0;
             Deadzone = 0;

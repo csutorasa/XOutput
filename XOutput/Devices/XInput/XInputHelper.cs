@@ -9,13 +9,49 @@ namespace XOutput.Devices.XInput
     /// <summary>
     /// <see cref="IInputHelper{T}"/> for <see cref="XInputTypes"/>.
     /// </summary>
-    public class XInputHelper : AbstractInputHelper<XInputTypes>
+    public class XInputHelper
     {
         protected static readonly XInputHelper instance = new XInputHelper();
         /// <summary>
         /// Gets the singleton instance of the class.
         /// </summary>
         public static XInputHelper Instance => instance;
+        /// <summary>
+        /// Gets the all values from the enum.
+        /// </summary>
+        public IEnumerable<XInputTypes> Values => values;
+        /// <summary>
+        /// Gets all button values.
+        /// </summary>
+        public IEnumerable<XInputTypes> Buttons => buttons;
+        /// <summary>
+        /// Gets all axis values.
+        /// </summary>
+        public IEnumerable<XInputTypes> Axes => axes;
+        /// <summary>
+        /// Gets all dpad values.
+        /// </summary>
+        public IEnumerable<XInputTypes> DPad => dPad;
+
+        private readonly IEnumerable<XInputTypes> values;
+        private readonly IEnumerable<XInputTypes> buttons;
+        private readonly IEnumerable<XInputTypes> axes;
+        private readonly IEnumerable<XInputTypes> dPad;
+
+        public XInputHelper()
+        {
+            values = Enum.GetValues(typeof(XInputTypes)).OfType<XInputTypes>().Distinct().ToArray();
+            buttons = values.Where(v => IsButton(v)).ToArray();
+            axes = values.Where(v => IsAxis(v)).ToArray();
+            dPad = values.Where(v => IsDPad(v)).ToArray();
+        }
+
+        public XOutputSource[] GenerateSources()
+        {
+            var buttonSources = buttons.Select(b => new XOutputSource(b.ToString(), b));
+            var axisSources = axes.Select(a => new XOutputSource(a.ToString(), a));
+            return buttonSources.Concat(axisSources).ToArray();
+        }
 
         /// <summary>
         /// Gets if the value is axis type.
@@ -23,7 +59,7 @@ namespace XOutput.Devices.XInput
         /// </summary>
         /// <param name="type"><see cref="XInputTypes"/> enum value</param>
         /// <returns></returns>
-        public override bool IsAxis(XInputTypes input)
+        public bool IsAxis(XInputTypes input)
         {
             switch (input)
             {
@@ -45,7 +81,7 @@ namespace XOutput.Devices.XInput
         /// </summary>
         /// <param name="type"><see cref="XInputTypes"/> enum value</param>
         /// <returns></returns>
-        public override bool IsButton(XInputTypes input)
+        public bool IsButton(XInputTypes input)
         {
             switch (input)
             {
@@ -72,7 +108,7 @@ namespace XOutput.Devices.XInput
         /// </summary>
         /// <param name="type"><see cref="XInputTypes"/> enum value</param>
         /// <returns></returns>
-        public override bool IsDPad(XInputTypes input)
+        public bool IsDPad(XInputTypes input)
         {
             switch (input)
             {
@@ -84,17 +120,6 @@ namespace XOutput.Devices.XInput
                 default:
                     return false;
             }
-        }
-
-        /// <summary>
-        /// Returns false. XInput devices has no sliders.
-        /// <para>Implements <see cref="IInputHelper{T}.IsSlider(T)"/> enum value</para>
-        /// </summary>
-        /// <param name="type"><see cref="XInputTypes"/> enum value</param>
-        /// <returns></returns>
-        public override bool IsSlider(XInputTypes type)
-        {
-            return false;
         }
 
         /// <summary>
@@ -141,6 +166,19 @@ namespace XOutput.Devices.XInput
         public static double GetDisableValue(this XInputTypes input)
         {
             return XInputHelper.Instance.GetDisableValue(input);
+        }
+
+        public static InputSourceTypes GetInputSourceType(this XInputTypes input)
+        {
+            if (input.IsAxis())
+            {
+                return InputSourceTypes.Axis;
+            }
+            else if (input.IsButton())
+            {
+                return InputSourceTypes.Button;
+            }
+            throw new NotImplementedException("ERROR");
         }
     }
 }

@@ -28,7 +28,7 @@ namespace XOutput.Devices.Mapper
             }
             catch (Exception) { }
             mapper.StartWhenConnected = ReadStartWhenConnected(data);
-            foreach (var mapping in FromDictionary(data, typeof(DirectInputTypes)))
+            foreach (var mapping in FromDictionary(data))
             {
                 mapper.mappings.Add(mapping.Key, mapping.Value);
             }

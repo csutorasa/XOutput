@@ -143,11 +143,11 @@ namespace XOutput.UI.Windows
         private void CreateInputControls()
         {
             CreateInputAxes();
-            foreach (var buttonInput in controller.InputDevice.Buttons)
+            foreach (var buttonInput in controller.InputDevice.Sources.Where(s => s.Type == InputSourceTypes.Button))
             {
                 Model.InputButtonViews.Add(new ButtonView(new ButtonViewModel(new ButtonModel(), buttonInput)));
             }
-            foreach (var sliderInput in controller.InputDevice.Sliders)
+            foreach (var sliderInput in controller.InputDevice.Sources.Where(s => s.Type == InputSourceTypes.Slider))
             {
                 Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), sliderInput)));
             }
@@ -194,15 +194,21 @@ namespace XOutput.UI.Windows
 
         private void CreateXInputControls()
         {
-            foreach (var buttonInput in XInputHelper.Instance.Buttons)
+            foreach (var buttonInput in controller.XInput.Sources.Where(s => s.Type == InputSourceTypes.Button))
             {
                 Model.XInputButtonViews.Add(new ButtonView(new ButtonViewModel(new ButtonModel(), buttonInput)));
             }
             Model.XInputDPadViews.Add(new DPadView(new DPadViewModel(new DPadModel(), 0, false)));
-            Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), XInputTypes.LX, XInputTypes.LY)));
-            Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), XInputTypes.RX, XInputTypes.RY)));
-            Model.XInputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), XInputTypes.L2)));
-            Model.XInputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), XInputTypes.R2)));
+            var lx = controller.XInput.Sources.OfType<XOutputSource>().First(s => s.XInputType == XInputTypes.LX);
+            var ly = controller.XInput.Sources.OfType<XOutputSource>().First(s => s.XInputType == XInputTypes.LY);
+            var rx = controller.XInput.Sources.OfType<XOutputSource>().First(s => s.XInputType == XInputTypes.RX);
+            var ry = controller.XInput.Sources.OfType<XOutputSource>().First(s => s.XInputType == XInputTypes.RY);
+            var l2 = controller.XInput.Sources.OfType<XOutputSource>().First(s => s.XInputType == XInputTypes.L2);
+            var r2 = controller.XInput.Sources.OfType<XOutputSource>().First(s => s.XInputType == XInputTypes.R2);
+            Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), lx, ly)));
+            Model.XInputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), rx, ry)));
+            Model.XInputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), l2)));
+            Model.XInputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), r2)));
         }
 
         private void UpdateXInputControls()
@@ -245,31 +251,31 @@ namespace XOutput.UI.Windows
 
         private void CreateInputAxes()
         {
-            var axes = controller.InputDevice.Axes.OfType<DirectInputTypes>();
-            var xAxes = DirectInputHelper.Instance.Axes.Where(a => (int)a % 3 == 0);
-            var yAxes = DirectInputHelper.Instance.Axes.Where(a => (int)a % 3 == 1);
-            var zAxes = DirectInputHelper.Instance.Axes.Where(a => (int)a % 3 == 2);
-            for (int i = 0; i < xAxes.Count(); i++)
+            var axes = controller.InputDevice.Sources.Where(s => s.Type == InputSourceTypes.Axis).ToArray();
+            /*var xAxes = axes.Select((axis, i) => new { axis, i }).Where(x => x.i % 3 == 0).Select(x => x.axis);
+            var yAxes = axes.Select((axis, i) => new { axis, i }).Where(x => x.i % 3 == 1).Select(x => x.axis);
+            var zAxes = axes.Select((axis, i) => new { axis, i }).Where(x => x.i % 3 == 2).Select(x => x.axis);
+            for (int i = 0; i < Math.Max(xAxes.Count(), yAxes.Count()); i++)
             {
-                var x = xAxes.ElementAt(i);
-                var y = yAxes.ElementAt(i);
-                if (axes.Contains(x) && axes.Contains(y))
+                var x = xAxes.ElementAtOrDefault(i);
+                var y = yAxes.ElementAtOrDefault(i);
+                if (x != null && y != null)
                 {
                     Model.InputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), x, y)));
                 }
                 else
                 {
-                    if (axes.Contains(x))
+                    if (x != null)
                     {
                         Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), x)));
                     }
-                    if (axes.Contains(y))
+                    if (y != null)
                     {
                         Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), y)));
                     }
                 }
-            }
-            foreach (var z in zAxes)
+            }*/
+            foreach (var z in axes)
             {
                 if (axes.Contains(z))
                 {

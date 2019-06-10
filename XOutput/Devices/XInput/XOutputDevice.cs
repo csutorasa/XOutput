@@ -36,22 +36,13 @@ namespace XOutput.Devices.XInput
         /// <summary>
         /// <para>Implements <see cref="IDevice.Buttons"/></para>
         /// </summary>
-        public IEnumerable<Enum> Buttons => XInputHelper.Instance.Buttons.OfType<Enum>();
-        /// <summary>
-        /// <para>Implements <see cref="IDevice.Axes"/></para>
-        /// </summary>
-        public IEnumerable<Enum> Axes => XInputHelper.Instance.Axes.OfType<Enum>();
-        /// <summary>
-        /// XInput devices have no sliders.
-        /// <para>Implements <see cref="IDevice.Sliders"/></para>
-        /// </summary>
-        public IEnumerable<Enum> Sliders => new Enum[0];
+        public IEnumerable<InputSource> Sources => sources;
         #endregion
 
-        private readonly Dictionary<XInputTypes, double> values = new Dictionary<XInputTypes, double>();
         private readonly IInputDevice source;
         private readonly InputMapperBase mapper;
         private readonly DPadDirection[] dPads = new DPadDirection[DPadCount];
+        private readonly XOutputSource[] sources;
         private readonly DeviceState state;
 
         /// <summary>
@@ -63,7 +54,8 @@ namespace XOutput.Devices.XInput
         {
             this.source = source;
             this.mapper = mapper;
-            state = new DeviceState(XInputHelper.Instance.Values.OfType<Enum>().ToArray(), DPadCount);
+            sources = XInputHelper.Instance.GenerateSources();
+            state = new DeviceState(sources, DPadCount);
             source.InputChanged += SourceInputChanged;
         }
 
@@ -83,13 +75,9 @@ namespace XOutput.Devices.XInput
         /// </summary>
         /// <param name="inputType">Type of input</param>
         /// <returns>Value</returns>
-        public double Get(XInputTypes inputType)
+        public double Get(InputSource inputType)
         {
-            if (values.ContainsKey(inputType))
-            {
-                return values[inputType];
-            }
-            return 0;
+            return inputType.Value;
         }
 
         private void SourceInputChanged(object sender, DeviceInputChangedEventArgs e)
@@ -103,17 +91,15 @@ namespace XOutput.Devices.XInput
         /// <returns>if the input was available</returns>
         public bool RefreshInput()
         {
-            foreach (var type in XInputHelper.Instance.Values)
+            state.ResetChanges();
+            foreach (var s in sources)
             {
-                var mapping = mapper.GetMapping(type);
-                if (mapping != null)
+                if (s.Refresh(source, mapper))
                 {
-                    double value = 0;
-                    if (mapping.InputType != null)
-                        value = source.Get(mapping.InputType);
-                    values[type] = mapping.GetValue(value);
+                    state.MarkChanged(s);
                 }
             }
+            var changes = state.GetChanges();
             if (mapper.SelectedDPad != -1)
             {
                 dPads[0] = source.DPads.ElementAt(mapper.SelectedDPad);
@@ -122,10 +108,10 @@ namespace XOutput.Devices.XInput
             {
                 dPads[0] = DPadHelper.GetDirection(GetBool(XInputTypes.UP), GetBool(XInputTypes.DOWN), GetBool(XInputTypes.LEFT), GetBool(XInputTypes.RIGHT));
             }
-            var changedDPads = state.SetDPads(dPads);
-            var changedValues = state.SetValues(values.Where(t => !t.Key.IsDPad()).ToDictionary(x => (Enum)x.Key, x => x.Value));
-            if (changedDPads.Any() || changedValues.Any())
-                InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changedValues, changedDPads));
+            state.SetDPad(0, dPads[0]);
+            var changedDPads = state.GetChangedDpads();
+            if (changedDPads.Any() || changes.Any())
+                InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changes, changedDPads));
             return true;
         }
 
@@ -135,7 +121,11 @@ namespace XOutput.Devices.XInput
         /// <returns></returns>
         public Dictionary<XInputTypes, double> GetValues()
         {
-            var newValues = new Dictionary<XInputTypes, double>(values);
+            var newValues = new Dictionary<XInputTypes, double>();
+            foreach (var source in sources)
+            {
+                newValues[source.XInputType] = source.Value;
+            }
             newValues[XInputTypes.UP] = dPads[0].HasFlag(DPadDirection.Up) ? 1 : 0;
             newValues[XInputTypes.LEFT] = dPads[0].HasFlag(DPadDirection.Left) ? 1 : 0;
             newValues[XInputTypes.RIGHT] = dPads[0].HasFlag(DPadDirection.Right) ? 1 : 0;
@@ -161,9 +151,8 @@ namespace XOutput.Devices.XInput
         /// <returns>Value</returns>
         public double Get(Enum inputType)
         {
-            if (inputType is XInputTypes)
-                return Get((XInputTypes)inputType);
-            throw new ArgumentException();
+            // FIXME
+            return GetValues()[(XInputTypes)inputType];
         }
     }
 }

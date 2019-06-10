@@ -47,7 +47,7 @@ namespace XOutput.Devices.Input
 
         public DiagnosticsResult GetAxesResult()
         {
-            int axesCount = device.Axes.Count();
+            int axesCount = device.Sources.Where(s => s.Type == InputSourceTypes.Axis).Count();
             DiagnosticsResult result = new DiagnosticsResult
             {
                 Value = axesCount,
@@ -66,7 +66,7 @@ namespace XOutput.Devices.Input
 
         public DiagnosticsResult GetSlidersResult()
         {
-            int slidersCount = device.Sliders.Count();
+            int slidersCount = device.Sources.Where(s => s.Type == InputSourceTypes.Slider).Count();
             return new DiagnosticsResult
             {
                 Value = slidersCount,
@@ -77,7 +77,7 @@ namespace XOutput.Devices.Input
 
         public DiagnosticsResult GetButtonsResult()
         {
-            int buttonsCount = device.Buttons.Count();
+            int buttonsCount = device.Sources.Where(s => s.Type == InputSourceTypes.Button).Count();
             DiagnosticsResult result = new DiagnosticsResult
             {
                 Value = buttonsCount,

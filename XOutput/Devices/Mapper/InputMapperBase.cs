@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Devices.Input;
 using XOutput.Devices.XInput;
 
 namespace XOutput.Devices.Mapper
@@ -69,6 +70,17 @@ namespace XOutput.Devices.Mapper
             return mappings[type.Value];
         }
 
+        public void Attach(IInputDevice inputDevice)
+        {
+            foreach (var mapping in mappings)
+            {
+                if (mapping.Value.InputType != null)
+                {
+                    mapping.Value.Source = inputDevice.Sources.FirstOrDefault(s => s.DisplayName == mapping.Value.InputType);
+                }
+            }
+        }
+
         /// <summary>
         /// Creates a dictionary to save the values to file.
         /// </summary>
@@ -91,9 +103,8 @@ namespace XOutput.Devices.Mapper
         /// Converts to mapping key-value pairs from the data read.
         /// </summary>
         /// <param name="data">Parsed file content</param>
-        /// <param name="enumType">Device input type enum</param>
         /// <returns></returns>
-        protected static Dictionary<XInputTypes, MapperData> FromDictionary(Dictionary<string, string> data, Type enumType)
+        protected static Dictionary<XInputTypes, MapperData> FromDictionary(Dictionary<string, string> data)
         {
             var dict = new Dictionary<XInputTypes, MapperData>();
             foreach (var mapping in data)
@@ -106,9 +117,7 @@ namespace XOutput.Devices.Mapper
                     {
                         throw new ArgumentException("Invalid text: " + mapping.Value);
                     }
-                    Enum input = null;
-                    if (!string.IsNullOrEmpty(values[0]))
-                        input = (Enum)Enum.Parse(enumType, values[0]);
+                    string input = values[0];
                     double min = TryReadValue(values[1]);
                     double max = TryReadValue(values[2]);
                     double deadzone = TryReadValue(values[3]);

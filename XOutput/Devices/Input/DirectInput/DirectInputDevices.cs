@@ -45,7 +45,7 @@ namespace XOutput.Devices.Input.DirectInput
             }
             else
             {
-                return directInput.GetDevices().Where(di => di.Type == DeviceType.Joystick || di.Type == DeviceType.Gamepad);
+                return directInput.GetDevices().Where(di => di.Type == DeviceType.Joystick || di.Type == DeviceType.Gamepad || di.Type == DeviceType.FirstPerson);
             }
         }
 

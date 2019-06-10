@@ -12,14 +12,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="25"/>
         </Grid.ColumnDefinitions>
-        <Label>
-            <Label.Content>
-                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
-                    <Binding Path="LanguageModel.Data" />
-                    <Binding Path="Model.Type" />
-                </MultiBinding>
-            </Label.Content>
-        </Label>
+        <Label Content="{Binding Model.Type}"/>
         <Ellipse Grid.Column="1" Fill="{Binding Model.Value, Converter={StaticResource BoolToBrushConverter}}" Width="20" Height="20"></Ellipse>
     </Grid>
 </UserControl>

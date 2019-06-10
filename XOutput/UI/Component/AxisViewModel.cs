@@ -10,7 +10,7 @@ namespace XOutput.UI.Component
 {
     public class AxisViewModel : ViewModelBase<AxisModel>
     {
-        public AxisViewModel(AxisModel model, Enum type, int max = 1000) : base(model)
+        public AxisViewModel(AxisModel model, InputSource type, int max = 1000) : base(model)
         {
             Model.Type = type;
             Model.Max = max;

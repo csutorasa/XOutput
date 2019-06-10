@@ -12,11 +12,6 @@ using XOutput.UI.Windows;
 
 namespace XOutput.UI.Component
 {
-    enum MappingTypes
-    {
-        Disabled
-    }
-
     public class MappingViewModel : ViewModelBase<MappingModel>
     {
         private GameController controller;
@@ -27,21 +22,21 @@ namespace XOutput.UI.Component
             var mapperData = controller.Mapper.GetMapping(inputType);
             Model.XInputType = inputType;
             var device = controller.InputDevice;
-            Model.Inputs.Add(MappingTypes.Disabled);
-            foreach (var directInput in device.Buttons)
+            Model.Inputs.Add(DisabledInputSource.Instance);
+            foreach (var directInput in device.Sources.Where(s => s.Type == InputSourceTypes.Button))
             {
                 Model.Inputs.Add(directInput);
             }
-            foreach (var directInput in device.Axes)
+            foreach (var directInput in device.Sources.Where(s => s.Type == InputSourceTypes.Axis))
             {
                 Model.Inputs.Add(directInput);
             }
-            foreach (var directInput in device.Sliders)
+            foreach (var directInput in device.Sources.Where(s => s.Type == InputSourceTypes.Slider))
             {
                 Model.Inputs.Add(directInput);
             }
             if (mapperData != null && mapperData.InputType == null)
-                mapperData.InputType = device.Buttons.FirstOrDefault();
+                mapperData.Source = device.Sources.Where(s => s.Type == InputSourceTypes.Button).FirstOrDefault();
             Model.MapperData = mapperData;
             SetSelected(mapperData);
         }
@@ -74,20 +69,20 @@ namespace XOutput.UI.Component
         {
             if (Helper.DoubleEquals(mapperData.MinValue, Model.XInputType.GetDisableValue()) && Helper.DoubleEquals(mapperData.MaxValue, Model.XInputType.GetDisableValue()))
             {
-                Model.SelectedInput = MappingTypes.Disabled;
+                Model.SelectedInput = DisabledInputSource.Instance;
                 Model.ConfigVisibility = System.Windows.Visibility.Collapsed;
             }
             else
             {
-                Model.SelectedInput = mapperData.InputType;
+                Model.SelectedInput = mapperData.Source;
                 Model.ConfigVisibility = System.Windows.Visibility.Visible;
             }
             SelectionChanged(Model.SelectedInput);
         }
 
-        protected void SelectionChanged(Enum type)
+        protected void SelectionChanged(InputSource type)
         {
-            if (type.Equals(MappingTypes.Disabled))
+            if (type.Type == InputSourceTypes.Disabled)
             {
                 Model.Min = (decimal)(100 * Model.XInputType.GetDisableValue());
                 Model.Max = (decimal)(100 * Model.XInputType.GetDisableValue());
@@ -95,7 +90,7 @@ namespace XOutput.UI.Component
             }
             else
             {
-                Model.MapperData.InputType = type;
+                Model.MapperData.Source = type;
                 Model.ConfigVisibility = System.Windows.Visibility.Visible;
             }
         }

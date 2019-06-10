@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using XOutput.Devices;
 using XOutput.Devices.XInput;
 
 namespace XOutput.UI.Windows
@@ -29,8 +30,8 @@ namespace XOutput.UI.Windows
             get => highlight;
             set { if (highlight != value) { highlight = value; OnPropertyChanged(nameof(Highlight)); } }
         }
-        private Enum maxType;
-        public Enum MaxType
+        private InputSource maxType;
+        public InputSource MaxType
         {
             get => maxType;
             set { if (maxType != value) { maxType = value; OnPropertyChanged(nameof(MaxType)); } }
