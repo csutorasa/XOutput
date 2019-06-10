@@ -97,7 +97,6 @@
     <Compile Include="Devices\DeviceInputChangedEventArgs.cs" />
     <Compile Include="Tools\Helper.cs" />
     <Compile Include="Tools\HidGuardianManager.cs" />
-    <Compile Include="Tools\IniData.cs" />
     <Compile Include="Devices\Controllers.cs" />
     <Compile Include="Devices\Input\DeviceDisconnectedEventArgs.cs" />
     <Compile Include="Devices\IDevice.cs" />
