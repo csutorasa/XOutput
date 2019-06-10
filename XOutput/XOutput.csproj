@@ -46,6 +46,9 @@
     <Reference Include="Nefarius.ViGEmClient, Version=1.15.16.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nefarius.ViGEmClient.1.15.16\lib\net452\Nefarius.ViGEmClient.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
     </Reference>
@@ -292,12 +295,19 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\Brazilian Portuguese.json" />
+    <None Include="Resources\French.json" />
+    <None Include="Resources\German.json" />
+    <None Include="Resources\Hungarian.json" />
+    <None Include="Resources\Russian.json" />
+    <None Include="Resources\Simplified Chinese.json" />
+    <None Include="Resources\Spanish.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\languages.txt" />
+    <None Include="Resources\English.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />

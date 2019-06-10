@@ -111,17 +111,20 @@ namespace XOutput.Devices.Mapper
             {
                 try
                 {
-                    var key = (XInputTypes)Enum.Parse(typeof(XInputTypes), mapping.Key);
-                    var values = mapping.Value.Split(SplitChar);
-                    if (values.Length != 4)
+                    XInputTypes key;
+                    if (Enum.TryParse(mapping.Key, out key))
                     {
-                        throw new ArgumentException("Invalid text: " + mapping.Value);
+                        var values = mapping.Value.Split(SplitChar);
+                        if (values.Length != 4)
+                        {
+                            throw new ArgumentException("Invalid text: " + mapping.Value);
+                        }
+                        string input = values[0];
+                        double min = TryReadValue(values[1]);
+                        double max = TryReadValue(values[2]);
+                        double deadzone = TryReadValue(values[3]);
+                        dict.Add(key, new MapperData { InputType = input, MinValue = min, MaxValue = max, Deadzone = deadzone });
                     }
-                    string input = values[0];
-                    double min = TryReadValue(values[1]);
-                    double max = TryReadValue(values[2]);
-                    double deadzone = TryReadValue(values[3]);
-                    dict.Add(key, new MapperData { InputType = input, MinValue = min, MaxValue = max, Deadzone = deadzone });
                 }
                 catch
                 {
