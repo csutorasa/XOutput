@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Devices.Input;
 using XOutput.Devices.Mapper;
 using XOutput.Logging;
 
@@ -32,53 +34,21 @@ namespace XOutput.Tools
             var settings = new Settings();
             if (File.Exists(filePath))
             {
+
                 var text = File.ReadAllText(filePath);
-                IniData ini = IniData.Deserialize(text);
-                foreach (var section in ini.Content)
-                {
-                    var id = section.Key;
-                    if (id == General)
-                    {
-                        if (section.Value.ContainsKey(LanguageKey))
-                        {
-                            LanguageManager.Instance.Language = section.Value[LanguageKey];
-                        }
-                        if (section.Value.ContainsKey(CloseToTrayKey))
-                        {
-                            settings.CloseToTray = section.Value[CloseToTrayKey] == "true";
-                        }
-                        if (section.Value.ContainsKey(ShowAllKey))
-                        {
-                            settings.ShowAll = section.Value[ShowAllKey] == "true";
-                        }
-                        if (section.Value.ContainsKey(HidGuardianEnabledKey))
-                        {
-                            settings.HidGuardianEnabled = section.Value[HidGuardianEnabledKey] == "true";
-                        }
-                    }
-                    else if (id == KeyboardKey)
-                    {
-                        settings.mappers[id] = KeyboardToXInputMapper.Parse(section.Value);
-                        logger.Debug("Mapper loaded for keyboard");
-                    }
-                    else
-                    {
-                        settings.mappers[id] = DirectToXInputMapper.Parse(section.Value);
-                        logger.Debug("Mapper loaded for " + id);
-                    }
-                }
+                settings = JsonConvert.DeserializeObject<Settings>(text);
             }
             return settings;
         }
 
-        private Dictionary<string, InputMapperBase> mappers;
+        public Dictionary<string, InputMapperBase> Inputs { get; set; }
         public bool CloseToTray { get; set; }
         public bool ShowAll { get; set; }
         public bool HidGuardianEnabled { get; set; }
 
         public Settings()
         {
-            mappers = new Dictionary<string, InputMapperBase>();
+            Inputs = new Dictionary<string, InputMapperBase>();
         }
 
         /// <summary>
@@ -87,18 +57,7 @@ namespace XOutput.Tools
         /// <param name="filePath">Filepath of the settings file</param>
         public void Save(string filePath)
         {
-            IniData ini = new IniData();
-            foreach (var mapper in mappers)
-            {
-                ini.AddSection(mapper.Key, mapper.Value.ToDictionary());
-            }
-            Dictionary<string, string> generalSettings = new Dictionary<string, string>();
-            generalSettings[LanguageKey] = LanguageManager.Instance.Language;
-            generalSettings[CloseToTrayKey] = CloseToTray ? "true" : "false";
-            generalSettings[ShowAllKey] = ShowAll ? "true" : "false";
-            generalSettings[HidGuardianEnabledKey] = HidGuardianEnabled ? "true" : "false";
-            ini.AddSection(General, generalSettings);
-            File.WriteAllText(filePath, ini.Serialize());
+            File.WriteAllText(filePath, JsonConvert.SerializeObject(this, Formatting.Indented));
         }
 
         /// <summary>
@@ -108,18 +67,18 @@ namespace XOutput.Tools
         /// <returns></returns>
         public InputMapperBase GetMapper(string id)
         {
-            if (!mappers.ContainsKey(id))
+            if (!Inputs.ContainsKey(id))
             {
                 if (id == KeyboardKey)
                 {
-                    mappers[id] = new KeyboardToXInputMapper();
+                    Inputs[id] = new InputMapperBase();
                 }
                 else
                 {
-                    mappers[id] = new DirectToXInputMapper();
+                    Inputs[id] = new InputMapperBase();
                 }
             }
-            return mappers[id];
+            return Inputs[id];
         }
     }
 }
