@@ -441,7 +441,7 @@ namespace XOutput.Devices.Input.DirectInput
         /// <returns><see cref="DirectInputTypes"/> of the axes</returns>
         private Enum[] GetAxes()
         {
-            var axes = joystick.GetObjects(DeviceObjectTypeFlags.Axis).ToArray();
+            var axes = joystick.GetObjects(DeviceObjectTypeFlags.Axis).Where(o => o.ObjectType != ObjectGuid.Slider).ToArray();
             foreach (var axis in axes)
             {
                 var properties = joystick.GetObjectPropertiesById(axis.ObjectId);
