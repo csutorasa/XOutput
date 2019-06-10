@@ -24,7 +24,7 @@ namespace XOutput.Devices.XInput
             inputType = type;
         }
 
-        internal bool Refresh(IInputDevice source, InputMapperBase mapper)
+        internal bool Refresh(IInputDevice source, InputMapper mapper)
         {
             var mapping = mapper.GetMapping(inputType);
             if (mapping != null)

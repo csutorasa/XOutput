@@ -29,7 +29,7 @@ namespace XOutput.Devices
         /// <summary>
         /// Gets the mapping of the input device.
         /// </summary>
-        public InputMapperBase Mapper => mapper;
+        public InputMapper Mapper => mapper;
         /// <summary>
         /// Gets the name of the input device.
         /// </summary>
@@ -51,7 +51,7 @@ namespace XOutput.Devices
         private static readonly Controllers controllers = new Controllers();
 
         private readonly IInputDevice inputDevice;
-        private readonly InputMapperBase mapper;
+        private readonly InputMapper mapper;
         private readonly XOutputDevice xInput;
         private readonly IXOutputInterface xOutputInterface;
         private Thread thread;
@@ -59,7 +59,7 @@ namespace XOutput.Devices
         private int controllerCount = 0;
         private Nefarius.ViGEm.Client.Targets.Xbox360Controller controller;
 
-        public GameController(IInputDevice directInput, InputMapperBase mapper)
+        public GameController(IInputDevice directInput, InputMapper mapper)
         {
             inputDevice = directInput;
             this.mapper = mapper;

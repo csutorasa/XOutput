@@ -102,7 +102,7 @@
     <Compile Include="Devices\IDevice.cs" />
     <Compile Include="Devices\Input\IInputDevice.cs" />
     <Compile Include="Devices\Input\Keyboard\Keyboard.cs" />
-    <Compile Include="Devices\Mapper\InputMapperBase.cs" />
+    <Compile Include="Devices\Mapper\InputMapper.cs" />
     <Compile Include="Devices\XInput\IXOutputInterface.cs" />
     <Compile Include="Devices\XInput\SCPToolkit\NativeMethods.cs" />
     <Compile Include="Devices\XInput\SCPToolkit\ScpDevice.cs" />
