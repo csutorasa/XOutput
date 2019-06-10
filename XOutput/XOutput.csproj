@@ -103,7 +103,6 @@
     <Compile Include="Devices\IDevice.cs" />
     <Compile Include="Devices\Input\IInputDevice.cs" />
     <Compile Include="Devices\Input\Keyboard\Keyboard.cs" />
-    <Compile Include="Devices\Mapper\KeyboardToXInputMapper.cs" />
     <Compile Include="Devices\Mapper\InputMapperBase.cs" />
     <Compile Include="Devices\XInput\IXOutputInterface.cs" />
     <Compile Include="Devices\XInput\SCPToolkit\NativeMethods.cs" />
@@ -158,7 +157,6 @@
     <Compile Include="UI\Converters\BoolInverterConverter.cs" />
     <Compile Include="UI\Converters\BoolToBrushConverter.cs" />
     <Compile Include="Devices\DPadDirection.cs" />
-    <Compile Include="Devices\Mapper\DirectToXInputMapper.cs" />
     <Compile Include="Devices\GameController.cs" />
     <Compile Include="Devices\Mapper\MapperData.cs" />
     <Compile Include="UI\Component\NumericTextBox.cs" />

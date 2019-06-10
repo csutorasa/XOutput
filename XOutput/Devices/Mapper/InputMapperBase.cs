@@ -11,7 +11,7 @@ namespace XOutput.Devices.Mapper
     /// <summary>
     /// Base of mappers.
     /// </summary>
-    public abstract class InputMapperBase
+    public class InputMapperBase
     {
         /// <summary>
         /// Split char between values
@@ -36,10 +36,11 @@ namespace XOutput.Devices.Mapper
         /// </summary>
         public bool StartWhenConnected { get; set; }
 
-        protected readonly Dictionary<XInputTypes, MapperData> mappings = new Dictionary<XInputTypes, MapperData>();
+        public Dictionary<XInputTypes, MapperData> Mappings { get; set; }
 
         public InputMapperBase()
         {
+            Mappings = new Dictionary<XInputTypes, MapperData>();
             SelectedDPad = -1;
         }
 
@@ -51,7 +52,7 @@ namespace XOutput.Devices.Mapper
         /// <returns></returns>
         public void SetMapping(XInputTypes type, MapperData to)
         {
-            mappings[type] = to;
+            Mappings[type] = to;
         }
 
         /// <summary>
@@ -63,16 +64,16 @@ namespace XOutput.Devices.Mapper
         {
             if (!type.HasValue)
                 return null;
-            if (!mappings.ContainsKey(type.Value))
+            if (!Mappings.ContainsKey(type.Value))
             {
-                mappings[type.Value] = new MapperData { InputType = null, MinValue = type.Value.GetDisableValue(), MaxValue = type.Value.GetDisableValue() };
+                Mappings[type.Value] = new MapperData { InputType = null, MinValue = type.Value.GetDisableValue(), MaxValue = type.Value.GetDisableValue() };
             }
-            return mappings[type.Value];
+            return Mappings[type.Value];
         }
 
         public void Attach(IInputDevice inputDevice)
         {
-            foreach (var mapping in mappings)
+            foreach (var mapping in Mappings)
             {
                 if (mapping.Value.InputType != null)
                 {
@@ -90,7 +91,7 @@ namespace XOutput.Devices.Mapper
             var dict = new Dictionary<string, string>();
             dict.Add(SelectedDPadKey, SelectedDPad.ToString());
             dict.Add(StartWhenConnectedKey, StartWhenConnected ? "true" : "false");
-            foreach (var mapping in mappings)
+            foreach (var mapping in Mappings)
             {
                 dict.Add(mapping.Key.ToString(),
                     string.Join(SplitChar.ToString(), new string[] { mapping.Value.InputType?.ToString(), ((int)Math.Round(mapping.Value.MinValue * 100)).ToString(),
