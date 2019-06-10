@@ -437,7 +437,7 @@ namespace XOutput.Devices.Input.DirectInput
                     properties.DeadZone = 0;
                     properties.Saturation = 10000;
                 }
-                catch (Exception ex)
+                catch (SharpDXException ex)
                 {
                     logger.Error(ex);
                 }

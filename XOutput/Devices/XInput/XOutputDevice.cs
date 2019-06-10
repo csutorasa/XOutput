@@ -40,7 +40,7 @@ namespace XOutput.Devices.XInput
         #endregion
 
         private readonly IInputDevice source;
-        private readonly InputMapperBase mapper;
+        private readonly InputMapper mapper;
         private readonly DPadDirection[] dPads = new DPadDirection[DPadCount];
         private readonly XOutputSource[] sources;
         private readonly DeviceState state;
@@ -50,7 +50,7 @@ namespace XOutput.Devices.XInput
         /// </summary>
         /// <param name="source">Direct input device</param>
         /// <param name="mapper">DirectInput to XInput mapper</param>
-        public XOutputDevice(IInputDevice source, Mapper.InputMapperBase mapper)
+        public XOutputDevice(IInputDevice source, Mapper.InputMapper mapper)
         {
             this.source = source;
             this.mapper = mapper;

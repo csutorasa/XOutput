@@ -237,7 +237,7 @@ namespace XOutput.UI.Windows
                     var device = directInputDevices.CreateDirectDevice(instance);
                     if (device == null)
                         continue;
-                    InputMapperBase mapper = settings.GetMapper(device.ToString());
+                    InputMapper mapper = settings.GetMapper(device.ToString());
                     GameController controller = new GameController(device, mapper);
                     var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, Model.IsAdmin, log));
                     controllerView.ViewModel.Model.CanStart = installed;

@@ -41,14 +41,14 @@ namespace XOutput.Tools
             return settings;
         }
 
-        public Dictionary<string, InputMapperBase> Inputs { get; set; }
+        public Dictionary<string, InputMapper> Inputs { get; set; }
         public bool CloseToTray { get; set; }
         public bool ShowAll { get; set; }
         public bool HidGuardianEnabled { get; set; }
 
         public Settings()
         {
-            Inputs = new Dictionary<string, InputMapperBase>();
+            Inputs = new Dictionary<string, InputMapper>();
         }
 
         /// <summary>
@@ -65,17 +65,17 @@ namespace XOutput.Tools
         /// </summary>
         /// <param name="id">DeviceID</param>
         /// <returns></returns>
-        public InputMapperBase GetMapper(string id)
+        public InputMapper GetMapper(string id)
         {
             if (!Inputs.ContainsKey(id))
             {
                 if (id == KeyboardKey)
                 {
-                    Inputs[id] = new InputMapperBase();
+                    Inputs[id] = new InputMapper();
                 }
                 else
                 {
-                    Inputs[id] = new InputMapperBase();
+                    Inputs[id] = new InputMapper();
                 }
             }
             return Inputs[id];
