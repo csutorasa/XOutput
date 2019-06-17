@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Logging;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -18,6 +19,7 @@ namespace XOutput.Devices.Input.DirectInput
         private const string EmulatedSCPID = "028e045e-0000-0000-0000-504944564944";
 
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
+        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(DirectDevice));
 
         ~DirectInputDevices()
         {
@@ -68,8 +70,9 @@ namespace XOutput.Devices.Input.DirectInput
 
                 return new DirectDevice(deviceInstance, joystick);
             }
-            catch
+            catch (Exception ex)
             {
+                logger.Error("Failed to create device " + deviceInstance.InstanceGuid + " " + deviceInstance.InstanceName + ex.ToString());
                 return null;
             }
         }
