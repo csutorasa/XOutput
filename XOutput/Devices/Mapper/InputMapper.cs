@@ -64,9 +64,10 @@ namespace XOutput.Devices.Mapper
             {
                 if (mapping.Value.InputType != null)
                 {
-                    mapping.Value.Source = inputDevice.Sources.FirstOrDefault(s => s.DisplayName == mapping.Value.InputType);
+                    mapping.Value.Source = inputDevice.Sources.FirstOrDefault(s => s.Offset.ToString() == mapping.Value.InputType);
                 }
             }
+            inputDevice.RefreshInput(true);
         }
 
         /// <summary>

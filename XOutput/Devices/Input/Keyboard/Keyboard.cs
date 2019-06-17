@@ -147,7 +147,7 @@ namespace XOutput.Devices.Input.Keyboard
         /// Refreshes the current state. Triggers <see cref="InputChanged"/> event.
         /// </summary>
         /// <returns>if the input was available</returns>
-        public bool RefreshInput()
+        public bool RefreshInput(bool force = false)
         {
             state.ResetChanges();
             foreach (var source in sources)
@@ -157,7 +157,7 @@ namespace XOutput.Devices.Input.Keyboard
                     state.MarkChanged(source);
                 }
             }
-            var changes = state.GetChanges();
+            var changes = state.GetChanges(force);
             if (changes.Any())
                 InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changes, new int[0]));
             return true;

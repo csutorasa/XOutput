@@ -89,7 +89,7 @@ namespace XOutput.Devices.XInput
         /// Refreshes the current state. Triggers <see cref="InputChanged"/> event.
         /// </summary>
         /// <returns>if the input was available</returns>
-        public bool RefreshInput()
+        public bool RefreshInput(bool force = false)
         {
             state.ResetChanges();
             foreach (var s in sources)
@@ -99,7 +99,7 @@ namespace XOutput.Devices.XInput
                     state.MarkChanged(s);
                 }
             }
-            var changes = state.GetChanges();
+            var changes = state.GetChanges(force);
             if (mapper.SelectedDPad != -1)
             {
                 dPads[0] = source.DPads.ElementAt(mapper.SelectedDPad);

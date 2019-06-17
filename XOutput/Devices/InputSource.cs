@@ -24,13 +24,17 @@ namespace XOutput.Devices
         /// </summary>
         public InputSourceTypes Type => type;
         /// <summary>
+        /// The offset of the source.
+        /// </summary>
+        public int Offset => offset;
+        /// <summary>
         /// The value of the source.
         /// </summary>
         public double Value => value;
         /// <summary>
         /// If the input is an axis.
         /// </summary>
-        public bool IsAxis => type == InputSourceTypes.Axis;
+        public bool IsAxis => InputSourceTypes.Axis.HasFlag(type);
         /// <summary>
         /// If the input is a button.
         /// </summary>
@@ -38,12 +42,14 @@ namespace XOutput.Devices
 
         protected string name;
         protected InputSourceTypes type;
+        protected int offset;
         protected double value;
 
-        public InputSource(string name, InputSourceTypes type)
+        public InputSource(string name, InputSourceTypes type, int offset)
         {
             this.name = name;
             this.type = type;
+            this.offset = offset;
         }
 
         public override string ToString()
@@ -73,7 +79,7 @@ namespace XOutput.Devices
         public static InputSource Instance => instance;
         private static InputSource instance = new DisabledInputSource();
 
-        private DisabledInputSource() : base("", InputSourceTypes.Disabled)
+        private DisabledInputSource() : base("", InputSourceTypes.Disabled, 0)
         {
 
         }

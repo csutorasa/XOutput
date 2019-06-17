@@ -251,7 +251,7 @@ namespace XOutput.UI.Windows
 
         private void CreateInputAxes()
         {
-            var axes = controller.InputDevice.Sources.Where(s => s.Type == InputSourceTypes.Axis).ToArray();
+            var axes = controller.InputDevice.Sources.Where(s => InputSourceTypes.Axis.HasFlag(s.Type)).ToArray();
             /*var xAxes = axes.Select((axis, i) => new { axis, i }).Where(x => x.i % 3 == 0).Select(x => x.axis);
             var yAxes = axes.Select((axis, i) => new { axis, i }).Where(x => x.i % 3 == 1).Select(x => x.axis);
             var zAxes = axes.Select((axis, i) => new { axis, i }).Where(x => x.i % 3 == 2).Select(x => x.axis);

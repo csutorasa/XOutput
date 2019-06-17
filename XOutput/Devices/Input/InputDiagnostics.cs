@@ -47,7 +47,7 @@ namespace XOutput.Devices.Input
 
         public DiagnosticsResult GetAxesResult()
         {
-            int axesCount = device.Sources.Where(s => s.Type == InputSourceTypes.Axis).Count();
+            int axesCount = device.Sources.Where(s => InputSourceTypes.Axis.HasFlag(s.Type)).Count();
             DiagnosticsResult result = new DiagnosticsResult
             {
                 Value = axesCount,
