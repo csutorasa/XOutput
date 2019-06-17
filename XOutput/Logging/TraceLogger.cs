@@ -46,7 +46,8 @@ namespace XOutput.Logging
         /// <returns></returns>
         protected override Task Log(LogLevel loglevel, string methodName, string log)
         {
-            return currentTask.ContinueWith((t) => Task.Run(() => DoLog(loglevel, methodName, log)));
+            currentTask = currentTask.ContinueWith((t) => DoLog(loglevel, methodName, log));
+            return currentTask;
         }
 
         private void DoLog(LogLevel loglevel, string methodName, string log)
