@@ -33,6 +33,6 @@ namespace XOutput.Devices
         /// Refreshes the current state. Triggers <see cref="InputChanged"/> event.
         /// </summary>
         /// <returns>if the input was available</returns>
-        bool RefreshInput();
+        bool RefreshInput(bool force = false);
     }
 }

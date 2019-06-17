@@ -123,11 +123,9 @@ namespace XOutput.Devices.Input.DirectInput
         {
             this.deviceInstance = deviceInstance;
             this.joystick = joystick;
-            var buttons = joystick.GetObjects(DeviceObjectTypeFlags.Button).Take(128).Select(b => new DirectInputSource(b.Name, InputSourceTypes.Button, state => state.Buttons[b.ObjectId.InstanceNumber] ? 1 : 0)).ToArray();
-            var axes = GetAxes().OrderBy(a => a.ObjectId.InstanceNumber).Take(24)
-                .Select(a => new DirectInputSource(a.Name, InputSourceTypes.Axis, state => (GetAxisValue(a.ObjectId.InstanceNumber)) / (double)ushort.MaxValue));
-            var sliders = GetSliders().OrderBy(a => a.ObjectId.InstanceNumber)
-                .Select((a, i) => new DirectInputSource(a.Name, InputSourceTypes.Slider, state => (GetSliderValue(i + 1)) / (double)ushort.MaxValue));
+            var buttons = joystick.GetObjects(DeviceObjectTypeFlags.Button).Where(b => b.Usage > 0).Take(128).Select(b => new DirectInputSource("Button " + b.Usage, InputSourceTypes.Button, b.Offset, state => state.Buttons[b.ObjectId.InstanceNumber] ? 1 : 0)).ToArray();
+            var axes = GetAxes().OrderBy(a => a.Usage).Take(24).Select(GetAxisSource);
+            var sliders = GetSliders().OrderBy(a => a.Usage).Select(GetSliderSource);
             sources = buttons.Concat(axes).Concat(sliders).ToArray();
 
             joystick.Properties.AxisMode = DeviceAxisMode.Absolute;
@@ -156,7 +154,7 @@ namespace XOutput.Devices.Input.DirectInput
             logger.Info(ToString());
             foreach (var obj in joystick.GetObjects())
             {
-                logger.Info("  " + obj.Name + " " + obj.ObjectId + " offset: " + obj.Offset);
+                logger.Info("  " + obj.Name + " " + obj.ObjectId + " offset: " + obj.Offset + " objecttype: " + obj.ObjectType.ToString() + " " + obj.Usage);
             }
             state = new DeviceState(sources, joystick.Capabilities.PovCount);
             inputRefresher = new Thread(InputRefresher);
@@ -272,7 +270,7 @@ namespace XOutput.Devices.Input.DirectInput
         /// Refreshes the current state. Triggers <see cref="InputChanged"/> event.
         /// </summary>
         /// <returns>if the input was available</returns>
-        public bool RefreshInput()
+        public bool RefreshInput(bool force = false)
         {
             state.ResetChanges();
             if (!disposed)
@@ -291,7 +289,7 @@ namespace XOutput.Devices.Input.DirectInput
                             state.MarkChanged(source);
                         }
                     }
-                    var changes = state.GetChanges();
+                    var changes = state.GetChanges(force);
                     var dpadChanges = state.GetChangedDpads();
                     if (changes.Any() || dpadChanges.Any())
                         InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changes, dpadChanges));
@@ -427,7 +425,7 @@ namespace XOutput.Devices.Input.DirectInput
         /// <returns><see cref="DirectInputTypes"/> of the axes</returns>
         private DeviceObjectInstance[] GetAxes()
         {
-            var axes = joystick.GetObjects(DeviceObjectTypeFlags.Axis).Where(o => o.ObjectType != ObjectGuid.Slider).ToArray();
+            var axes = joystick.GetObjects(DeviceObjectTypeFlags.AbsoluteAxis).Where(o => o.ObjectType != ObjectGuid.Slider).ToArray();
             foreach (var axis in axes)
             {
                 var properties = joystick.GetObjectPropertiesById(axis.ObjectId);
@@ -479,6 +477,40 @@ namespace XOutput.Devices.Input.DirectInput
         private int CalculateMagnitude(double value)
         {
             return (int)(10000 * value);
+        }
+
+        private DirectInputSource GetAxisSource(DeviceObjectInstance instance)
+        {
+            InputSourceTypes type = InputSourceTypes.AxisX;
+            if (instance.ObjectType == ObjectGuid.XAxis || instance.ObjectType == ObjectGuid.RxAxis)
+            {
+                type = InputSourceTypes.AxisX;
+            }
+            else if (instance.ObjectType == ObjectGuid.YAxis || instance.ObjectType == ObjectGuid.RyAxis)
+            {
+                type = InputSourceTypes.AxisY;
+            }
+            else if (instance.ObjectType == ObjectGuid.ZAxis || instance.ObjectType == ObjectGuid.RzAxis)
+            {
+                type = InputSourceTypes.AxisZ;
+            }
+            int axisCount;
+            if (instance.Usage >= 48)
+            {
+                axisCount = instance.Usage - 48;
+            }
+            else
+            {
+                axisCount = instance.ObjectId.InstanceNumber;
+            }
+            string name = instance.Name;
+            return new DirectInputSource(name, type, instance.Offset, state => (GetAxisValue(axisCount)) / (double)ushort.MaxValue);
+        }
+
+        private DirectInputSource GetSliderSource(DeviceObjectInstance instance, int i)
+        {
+            string name = instance.Name;
+            return new DirectInputSource(name, InputSourceTypes.Slider, instance.Offset, state => (GetSliderValue(i + 1)) / (double)ushort.MaxValue);
         }
     }
 }

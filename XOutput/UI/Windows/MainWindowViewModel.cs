@@ -25,7 +25,7 @@ namespace XOutput.UI.Windows
     public class MainWindowViewModel : ViewModelBase<MainWindowModel>, IDisposable
     {
         private readonly int pid = Process.GetCurrentProcess().Id;
-        private const string SettingsFilePath = "settings.txt";
+        private const string SettingsFilePath = "settings.json";
         private const string GameControllersSettings = "joy.cpl";
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindowViewModel));

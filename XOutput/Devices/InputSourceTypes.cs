@@ -9,11 +9,15 @@ namespace XOutput.Devices
     /// <summary>
     /// Source types.
     /// </summary>
+    [Flags]
     public enum InputSourceTypes
     {
-        Axis,
-        Button,
-        Slider,
-        Disabled,
+        Disabled = 0,
+        Button = 1,
+        Slider = 2,
+        AxisX = 4,
+        AxisY = 8,
+        AxisZ = 16,
+        Axis = AxisX | AxisY | AxisZ,
     }
 }

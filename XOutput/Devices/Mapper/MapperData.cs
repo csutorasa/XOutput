@@ -28,7 +28,7 @@ namespace XOutput.Devices.Mapper
                 if (value != source)
                 {
                     source = value;
-                    InputType = source.DisplayName;
+                    InputType = source.Offset.ToString();
                 }
             }
         }

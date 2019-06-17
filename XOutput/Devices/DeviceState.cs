@@ -63,9 +63,9 @@ namespace XOutput.Devices
             changedSources.Add(source);
         }
 
-        public IEnumerable<InputSource> GetChanges()
+        public IEnumerable<InputSource> GetChanges(bool force = false)
         {
-            return changedSources;
+            return force ? values : changedSources;
         }
 
         public IEnumerable<int> GetChangedDpads()

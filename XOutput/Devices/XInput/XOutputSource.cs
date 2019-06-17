@@ -19,7 +19,7 @@ namespace XOutput.Devices.XInput
         XInputTypes inputType;
 
 
-        public XOutputSource(string name, XInputTypes type) : base(name, type.GetInputSourceType())
+        public XOutputSource(string name, XInputTypes type) : base(name, type.GetInputSourceType(), 0)
         {
             inputType = type;
         }

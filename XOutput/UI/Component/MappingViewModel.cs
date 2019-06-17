@@ -27,7 +27,7 @@ namespace XOutput.UI.Component
             {
                 Model.Inputs.Add(directInput);
             }
-            foreach (var directInput in device.Sources.Where(s => s.Type == InputSourceTypes.Axis))
+            foreach (var directInput in device.Sources.Where(s => InputSourceTypes.Axis.HasFlag(s.Type)))
             {
                 Model.Inputs.Add(directInput);
             }
