@@ -42,6 +42,10 @@ namespace XOutput.Devices.XInput.Vigem
             {
                 return false;
             }
+            catch (DllNotFoundException)
+            {
+                return false;
+            }
         }
 
         /// <summary>
