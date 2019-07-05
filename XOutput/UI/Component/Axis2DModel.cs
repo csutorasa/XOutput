@@ -67,19 +67,5 @@ namespace XOutput.UI.Component
                 }
             }
         }
-
-        private bool twoD;
-        public bool TwoD
-        {
-            get => twoD;
-            set
-            {
-                if (twoD != value)
-                {
-                    twoD = value;
-                    OnPropertyChanged(nameof(TwoD));
-                }
-            }
-        }
     }
 }

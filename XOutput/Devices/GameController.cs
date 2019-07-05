@@ -48,7 +48,6 @@ namespace XOutput.Devices
         public bool ForceFeedbackSupported => xOutputInterface is VigemDevice && inputDevice.ForceFeedbackCount > 0;
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(GameController));
-        private static readonly Controllers controllers = new Controllers();
 
         private readonly IInputDevice inputDevice;
         private readonly InputMapper mapper;
@@ -110,7 +109,7 @@ namespace XOutput.Devices
         {
             if (!HasXOutputInstalled)
                 return 0;
-            controllerCount = controllers.GetId();
+            controllerCount = Controllers.Instance.GetId();
             if (controller != null)
             {
                 controller.FeedbackReceived -= ControllerFeedbackReceived;
@@ -200,7 +199,7 @@ namespace XOutput.Devices
         {
             if (controllerCount != 0)
             {
-                controllers.DisposeId(controllerCount);
+                Controllers.Instance.DisposeId(controllerCount);
                 controllerCount = 0;
             }
         }

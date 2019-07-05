@@ -16,7 +16,6 @@ namespace XOutput.UI.Component
             Model.MaxX = maxx;
             Model.TypeY = typey;
             Model.MaxY = maxy;
-            Model.TwoD = true;
         }
 
         public void UpdateValues(IDevice device)

@@ -11,8 +11,20 @@ namespace XOutput.Devices
     /// </summary>
     public sealed class Controllers
     {
+        private static Controllers instance = new Controllers();
+        /// <summary>
+        /// Gets the singleton instance of the class.
+        /// </summary>
+        public static Controllers Instance => instance;
+
         private List<int> ids = new List<int>();
         private object lockObject = new object();
+        private List<GameController> controllers = new List<GameController>();
+
+        protected Controllers()
+        {
+
+        }
 
         /// <summary>
         /// Gets a new ID.
@@ -44,6 +56,36 @@ namespace XOutput.Devices
             {
                 ids.Remove(id);
             }
+        }
+
+        public void Add(GameController controller, bool refresh = false)
+        {
+            controllers.Add(controller);
+            if (refresh)
+            {
+                Update();
+            }
+        }
+
+        public void Remove(GameController controller)
+        {
+            controllers.Remove(controller);
+            Update();
+        }
+
+        public void Update()
+        {
+            var inputDevices = controllers.Select(x => x.InputDevice).ToArray();
+            foreach (var controller in controllers)
+            {
+                controller.Mapper.Attach(inputDevices);
+                controller.XInput.UpdateSources(controller.Mapper.GetInputs());
+            }
+        }
+
+        public IEnumerable<GameController> GetControllers()
+        {
+            return controllers.ToArray();
         }
     }
 }

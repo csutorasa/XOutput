@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="56"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Canvas Grid.Column="1" Canvas.Visibility="{Binding Model.TwoD, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Canvas Grid.Column="1">
                 <ProgressBar Value="{Binding Model.ValueX}" Maximum="{Binding Model.MaxX}" Height="6" Width="50" Canvas.Top="50" Canvas.Left="6"></ProgressBar>
                 <ProgressBar Value="{Binding Model.ValueY}" Maximum="{Binding Model.MaxY}" Width="6" Height="50" Orientation="Vertical">
                     <ProgressBar.RenderTransform>
@@ -40,17 +40,5 @@
                 </Border>
             </Canvas>
         </Grid>
-
-        <ProgressBar Grid.Column="1" Grid.ColumnSpan="2" Height="6" Value="{Binding Model.ValueX}" Maximum="{Binding Model.MaxX}">
-            <ProgressBar.Visibility>
-                <Binding Converter="{StaticResource InvertAndVisibilityConverter}" Path="Model.TwoD"/>
-            </ProgressBar.Visibility>
-        </ProgressBar>
-        <ProgressBar Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Height="6" Value="{Binding Model.ValueY}" Maximum="{Binding Model.MaxY}">
-            <ProgressBar.Visibility>
-                <Binding Converter="{StaticResource InvertAndVisibilityConverter}" Path="Model.TwoD"/>
-            </ProgressBar.Visibility>
-        </ProgressBar>
-        <CheckBox VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="3" Grid.RowSpan="2" IsChecked="{Binding Model.TwoD}"/>
     </Grid>
 </UserControl>

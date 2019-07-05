@@ -46,7 +46,7 @@ namespace XOutput.UI.Windows
             {
                 types = types.Where(t => !t.IsDPad());
             }
-            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), controller, types.ToArray()), types.Any()).ShowDialog();
+            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), Controllers.Instance.GetControllers().Select(c => c.InputDevice).ToArray(), controller.Mapper, types.ToArray()), types.Any()).ShowDialog();
             foreach (var v in Model.MapperAxisViews.Concat(Model.MapperButtonViews).Concat(Model.MapperDPadViews))
             {
                 v.Refresh();

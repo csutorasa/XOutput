@@ -140,10 +140,10 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 dpads = Enumerable.Range(0, joystick.Capabilities.PovCount)
                     .SelectMany(i => new DirectInputSource[] {
-                        new DirectInputSource(this, "DPad" + i + " Up", InputSourceTypes.Dpad, 1000 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Up) ? 1 : 0),
-                        new DirectInputSource(this, "DPad" + i + " Down", InputSourceTypes.Dpad, 1001 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Down) ? 1 : 0),
-                        new DirectInputSource(this, "DPad" + i + " Left", InputSourceTypes.Dpad, 1002 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Left) ? 1 : 0),
-                        new DirectInputSource(this, "DPad" + i + " Right", InputSourceTypes.Dpad, 1003 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Right) ? 1 : 0),
+                        new DirectInputSource(this, "DPad" + (i + 1) + " Up", InputSourceTypes.Dpad, 1000 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Up) ? 1 : 0),
+                        new DirectInputSource(this, "DPad" + (i + 1) + " Down", InputSourceTypes.Dpad, 1001 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Down) ? 1 : 0),
+                        new DirectInputSource(this, "DPad" + (i + 1) + " Left", InputSourceTypes.Dpad, 1002 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Left) ? 1 : 0),
+                        new DirectInputSource(this, "DPad" + (i + 1) + " Right", InputSourceTypes.Dpad, 1003 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Right) ? 1 : 0),
                     });
             }
             sources = buttons.Concat(axes).Concat(sliders).Concat(dpads).ToArray();
@@ -318,7 +318,7 @@ namespace XOutput.Devices.Input.DirectInput
                     var changes = state.GetChanges(force);
                     var dpadChanges = state.GetChangedDpads();
                     if (changes.Any() || dpadChanges.Any())
-                        InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changes, dpadChanges));
+                        InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(this, changes, dpadChanges));
                     return true;
                 }
                 catch (Exception ex)

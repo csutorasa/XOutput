@@ -19,6 +19,10 @@ namespace XOutput.Devices
     public class DeviceInputChangedEventArgs : EventArgs
     {
         /// <summary>
+        /// Gets the changed device.
+        /// </summary>
+        public IDevice Device => device;
+        /// <summary>
         /// Gets the changed values.
         /// </summary>
         public IEnumerable<InputSource> ChangedValues => changedValues.ToArray();
@@ -27,11 +31,13 @@ namespace XOutput.Devices
         /// </summary>
         public IEnumerable<int> ChangedDPads => changedDPads.ToArray();
 
+        protected IDevice device;
         protected IEnumerable<InputSource> changedValues;
         protected IEnumerable<int> changedDPads;
 
-        public DeviceInputChangedEventArgs(IEnumerable<InputSource> changedValues, IEnumerable<int> changedDPads)
+        public DeviceInputChangedEventArgs(IDevice device, IEnumerable<InputSource> changedValues, IEnumerable<int> changedDPads)
         {
+            this.device = device;
             this.changedDPads = changedDPads;
             this.changedValues = changedValues;
         }

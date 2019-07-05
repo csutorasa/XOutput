@@ -9,7 +9,7 @@
         d:DataContext="{d:DesignInstance Type=local:AutoConfigureViewModel, IsDesignTimeCreatable=False}"
         Loaded="WindowLoaded"
         Closed="WindowClosed"
-        Title="AutoConfigure" Height="550" Width="550" ResizeMode="CanMinimize">
+        Title="AutoConfigure" Height="620" Width="550" ResizeMode="CanMinimize">
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -17,6 +17,8 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -49,7 +51,11 @@
         <Label VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Content="{Binding Model.MinValue}"/>
         <Label VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='MaximumValue'}"/>
         <Label VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" Content="{Binding Model.MaxValue}"/>
-        <Grid Grid.Row="4" Grid.ColumnSpan="2" Visibility="{Binding Model.ButtonsVisibility}">
+        <Label VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SelectedValue'}"/>
+        <Label VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" Content="{Binding Model.MaxType}"/>
+        <Label VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='SelectedDevice'}"/>
+        <Label VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Content="{Binding Model.MaxType.InputDevice.DisplayName}"/>
+        <Grid Grid.Row="6" Grid.ColumnSpan="2" Visibility="{Binding Model.ButtonsVisibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -65,7 +71,7 @@
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Cancel'}" />
         </Grid>
 
-        <Components:XBox Grid.Row="5" Grid.ColumnSpan="2" 
+        <Components:XBox Grid.Row="7" Grid.ColumnSpan="2" 
                          XInputType="{Binding DataContext.Model.XInput, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" 
                          Highlight="{Binding DataContext.Model.Highlight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
 
