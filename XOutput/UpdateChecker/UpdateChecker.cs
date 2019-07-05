@@ -15,7 +15,7 @@ namespace XOutput.UpdateChecker
         /// <summary>
         /// GitHub URL to check the latest release version.
         /// </summary>
-        private const string GithubURL = "https://api.github.com/repos/csutorasa/XOutput/releases/latest";
+        private const string GithubURL = "https://raw.githubusercontent.com/csutorasa/XOutput/master/latest.version";
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(UpdateChecker));
         private readonly HttpClient client = new HttpClient();
@@ -33,9 +33,7 @@ namespace XOutput.UpdateChecker
         /// <returns></returns>
         private string GetLatestRelease(string response)
         {
-            string tagName = Regex.Match(response, "\"tag_name\":\".*?\"").Value;
-            string tags = tagName.Replace("\"tag_name\":\"", "");
-            return tags.Remove(tags.Length - 1);
+            return response;
         }
 
         /// <summary>
