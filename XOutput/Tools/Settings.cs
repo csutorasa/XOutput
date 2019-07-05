@@ -21,7 +21,6 @@ namespace XOutput.Tools
         private const string ShowAllKey = "ShowAll";
         private const string HidGuardianEnabledKey = "HidGuardianEnabled";
         private const string General = "General";
-        private const string KeyboardKey = "Keyboard";
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(Settings));
 
         /// <summary>
@@ -41,14 +40,16 @@ namespace XOutput.Tools
             return settings;
         }
 
-        public Dictionary<string, InputMapper> Inputs { get; set; }
+        public Dictionary<string, InputConfig> Input { get; set; }
+        public Dictionary<string, InputMapper> Mapping { get; set; }
         public bool CloseToTray { get; set; }
         public bool ShowAll { get; set; }
         public bool HidGuardianEnabled { get; set; }
 
         public Settings()
         {
-            Inputs = new Dictionary<string, InputMapper>();
+            Input = new Dictionary<string, InputConfig>();
+            Mapping = new Dictionary<string, InputMapper>();
         }
 
         /// <summary>
@@ -67,18 +68,36 @@ namespace XOutput.Tools
         /// <returns></returns>
         public InputMapper GetMapper(string id)
         {
-            if (!Inputs.ContainsKey(id))
+            if (!Mapping.ContainsKey(id))
             {
-                if (id == KeyboardKey)
-                {
-                    Inputs[id] = new InputMapper();
-                }
-                else
-                {
-                    Inputs[id] = new InputMapper();
-                }
+                Mapping[id] = new InputMapper();
             }
-            return Inputs[id];
+            return Mapping[id];
+        }
+
+        /// <summary>
+        /// Gets the input configuration with the given deviceID. If configuration are not saved in this settings, a new configuration will be returned.
+        /// </summary>
+        /// <param name="id">DeviceID</param>
+        /// <param name="initialValue">Default config</param>
+        /// <returns></returns>
+        public InputConfig GetInputConfiguration(string id, InputConfig initialValue)
+        {
+            if (initialValue == null)
+            {
+                Input[id] = new InputConfig();
+                return Input[id];
+            }
+            if (!Input.ContainsKey(id))
+            {
+                Input[id] = initialValue;
+                return Input[id];
+            }
+            InputConfig saved = Input[id];
+            initialValue.ForceFeedback = saved.ForceFeedback;
+            initialValue.StartWhenConnected = saved.StartWhenConnected;
+            Input[id] = initialValue;
+            return initialValue;
         }
     }
 }

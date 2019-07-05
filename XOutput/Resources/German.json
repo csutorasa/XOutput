@@ -21,7 +21,6 @@
   "ExitMenu": "Beenden",
   "FileMenu": "Datei",
   "ForceFeedback": "Force Feedback",
-  "ForceFeedbackMapped": "Die Force Feedback Rückmeldung wurde automatisch konfiguriert.",
   "ForceFeedbackUnsupported": "Die Force Feedback Rückmeldung wird nicht unterstützt.",
   "ForceFeedbackVigemOnly": "Die Force Feedback Rückmeldung funktioniert nur, wenn ViGEm installiert ist.",
   "ForceRefresh": "Aktualisierung erzwingen",

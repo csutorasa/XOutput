@@ -41,6 +41,8 @@ namespace XOutput.UI.Windows
             dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
             dispatcherTimer.Tick += DispatcherTimerTick;
             Model.TestButtonText = "Start";
+            Model.ForceFeedbackEnabled = controller.InputDevice.InputConfiguration.ForceFeedback;
+            Model.StartWhenConnected = controller.InputDevice.InputConfiguration.StartWhenConnected;
         }
 
         public void ConfigureAll()
@@ -92,7 +94,12 @@ namespace XOutput.UI.Windows
 
         public void SetStartWhenConnected()
         {
-            controller.Mapper.StartWhenConnected = Model.StartWhenConnected;
+            controller.InputDevice.InputConfiguration.StartWhenConnected = Model.StartWhenConnected;
+        }
+
+        public void SetForceFeedbackEnabled()
+        {
+            controller.InputDevice.InputConfiguration.ForceFeedback = Model.ForceFeedbackEnabled;
         }
 
         public void AddHidGuardian()
@@ -231,50 +238,28 @@ namespace XOutput.UI.Windows
         {
             if (controller.ForceFeedbackSupported)
             {
+                Model.ForceFeedbackText = "";
+                Model.ForceFeedbackEnabled = controller.InputDevice.InputConfiguration.ForceFeedback;
+                Model.ForceFeedbackAvailable = true;
+            }
+            else
+            {
+                Model.ForceFeedbackEnabled = false;
+                Model.ForceFeedbackAvailable = false;
                 if (controller.InputDevice.ForceFeedbackCount > 0)
                 {
-                    Model.ForceFeedbackText = "ForceFeedbackMapped";
-                    Model.ForceFeedbackEnabled = true;
+                    Model.ForceFeedbackText = "ForceFeedbackVigemOnly";
                 }
                 else
                 {
                     Model.ForceFeedbackText = "ForceFeedbackUnsupported";
-                    Model.ForceFeedbackEnabled = false;
                 }
-            }
-            else
-            {
-                Model.ForceFeedbackText = "ForceFeedbackVigemOnly";
-                Model.ForceFeedbackEnabled = false;
             }
         }
 
         private void CreateInputAxes()
         {
             var axes = controller.InputDevice.Sources.Where(s => InputSourceTypes.Axis.HasFlag(s.Type)).ToArray();
-            /*var xAxes = axes.Select((axis, i) => new { axis, i }).Where(x => x.i % 3 == 0).Select(x => x.axis);
-            var yAxes = axes.Select((axis, i) => new { axis, i }).Where(x => x.i % 3 == 1).Select(x => x.axis);
-            var zAxes = axes.Select((axis, i) => new { axis, i }).Where(x => x.i % 3 == 2).Select(x => x.axis);
-            for (int i = 0; i < Math.Max(xAxes.Count(), yAxes.Count()); i++)
-            {
-                var x = xAxes.ElementAtOrDefault(i);
-                var y = yAxes.ElementAtOrDefault(i);
-                if (x != null && y != null)
-                {
-                    Model.InputAxisViews.Add(new Axis2DView(new Axis2DViewModel(new Axis2DModel(), x, y)));
-                }
-                else
-                {
-                    if (x != null)
-                    {
-                        Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), x)));
-                    }
-                    if (y != null)
-                    {
-                        Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), y)));
-                    }
-                }
-            }*/
             foreach (var z in axes)
             {
                 if (axes.Contains(z))

@@ -18,11 +18,6 @@ namespace XOutput.Devices.Mapper
         /// </summary>
         public int SelectedDPad { get; set; }
 
-        /// <summary>
-        /// Starts the mapping when connected.
-        /// </summary>
-        public bool StartWhenConnected { get; set; }
-
         public Dictionary<XInputTypes, MapperData> Mappings { get; set; }
 
         public InputMapper()

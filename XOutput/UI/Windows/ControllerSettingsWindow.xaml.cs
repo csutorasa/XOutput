@@ -88,6 +88,11 @@ namespace XOutput.UI.Windows
             viewModel.SetStartWhenConnected();
         }
 
+        private void ForceFeedbackCheckBoxChecked(object sender, RoutedEventArgs e)
+        {
+            viewModel.SetForceFeedbackEnabled();
+        }
+
         private void AddHidGuardianButtonClick(object sender, RoutedEventArgs e)
         {
             viewModel.AddHidGuardian();

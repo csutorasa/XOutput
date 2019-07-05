@@ -82,6 +82,7 @@
     <Compile Include="Devices\DeviceState.cs" />
     <Compile Include="Devices\Input\DirectInput\DirectInputSource.cs" />
     <Compile Include="Devices\InputSourceTypes.cs" />
+    <Compile Include="Devices\Input\InputConfig.cs" />
     <Compile Include="Devices\Input\Keyboard\KeyboardSource.cs" />
     <Compile Include="Devices\SourceChangedEventArgs.cs" />
     <Compile Include="Devices\InputSource.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="UI\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\BlinkConverter.cs" />
     <Compile Include="UI\Converters\ColorConverter.cs" />
+    <Compile Include="UI\Converters\AllConverter.cs" />
     <Compile Include="UI\Converters\EnumerableCountToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\MultiConverter.cs" />
     <Compile Include="UI\Converters\EqualsToVisibilityConverter.cs" />

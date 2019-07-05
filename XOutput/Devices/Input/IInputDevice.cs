@@ -32,6 +32,10 @@ namespace XOutput.Devices.Input
         /// </summary>
         int ForceFeedbackCount { get; }
         /// <summary>
+        /// Gets input configuration.
+        /// </summary>
+        InputConfig InputConfiguration { get; }
+        /// <summary>
         /// Sets the force feedback motor values.
         /// </summary>
         /// <param name="big">Big motor value</param>
