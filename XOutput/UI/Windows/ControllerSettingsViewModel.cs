@@ -28,12 +28,6 @@ namespace XOutput.UI.Windows
                 Model.HidGuardianAdded = HidGuardianManager.Instance.IsAffected(controller.InputDevice.HardwareID);
             }
             Model.Title = controller.DisplayName;
-            if (controller.InputDevice.DPads.Any())
-            {
-                foreach (var i in Enumerable.Range(1, controller.InputDevice.DPads.Count()))
-                    Model.Dpads.Add(i);
-                Model.SelectedDPad = controller.Mapper.SelectedDPad + 1;
-            }
             CreateInputControls();
             CreateMappingControls();
             CreateXInputControls();
@@ -69,11 +63,6 @@ namespace XOutput.UI.Windows
             UpdateInputControls();
 
             UpdateXInputControls();
-        }
-
-        public void SelectedDPad()
-        {
-            controller.Mapper.SelectedDPad = Model.SelectedDPad - 1;
         }
 
         public void TestForceFeedback()
@@ -186,12 +175,9 @@ namespace XOutput.UI.Windows
             {
                 Model.MapperButtonViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
             }
-            if (!controller.InputDevice.DPads.Any())
+            foreach (var xInputType in XInputHelper.Instance.DPad)
             {
-                foreach (var xInputType in XInputHelper.Instance.DPad)
-                {
-                    Model.MapperDPadViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
-                }
+                Model.MapperDPadViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
             }
             foreach (var xInputType in XInputHelper.Instance.Axes)
             {

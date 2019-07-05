@@ -73,11 +73,6 @@ namespace XOutput.UI.Windows
             });
         }
 
-        private void ComboBoxSelected(object sender, RoutedEventArgs e)
-        {
-            viewModel.SelectedDPad();
-        }
-
         private void ForceFeedbackButtonClick(object sender, RoutedEventArgs e)
         {
             viewModel.TestForceFeedback();

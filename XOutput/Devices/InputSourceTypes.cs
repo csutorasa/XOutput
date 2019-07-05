@@ -15,9 +15,10 @@ namespace XOutput.Devices
         Disabled = 0,
         Button = 1,
         Slider = 2,
-        AxisX = 4,
-        AxisY = 8,
-        AxisZ = 16,
+        Dpad = 4,
+        AxisX = 8,
+        AxisY = 16,
+        AxisZ = 32,
         Axis = AxisX | AxisY | AxisZ,
     }
 }

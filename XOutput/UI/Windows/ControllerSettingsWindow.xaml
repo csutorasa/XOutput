@@ -40,18 +40,7 @@
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Axes'}">
                         <ItemsControl ItemsSource="{Binding Model.MapperAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
-                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}"
-                              Visibility="{Binding Model.MapperDPadViews, Converter={StaticResource EnumerableNotEmptyToVisibilityConverter}, ConverterParameter=invert}">
-                        <Grid>
-                            <Label Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AutomaticDPad'}"
-                               Visibility="{Binding Model.MapperDPadViews, Converter={StaticResource EnumerableCountToVisibilityConverter}, ConverterParameter='1|invert'}"/>
-                            <StackPanel Visibility="{Binding Model.MapperDPadViews, Converter={StaticResource EnumerableCountToVisibilityConverter}, ConverterParameter='1'}">
-                                <ComboBox ItemsSource="{Binding Model.Dpads}" SelectedItem="{Binding Model.SelectedDPad}" SelectionChanged="ComboBoxSelected"/>
-                            </StackPanel>
-                        </Grid>
-                    </GroupBox>
-                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}"
-                              Visibility="{Binding Model.MapperDPadViews, Converter={StaticResource EnumerableNotEmptyToVisibilityConverter}}">
+                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}">
                         <ItemsControl ItemsSource="{Binding Model.MapperDPadViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Buttons'}">
