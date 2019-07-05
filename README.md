@@ -24,7 +24,7 @@ Download the application:
 
 Install all the drivers for your controllers.
 
-Install both 32-bit and 64-bit DirectX drivers.
+Install or update both 32-bit and 64-bit DirectX.
 
 If you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
