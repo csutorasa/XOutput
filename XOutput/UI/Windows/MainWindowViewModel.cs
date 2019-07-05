@@ -156,11 +156,12 @@ namespace XOutput.UI.Windows
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, Model.IsAdmin, log));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
+            Controllers.Instance.Add(keyboardGameController);
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
             logger.Info("Keyboard controller is connected");
 
             initialized = true;
-            RefreshAttach();
+            Controllers.Instance.Update();
             HandleArgs();
         }
 
@@ -233,7 +234,7 @@ namespace XOutput.UI.Windows
                     Model.Controllers.Remove(controllerView);
                     logger.Info($"{controller.ToString()} is disconnected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerDisconnected"), controller.DisplayName));
-                    RefreshAttach();
+                    Controllers.Instance.Remove(controller);
                 }
             }
             foreach (var instance in instances)
@@ -253,7 +254,7 @@ namespace XOutput.UI.Windows
                     device.Disconnected += DispatchRefreshGameControllers;
                     logger.Info($"{controller.ToString()} is connected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
-                    RefreshAttach();
+                    Controllers.Instance.Add(controller, initialized);
                     if (controller.InputDevice.InputConfiguration.StartWhenConnected)
                     {
                         controllerView.ViewModel.Start();
@@ -314,20 +315,6 @@ namespace XOutput.UI.Windows
                         logger.Info($"{startupController} controller is started automatically");
                         break;
                     }
-                }
-            }
-        }
-
-        private void RefreshAttach()
-        {
-            if (initialized)
-            {
-                var controllers = Model.Controllers.Select(x => x.ViewModel.Model.Controller).ToArray();
-                var inputDevices = controllers.Select(x => x.InputDevice).ToArray();
-                foreach (var controller in controllers)
-                {
-                    controller.Mapper.Attach(inputDevices);
-                    controller.XInput.UpdateSources(controller.Mapper.GetInputs());
                 }
             }
         }

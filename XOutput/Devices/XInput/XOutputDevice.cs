@@ -118,7 +118,7 @@ namespace XOutput.Devices.XInput
             state.SetDPad(0, dPads[0]);
             var changedDPads = state.GetChangedDpads();
             if (changedDPads.Any() || changes.Any())
-                InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(changes, changedDPads));
+                InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(this, changes, changedDPads));
             return true;
         }
 

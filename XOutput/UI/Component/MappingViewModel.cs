@@ -43,7 +43,7 @@ namespace XOutput.UI.Component
 
         public void Configure()
         {
-            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), controller, new XInputTypes[] { Model.XInputType }), false).ShowDialog();
+            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), Controllers.Instance.GetControllers().Select(c => c.InputDevice).ToArray(), controller.Mapper, new XInputTypes[] { Model.XInputType }), false).ShowDialog();
             SetSelected(GetMapperData());
         }
 
