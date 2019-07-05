@@ -78,6 +78,10 @@ namespace XOutput.Devices.Input.DirectInput
         /// <para>Implements <see cref="IInputDevice.ForceFeedbackCount"/></para>
         /// </summary>
         public int ForceFeedbackCount => actuators.Count;
+        /// <summary>
+        /// <para>Implements <see cref="IInputDevice.InputConfiguration"/></para>
+        /// </summary>
+        public InputConfig InputConfiguration => inputConfig;
 
         public string HardwareID
         {
@@ -110,6 +114,7 @@ namespace XOutput.Devices.Input.DirectInput
         private readonly DeviceState state;
         private readonly EffectInfo force;
         private readonly Dictionary<DeviceObjectInstance, Effect> actuators;
+        private readonly InputConfig inputConfig;
         private bool connected = false;
         private Thread inputRefresher;
         private bool disposed = false;
@@ -157,6 +162,7 @@ namespace XOutput.Devices.Input.DirectInput
                 logger.Info("  " + obj.Name + " " + obj.ObjectId + " offset: " + obj.Offset + " objecttype: " + obj.ObjectType.ToString() + " " + obj.Usage);
             }
             state = new DeviceState(sources, joystick.Capabilities.PovCount);
+            inputConfig = new InputConfig(ForceFeedbackCount);
             inputRefresher = new Thread(InputRefresher);
             inputRefresher.Name = ToString() + " input reader";
             inputRefresher.SetApartmentState(ApartmentState.STA);
@@ -225,6 +231,11 @@ namespace XOutput.Devices.Input.DirectInput
         /// <param name="small">Small motor value</param>
         public void SetForceFeedback(double big, double small)
         {
+            if (!inputConfig.ForceFeedback)
+            {
+                big = 0;
+                small = 0;
+            }
             var values = new Dictionary<DeviceObjectInstance, Effect>(actuators);
             foreach (var pair in values)
             {

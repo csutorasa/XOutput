@@ -104,6 +104,20 @@ namespace XOutput.UI.Windows
             }
         }
 
+        private bool forceFeedbackAvailable;
+        public bool ForceFeedbackAvailable
+        {
+            get => forceFeedbackAvailable;
+            set
+            {
+                if (forceFeedbackAvailable != value)
+                {
+                    forceFeedbackAvailable = value;
+                    OnPropertyChanged(nameof(ForceFeedbackAvailable));
+                }
+            }
+        }
+
         private bool startWhenConnected;
         public bool StartWhenConnected
         {

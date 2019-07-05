@@ -61,12 +61,17 @@ namespace XOutput.Devices.Input.Keyboard
         /// <para>Implements <see cref="IInputDevice.ForceFeedbackCount"/></para>
         /// </summary>
         public int ForceFeedbackCount => 0;
+        /// <summary>
+        /// <para>Implements <see cref="IInputDevice.InputConfiguration"/></para>
+        /// </summary>
+        public InputConfig InputConfiguration => inputConfig;
         public string HardwareID => null;
         #endregion
 
         private Thread inputRefresher;
         private readonly KeyboardSource[] sources;
         private readonly DeviceState state;
+        private readonly InputConfig inputConfig;
 
         /// <summary>
         /// Creates a new keyboard device instance.
@@ -75,6 +80,7 @@ namespace XOutput.Devices.Input.Keyboard
         {
             sources = Enum.GetValues(typeof(Key)).OfType<Key>().Where(x => x != Key.None).OrderBy(x => x.ToString()).Select(x => new KeyboardSource(x.ToString(), x)).ToArray();
             state = new DeviceState(sources, 0);
+            inputConfig = new InputConfig();
             inputRefresher = new Thread(InputRefresher);
             inputRefresher.Name = "Keyboard input notification";
             inputRefresher.SetApartmentState(ApartmentState.STA);
@@ -113,7 +119,7 @@ namespace XOutput.Devices.Input.Keyboard
         /// <returns>Friendly name</returns>
         public override string ToString()
         {
-            return DisplayName;
+            return "Keyboard";
         }
 
         /// <summary>

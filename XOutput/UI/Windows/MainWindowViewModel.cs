@@ -149,7 +149,9 @@ namespace XOutput.UI.Windows
             RefreshGameControllers();
 
             logger.Debug("Creating keyboard controller");
-            var keyboardGameController = new GameController(new Devices.Input.Keyboard.Keyboard(), settings.GetMapper("Keyboard"));
+            Devices.Input.Keyboard.Keyboard keyboard = new Devices.Input.Keyboard.Keyboard();
+            InputConfig inputConfig = settings.GetInputConfiguration(keyboard.ToString(), keyboard.InputConfiguration);
+            var keyboardGameController = new GameController(keyboard, settings.GetMapper("Keyboard"));
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, Model.IsAdmin, log));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
@@ -238,6 +240,7 @@ namespace XOutput.UI.Windows
                     if (device == null)
                         continue;
                     InputMapper mapper = settings.GetMapper(device.ToString());
+                    InputConfig inputConfig = settings.GetInputConfiguration(device.ToString(), device.InputConfiguration);
                     GameController controller = new GameController(device, mapper);
                     var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, Model.IsAdmin, log));
                     controllerView.ViewModel.Model.CanStart = installed;
@@ -246,7 +249,7 @@ namespace XOutput.UI.Windows
                     device.Disconnected += DispatchRefreshGameControllers;
                     logger.Info($"{controller.ToString()} is connected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
-                    if (controller.Mapper.StartWhenConnected)
+                    if (controller.InputDevice.InputConfiguration.StartWhenConnected)
                     {
                         controllerView.ViewModel.Start();
                         logger.Info($"{controller.ToString()} controller is started automatically.");

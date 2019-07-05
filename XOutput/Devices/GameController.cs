@@ -64,14 +64,14 @@ namespace XOutput.Devices
             inputDevice = directInput;
             this.mapper = mapper;
             mapper.Attach(inputDevice);
-            xOutputInterface = createXOutput();
+            xOutputInterface = CreateXOutput();
             xInput = new XOutputDevice(directInput, mapper);
             if (mapper.SelectedDPad == -1 && directInput.DPads.Any())
                 mapper.SelectedDPad = 0;
             running = false;
         }
 
-        private IXOutputInterface createXOutput()
+        private IXOutputInterface CreateXOutput()
         {
             if (VigemDevice.IsAvailable())
             {

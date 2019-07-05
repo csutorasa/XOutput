@@ -58,24 +58,37 @@
                         <ItemsControl ItemsSource="{Binding Model.MapperButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceFeedback'}">
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Test'}"/>
-                            <Button Click="ForceFeedbackButtonClick" IsEnabled="{Binding Model.ForceFeedbackEnabled}">
-                                <TextBlock Margin="10 0">
-                                    <TextBlock.Text>
-                                        <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
-                                            <Binding Path="LanguageModel.Data"/>
-                                            <Binding Path="Model.TestButtonText"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </Button>
-                            <Label>
+                        <StackPanel>
+                            <Label Visibility="{Binding Model.ForceFeedbackAvailable, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource True}}">
                                 <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
                                     <Binding Path="LanguageModel.Data"/>
                                     <Binding Path="Model.ForceFeedbackText"/>
                                 </MultiBinding>
                             </Label>
+                            <StackPanel Orientation="Vertical" Visibility="{Binding Model.ForceFeedbackAvailable, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <CheckBox Margin="5" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceFeedback'}"
+                                      IsEnabled="{Binding Model.ForceFeedbackAvailable}" IsChecked="{Binding Model.ForceFeedbackEnabled}"
+                                      Checked="ForceFeedbackCheckBoxChecked" Unchecked="ForceFeedbackCheckBoxChecked"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Test'}"/>
+                                    <Button Click="ForceFeedbackButtonClick">
+                                        <Button.IsEnabled>
+                                            <MultiBinding Converter="{StaticResource AllConverter}">
+                                                <Binding Path="Model.ForceFeedbackEnabled"/>
+                                                <Binding Path="Model.ForceFeedbackAvailable"/>
+                                            </MultiBinding>
+                                        </Button.IsEnabled>
+                                        <TextBlock Margin="10 0">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
+                                                    <Binding Path="LanguageModel.Data"/>
+                                                    <Binding Path="Model.TestButtonText"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='OtherSettings'}">

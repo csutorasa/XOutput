@@ -50,7 +50,7 @@ namespace XOutput.Devices.XInput
         /// </summary>
         /// <param name="source">Direct input device</param>
         /// <param name="mapper">DirectInput to XInput mapper</param>
-        public XOutputDevice(IInputDevice source, Mapper.InputMapper mapper)
+        public XOutputDevice(IInputDevice source, InputMapper mapper)
         {
             this.source = source;
             this.mapper = mapper;
@@ -151,8 +151,26 @@ namespace XOutput.Devices.XInput
         /// <returns>Value</returns>
         public double Get(Enum inputType)
         {
-            // FIXME
-            return GetValues()[(XInputTypes)inputType];
+            if (inputType is XInputTypes)
+            {
+                XInputTypes xInputType = (XInputTypes)inputType;
+                if (xInputType.IsDPad())
+                {
+                    if (xInputType == XInputTypes.UP)
+                        return dPads[0].HasFlag(DPadDirection.Up) ? 1 : 0;
+                    if (xInputType == XInputTypes.LEFT)
+                        return dPads[0].HasFlag(DPadDirection.Left) ? 1 : 0;
+                    if (xInputType == XInputTypes.RIGHT)
+                        return dPads[0].HasFlag(DPadDirection.Right) ? 1 : 0;
+                    if (xInputType == XInputTypes.DOWN)
+                        return dPads[0].HasFlag(DPadDirection.Down) ? 1 : 0;
+                }
+                else
+                {
+                    return sources.First(s => s.XInputType == xInputType).Value;
+                }
+            }
+            return 0;
         }
     }
 }
