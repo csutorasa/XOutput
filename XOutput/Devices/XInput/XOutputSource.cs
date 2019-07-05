@@ -19,19 +19,19 @@ namespace XOutput.Devices.XInput
         XInputTypes inputType;
 
 
-        public XOutputSource(string name, XInputTypes type) : base(name, type.GetInputSourceType(), 0)
+        public XOutputSource(string name, XInputTypes type) : base(null, name, type.GetInputSourceType(), 0)
         {
             inputType = type;
         }
 
-        internal bool Refresh(IInputDevice source, InputMapper mapper)
+        internal bool Refresh(InputMapper mapper)
         {
             var mapping = mapper.GetMapping(inputType);
             if (mapping != null)
             {
                 double value = 0;
-                if (mapping.InputType != null)
-                    value = source.Get(mapping.Source);
+                if (mapping.InputType != null && mapping.InputDevice != null && mapping.Source != null)
+                    value = mapping.Source.Get();
                 double newValue = mapping.GetValue(value);
                 return RefreshValue(newValue);
             }

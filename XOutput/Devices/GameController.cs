@@ -63,7 +63,6 @@ namespace XOutput.Devices
         {
             inputDevice = directInput;
             this.mapper = mapper;
-            mapper.Attach(inputDevice);
             xOutputInterface = CreateXOutput();
             xInput = new XOutputDevice(directInput, mapper);
             if (mapper.SelectedDPad == -1 && directInput.DPads.Any())
@@ -168,7 +167,7 @@ namespace XOutput.Devices
 
         public override string ToString()
         {
-            return inputDevice.ToString();
+            return inputDevice.DisplayName + "(" + inputDevice.ToString() + ")";
         }
 
         private void ReadAndReportValues(Action onStop)

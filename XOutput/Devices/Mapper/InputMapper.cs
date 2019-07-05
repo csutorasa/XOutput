@@ -53,16 +53,21 @@ namespace XOutput.Devices.Mapper
             return Mappings[type.Value];
         }
 
-        public void Attach(IInputDevice inputDevice)
+        public void Attach(IEnumerable<IInputDevice> inputDevices)
         {
             foreach (var mapping in Mappings)
             {
-                if (mapping.Value.InputType != null)
+                mapping.Value.Source = null;
+                foreach (var inputDevice in inputDevices)
                 {
-                    mapping.Value.Source = inputDevice.Sources.FirstOrDefault(s => s.Offset.ToString() == mapping.Value.InputType);
+                    if (mapping.Value.InputDevice != null && mapping.Value.InputType != null && mapping.Value.InputDevice == inputDevice.UniqueId)
+                    {
+                        mapping.Value.Source = inputDevice.Sources.FirstOrDefault(s => s.Offset.ToString() == mapping.Value.InputType);
+                        inputDevice.RefreshInput(true);
+                        break;
+                    }
                 }
             }
-            inputDevice.RefreshInput(true);
         }
 
         /// <summary>

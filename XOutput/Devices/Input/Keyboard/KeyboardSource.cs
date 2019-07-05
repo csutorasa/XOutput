@@ -14,7 +14,7 @@ namespace XOutput.Devices.Input.Keyboard
     {
         private Key key;
 
-        public KeyboardSource(string name, Key key) : base(name, InputSourceTypes.Button, (int)key)
+        public KeyboardSource(IInputDevice inputDevice, string name, Key key) : base(inputDevice, name, InputSourceTypes.Button, (int)key)
         {
             this.key = key;
         }

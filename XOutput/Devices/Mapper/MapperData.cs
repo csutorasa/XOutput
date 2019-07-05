@@ -13,6 +13,10 @@ namespace XOutput.Devices.Mapper
     public class MapperData
     {
         /// <summary>
+        /// From data device
+        /// </summary>
+        public string InputDevice { get; set; }
+        /// <summary>
         /// From data type
         /// </summary>
         public string InputType { get; set; }
@@ -29,6 +33,7 @@ namespace XOutput.Devices.Mapper
                 {
                     source = value;
                     InputType = source.Offset.ToString();
+                    InputDevice = source.InputDevice.UniqueId;
                 }
             }
         }

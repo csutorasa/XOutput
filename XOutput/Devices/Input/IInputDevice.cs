@@ -20,6 +20,10 @@ namespace XOutput.Devices.Input
         /// </summary>
         string DisplayName { get; }
         /// <summary>
+        /// The unique ID of the controller.
+        /// </summary>
+        string UniqueId { get; }
+        /// <summary>
         /// Gets if the device is connected.
         /// </summary>
         bool Connected { get; }

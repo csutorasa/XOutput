@@ -77,7 +77,9 @@ namespace XOutput.UI.Component
                 Model.SelectedInput = mapperData.Source;
                 Model.ConfigVisibility = System.Windows.Visibility.Visible;
             }
-            SelectionChanged(Model.SelectedInput);
+            // FIXME
+            if (mapperData.Source != null)
+                SelectionChanged(Model.SelectedInput);
         }
 
         protected void SelectionChanged(InputSource type)
