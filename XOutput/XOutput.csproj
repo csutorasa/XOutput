@@ -295,6 +295,7 @@
     <None Include="Resources\Brazilian Portuguese.json" />
     <None Include="Resources\French.json" />
     <None Include="Resources\German.json" />
+    <None Include="Resources\Greek.json" />
     <None Include="Resources\Hungarian.json" />
     <None Include="Resources\Russian.json" />
     <None Include="Resources\Simplified Chinese.json" />

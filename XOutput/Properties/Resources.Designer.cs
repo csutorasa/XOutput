@@ -62,20 +62,20 @@ namespace XOutput.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///	&quot;FileMenu&quot;: &quot;Arquivo&quot;,
-        ///	&quot;SaveMenu&quot;: &quot;Salvar configuração&quot;,
-        ///	&quot;GameControllersMenu&quot;: &quot;Controladores de Jogo&quot;,
-        ///	&quot;ExitMenu&quot;: &quot;Sair&quot;,
-        ///	&quot;Language&quot;: &quot;Linguagem&quot;,
-        ///	&quot;HelpMenu&quot;: &quot;Ajuda&quot;,
-        ///	&quot;AboutMenu&quot;: &quot;Sobre&quot;,
-        ///	&quot;ToolsMenu&quot;: &quot;Ferramentas&quot;,
-        ///	&quot;SettingsMenu&quot;: &quot;Configurações&quot;,
-        ///	&quot;CloseToTray&quot;: &quot;Fechar a aplicação para a barra de tarefas&quot;,
-        ///	&quot;RunAtStartup&quot;: &quot;Abrir ao iniciar o Windows&quot;,
-        ///	&quot;OtherSettings&quot;: &quot;Outras configurações&quot;,
-        ///	&quot;StartWhenConnected&quot;: &quot;Iniciar a emulação quando o controle for conectado&quot;,
-        ///	&quot;Ga [rest of string was truncated]&quot;;.
+        ///  &quot;AboutContent&quot;: &quot;Criado por: https://github.com/csutorasa&quot;,
+        ///  &quot;AboutMenu&quot;: &quot;Sobre&quot;,
+        ///  &quot;AutomaticDPad&quot;: &quot;DPad é mapeado automaticamente&quot;,
+        ///  &quot;Axes&quot;: &quot;Eixos&quot;,
+        ///  &quot;Buttons&quot;: &quot;Botões&quot;,
+        ///  &quot;Cancel&quot;: &quot;Cancelar&quot;,
+        ///  &quot;CloseToTray&quot;: &quot;Fechar a aplicação para a barra de tarefas&quot;,
+        ///  &quot;Configure&quot;: &quot;Configurar&quot;,
+        ///  &quot;ConfigureAll&quot;: &quot;Configurar Todos&quot;,
+        ///  &quot;ControllerConnected&quot;: &quot;{0} está conectado.&quot;,
+        ///  &quot;ControllerDisconnected&quot;: &quot;{0} está desconectado.&quot;,
+        ///  &quot;DPad&quot;: &quot;DPad&quot;,
+        ///  &quot;Deadzone&quot;: &quot;Deadzone&quot;,
+        ///  &quot;DiagnosticsM [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Brazilian_Portuguese {
             get {
@@ -85,21 +85,21 @@ namespace XOutput.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;FileMenu&quot;: &quot;File&quot;,
-        ///  &quot;SaveMenu&quot;: &quot;Save configuration&quot;,
-        ///  &quot;GameControllersMenu&quot;: &quot;Game Controllers&quot;,
-        ///  &quot;ExitMenu&quot;: &quot;Exit&quot;,
-        ///  &quot;Language&quot;: &quot;Language&quot;,
-        ///  &quot;HelpMenu&quot;: &quot;Help&quot;,
+        ///  &quot;AboutContent&quot;: &quot;Created by: https://github.com/csutorasa&quot;,
         ///  &quot;AboutMenu&quot;: &quot;About&quot;,
-        ///  &quot;ToolsMenu&quot;: &quot;Tools&quot;,
-        ///  &quot;SettingsMenu&quot;: &quot;Settings&quot;,
+        ///  &quot;AutomaticDPad&quot;: &quot;DPad is automatically mapped&quot;,
+        ///  &quot;Axes&quot;: &quot;Axes&quot;,
+        ///  &quot;Buttons&quot;: &quot;Buttons&quot;,
+        ///  &quot;Cancel&quot;: &quot;Cancel&quot;,
         ///  &quot;CloseToTray&quot;: &quot;Close application to tray bar&quot;,
-        ///  &quot;RunAtStartup&quot;: &quot;Run at Windows startup&quot;,
-        ///  &quot;OtherSettings&quot;: &quot;Other settings&quot;,
-        ///  &quot;StartWhenConnected&quot;: &quot;Start emulation when controller is connected&quot;,
-        ///  &quot;GameControllers&quot;: &quot;Game Controllers&quot;,
-        /// [rest of string was truncated]&quot;;.
+        ///  &quot;Configure&quot;: &quot;Configure&quot;,
+        ///  &quot;ConfigureAll&quot;: &quot;Configure All&quot;,
+        ///  &quot;ControllerConnected&quot;: &quot;{0} is connected.&quot;,
+        ///  &quot;ControllerDisconnected&quot;: &quot;{0} is disconnected.&quot;,
+        ///  &quot;DPad&quot;: &quot;DPad&quot;,
+        ///  &quot;Deadzone&quot;: &quot;Deadzone&quot;,
+        ///  &quot;DiagnosticsMenu&quot;: &quot;Diagnostics&quot;,
+        ///  &quot; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string English {
             get {
@@ -109,20 +109,20 @@ namespace XOutput.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;FileMenu&quot;: &quot;Fichier&quot;,
-        ///  &quot;SaveMenu&quot;: &quot;Sauvegarder Configuration&quot;,
-        ///  &quot;GameControllersMenu&quot;: &quot;Controlleur de jeu&quot;,
-        ///  &quot;ExitMenu&quot;: &quot;Sortie&quot;,
-        ///  &quot;Language&quot;: &quot;Langue&quot;,
-        ///  &quot;HelpMenu&quot;: &quot;Aide&quot;,
+        ///  &quot;AboutContent&quot;: &quot;Created by: https://github.com/csutorasa&quot;,
         ///  &quot;AboutMenu&quot;: &quot;A Propos&quot;,
-        ///  &quot;ToolsMenu&quot;: &quot;Outils&quot;,
-        ///  &quot;SettingsMenu&quot;: &quot;Options&quot;,
+        ///  &quot;AutomaticDPad&quot;: &quot;DPad est mapper automatiquement&quot;,
+        ///  &quot;Axes&quot;: &quot;Axes&quot;,
+        ///  &quot;Buttons&quot;: &quot;Buttons&quot;,
+        ///  &quot;Cancel&quot;: &quot;Annuler&quot;,
         ///  &quot;CloseToTray&quot;: &quot;Reduire dans la barre des taches&quot;,
-        ///  &quot;RunAtStartup&quot;: &quot;lancer au demarrrage de windows&quot;,
-        ///  &quot;OtherSettings&quot;: &quot;Autre Options&quot;,
-        ///  &quot;StartWhenConnected&quot;: &quot;demarrer l&apos;emulation Automatiquement&quot;,
-        ///  &quot;GameControllers&quot;: &quot;Co [rest of string was truncated]&quot;;.
+        ///  &quot;Configure&quot;: &quot;Configurer&quot;,
+        ///  &quot;ConfigureAll&quot;: &quot;Configurer tout&quot;,
+        ///  &quot;ControllerConnected&quot;: &quot;{0} est connecter.&quot;,
+        ///  &quot;ControllerDisconnected&quot;: &quot;{0} est deconnecter.&quot;,
+        ///  &quot;DPad&quot;: &quot;DPad&quot;,
+        ///  &quot;Deadzone&quot;: &quot;Deadzone&quot;,
+        ///  &quot;DiagnosticsMenu&quot;: &quot;Diag [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string French {
             get {
@@ -132,19 +132,19 @@ namespace XOutput.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;FileMenu&quot;: &quot;Datei&quot;,
-        ///  &quot;SaveMenu&quot;: &quot;Konfigurationsdatei speichern&quot;,
-        ///  &quot;GameControllersMenu&quot;: &quot;Spielkontrollereinstellungen&quot;,
-        ///  &quot;ExitMenu&quot;: &quot;Beenden&quot;,
-        ///  &quot;Language&quot;: &quot;Sprache&quot;,
-        ///  &quot;HelpMenu&quot;: &quot;Hilfe&quot;,
+        ///  &quot;AboutContent&quot;: &quot;Erstellt von: https://github.com/csutorasa&quot;,
         ///  &quot;AboutMenu&quot;: &quot;Über&quot;,
-        ///  &quot;ToolsMenu&quot;: &quot;Werkzeuge&quot;,
-        ///  &quot;SettingsMenu&quot;: &quot;Einstellungen&quot;,
+        ///  &quot;AutomaticDPad&quot;: &quot;Steuerkreuz wurde automatisch konfiguriert&quot;,
+        ///  &quot;Axes&quot;: &quot;Achsen&quot;,
+        ///  &quot;Buttons&quot;: &quot;Tasten&quot;,
+        ///  &quot;Cancel&quot;: &quot;Abbrechen&quot;,
         ///  &quot;CloseToTray&quot;: &quot;In die Taskleiste minimieren&quot;,
-        ///  &quot;RunAtStartup&quot;: &quot;Beim Windows-Start ausführen&quot;,
-        ///  &quot;OtherSettings&quot;: &quot;Weitere Einstellungen&quot;,
-        ///  &quot;StartWhenConnected&quot;: &quot;Emulation starten wenn ein Kontroller verbu [rest of string was truncated]&quot;;.
+        ///  &quot;Configure&quot;: &quot;Konfigurieren&quot;,
+        ///  &quot;ConfigureAll&quot;: &quot;Alle konfigurieren&quot;,
+        ///  &quot;ControllerConnected&quot;: &quot;Kontroller {0} ist verbunden.&quot;,
+        ///  &quot;ControllerDisconnected&quot;: &quot;Kontroller {0} wurde getrennt.&quot;,
+        ///  &quot;DPad&quot;: &quot;Steuerkreuz&quot;,
+        ///  &quot;Deadzone [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string German {
             get {
@@ -154,20 +154,43 @@ namespace XOutput.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;FileMenu&quot;: &quot;Fájl&quot;,
-        ///  &quot;SaveMenu&quot;: &quot;Beállítások mentése&quot;,
-        ///  &quot;GameControllersMenu&quot;: &quot;Játék vezérlők&quot;,
-        ///  &quot;ExitMenu&quot;: &quot;Kilépés&quot;,
-        ///  &quot;Language&quot;: &quot;Nyelv&quot;,
-        ///  &quot;HelpMenu&quot;: &quot;Segítség&quot;,
+        ///  &quot;AboutContent&quot;: &quot;Δημιουργήθηκε από τον: https://github.com/csutorasa&quot;,
+        ///  &quot;AboutMenu&quot;: &quot;Πληροφορίες&quot;,
+        ///  &quot;AutomaticDPad&quot;: &quot;Το DPad ρυθμίζεται αυτόματα&quot;,
+        ///  &quot;Axes&quot;: &quot;Άξονες&quot;,
+        ///  &quot;Buttons&quot;: &quot;Κουμπιά&quot;,
+        ///  &quot;Cancel&quot;: &quot;Άκυρο&quot;,
+        ///  &quot;CloseToTray&quot;: &quot;Κλείσιμο της εφαρμογής στη γραμμή εργασιών&quot;,
+        ///  &quot;Configure&quot;: &quot;Ρύθμιση&quot;,
+        ///  &quot;ConfigureAll&quot;: &quot;Ρύθμιση Όλων&quot;,
+        ///  &quot;ControllerConnected&quot;: &quot;{0} συνδεδεμένο.&quot;,
+        ///  &quot;ControllerDisconnected&quot;: &quot;{0} αποσυνδεδεμένο.&quot;,
+        ///  &quot;DPad&quot;: &quot;DPad&quot;,
+        ///  &quot;Deadzone&quot;: &quot;Νεκρή ζώνη&quot;,
+        ///  &quot;Diagnostic [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Greek {
+            get {
+                return ResourceManager.GetString("Greek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;AboutContent&quot;: &quot;Készítette: https://github.com/csutorasa&quot;,
         ///  &quot;AboutMenu&quot;: &quot;Névjegy&quot;,
-        ///  &quot;ToolsMenu&quot;: &quot;Eszközök&quot;,
-        ///  &quot;SettingsMenu&quot;: &quot;Beállítások&quot;,
+        ///  &quot;AutomaticDPad&quot;: &quot;A DPad automatikusan megfeleltetve&quot;,
+        ///  &quot;Axes&quot;: &quot;Tengelyek&quot;,
+        ///  &quot;Buttons&quot;: &quot;Gombok&quot;,
+        ///  &quot;Cancel&quot;: &quot;Mégse&quot;,
         ///  &quot;CloseToTray&quot;: &quot;Alkalmazás bezárása a tálcára&quot;,
-        ///  &quot;RunAtStartup&quot;: &quot;Indítás a Windows betöltésekor&quot;,
-        ///  &quot;OtherSettings&quot;: &quot;Egyéb beállítások&quot;,
-        ///  &quot;StartWhenConnected&quot;: &quot;Emuláció indítása, amikor az eszközt csatlakoztatják&quot;,
-        ///  &quot;GameContr [rest of string was truncated]&quot;;.
+        ///  &quot;Configure&quot;: &quot;Konfigurálás&quot;,
+        ///  &quot;ConfigureAll&quot;: &quot;Összes konfigurálása&quot;,
+        ///  &quot;ControllerConnected&quot;: &quot;{0} eszközhöz kapcsolódva.&quot;,
+        ///  &quot;ControllerDisconnected&quot;: &quot;{0} eszközről lekapcsolódva.&quot;,
+        ///  &quot;DPad&quot;: &quot;DPad&quot;,
+        ///  &quot;Deadzone&quot;: &quot;Deadzone&quot;,
+        ///   [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Hungarian {
             get {
@@ -177,23 +200,20 @@ namespace XOutput.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;FileMenu&quot;: &quot;Файл&quot;,
-        ///  &quot;SaveMenu&quot;: &quot;Сохранить настройки&quot;,
-        ///  &quot;GameControllersMenu&quot;: &quot;Игровые контроллеры&quot;,
-        ///  &quot;ExitMenu&quot;: &quot;Выход&quot;,
-        ///  &quot;ToolsMenu&quot;: &quot;Инструменты&quot;,
-        ///  &quot;SettingsMenu&quot;: &quot;Параметры&quot;,
-        ///  &quot;CloseToTray&quot;: &quot;Закрывать в трей&quot;,
-        ///  &quot;Language&quot;: &quot;Язык&quot;,
-        ///  &quot;HelpMenu&quot;: &quot;Справка&quot;,
+        ///  &quot;AboutContent&quot;: &quot;Программа разработана: https://github.com/csutorasa&quot;,
         ///  &quot;AboutMenu&quot;: &quot;О программе&quot;,
-        ///  &quot;GameControllers&quot;: &quot;Игровые контроллеры&quot;,
-        ///  &quot;Output&quot;: &quot;События&quot;,
-        ///  &quot;ForceRefresh&quot;: &quot;Обновить&quot;,
-        ///  &quot;Edit&quot;: &quot;Настроить&quot;,
-        ///  &quot;Start&quot;: &quot;Запустить&quot;,
-        ///  &quot;Stop&quot;: &quot;Остановить&quot;,
-        ///  &quot;DirectInput&quot;: &quot;Di [rest of string was truncated]&quot;;.
+        ///  &quot;AutomaticDPad&quot;: &quot;DPad сконфигурирован автоматически&quot;,
+        ///  &quot;Axes&quot;: &quot;Оси&quot;,
+        ///  &quot;Buttons&quot;: &quot;Кнопки&quot;,
+        ///  &quot;Cancel&quot;: &quot;Отмена&quot;,
+        ///  &quot;CloseToTray&quot;: &quot;Закрывать в трей&quot;,
+        ///  &quot;Configure&quot;: &quot;Настроить&quot;,
+        ///  &quot;ConfigureAll&quot;: &quot;Настроить все&quot;,
+        ///  &quot;ControllerConnected&quot;: &quot;Контроллер \&quot;{0}\&quot; подключен.&quot;,
+        ///  &quot;ControllerDisconnected&quot;: &quot;Контроллер \&quot;{0}\&quot; отключен.&quot;,
+        ///  &quot;DPad&quot;: &quot;DPad&quot;,
+        ///  &quot;Deadzone&quot;: &quot;Мертвая зона&quot;,
+        ///  &quot;Diagn [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Russian {
             get {
@@ -203,27 +223,25 @@ namespace XOutput.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;FileMenu&quot;: &quot;文件&quot;,
-        ///  &quot;SaveMenu&quot;: &quot;保存配置&quot;,
-        ///  &quot;GameControllersMenu&quot;: &quot;游戏控制器&quot;,
-        ///  &quot;ExitMenu&quot;: &quot;退出&quot;,
-        ///  &quot;Language&quot;: &quot;语言&quot;,
-        ///  &quot;HelpMenu&quot;: &quot;帮助&quot;,
+        ///  &quot;AboutContent&quot;: &quot;作者：https://github.com/csutorasa&quot;,
         ///  &quot;AboutMenu&quot;: &quot;关于&quot;,
-        ///  &quot;ToolsMenu&quot;: &quot;工具&quot;,
-        ///  &quot;SettingsMenu&quot;: &quot;设置&quot;,
+        ///  &quot;AutomaticDPad&quot;: &quot;DPAD已自动映射&quot;,
+        ///  &quot;Axes&quot;: &quot;轴&quot;,
+        ///  &quot;Buttons&quot;: &quot;按钮&quot;,
+        ///  &quot;Cancel&quot;: &quot;取消&quot;,
         ///  &quot;CloseToTray&quot;: &quot;关闭应用程序到任务栏&quot;,
-        ///  &quot;RunAtStartup&quot;: &quot;在Windows启动时运行&quot;,
-        ///  &quot;OtherSettings&quot;: &quot;其他设置&quot;,
-        ///  &quot;StartWhenConnected&quot;: &quot;连接控制器时启动模拟&quot;,
-        ///  &quot;GameControllers&quot;: &quot;游戏控制器&quot;,
-        ///  &quot;Output&quot;: &quot;输出&quot;,
-        ///  &quot;ForceRefresh&quot;: &quot;强制刷新&quot;,
-        ///  &quot;Edit&quot;: &quot;编辑&quot;,
-        ///  &quot;Start&quot;: &quot;开始&quot;,
-        ///  &quot;Stop&quot;: &quot;停止&quot;,
+        ///  &quot;Configure&quot;: &quot;配置&quot;,
+        ///  &quot;ConfigureAll&quot;: &quot;全部配置&quot;,
+        ///  &quot;ControllerConnected&quot;: &quot;{0}已连接。&quot;,
+        ///  &quot;ControllerDisconnected&quot;: &quot;{0}已断开连接。&quot;,
+        ///  &quot;DPad&quot;: &quot;DPad&quot;,
+        ///  &quot;Deadzone&quot;: &quot;死角&quot;,
+        ///  &quot;DiagnosticsMenu&quot;: &quot;诊断&quot;,
         ///  &quot;DirectInput&quot;: &quot;DirectInput&quot;,
-        ///  [rest of string was truncated]&quot;;.
+        ///  &quot;Disable&quot;: &quot;禁用&quot;,
+        ///  &quot;Edit&quot;: &quot;编辑&quot;,
+        ///  &quot;EmulationStarted&quot;: &quot;{0}被模拟为控制器 #{1}.&quot;,
+        ///  &quot;E [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Simplified_Chinese {
             get {
@@ -233,20 +251,20 @@ namespace XOutput.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;FileMenu&quot;: &quot;Archivo&quot;,
-        ///  &quot;SaveMenu&quot;: &quot;Guardar configuración&quot;,
-        ///  &quot;GameControllersMenu&quot;: &quot;Dispositivos de juego&quot;,
-        ///  &quot;ExitMenu&quot;: &quot;Salir&quot;,
-        ///  &quot;Language&quot;: &quot;Idioma&quot;,
-        ///  &quot;HelpMenu&quot;: &quot;Ayuda&quot;,
+        ///  &quot;AboutContent&quot;: &quot;Creado por: https://github.com/csutorasa&quot;,
         ///  &quot;AboutMenu&quot;: &quot;Acerca de&quot;,
-        ///  &quot;ToolsMenu&quot;: &quot;Herramientas&quot;,
-        ///  &quot;SettingsMenu&quot;: &quot;Opciones&quot;,
+        ///  &quot;AutomaticDPad&quot;: &quot;El DPad está mapeado automáticamente&quot;,
+        ///  &quot;Axes&quot;: &quot;Ejes&quot;,
+        ///  &quot;Buttons&quot;: &quot;Botones&quot;,
+        ///  &quot;Cancel&quot;: &quot;Cancelar&quot;,
         ///  &quot;CloseToTray&quot;: &quot;Cerrar a la barra de tareas&quot;,
-        ///  &quot;RunAtStartup&quot;: &quot;Ejecutar al inicio de windows&quot;,
-        ///  &quot;OtherSettings&quot;: &quot;Otras opciones&quot;,
-        ///  &quot;StartWhenConnected&quot;: &quot;Iniciar la emulación cuando el control es conectado&quot;,
-        ///  &quot;GameC [rest of string was truncated]&quot;;.
+        ///  &quot;Configure&quot;: &quot;Configurar&quot;,
+        ///  &quot;ConfigureAll&quot;: &quot;Configurar Todos&quot;,
+        ///  &quot;ControllerConnected&quot;: &quot;{0} está conectado.&quot;,
+        ///  &quot;ControllerDisconnected&quot;: &quot;{0} fue desconectado.&quot;,
+        ///  &quot;DPad&quot;: &quot;DPad&quot;,
+        ///  &quot;Deadzone&quot;: &quot;Zona Muerta&quot;,
+        ///  &quot;DiagnosticsMenu [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Spanish {
             get {
