@@ -43,6 +43,10 @@ namespace XOutput.Devices.Input.DirectInput
         /// </summary>
         public Guid Id => deviceInstance.InstanceGuid;
         /// <summary>
+        /// <para>Implements <see cref="IInputDevice.UniqueId"/></para>
+        /// </summary>
+        public string UniqueId => deviceInstance.InstanceGuid.ToString();
+        /// <summary>
         /// Gets the product name of the device.
         /// <para>Implements <see cref="IInputDevice.DisplayName"/></para>
         /// </summary>
@@ -128,7 +132,7 @@ namespace XOutput.Devices.Input.DirectInput
         {
             this.deviceInstance = deviceInstance;
             this.joystick = joystick;
-            var buttons = joystick.GetObjects(DeviceObjectTypeFlags.Button).Where(b => b.Usage > 0).Take(128).Select(b => new DirectInputSource("Button " + b.Usage, InputSourceTypes.Button, b.Offset, state => state.Buttons[b.ObjectId.InstanceNumber] ? 1 : 0)).ToArray();
+            var buttons = joystick.GetObjects(DeviceObjectTypeFlags.Button).Where(b => b.Usage > 0).Take(128).Select(b => new DirectInputSource(this, "Button " + b.Usage, InputSourceTypes.Button, b.Offset, state => state.Buttons[b.ObjectId.InstanceNumber] ? 1 : 0)).ToArray();
             var axes = GetAxes().OrderBy(a => a.Usage).Take(24).Select(GetAxisSource);
             var sliders = GetSliders().OrderBy(a => a.Usage).Select(GetSliderSource);
             sources = buttons.Concat(axes).Concat(sliders).ToArray();
@@ -196,7 +200,7 @@ namespace XOutput.Devices.Input.DirectInput
         /// <returns>Friendly name</returns>
         public override string ToString()
         {
-            return DisplayName + "(" + Id + ")";
+            return UniqueId;
         }
 
         private void InputRefresher()
@@ -515,13 +519,13 @@ namespace XOutput.Devices.Input.DirectInput
                 axisCount = instance.ObjectId.InstanceNumber;
             }
             string name = instance.Name;
-            return new DirectInputSource(name, type, instance.Offset, state => (GetAxisValue(axisCount)) / (double)ushort.MaxValue);
+            return new DirectInputSource(this, name, type, instance.Offset, state => (GetAxisValue(axisCount)) / (double)ushort.MaxValue);
         }
 
         private DirectInputSource GetSliderSource(DeviceObjectInstance instance, int i)
         {
             string name = instance.Name;
-            return new DirectInputSource(name, InputSourceTypes.Slider, instance.Offset, state => (GetSliderValue(i + 1)) / (double)ushort.MaxValue);
+            return new DirectInputSource(this, name, InputSourceTypes.Slider, instance.Offset, state => (GetSliderValue(i + 1)) / (double)ushort.MaxValue);
         }
     }
 }

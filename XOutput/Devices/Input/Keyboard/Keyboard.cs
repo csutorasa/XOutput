@@ -45,7 +45,10 @@ namespace XOutput.Devices.Input.Keyboard
         /// <para>Implements <see cref="IInputDevice.Connected"/></para>
         /// </summary>
         public bool Connected => true;
-
+        /// <summary>
+        /// <para>Implements <see cref="IInputDevice.UniqueId"/></para>
+        /// </summary>
+        public string UniqueId => "Keyboard";
         /// <summary>
         /// Keyboards have no DPads.
         /// <para>Implements <see cref="IDevice.DPads"/></para>
@@ -78,7 +81,7 @@ namespace XOutput.Devices.Input.Keyboard
         /// </summary>
         public Keyboard()
         {
-            sources = Enum.GetValues(typeof(Key)).OfType<Key>().Where(x => x != Key.None).OrderBy(x => x.ToString()).Select(x => new KeyboardSource(x.ToString(), x)).ToArray();
+            sources = Enum.GetValues(typeof(Key)).OfType<Key>().Where(x => x != Key.None).OrderBy(x => x.ToString()).Select(x => new KeyboardSource(this, x.ToString(), x)).ToArray();
             state = new DeviceState(sources, 0);
             inputConfig = new InputConfig();
             inputRefresher = new Thread(InputRefresher);

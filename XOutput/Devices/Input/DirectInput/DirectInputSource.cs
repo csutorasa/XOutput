@@ -14,7 +14,7 @@ namespace XOutput.Devices.Input.DirectInput
     {
         private Func<JoystickState, double> valueGetter;
 
-        public DirectInputSource(string name, InputSourceTypes type, int offset, Func<JoystickState, double> valueGetter) : base(name, type, offset)
+        public DirectInputSource(IInputDevice inputDevice, string name, InputSourceTypes type, int offset, Func<JoystickState, double> valueGetter) : base(inputDevice, name, type, offset)
         {
             this.valueGetter = valueGetter;
         }

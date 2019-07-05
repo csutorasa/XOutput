@@ -94,7 +94,7 @@ namespace XOutput.Devices.XInput
             state.ResetChanges();
             foreach (var s in sources)
             {
-                if (s.Refresh(source, mapper))
+                if (s.Refresh(mapper))
                 {
                     state.MarkChanged(s);
                 }

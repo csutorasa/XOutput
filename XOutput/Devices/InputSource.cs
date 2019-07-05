@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Devices.Input;
 
 namespace XOutput.Devices
 {
@@ -24,6 +25,10 @@ namespace XOutput.Devices
         /// </summary>
         public InputSourceTypes Type => type;
         /// <summary>
+        /// The device of the source.
+        /// </summary>
+        public IInputDevice InputDevice => inputDevice;
+        /// <summary>
         /// The offset of the source.
         /// </summary>
         public int Offset => offset;
@@ -40,13 +45,15 @@ namespace XOutput.Devices
         /// </summary>
         public bool IsButton => type == InputSourceTypes.Button;
 
+        protected IInputDevice inputDevice;
         protected string name;
         protected InputSourceTypes type;
         protected int offset;
         protected double value;
 
-        public InputSource(string name, InputSourceTypes type, int offset)
+        public InputSource(IInputDevice inputDevice, string name, InputSourceTypes type, int offset)
         {
+            this.inputDevice = inputDevice;
             this.name = name;
             this.type = type;
             this.offset = offset;
@@ -72,6 +79,15 @@ namespace XOutput.Devices
             }
             return false;
         }
+
+        public double Get()
+        {
+            if (inputDevice != null)
+            {
+                return inputDevice.Get(this);
+            }
+            return 0;
+        }
     }
 
     public class DisabledInputSource : InputSource
@@ -79,7 +95,7 @@ namespace XOutput.Devices
         public static InputSource Instance => instance;
         private static InputSource instance = new DisabledInputSource();
 
-        private DisabledInputSource() : base("", InputSourceTypes.Disabled, 0)
+        private DisabledInputSource() : base(null, "", InputSourceTypes.Disabled, 0)
         {
 
         }

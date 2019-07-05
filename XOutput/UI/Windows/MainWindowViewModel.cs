@@ -35,6 +35,7 @@ namespace XOutput.UI.Windows
         private readonly Dispatcher dispatcher;
         private Settings settings;
         private bool installed;
+        private bool initialized = false;
 
         public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher) : base(model)
         {
@@ -158,6 +159,8 @@ namespace XOutput.UI.Windows
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
             logger.Info("Keyboard controller is connected");
 
+            initialized = true;
+            RefreshAttach();
             HandleArgs();
         }
 
@@ -230,6 +233,7 @@ namespace XOutput.UI.Windows
                     Model.Controllers.Remove(controllerView);
                     logger.Info($"{controller.ToString()} is disconnected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerDisconnected"), controller.DisplayName));
+                    RefreshAttach();
                 }
             }
             foreach (var instance in instances)
@@ -249,6 +253,7 @@ namespace XOutput.UI.Windows
                     device.Disconnected += DispatchRefreshGameControllers;
                     logger.Info($"{controller.ToString()} is connected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
+                    RefreshAttach();
                     if (controller.InputDevice.InputConfiguration.StartWhenConnected)
                     {
                         controllerView.ViewModel.Start();
@@ -309,6 +314,19 @@ namespace XOutput.UI.Windows
                         logger.Info($"{startupController} controller is started automatically");
                         break;
                     }
+                }
+            }
+        }
+
+        private void RefreshAttach()
+        {
+            if (initialized)
+            {
+                var controllers = Model.Controllers.Select(x => x.ViewModel.Model.Controller).ToArray();
+                var inputDevices = controllers.Select(x => x.InputDevice).ToArray();
+                foreach (var controller in controllers)
+                {
+                    controller.Mapper.Attach(inputDevices);
                 }
             }
         }
