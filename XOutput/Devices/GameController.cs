@@ -64,9 +64,7 @@ namespace XOutput.Devices
             inputDevice = directInput;
             this.mapper = mapper;
             xOutputInterface = CreateXOutput();
-            xInput = new XOutputDevice(directInput, mapper);
-            if (mapper.SelectedDPad == -1 && directInput.DPads.Any())
-                mapper.SelectedDPad = 0;
+            xInput = new XOutputDevice(mapper);
             running = false;
         }
 

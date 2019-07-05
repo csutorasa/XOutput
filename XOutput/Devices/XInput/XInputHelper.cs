@@ -50,7 +50,8 @@ namespace XOutput.Devices.XInput
         {
             var buttonSources = buttons.Select(b => new XOutputSource(b.ToString(), b));
             var axisSources = axes.Select(a => new XOutputSource(a.ToString(), a));
-            return buttonSources.Concat(axisSources).ToArray();
+            var dpadSources = dPad.Select(d => new XOutputSource(d.ToString(), d));
+            return buttonSources.Concat(axisSources).Concat(dpadSources).ToArray();
         }
 
         /// <summary>
@@ -177,6 +178,10 @@ namespace XOutput.Devices.XInput
             else if (input.IsButton())
             {
                 return InputSourceTypes.Button;
+            }
+            else if (input.IsDPad())
+            {
+                return InputSourceTypes.Dpad;
             }
             throw new NotImplementedException("ERROR");
         }

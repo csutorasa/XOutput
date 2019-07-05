@@ -135,7 +135,18 @@ namespace XOutput.Devices.Input.DirectInput
             var buttons = joystick.GetObjects(DeviceObjectTypeFlags.Button).Where(b => b.Usage > 0).Take(128).Select(b => new DirectInputSource(this, "Button " + b.Usage, InputSourceTypes.Button, b.Offset, state => state.Buttons[b.ObjectId.InstanceNumber] ? 1 : 0)).ToArray();
             var axes = GetAxes().OrderBy(a => a.Usage).Take(24).Select(GetAxisSource);
             var sliders = GetSliders().OrderBy(a => a.Usage).Select(GetSliderSource);
-            sources = buttons.Concat(axes).Concat(sliders).ToArray();
+            IEnumerable<DirectInputSource> dpads = new DirectInputSource[0];
+            if (joystick.Capabilities.PovCount > 0)
+            {
+                dpads = Enumerable.Range(0, joystick.Capabilities.PovCount)
+                    .SelectMany(i => new DirectInputSource[] {
+                        new DirectInputSource(this, "DPad" + i + " Up", InputSourceTypes.Dpad, 1000 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Up) ? 1 : 0),
+                        new DirectInputSource(this, "DPad" + i + " Down", InputSourceTypes.Dpad, 1001 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Down) ? 1 : 0),
+                        new DirectInputSource(this, "DPad" + i + " Left", InputSourceTypes.Dpad, 1002 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Left) ? 1 : 0),
+                        new DirectInputSource(this, "DPad" + i + " Right", InputSourceTypes.Dpad, 1003 + i * 4, state => GetDPadValue(i).HasFlag(DPadDirection.Right) ? 1 : 0),
+                    });
+            }
+            sources = buttons.Concat(axes).Concat(sliders).Concat(dpads).ToArray();
 
             joystick.Properties.AxisMode = DeviceAxisMode.Absolute;
             try

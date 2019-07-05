@@ -327,6 +327,7 @@ namespace XOutput.UI.Windows
                 foreach (var controller in controllers)
                 {
                     controller.Mapper.Attach(inputDevices);
+                    controller.XInput.UpdateSources(controller.Mapper.GetInputs());
                 }
             }
         }

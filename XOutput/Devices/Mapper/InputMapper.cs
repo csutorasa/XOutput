@@ -13,17 +13,18 @@ namespace XOutput.Devices.Mapper
     /// </summary>
     public class InputMapper
     {
-        /// <summary>
-        /// DPad index to use
-        /// </summary>
-        public int SelectedDPad { get; set; }
-
         public Dictionary<XInputTypes, MapperData> Mappings { get; set; }
+
+        private ISet<IInputDevice> inputs = new HashSet<IInputDevice>();
 
         public InputMapper()
         {
             Mappings = new Dictionary<XInputTypes, MapperData>();
-            SelectedDPad = -1;
+        }
+
+        public ISet<IInputDevice> GetInputs()
+        {
+            return inputs;
         }
 
         /// <summary>
@@ -55,6 +56,7 @@ namespace XOutput.Devices.Mapper
 
         public void Attach(IEnumerable<IInputDevice> inputDevices)
         {
+            inputs.Clear();
             foreach (var mapping in Mappings)
             {
                 mapping.Value.Source = null;
@@ -63,10 +65,14 @@ namespace XOutput.Devices.Mapper
                     if (mapping.Value.InputDevice != null && mapping.Value.InputType != null && mapping.Value.InputDevice == inputDevice.UniqueId)
                     {
                         mapping.Value.Source = inputDevice.Sources.FirstOrDefault(s => s.Offset.ToString() == mapping.Value.InputType);
-                        inputDevice.RefreshInput(true);
+                        inputs.Add(inputDevice);
                         break;
                     }
                 }
+            }
+            foreach (var inputDevice in inputs)
+            {
+                inputDevice.RefreshInput(true);
             }
         }
 

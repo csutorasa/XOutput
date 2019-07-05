@@ -39,7 +39,7 @@ namespace XOutput.Devices.XInput
         public IEnumerable<InputSource> Sources => sources;
         #endregion
 
-        private readonly IInputDevice source;
+        private IEnumerable<IInputDevice> boundSources = new List<IInputDevice>();
         private readonly InputMapper mapper;
         private readonly DPadDirection[] dPads = new DPadDirection[DPadCount];
         private readonly XOutputSource[] sources;
@@ -50,13 +50,11 @@ namespace XOutput.Devices.XInput
         /// </summary>
         /// <param name="source">Direct input device</param>
         /// <param name="mapper">DirectInput to XInput mapper</param>
-        public XOutputDevice(IInputDevice source, InputMapper mapper)
+        public XOutputDevice(InputMapper mapper)
         {
-            this.source = source;
             this.mapper = mapper;
             sources = XInputHelper.Instance.GenerateSources();
             state = new DeviceState(sources, DPadCount);
-            source.InputChanged += SourceInputChanged;
         }
 
         ~XOutputDevice()
@@ -64,9 +62,25 @@ namespace XOutput.Devices.XInput
             Dispose();
         }
 
+        public void UpdateSources(IEnumerable<IInputDevice> sources)
+        {
+            foreach (var source in boundSources)
+            {
+                source.InputChanged -= SourceInputChanged;
+            }
+            boundSources = sources;
+            foreach (var source in boundSources)
+            {
+                source.InputChanged += SourceInputChanged;
+            }
+        }
+
         public void Dispose()
         {
-            source.InputChanged -= SourceInputChanged;
+            foreach (var source in boundSources)
+            {
+                source.InputChanged -= SourceInputChanged;
+            }
         }
 
         /// <summary>
@@ -100,14 +114,7 @@ namespace XOutput.Devices.XInput
                 }
             }
             var changes = state.GetChanges(force);
-            if (mapper.SelectedDPad != -1)
-            {
-                dPads[0] = source.DPads.ElementAt(mapper.SelectedDPad);
-            }
-            else
-            {
-                dPads[0] = DPadHelper.GetDirection(GetBool(XInputTypes.UP), GetBool(XInputTypes.DOWN), GetBool(XInputTypes.LEFT), GetBool(XInputTypes.RIGHT));
-            }
+            dPads[0] = DPadHelper.GetDirection(GetBool(XInputTypes.UP), GetBool(XInputTypes.DOWN), GetBool(XInputTypes.LEFT), GetBool(XInputTypes.RIGHT));
             state.SetDPad(0, dPads[0]);
             var changedDPads = state.GetChangedDpads();
             if (changedDPads.Any() || changes.Any())
@@ -126,10 +133,6 @@ namespace XOutput.Devices.XInput
             {
                 newValues[source.XInputType] = source.Value;
             }
-            newValues[XInputTypes.UP] = dPads[0].HasFlag(DPadDirection.Up) ? 1 : 0;
-            newValues[XInputTypes.LEFT] = dPads[0].HasFlag(DPadDirection.Left) ? 1 : 0;
-            newValues[XInputTypes.RIGHT] = dPads[0].HasFlag(DPadDirection.Right) ? 1 : 0;
-            newValues[XInputTypes.DOWN] = dPads[0].HasFlag(DPadDirection.Down) ? 1 : 0;
             return newValues;
         }
 
@@ -153,22 +156,7 @@ namespace XOutput.Devices.XInput
         {
             if (inputType is XInputTypes)
             {
-                XInputTypes xInputType = (XInputTypes)inputType;
-                if (xInputType.IsDPad())
-                {
-                    if (xInputType == XInputTypes.UP)
-                        return dPads[0].HasFlag(DPadDirection.Up) ? 1 : 0;
-                    if (xInputType == XInputTypes.LEFT)
-                        return dPads[0].HasFlag(DPadDirection.Left) ? 1 : 0;
-                    if (xInputType == XInputTypes.RIGHT)
-                        return dPads[0].HasFlag(DPadDirection.Right) ? 1 : 0;
-                    if (xInputType == XInputTypes.DOWN)
-                        return dPads[0].HasFlag(DPadDirection.Down) ? 1 : 0;
-                }
-                else
-                {
-                    return sources.First(s => s.XInputType == xInputType).Value;
-                }
+                return sources.First(s => s.XInputType == (XInputTypes)inputType).Value;
             }
             return 0;
         }
