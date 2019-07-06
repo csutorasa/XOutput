@@ -1,6 +1,7 @@
 ﻿{
   "AboutContent": "Программа разработана: https://github.com/csutorasa",
   "AboutMenu": "О программе",
+  "AddController": "Add controller",
   "AutomaticDPad": "DPad сконфигурирован автоматически",
   "Axes": "Оси",
   "Buttons": "Кнопки",
@@ -51,6 +52,7 @@
   "OtherSettings": "Дополнительные настройки",
   "Output": "События",
   "Range": "Диапазон",
+  "RemoveController": "Remove",
   "RunAtStartup": "Запускать при старте Windows",
   "Save": "Сохранить",
   "SaveConfiguration": "Сохранить настройки",

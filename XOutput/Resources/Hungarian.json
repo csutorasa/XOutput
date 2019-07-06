@@ -1,6 +1,7 @@
 ﻿{
   "AboutContent": "Készítette: https://github.com/csutorasa",
   "AboutMenu": "Névjegy",
+  "AddController": "Vezérlő hozzáadás",
   "AutomaticDPad": "A DPad automatikusan megfeleltetve",
   "Axes": "Tengelyek",
   "Buttons": "Gombok",
@@ -51,6 +52,7 @@
   "OtherSettings": "Egyéb beállítások",
   "Output": "Kimenet",
   "Range": "Tartomány",
+  "RemoveController": "Törlés",
   "RunAtStartup": "Indítás a Windows betöltésekor",
   "Save": "Mentés",
   "SaveConfiguration": "Beállítások mentése",
