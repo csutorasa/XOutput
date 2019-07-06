@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using XOutput.Devices.Input;
+using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
 using XOutput.Devices.XInput.SCPToolkit;
@@ -62,6 +63,14 @@ namespace XOutput.Devices
             this.mapper = mapper;
             xOutputInterface = CreateXOutput();
             xInput = new XOutputDevice(mapper);
+            if (!string.IsNullOrEmpty(mapper.ForceFeedbackDevice))
+            {
+                var device = InputDevices.Instance.GetDevices().OfType<DirectDevice>().FirstOrDefault(d => d.UniqueId == mapper.ForceFeedbackDevice);
+                if (device != null)
+                {
+                    ForceFeedbackDevice = device;
+                }
+            }
             running = false;
         }
 
