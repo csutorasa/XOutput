@@ -246,6 +246,10 @@ namespace XOutput.Devices.Input.DirectInput
         /// <param name="small">Small motor value</param>
         public void SetForceFeedback(double big, double small)
         {
+            if (ForceFeedbackCount == 0)
+            {
+                return;
+            }
             if (!inputConfig.ForceFeedback)
             {
                 big = 0;

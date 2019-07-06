@@ -44,7 +44,7 @@
                 <MenuItem Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AboutMenu'}" Click="AboutClick"/>
             </MenuItem>
         </Menu>
-        <GroupBox Grid.Row="1" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='GameControllers'}" Margin="0,0,0,5">
+        <GroupBox Grid.Row="1" Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DirectInput'}" Margin="0,0,0,5">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Bottom">
                     <CheckBox IsChecked="{Binding Model.AllDevices}" Checked="CheckBoxChecked" Unchecked="CheckBoxChecked"
