@@ -22,8 +22,6 @@ namespace XOutput.UI.Component
             this.controller = controller;
             var mapperData = controller.Mapper.GetMapping(inputType);
             Model.XInputType = inputType;
-            if (mapperData != null && mapperData.InputType == null)
-                mapperData.Source = null; // FIXME device.Sources.Where(s => s.Type == InputSourceTypes.Button).FirstOrDefault();
             Model.MapperData = mapperData;
             SetSelected(mapperData);
         }
@@ -64,7 +62,6 @@ namespace XOutput.UI.Component
                 Model.SelectedInput = mapperData.Source;
                 Model.ConfigVisibility = System.Windows.Visibility.Visible;
             }
-            // FIXME
             if (mapperData.Source != null)
                 SelectionChanged(Model.SelectedInput);
         }
