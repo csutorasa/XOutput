@@ -1,6 +1,7 @@
 ﻿{
   "AboutContent": "Created by: https://github.com/csutorasa",
   "AboutMenu": "About",
+  "AddController": "Add controller",
   "AutomaticDPad": "DPad is automatically mapped",
   "Axes": "Axes",
   "Buttons": "Buttons",
@@ -51,6 +52,7 @@
   "OtherSettings": "Other settings",
   "Output": "Output",
   "Range": "Range",
+  "RemoveController": "Remove",
   "RunAtStartup": "Run at Windows startup",
   "Save": "Save",
   "SaveConfiguration": "Save configuration",

@@ -1,6 +1,7 @@
 ﻿{
   "AboutContent": "Δημιουργήθηκε από τον: https://github.com/csutorasa",
   "AboutMenu": "Πληροφορίες",
+  "AddController": "Add controller",
   "AutomaticDPad": "Το DPad ρυθμίζεται αυτόματα",
   "Axes": "Άξονες",
   "Buttons": "Κουμπιά",
@@ -51,6 +52,7 @@
   "OtherSettings": "Άλλες ρυθμίσεις",
   "Output": "Έξοδος",
   "Range": "Εύρος",
+  "RemoveController": "Remove",
   "RunAtStartup": "Εκτέλεση με την εκκίνηση των Windows",
   "Save": "Αποθήκευση",
   "SaveConfiguration": "Αποθήκευση ρυθμίσεων",
@@ -88,5 +90,5 @@
   "XInputTypes.R2": "RT",
   "XInputTypes.R3": "RTB",
   "XInputTypes.RIGHT": "Δεξιά",
-  "XInputTypes.UP": "Πάνω",
+  "XInputTypes.UP": "Πάνω"
 }

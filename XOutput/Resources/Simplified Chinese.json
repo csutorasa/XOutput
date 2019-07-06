@@ -1,6 +1,7 @@
 ﻿{
   "AboutContent": "作者：https://github.com/csutorasa",
   "AboutMenu": "关于",
+  "AddController": "Add controller",
   "AutomaticDPad": "DPAD已自动映射",
   "Axes": "轴",
   "Buttons": "按钮",
@@ -51,6 +52,7 @@
   "OtherSettings": "其他设置",
   "Output": "输出",
   "Range": "范围",
+  "RemoveController": "Remove",
   "RunAtStartup": "在Windows启动时运行",
   "Save": "保存",
   "SaveConfiguration": "保存配置",
