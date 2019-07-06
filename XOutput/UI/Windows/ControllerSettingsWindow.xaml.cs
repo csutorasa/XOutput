@@ -72,5 +72,10 @@ namespace XOutput.UI.Windows
         {
             viewModel.SetForceFeedback();
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            controller.Mapper.Name = ViewModel.Model.Title;
+        }
     }
 }

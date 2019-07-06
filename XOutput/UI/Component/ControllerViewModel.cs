@@ -34,6 +34,7 @@ namespace XOutput.UI.Component
         {
             var controllerSettingsWindow = new ControllerSettingsWindow(new ControllerSettingsViewModel(new ControllerSettingsModel(), Model.Controller, isAdmin), Model.Controller);
             controllerSettingsWindow.ShowDialog();
+            Model.RefreshName();
         }
 
         public void StartStop()
