@@ -33,7 +33,6 @@ namespace XOutput.UI.Windows
         {
             this.controller = controller;
             this.viewModel = viewModel;
-            controller.InputDevice.Disconnected += Disconnected;
             DataContext = viewModel;
             InitializeComponent();
         }
@@ -53,7 +52,6 @@ namespace XOutput.UI.Windows
 
         protected override void OnClosed(EventArgs e)
         {
-            controller.InputDevice.Disconnected -= Disconnected;
             timer.Tick -= TimerTick;
             timer.Stop();
             viewModel.Dispose();
@@ -65,37 +63,9 @@ namespace XOutput.UI.Windows
             viewModel.ConfigureAll();
         }
 
-        void Disconnected(object sender, DeviceDisconnectedEventArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                Close();
-            });
-        }
-
-        private void ForceFeedbackButtonClick(object sender, RoutedEventArgs e)
-        {
-            viewModel.TestForceFeedback();
-        }
-
         private void CheckBoxChecked(object sender, RoutedEventArgs e)
         {
             viewModel.SetStartWhenConnected();
-        }
-
-        private void ForceFeedbackCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            viewModel.SetForceFeedbackEnabled();
-        }
-
-        private void AddHidGuardianButtonClick(object sender, RoutedEventArgs e)
-        {
-            viewModel.AddHidGuardian();
-        }
-
-        private void RemoveHidGuardianButtonClick(object sender, RoutedEventArgs e)
-        {
-            viewModel.RemoveHidGuardian();
         }
     }
 }

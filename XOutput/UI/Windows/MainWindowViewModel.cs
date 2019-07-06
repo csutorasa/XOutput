@@ -35,7 +35,6 @@ namespace XOutput.UI.Windows
         private readonly Dispatcher dispatcher;
         private Settings settings;
         private bool installed;
-        private bool initialized = false;
 
         public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher) : base(model)
         {
@@ -152,17 +151,13 @@ namespace XOutput.UI.Windows
             logger.Debug("Creating keyboard controller");
             Devices.Input.Keyboard.Keyboard keyboard = new Devices.Input.Keyboard.Keyboard();
             InputConfig inputConfig = settings.GetInputConfiguration(keyboard.ToString(), keyboard.InputConfiguration);
-            var keyboardGameController = new GameController(keyboard, settings.GetMapper("Keyboard"));
-            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, Model.IsAdmin, log));
-            controllerView.ViewModel.Model.CanStart = installed;
-            Model.Controllers.Add(controllerView);
             InputDevices.Instance.Add(keyboard);
-            Controllers.Instance.Add(keyboardGameController);
+            foreach (var mapping in settings.Mapping)
+            {
+                AddController(mapping);
+            }
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
             logger.Info("Keyboard controller is connected");
-
-            initialized = true;
-            Controllers.Instance.Update();
             HandleArgs();
         }
 
@@ -225,7 +220,33 @@ namespace XOutput.UI.Windows
         {
             IEnumerable<SharpDX.DirectInput.DeviceInstance> instances = directInputDevices.GetInputDevices(Model.AllDevices);
 
-            foreach (var controllerView in Model.Controllers.ToList())
+            foreach (var inputView in Model.Inputs.ToArray())
+            {
+                var device = inputView.ViewModel.Model.Device;
+                if (device is DirectDevice && (!instances.Any(x => x.InstanceGuid == ((DirectDevice)device).Id) || !device.Connected))
+                {
+                    Model.Inputs.Remove(inputView);
+                    inputView.ViewModel.Dispose();
+                    device.Dispose();
+                    InputDevices.Instance.Remove(device);
+                }
+            }
+            foreach (var instance in instances)
+            {
+                if (!Model.Inputs.Select(c => c.ViewModel.Model.Device).OfType<DirectDevice>().Any(d => d.Id == instance.InstanceGuid))
+                {
+                    var device = directInputDevices.CreateDirectDevice(instance);
+                    if (device == null)
+                        continue;
+                    InputMapper mapper = settings.GetMapper(device.ToString());
+                    InputConfig inputConfig = settings.GetInputConfiguration(device.ToString(), device.InputConfiguration);
+                    device.Disconnected -= DispatchRefreshGameControllers;
+                    device.Disconnected += DispatchRefreshGameControllers;
+                    Model.Inputs.Add(new InputView(new InputViewModel(new InputModel(), device, Model.IsAdmin)));
+                }
+            }
+
+            /*foreach (var controllerView in Model.Controllers.ToList())
             {
                 var controller = controllerView.ViewModel.Model.Controller;
                 if (controller.InputDevice is DirectDevice && (!instances.Any(x => x.InstanceGuid == ((DirectDevice)controller.InputDevice).Id) || !controller.InputDevice.Connected))
@@ -248,7 +269,7 @@ namespace XOutput.UI.Windows
                         continue;
                     InputMapper mapper = settings.GetMapper(device.ToString());
                     InputConfig inputConfig = settings.GetInputConfiguration(device.ToString(), device.InputConfiguration);
-                    GameController controller = new GameController(device, mapper);
+                    GameController controller = new GameController(mapper);
                     var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, Model.IsAdmin, log));
                     controllerView.ViewModel.Model.CanStart = installed;
                     Model.Controllers.Add(controllerView);
@@ -264,7 +285,36 @@ namespace XOutput.UI.Windows
                     }
                     Model.Inputs.Add(new InputView(new InputViewModel(new InputModel(), device, Model.IsAdmin)));
                 }
+            }*/
+        }
+
+        public void AddController(InputMapper mapper)
+        {
+            var gameController = new GameController(mapper == null ? settings.GetMapper(Guid.NewGuid().ToString()) : mapper);
+            Controllers.Instance.Add(gameController);
+
+            var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), gameController, Model.IsAdmin, log));
+            controllerView.ViewModel.Model.CanStart = installed;
+            controllerView.RemoveClicked += RemoveController;
+            Model.Controllers.Add(controllerView);
+            log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), gameController.DisplayName));
+            if (mapper?.StartWhenConnected == true)
+            {
+                controllerView.ViewModel.Start();
+                logger.Info($"{mapper.Name} controller is started automatically.");
             }
+        }
+
+        public void RemoveController(ControllerView controllerView)
+        {
+            var controller = controllerView.ViewModel.Model.Controller;
+            controllerView.ViewModel.Dispose();
+            controller.Dispose();
+            Model.Controllers.Remove(controllerView);
+            logger.Info($"{controller.ToString()} is disconnected.");
+            log(string.Format(LanguageModel.Instance.Translate("ControllerDisconnected"), controller.DisplayName));
+            Controllers.Instance.Remove(controller);
+            settings.Mapping.RemoveAll(m => m.Id == controller.Mapper.Id);
         }
 
         public void OpenWindowsGameControllerSettings()
@@ -281,7 +331,7 @@ namespace XOutput.UI.Windows
 
         public void OpenDiagnostics()
         {
-            IList<IDiagnostics> elements = Model.Controllers.Select(c => c.ViewModel.Model.Controller.InputDevice)
+            IList<IDiagnostics> elements = InputDevices.Instance.GetDevices()
                 .Select(d => new InputDiagnostics(d)).OfType<IDiagnostics>().ToList();
             elements.Insert(0, new Devices.XInput.XInputDiagnostics());
 

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using XOutput.Devices.Input;
 using XOutput.Devices.Mapper;
+using XOutput.Devices.XInput;
 using XOutput.Logging;
 
 namespace XOutput.Tools
@@ -44,12 +45,12 @@ namespace XOutput.Tools
         public bool ShowAll { get; set; }
         public bool HidGuardianEnabled { get; set; }
         public Dictionary<string, InputConfig> Input { get; set; }
-        public Dictionary<string, InputMapper> Mapping { get; set; }
+        public List<InputMapper> Mapping { get; set; }
 
         public Settings()
         {
             Input = new Dictionary<string, InputConfig>();
-            Mapping = new Dictionary<string, InputMapper>();
+            Mapping = new List<InputMapper>();
         }
 
         /// <summary>
@@ -68,11 +69,19 @@ namespace XOutput.Tools
         /// <returns></returns>
         public InputMapper GetMapper(string id)
         {
-            if (!Mapping.ContainsKey(id))
+            var mapper = Mapping.FirstOrDefault(m => m.Id == id);
+            if (mapper == null)
             {
-                Mapping[id] = new InputMapper();
+                mapper = new InputMapper();
+                mapper.Id = id;
+                mapper.Name = "Controller";
+                foreach (var type in XInputHelper.Instance.Values)
+                {
+                    mapper.SetMapping(type, new MapperData());
+                }
+                Mapping.Add(mapper);
             }
-            return Mapping[id];
+            return mapper;
         }
 
         /// <summary>
@@ -86,6 +95,7 @@ namespace XOutput.Tools
             if (initialValue == null)
             {
                 Input[id] = new InputConfig();
+                initialValue.ForceFeedback = false;
                 return Input[id];
             }
             if (!Input.ContainsKey(id))

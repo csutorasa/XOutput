@@ -27,9 +27,6 @@ namespace XOutput.UI
             }
         }
 
-        private readonly ObservableCollection<InputSource> inputs = new ObservableCollection<InputSource>();
-        public ObservableCollection<InputSource> Inputs { get { return inputs; } }
-
         private InputSource selectedInput;
         public InputSource SelectedInput
         {

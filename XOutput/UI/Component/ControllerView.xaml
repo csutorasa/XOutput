@@ -12,14 +12,18 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <TextBlock Margin="10" Text="{Binding Model.DisplayName}" TextWrapping="NoWrap" HorizontalAlignment="Stretch"/>
         </Grid>
-        <Button Grid.Column="1" FontSize="14" Margin="5" Click="OpenClick"
+        <Button Grid.Column="1" FontSize="14" Margin="5" Click="RemoveClick"
+                IsEnabled="{Binding Model.Started, Converter={StaticResource BoolInverterConverter}}"
+                Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='RemoveController'}" />
+        <Button Grid.Column="2" FontSize="14" Margin="5" Click="OpenClick"
                 IsEnabled="{Binding Model.Started, Converter={StaticResource BoolInverterConverter}}"
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Edit'}" />
-        <Button Grid.Column="2" FontSize="14" Margin="5" Click="ButtonClick"
+        <Button Grid.Column="3" FontSize="14" Margin="5" Click="ButtonClick"
                 IsEnabled="{Binding Model.CanStart}">
             <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
                 <Binding Path="LanguageModel.Data"/>

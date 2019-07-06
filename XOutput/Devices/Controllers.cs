@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Devices.Input;
 
 namespace XOutput.Devices
 {
@@ -21,7 +22,7 @@ namespace XOutput.Devices
         private object lockObject = new object();
         private List<GameController> controllers = new List<GameController>();
 
-        protected Controllers()
+        private Controllers()
         {
 
         }
@@ -61,21 +62,17 @@ namespace XOutput.Devices
         public void Add(GameController controller, bool refresh = false)
         {
             controllers.Add(controller);
-            if (refresh)
-            {
-                Update();
-            }
+            controller.Mapper.Attach(InputDevices.Instance.GetDevices());
+            controller.XInput.UpdateSources(controller.Mapper.GetInputs());
         }
 
         public void Remove(GameController controller)
         {
             controllers.Remove(controller);
-            Update();
         }
 
-        public void Update()
+        public void Update(IEnumerable<IInputDevice> inputDevices)
         {
-            var inputDevices = controllers.Select(x => x.InputDevice).ToArray();
             foreach (var controller in controllers)
             {
                 controller.Mapper.Attach(inputDevices);

@@ -17,36 +17,27 @@ namespace XOutput.UI.Windows
     public class ControllerSettingsViewModel : ViewModelBase<ControllerSettingsModel>
     {
         private readonly GameController controller;
-        private readonly DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private int state = 0;
+
+        // FIXME whole file
 
         public ControllerSettingsViewModel(ControllerSettingsModel model, GameController controller, bool isAdmin) : base(model)
         {
             this.controller = controller;
-            Model.IsAdmin = isAdmin && controller.InputDevice.HardwareID != null;
-            if (Model.IsAdmin)
-            {
-                Model.HidGuardianAdded = HidGuardianManager.Instance.IsAffected(controller.InputDevice.HardwareID);
-            }
             Model.Title = controller.DisplayName;
             CreateInputControls();
             CreateMappingControls();
             CreateXInputControls();
-            SetForceFeedback();
-            dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
-            dispatcherTimer.Tick += DispatcherTimerTick;
-            Model.TestButtonText = "Start";
-            Model.ForceFeedbackEnabled = controller.InputDevice.InputConfiguration.ForceFeedback;
             Model.StartWhenConnected = controller.Mapper.StartWhenConnected;
         }
 
         public void ConfigureAll()
         {
             var types = XInputHelper.Instance.Values;
-            if (controller.InputDevice.DPads.Any())
+            /*if (controller.InputDevice.DPads.Any())
             {
                 types = types.Where(t => !t.IsDPad());
-            }
+            }*/
             new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), InputDevices.Instance.GetDevices(), controller.Mapper, types.ToArray()), types.Any()).ShowDialog();
             foreach (var v in Model.MapperAxisViews.Concat(Model.MapperButtonViews).Concat(Model.MapperDPadViews))
             {
@@ -56,72 +47,19 @@ namespace XOutput.UI.Windows
 
         public void Update()
         {
-            if (!controller.InputDevice.Connected)
+            /*if (!controller.InputDevice.Connected)
             {
                 return;
-            }
+            }*/
 
             UpdateInputControls();
 
             UpdateXInputControls();
         }
 
-        public void TestForceFeedback()
-        {
-            if (dispatcherTimer.IsEnabled)
-            {
-                dispatcherTimer.Stop();
-                controller.InputDevice.SetForceFeedback(0, 0);
-                Model.TestButtonText = "Start";
-            }
-            else
-            {
-                dispatcherTimer.Start();
-                controller.InputDevice.SetForceFeedback(1, 0);
-                Model.TestButtonText = "Stop";
-            }
-        }
-
         public void SetStartWhenConnected()
         {
             controller.Mapper.StartWhenConnected = Model.StartWhenConnected;
-        }
-
-        public void SetForceFeedbackEnabled()
-        {
-            controller.InputDevice.InputConfiguration.ForceFeedback = Model.ForceFeedbackEnabled;
-        }
-
-        public void AddHidGuardian()
-        {
-            HidGuardianManager.Instance.AddAffectedDevice(controller.InputDevice.HardwareID);
-            if (Model.IsAdmin)
-            {
-                Model.HidGuardianAdded = HidGuardianManager.Instance.IsAffected(controller.InputDevice.HardwareID);
-            }
-        }
-
-        public void RemoveHidGuardian()
-        {
-            HidGuardianManager.Instance.RemoveAffectedDevice(controller.InputDevice.HardwareID);
-            if (Model.IsAdmin)
-            {
-                Model.HidGuardianAdded = HidGuardianManager.Instance.IsAffected(controller.InputDevice.HardwareID);
-            }
-        }
-
-        private void DispatcherTimerTick(object sender, EventArgs e)
-        {
-            if (state == 0)
-            {
-                controller.InputDevice.SetForceFeedback(0, 1);
-                state = 1;
-            }
-            else
-            {
-                controller.InputDevice.SetForceFeedback(1, 0);
-                state = 0;
-            }
         }
 
         public void Dispose()
@@ -140,7 +78,7 @@ namespace XOutput.UI.Windows
         private void CreateInputControls()
         {
             CreateInputAxes();
-            foreach (var buttonInput in controller.InputDevice.Sources.Where(s => s.Type == InputSourceTypes.Button))
+            /*foreach (var buttonInput in controller.InputDevice.Sources.Where(s => s.Type == InputSourceTypes.Button))
             {
                 Model.InputButtonViews.Add(new ButtonView(new ButtonViewModel(new ButtonModel(), buttonInput)));
             }
@@ -151,22 +89,22 @@ namespace XOutput.UI.Windows
             foreach (var dPadInput in Enumerable.Range(0, controller.InputDevice.DPads.Count()))
             {
                 Model.InputDPadViews.Add(new DPadView(new DPadViewModel(new DPadModel(), dPadInput, true)));
-            }
+            }*/
         }
 
         private void UpdateInputControls()
         {
             foreach (var axisView in Model.InputAxisViews)
             {
-                axisView.UpdateValues(controller.InputDevice);
+                //axisView.UpdateValues(controller.InputDevice);
             }
             foreach (var buttonView in Model.InputButtonViews)
             {
-                buttonView.UpdateValues(controller.InputDevice);
+                //buttonView.UpdateValues(controller.InputDevice);
             }
             foreach (var dPadView in Model.InputDPadViews)
             {
-                dPadView.UpdateValues(controller.InputDevice);
+                //dPadView.UpdateValues(controller.InputDevice);
             }
         }
 
@@ -221,39 +159,16 @@ namespace XOutput.UI.Windows
             }
         }
 
-        private void SetForceFeedback()
-        {
-            if (controller.ForceFeedbackSupported)
-            {
-                Model.ForceFeedbackText = "";
-                Model.ForceFeedbackEnabled = controller.InputDevice.InputConfiguration.ForceFeedback;
-                Model.ForceFeedbackAvailable = true;
-            }
-            else
-            {
-                Model.ForceFeedbackEnabled = false;
-                Model.ForceFeedbackAvailable = false;
-                if (controller.InputDevice.ForceFeedbackCount > 0)
-                {
-                    Model.ForceFeedbackText = "ForceFeedbackVigemOnly";
-                }
-                else
-                {
-                    Model.ForceFeedbackText = "ForceFeedbackUnsupported";
-                }
-            }
-        }
-
         private void CreateInputAxes()
         {
-            var axes = controller.InputDevice.Sources.Where(s => InputSourceTypes.Axis.HasFlag(s.Type)).ToArray();
+            /*var axes = controller.InputDevice.Sources.Where(s => InputSourceTypes.Axis.HasFlag(s.Type)).ToArray();
             foreach (var z in axes)
             {
                 if (axes.Contains(z))
                 {
                     Model.InputAxisViews.Add(new AxisView(new AxisViewModel(new AxisModel(), z)));
                 }
-            }
+            }*/
         }
     }
 }

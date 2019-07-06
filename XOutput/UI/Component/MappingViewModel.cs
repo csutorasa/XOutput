@@ -22,22 +22,8 @@ namespace XOutput.UI.Component
             this.controller = controller;
             var mapperData = controller.Mapper.GetMapping(inputType);
             Model.XInputType = inputType;
-            var device = controller.InputDevice;
-            Model.Inputs.Add(DisabledInputSource.Instance);
-            foreach (var directInput in device.Sources.Where(s => s.Type == InputSourceTypes.Button))
-            {
-                Model.Inputs.Add(directInput);
-            }
-            foreach (var directInput in device.Sources.Where(s => InputSourceTypes.Axis.HasFlag(s.Type)))
-            {
-                Model.Inputs.Add(directInput);
-            }
-            foreach (var directInput in device.Sources.Where(s => s.Type == InputSourceTypes.Slider))
-            {
-                Model.Inputs.Add(directInput);
-            }
             if (mapperData != null && mapperData.InputType == null)
-                mapperData.Source = device.Sources.Where(s => s.Type == InputSourceTypes.Button).FirstOrDefault();
+                mapperData.Source = null; // FIXME device.Sources.Where(s => s.Type == InputSourceTypes.Button).FirstOrDefault();
             Model.MapperData = mapperData;
             SetSelected(mapperData);
         }

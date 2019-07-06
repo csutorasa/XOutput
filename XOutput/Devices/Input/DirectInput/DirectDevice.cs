@@ -321,7 +321,7 @@ namespace XOutput.Devices.Input.DirectInput
                         InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(this, changes, dpadChanges));
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     logger.Warning($"Poll failed for {ToString()}");
                     return false;

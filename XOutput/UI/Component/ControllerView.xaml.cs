@@ -21,6 +21,8 @@ namespace XOutput.UI.Component
     /// </summary>
     public partial class ControllerView : UserControl, IViewBase<ControllerViewModel, ControllerModel>
     {
+        public event Action<ControllerView> RemoveClicked;
+
         protected readonly ControllerViewModel viewModel;
         public ControllerViewModel ViewModel => viewModel;
 
@@ -38,6 +40,11 @@ namespace XOutput.UI.Component
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
             viewModel.StartStop();
+        }
+
+        private void RemoveClick(object sender, RoutedEventArgs e)
+        {
+            RemoveClicked?.Invoke(this);
         }
     }
 }
