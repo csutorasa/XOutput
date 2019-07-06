@@ -62,8 +62,14 @@ namespace XOutput.UI.Component
                 Model.SelectedInput = mapperData.Source;
                 Model.ConfigVisibility = System.Windows.Visibility.Visible;
             }
-            if (mapperData.Source != null)
+            if (mapperData.Source == null)
+            {
+                Model.ConfigVisibility = System.Windows.Visibility.Collapsed;
+            }
+            else
+            {
                 SelectionChanged(Model.SelectedInput);
+            }
         }
 
         protected void SelectionChanged(InputSource type)
