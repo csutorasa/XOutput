@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Threading;
 using XOutput.Devices;
 using XOutput.Devices.Input;
@@ -25,6 +27,19 @@ namespace XOutput.UI.Windows
             CreateMappingControls();
             CreateXInputControls();
             Model.StartWhenConnected = controller.Mapper.StartWhenConnected;
+            Model.ForceFeedbacks.Add(new ComboBoxItem { Content = new TextBlock(new Run("")) });
+            var devices = InputDevices.Instance.GetDevices().OfType<DirectDevice>().ToArray();
+            foreach (var device in devices)
+            {
+                var item = new ComboBoxItem();
+                item.Tag = device;
+                item.Content = new TextBlock(new Run(device.DisplayName));
+                Model.ForceFeedbacks.Add(item);
+                if (!string.IsNullOrEmpty(controller.Mapper.ForceFeedbackDevice) && controller.Mapper.ForceFeedbackDevice == device.UniqueId)
+                {
+                    Model.ForceFeedback = item;
+                }
+            }
         }
 
         public void ConfigureAll()
@@ -42,6 +57,21 @@ namespace XOutput.UI.Windows
             UpdateInputControls();
 
             UpdateXInputControls();
+        }
+
+        public void SetForceFeedback()
+        {
+            if (Model.ForceFeedback.Tag != null)
+            {
+                var device = Model.ForceFeedback.Tag as IInputDevice;
+                controller.Mapper.ForceFeedbackDevice = device?.UniqueId;
+                controller.ForceFeedbackDevice = device;
+            }
+            else
+            {
+                controller.Mapper.ForceFeedbackDevice = null;
+                controller.ForceFeedbackDevice = null;
+            }
         }
 
         public void SetStartWhenConnected()

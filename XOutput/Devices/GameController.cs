@@ -42,6 +42,10 @@ namespace XOutput.Devices
         /// Gets if force feedback is supported.
         /// </summary>
         public bool ForceFeedbackSupported => xOutputInterface is VigemDevice;
+        /// <summary>
+        /// Gets the force feedback device.
+        /// </summary>
+        public IInputDevice ForceFeedbackDevice { get; set; }
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(GameController));
 
@@ -185,8 +189,7 @@ namespace XOutput.Devices
 
         private void ControllerFeedbackReceived(object sender, Nefarius.ViGEm.Client.Targets.Xbox360.Xbox360FeedbackReceivedEventArgs e)
         {
-            // FIXME
-            //inputDevice.SetForceFeedback((double)e.LargeMotor / byte.MaxValue, (double)e.SmallMotor / byte.MaxValue);
+            ForceFeedbackDevice?.SetForceFeedback((double)e.LargeMotor / byte.MaxValue, (double)e.SmallMotor / byte.MaxValue);
         }
 
         private void resetId()

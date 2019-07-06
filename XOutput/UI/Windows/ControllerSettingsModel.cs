@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using XOutput.Devices.Input;
 using XOutput.UI.Component;
 
 namespace XOutput.UI.Windows
@@ -23,6 +25,23 @@ namespace XOutput.UI.Windows
         public ObservableCollection<IUpdatableView> XInputDPadViews => xInputDPadViews;
         private readonly ObservableCollection<IUpdatableView> xInputButtonViews = new ObservableCollection<IUpdatableView>();
         public ObservableCollection<IUpdatableView> XInputButtonViews => xInputButtonViews;
+
+        private readonly ObservableCollection<ComboBoxItem> forceFeedbacks = new ObservableCollection<ComboBoxItem>();
+        public ObservableCollection<ComboBoxItem> ForceFeedbacks => forceFeedbacks;
+
+        private ComboBoxItem forceFeedback;
+        public ComboBoxItem ForceFeedback
+        {
+            get => forceFeedback;
+            set
+            {
+                if (forceFeedback != value)
+                {
+                    forceFeedback = value;
+                    OnPropertyChanged(nameof(ForceFeedback));
+                }
+            }
+        }
 
         private string title;
         public string Title
