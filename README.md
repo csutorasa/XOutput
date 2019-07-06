@@ -19,6 +19,7 @@ Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, 
 Install:
 
 - DirectX
+- .NetFramework 4.5.2
 - Visual C++ Redistributable for Visual Studio 2015 32-bit
 - Visual C++ Redistributable for Visual Studio 2015 64-bit
 - all the drivers for your controllers
