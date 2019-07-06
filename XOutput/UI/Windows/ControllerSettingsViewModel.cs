@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using XOutput.Devices;
+using XOutput.Devices.Input;
 using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.XInput;
 using XOutput.Tools;
@@ -36,7 +37,7 @@ namespace XOutput.UI.Windows
             dispatcherTimer.Tick += DispatcherTimerTick;
             Model.TestButtonText = "Start";
             Model.ForceFeedbackEnabled = controller.InputDevice.InputConfiguration.ForceFeedback;
-            Model.StartWhenConnected = controller.InputDevice.InputConfiguration.StartWhenConnected;
+            Model.StartWhenConnected = controller.Mapper.StartWhenConnected;
         }
 
         public void ConfigureAll()
@@ -46,7 +47,7 @@ namespace XOutput.UI.Windows
             {
                 types = types.Where(t => !t.IsDPad());
             }
-            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), Controllers.Instance.GetControllers().Select(c => c.InputDevice).ToArray(), controller.Mapper, types.ToArray()), types.Any()).ShowDialog();
+            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), InputDevices.Instance.GetDevices(), controller.Mapper, types.ToArray()), types.Any()).ShowDialog();
             foreach (var v in Model.MapperAxisViews.Concat(Model.MapperButtonViews).Concat(Model.MapperDPadViews))
             {
                 v.Refresh();
@@ -83,7 +84,7 @@ namespace XOutput.UI.Windows
 
         public void SetStartWhenConnected()
         {
-            controller.InputDevice.InputConfiguration.StartWhenConnected = Model.StartWhenConnected;
+            controller.Mapper.StartWhenConnected = Model.StartWhenConnected;
         }
 
         public void SetForceFeedbackEnabled()

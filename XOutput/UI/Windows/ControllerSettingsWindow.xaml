@@ -46,51 +46,10 @@
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Buttons'}">
                         <ItemsControl ItemsSource="{Binding Model.MapperButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
-                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceFeedback'}">
-                        <StackPanel>
-                            <Label Visibility="{Binding Model.ForceFeedbackAvailable, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource True}}">
-                                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
-                                    <Binding Path="LanguageModel.Data"/>
-                                    <Binding Path="Model.ForceFeedbackText"/>
-                                </MultiBinding>
-                            </Label>
-                            <StackPanel Orientation="Vertical" Visibility="{Binding Model.ForceFeedbackAvailable, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <CheckBox Margin="5" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceFeedback'}"
-                                      IsEnabled="{Binding Model.ForceFeedbackAvailable}" IsChecked="{Binding Model.ForceFeedbackEnabled}"
-                                      Checked="ForceFeedbackCheckBoxChecked" Unchecked="ForceFeedbackCheckBoxChecked"/>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Test'}"/>
-                                    <Button Click="ForceFeedbackButtonClick">
-                                        <Button.IsEnabled>
-                                            <MultiBinding Converter="{StaticResource AllConverter}">
-                                                <Binding Path="Model.ForceFeedbackEnabled"/>
-                                                <Binding Path="Model.ForceFeedbackAvailable"/>
-                                            </MultiBinding>
-                                        </Button.IsEnabled>
-                                        <TextBlock Margin="10 0">
-                                            <TextBlock.Text>
-                                                <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
-                                                    <Binding Path="LanguageModel.Data"/>
-                                                    <Binding Path="Model.TestButtonText"/>
-                                                </MultiBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
-                                    </Button>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                    </GroupBox>
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='OtherSettings'}">
                         <StackPanel>
                             <CheckBox Margin="5" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='StartWhenConnected'}"
                                       IsChecked="{Binding Model.StartWhenConnected}" Checked="CheckBoxChecked" Unchecked="CheckBoxChecked"/>
-                            <StackPanel Visibility="{Binding Model.IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <Button Height="30" Margin="5" Click="AddHidGuardianButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HidGuardianAdd'}"
-                                        Visibility="{Binding Model.HidGuardianAdded, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource True}}">
-                                </Button>
-                                <Button Height="30" Margin="5" Click="RemoveHidGuardianButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HidGuardianRemove'}"
-                                        Visibility="{Binding Model.HidGuardianAdded, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                            </StackPanel>
                             <Button Height="30" Margin="5" Click="ConfigureAllButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ConfigureAll'}"/>
                         </StackPanel>
                     </GroupBox>

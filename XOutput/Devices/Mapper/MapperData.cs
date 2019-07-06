@@ -32,8 +32,11 @@ namespace XOutput.Devices.Mapper
                 if (value != source)
                 {
                     source = value;
-                    InputType = source.Offset.ToString();
-                    InputDevice = source.InputDevice.UniqueId;
+                    if (source != null)
+                    {
+                        InputType = source.Offset.ToString();
+                        InputDevice = source.InputDevice.UniqueId;
+                    }
                 }
             }
         }

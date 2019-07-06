@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XOutput.Devices;
+using XOutput.Devices.Input;
 using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
 using XOutput.Tools;
@@ -43,7 +44,7 @@ namespace XOutput.UI.Component
 
         public void Configure()
         {
-            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), Controllers.Instance.GetControllers().Select(c => c.InputDevice).ToArray(), controller.Mapper, new XInputTypes[] { Model.XInputType }), false).ShowDialog();
+            new AutoConfigureWindow(new AutoConfigureViewModel(new AutoConfigureModel(), InputDevices.Instance.GetDevices(), controller.Mapper, new XInputTypes[] { Model.XInputType }), false).ShowDialog();
             SetSelected(GetMapperData());
         }
 

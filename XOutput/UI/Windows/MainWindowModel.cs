@@ -25,8 +25,8 @@ namespace XOutput.UI.Windows
             }
         }
 
-        private readonly ObservableCollection<ControllerView> controllers = new ObservableCollection<ControllerView>();
-        public ObservableCollection<ControllerView> Controllers { get { return controllers; } }
+        private readonly ObservableCollection<InputView> inputs = new ObservableCollection<InputView>();
+        public ObservableCollection<InputView> Inputs { get { return inputs; } }
 
         public bool AllDevices
         {
@@ -54,5 +54,8 @@ namespace XOutput.UI.Windows
                 }
             }
         }
+
+        private readonly ObservableCollection<ControllerView> controllers = new ObservableCollection<ControllerView>();
+        public ObservableCollection<ControllerView> Controllers { get { return controllers; } }
     }
 }
