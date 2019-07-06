@@ -19,7 +19,7 @@ Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, 
 Download the application:
 
 * Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
-* Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts)
+* Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
 * Unzip to any directory
 
 Install all the drivers for your controllers.
