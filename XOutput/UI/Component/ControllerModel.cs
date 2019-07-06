@@ -79,5 +79,10 @@ namespace XOutput.UI.Component
             }
         }
         public string DisplayName { get { return Controller.ToString(); } }
+
+        public void RefreshName()
+        {
+            OnPropertyChanged(nameof(DisplayName));
+        }
     }
 }
