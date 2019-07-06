@@ -17,6 +17,14 @@ namespace XOutput.Devices.Mapper
         /// Starts the mapping when connected.
         /// </summary>
         public bool StartWhenConnected { get; set; }
+        /// <summary>
+        /// Name of the mapper.
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// Id of the mapper.
+        /// </summary>
+        public string Id { get; set; }
 
         public Dictionary<XInputTypes, MapperData> Mappings { get; set; }
 

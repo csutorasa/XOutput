@@ -88,6 +88,11 @@ namespace XOutput.UI.Windows
             }));
         }
 
+        private void AddControllerClick(object sender, RoutedEventArgs e)
+        {
+            viewModel.AddController(null);
+        }
+
         private void RefreshClick(object sender, RoutedEventArgs e)
         {
             viewModel.RefreshGameControllers();

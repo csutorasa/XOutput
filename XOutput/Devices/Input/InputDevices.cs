@@ -25,6 +25,7 @@ namespace XOutput.Devices.Input
         public void Add(IInputDevice inputDevice)
         {
             inputDevices.Add(inputDevice);
+            Controllers.Instance.Update(inputDevices);
         }
 
         public void Remove(IInputDevice inputDevice)

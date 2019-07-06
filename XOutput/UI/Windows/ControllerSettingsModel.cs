@@ -45,62 +45,6 @@ namespace XOutput.UI.Windows
             }
         }
 
-        private string forceFeedbackText;
-        public string ForceFeedbackText
-        {
-            get => forceFeedbackText;
-            set
-            {
-                if (forceFeedbackText != value)
-                {
-                    forceFeedbackText = value;
-                    OnPropertyChanged(nameof(ForceFeedbackText));
-                }
-            }
-        }
-
-        private string testButtonText;
-        public string TestButtonText
-        {
-            get => testButtonText;
-            set
-            {
-                if (testButtonText != value)
-                {
-                    testButtonText = value;
-                    OnPropertyChanged(nameof(TestButtonText));
-                }
-            }
-        }
-
-        private bool forceFeedbackEnabled;
-        public bool ForceFeedbackEnabled
-        {
-            get => forceFeedbackEnabled;
-            set
-            {
-                if (forceFeedbackEnabled != value)
-                {
-                    forceFeedbackEnabled = value;
-                    OnPropertyChanged(nameof(ForceFeedbackEnabled));
-                }
-            }
-        }
-
-        private bool forceFeedbackAvailable;
-        public bool ForceFeedbackAvailable
-        {
-            get => forceFeedbackAvailable;
-            set
-            {
-                if (forceFeedbackAvailable != value)
-                {
-                    forceFeedbackAvailable = value;
-                    OnPropertyChanged(nameof(ForceFeedbackAvailable));
-                }
-            }
-        }
-
         private bool startWhenConnected;
         public bool StartWhenConnected
         {
@@ -111,34 +55,6 @@ namespace XOutput.UI.Windows
                 {
                     startWhenConnected = value;
                     OnPropertyChanged(nameof(StartWhenConnected));
-                }
-            }
-        }
-
-        private bool isAdmin;
-        public bool IsAdmin
-        {
-            get => isAdmin;
-            set
-            {
-                if (isAdmin != value)
-                {
-                    isAdmin = value;
-                    OnPropertyChanged(nameof(IsAdmin));
-                }
-            }
-        }
-
-        private bool hidGuardianAdded;
-        public bool HidGuardianAdded
-        {
-            get => hidGuardianAdded;
-            set
-            {
-                if (hidGuardianAdded != value)
-                {
-                    hidGuardianAdded = value;
-                    OnPropertyChanged(nameof(HidGuardianAdded));
                 }
             }
         }

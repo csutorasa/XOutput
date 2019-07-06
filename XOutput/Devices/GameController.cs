@@ -19,10 +19,6 @@ namespace XOutput.Devices
     public sealed class GameController : IDisposable
     {
         /// <summary>
-        /// Gets the input device.
-        /// </summary>
-        public IInputDevice InputDevice => inputDevice;
-        /// <summary>
         /// Gets the output device.
         /// </summary>
         public XOutputDevice XInput => xInput;
@@ -33,7 +29,7 @@ namespace XOutput.Devices
         /// <summary>
         /// Gets the name of the input device.
         /// </summary>
-        public string DisplayName => inputDevice.DisplayName;
+        public string DisplayName => mapper.Name;
         /// <summary>
         /// Gets the number of the controller.
         /// </summary>
@@ -45,11 +41,10 @@ namespace XOutput.Devices
         /// <summary>
         /// Gets if force feedback is supported.
         /// </summary>
-        public bool ForceFeedbackSupported => xOutputInterface is VigemDevice && inputDevice.ForceFeedbackCount > 0;
+        public bool ForceFeedbackSupported => xOutputInterface is VigemDevice;
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(GameController));
 
-        private readonly IInputDevice inputDevice;
         private readonly InputMapper mapper;
         private readonly XOutputDevice xInput;
         private readonly IXOutputInterface xOutputInterface;
@@ -58,9 +53,8 @@ namespace XOutput.Devices
         private int controllerCount = 0;
         private Nefarius.ViGEm.Client.Targets.Xbox360Controller controller;
 
-        public GameController(IInputDevice directInput, InputMapper mapper)
+        public GameController(InputMapper mapper)
         {
-            inputDevice = directInput;
             this.mapper = mapper;
             xOutputInterface = CreateXOutput();
             xInput = new XOutputDevice(mapper);
@@ -97,7 +91,6 @@ namespace XOutput.Devices
         public void Dispose()
         {
             Stop();
-            inputDevice.Dispose();
             xInput.Dispose();
             xOutputInterface?.Dispose();
         }
@@ -164,7 +157,7 @@ namespace XOutput.Devices
 
         public override string ToString()
         {
-            return inputDevice.DisplayName + "(" + inputDevice.ToString() + ")";
+            return DisplayName;
         }
 
         private void ReadAndReportValues(Action onStop)
@@ -186,13 +179,14 @@ namespace XOutput.Devices
 
         private void XInputInputChanged(object sender, DeviceInputChangedEventArgs e)
         {
-            if (!xOutputInterface.Report(controllerCount, XInput.GetValues()) || !inputDevice.Connected)
+            if (!xOutputInterface.Report(controllerCount, XInput.GetValues()))
                 Stop();
         }
 
         private void ControllerFeedbackReceived(object sender, Nefarius.ViGEm.Client.Targets.Xbox360.Xbox360FeedbackReceivedEventArgs e)
         {
-            inputDevice.SetForceFeedback((double)e.LargeMotor / byte.MaxValue, (double)e.SmallMotor / byte.MaxValue);
+            // FIXME
+            //inputDevice.SetForceFeedback((double)e.LargeMotor / byte.MaxValue, (double)e.SmallMotor / byte.MaxValue);
         }
 
         private void resetId()
