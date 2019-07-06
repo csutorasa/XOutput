@@ -32,6 +32,14 @@ If you have issues, install the official [XBox 360 controller drivers](https://w
 
 If all the requirements are installed, the software should start up without any error messages.
 
+### Input devices
+
+Input devices can be checked and configured individually.
+Input values can be seen in the input fields.
+Force feedback can be disabled for each device.
+
+### Game controllers
+
 The available input devices are shown in the Game Controllers section. Choose a  device and click 'Edit'.
 
 On the configuration screen there are 3 blocks. The left block shows the input, the right one shows the emulated output and in the middle is where the mapping can be set. For each output axis or button, you can choose from the input axes and buttons.
