@@ -19,10 +19,10 @@ Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, 
 Install:
 
 - DirectX
-- .NetFramework 4.5.2
 - Visual C++ Redistributable for Visual Studio 2015 32-bit
 - Visual C++ Redistributable for Visual Studio 2015 64-bit
 - all the drivers for your controllers
+- [.Net Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42642) if you do not have Windows 10
 - if you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
 Download the application:
