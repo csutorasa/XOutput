@@ -70,17 +70,15 @@
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='OtherSettings'}">
-                        <StackPanel>
-                            <StackPanel Visibility="{Binding Model.IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <Button Height="30" Margin="5" Click="AddHidGuardianButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HidGuardianAdd'}"
+                    <StackPanel>
+                        <StackPanel Visibility="{Binding Model.IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button Height="30" Margin="5" Click="AddHidGuardianButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HidGuardianAdd'}"
                                         Visibility="{Binding Model.HidGuardianAdded, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource True}}">
-                                </Button>
-                                <Button Height="30" Margin="5" Click="RemoveHidGuardianButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HidGuardianRemove'}"
+                            </Button>
+                            <Button Height="30" Margin="5" Click="RemoveHidGuardianButtonClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HidGuardianRemove'}"
                                         Visibility="{Binding Model.HidGuardianAdded, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                            </StackPanel>
                         </StackPanel>
-                    </GroupBox>
+                    </StackPanel>
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>
