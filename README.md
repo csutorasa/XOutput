@@ -16,17 +16,19 @@ Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, 
   a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases) (Recommended)
   b) Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
 
+Install:
+
+- DirectX
+- Visual C++ Redistributable for Visual Studio 2015 32-bit
+- Visual C++ Redistributable for Visual Studio 2015 64-bit
+- all the drivers for your controllers
+- if you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
+
 Download the application:
 
 * Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
 * Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
 * Unzip to any directory
-
-Install all the drivers for your controllers.
-
-Install or update both 32-bit and 64-bit DirectX.
-
-If you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
 ## How to use
 
