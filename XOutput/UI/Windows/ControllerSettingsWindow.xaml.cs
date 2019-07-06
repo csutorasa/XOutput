@@ -67,5 +67,10 @@ namespace XOutput.UI.Windows
         {
             viewModel.SetStartWhenConnected();
         }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            viewModel.SetForceFeedback();
+        }
     }
 }

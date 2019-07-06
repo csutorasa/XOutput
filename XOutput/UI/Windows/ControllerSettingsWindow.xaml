@@ -26,6 +26,9 @@
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Buttons'}">
                         <ItemsControl ItemsSource="{Binding Model.MapperButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}" Focusable="False"/>
                     </GroupBox>
+                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='ForceFeedback'}">
+                        <ComboBox ItemsSource="{Binding Model.ForceFeedbacks}" SelectedItem="{Binding Model.ForceFeedback}" SelectionChanged="ComboBox_SelectionChanged"/>
+                    </GroupBox>
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='OtherSettings'}">
                         <StackPanel>
                             <CheckBox Margin="5" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='StartWhenConnected'}"
