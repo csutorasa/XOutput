@@ -82,6 +82,7 @@ namespace XOutput.UI.Component
                 Model.MapperData.Source = type;
                 Model.ConfigVisibility = System.Windows.Visibility.Visible;
             }
+            Controllers.Instance.Update(controller, InputDevices.Instance.GetDevices());
         }
     }
 }

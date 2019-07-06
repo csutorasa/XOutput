@@ -245,52 +245,11 @@ namespace XOutput.UI.Windows
                     Model.Inputs.Add(new InputView(new InputViewModel(new InputModel(), device, Model.IsAdmin)));
                 }
             }
-
-            /*foreach (var controllerView in Model.Controllers.ToList())
-            {
-                var controller = controllerView.ViewModel.Model.Controller;
-                if (controller.InputDevice is DirectDevice && (!instances.Any(x => x.InstanceGuid == ((DirectDevice)controller.InputDevice).Id) || !controller.InputDevice.Connected))
-                {
-                    controllerView.ViewModel.Dispose();
-                    controller.Dispose();
-                    Model.Controllers.Remove(controllerView);
-                    logger.Info($"{controller.ToString()} is disconnected.");
-                    log(string.Format(LanguageModel.Instance.Translate("ControllerDisconnected"), controller.DisplayName));
-                    InputDevices.Instance.Remove(controller.InputDevice);
-                    Controllers.Instance.Remove(controller);
-                }
-            }
-            foreach (var instance in instances)
-            {
-                if (!Model.Controllers.Select(c => c.ViewModel.Model.Controller.InputDevice).OfType<DirectDevice>().Any(d => d.Id == instance.InstanceGuid))
-                {
-                    var device = directInputDevices.CreateDirectDevice(instance);
-                    if (device == null)
-                        continue;
-                    InputMapper mapper = settings.GetMapper(device.ToString());
-                    InputConfig inputConfig = settings.GetInputConfiguration(device.ToString(), device.InputConfiguration);
-                    GameController controller = new GameController(mapper);
-                    var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), controller, Model.IsAdmin, log));
-                    controllerView.ViewModel.Model.CanStart = installed;
-                    Model.Controllers.Add(controllerView);
-                    device.Disconnected -= DispatchRefreshGameControllers;
-                    device.Disconnected += DispatchRefreshGameControllers;
-                    logger.Info($"{controller.ToString()} is connected.");
-                    log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
-                    Controllers.Instance.Add(controller, initialized);
-                    if (controller.Mapper.StartWhenConnected)
-                    {
-                        controllerView.ViewModel.Start();
-                        logger.Info($"{controller.ToString()} controller is started automatically.");
-                    }
-                    Model.Inputs.Add(new InputView(new InputViewModel(new InputModel(), device, Model.IsAdmin)));
-                }
-            }*/
         }
 
         public void AddController(InputMapper mapper)
         {
-            var gameController = new GameController(mapper == null ? settings.GetMapper(Guid.NewGuid().ToString()) : mapper);
+            var gameController = new GameController(mapper == null ? settings.CreateMapper(Guid.NewGuid().ToString()) : mapper);
             Controllers.Instance.Add(gameController);
 
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), gameController, Model.IsAdmin, log));

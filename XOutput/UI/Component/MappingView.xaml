@@ -6,11 +6,11 @@
              xmlns:local="clr-namespace:XOutput.UI.Component"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:MappingViewModel, IsDesignTimeCreatable=False}"
-             d:DesignHeight="30" d:DesignWidth="490">
+             d:DesignHeight="30" d:DesignWidth="610">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="50"/>
-            <ColumnDefinition Width="Auto" MinWidth="70"/>
+            <ColumnDefinition Width="2*" MinWidth="180"/>
             <ColumnDefinition Width="3*" MinWidth="270"/>
             <ColumnDefinition Width="*" MinWidth="90"/>
         </Grid.ColumnDefinitions>
@@ -20,15 +20,10 @@
                 <Binding Path="Model.XInputType" />
             </MultiBinding>
         </Label>
-        <StackPanel Grid.Column="1" Margin="2" Orientation="Horizontal">
-            <TextBlock VerticalAlignment="Center">
-                <TextBlock.Text>
-                    <MultiBinding Converter="{StaticResource DynamicLanguageConverter}">
-                        <Binding Path="LanguageModel.Data" />
-                        <Binding Path="Model.SelectedInput" />
-                    </MultiBinding>
-                </TextBlock.Text>
-            </TextBlock>
+        <StackPanel Grid.Column="1" Margin="2" Orientation="Horizontal" Visibility="{Binding Model.SelectedInput.InputDevice.DisplayName, Converter={StaticResource EnumerableNotEmptyToVisibilityConverter}}">
+            <TextBlock VerticalAlignment="Center" Text="{Binding Model.SelectedInput.DisplayName}"/>
+            <TextBlock VerticalAlignment="Center" Text=" - "/>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Model.SelectedInput.InputDevice.DisplayName}"/>
         </StackPanel>
         <Grid Grid.Column="2" Visibility="{Binding Model.ConfigVisibility}">
             <Grid.ColumnDefinitions>
@@ -52,6 +47,6 @@
             </StackPanel>
             <Button Grid.Column="2" Margin="2" Click="InvertClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Invert'}"/>
         </Grid>
-        <Button Grid.Column="4" Margin="2" Click="ConfigureClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Configure'}"/>
+        <Button Grid.Column="3" Margin="2" Click="ConfigureClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Configure'}"/>
     </Grid>
 </UserControl>

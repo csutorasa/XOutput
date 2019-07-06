@@ -70,6 +70,17 @@ namespace XOutput.Tools
         public InputMapper GetMapper(string id)
         {
             var mapper = Mapping.FirstOrDefault(m => m.Id == id);
+            return mapper;
+        }
+
+        /// <summary>
+        /// Creates the mapper with the given deviceID, if it does not exists yet.
+        /// </summary>
+        /// <param name="id">DeviceID</param>
+        /// <returns></returns>
+        public InputMapper CreateMapper(string id)
+        {
+            var mapper = Mapping.FirstOrDefault(m => m.Id == id);
             if (mapper == null)
             {
                 mapper = new InputMapper();
