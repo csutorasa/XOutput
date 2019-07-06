@@ -5,36 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XOutput.UI.Windows"
         mc:Ignorable="d"
-        Title="{Binding Model.Title}" Width="1010" Height="850" MinWidth="1010"
+        Title="{Binding Model.Title}" Width="1200" Height="850" MinWidth="1010"
         d:DataContext="{d:DesignInstance Type=local:ControllerSettingsViewModel, IsDesignTimeCreatable=False}"
         Loaded="WindowLoaded">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="200"/>
-            <ColumnDefinition Width="2*" MinWidth="590"/>
+            <ColumnDefinition Width="3*" MinWidth="710"/>
             <ColumnDefinition Width="*" MinWidth="200"/>
         </Grid.ColumnDefinitions>
-        <!--Direct Input-->
-        <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DirectInput'}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel>
-                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Axes'}" 
-                              Visibility="{Binding Model.InputAxisViews, Converter={StaticResource EnumerableNotEmptyToVisibilityConverter}}">
-                        <ItemsControl ItemsSource="{Binding Model.InputAxisViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
-                    </GroupBox>
-                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DPad'}" 
-                              Visibility="{Binding Model.InputDPadViews, Converter={StaticResource EnumerableNotEmptyToVisibilityConverter}}">
-                        <ItemsControl ItemsSource="{Binding Model.InputDPadViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
-                    </GroupBox>
-                    <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Buttons'}">
-                        <ItemsControl ItemsSource="{Binding Model.InputButtonViews}" ItemsPanel="{StaticResource VerticalStackPanel}"/>
-                    </GroupBox>
-                </StackPanel>
-            </ScrollViewer>
-        </GroupBox>
-        <GridSplitter Grid.Column="0" Width="5"></GridSplitter>
         <!--Mapping-->
-        <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Mapping'}" Grid.Column="1">
+        <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Mapping'}" Grid.Column="0">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Axes'}">
@@ -56,7 +36,7 @@
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>
-        <GridSplitter Grid.Column="1" Width="5"></GridSplitter>
+        <GridSplitter Grid.Column="0" Width="5"></GridSplitter>
         <!--XInput-->
         <GroupBox Header="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='XInput'}" Grid.Column="2">
             <ScrollViewer VerticalScrollBarVisibility="Auto">

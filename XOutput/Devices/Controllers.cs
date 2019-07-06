@@ -62,8 +62,7 @@ namespace XOutput.Devices
         public void Add(GameController controller, bool refresh = false)
         {
             controllers.Add(controller);
-            controller.Mapper.Attach(InputDevices.Instance.GetDevices());
-            controller.XInput.UpdateSources(controller.Mapper.GetInputs());
+            Update(controller, InputDevices.Instance.GetDevices());
         }
 
         public void Remove(GameController controller)
@@ -71,12 +70,17 @@ namespace XOutput.Devices
             controllers.Remove(controller);
         }
 
+        public void Update(GameController controller, IEnumerable<IInputDevice> inputDevices)
+        {
+            controller.Mapper.Attach(inputDevices);
+            controller.XInput.UpdateSources(controller.Mapper.GetInputs());
+        }
+
         public void Update(IEnumerable<IInputDevice> inputDevices)
         {
             foreach (var controller in controllers)
             {
-                controller.Mapper.Attach(inputDevices);
-                controller.XInput.UpdateSources(controller.Mapper.GetInputs());
+                Update(controller, inputDevices);
             }
         }
 

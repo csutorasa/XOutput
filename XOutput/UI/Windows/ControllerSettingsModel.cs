@@ -10,13 +10,6 @@ namespace XOutput.UI.Windows
 {
     public class ControllerSettingsModel : ModelBase
     {
-        private readonly ObservableCollection<IUpdatableView> inputAxisViews = new ObservableCollection<IUpdatableView>();
-        public ObservableCollection<IUpdatableView> InputAxisViews => inputAxisViews;
-        private readonly ObservableCollection<IUpdatableView> inputDPadViews = new ObservableCollection<IUpdatableView>();
-        public ObservableCollection<IUpdatableView> InputDPadViews => inputDPadViews;
-        private readonly ObservableCollection<IUpdatableView> inputButtonViews = new ObservableCollection<IUpdatableView>();
-        public ObservableCollection<IUpdatableView> InputButtonViews => inputButtonViews;
-
         private readonly ObservableCollection<MappingView> mapperAxisViews = new ObservableCollection<MappingView>();
         public ObservableCollection<MappingView> MapperAxisViews => mapperAxisViews;
         private readonly ObservableCollection<MappingView> mapperDPadViews = new ObservableCollection<MappingView>();
