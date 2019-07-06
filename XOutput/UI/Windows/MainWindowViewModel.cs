@@ -152,6 +152,7 @@ namespace XOutput.UI.Windows
             Devices.Input.Keyboard.Keyboard keyboard = new Devices.Input.Keyboard.Keyboard();
             InputConfig inputConfig = settings.GetInputConfiguration(keyboard.ToString(), keyboard.InputConfiguration);
             InputDevices.Instance.Add(keyboard);
+            Model.Inputs.Add(new InputView(new InputViewModel(new InputModel(), keyboard, false)));
             foreach (var mapping in settings.Mapping)
             {
                 AddController(mapping);
