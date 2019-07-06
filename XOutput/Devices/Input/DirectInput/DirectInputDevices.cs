@@ -67,8 +67,9 @@ namespace XOutput.Devices.Input.DirectInput
                     return null;
                 }
                 joystick.Properties.BufferSize = 128;
-
-                return new DirectDevice(deviceInstance, joystick);
+                var device = new DirectDevice(deviceInstance, joystick);
+                InputDevices.Instance.Add(device);
+                return device;
             }
             catch (Exception ex)
             {

@@ -40,11 +40,11 @@ namespace XOutput.Tools
             return settings;
         }
 
-        public Dictionary<string, InputConfig> Input { get; set; }
-        public Dictionary<string, InputMapper> Mapping { get; set; }
         public bool CloseToTray { get; set; }
         public bool ShowAll { get; set; }
         public bool HidGuardianEnabled { get; set; }
+        public Dictionary<string, InputConfig> Input { get; set; }
+        public Dictionary<string, InputMapper> Mapping { get; set; }
 
         public Settings()
         {
@@ -95,7 +95,6 @@ namespace XOutput.Tools
             }
             InputConfig saved = Input[id];
             initialValue.ForceFeedback = saved.ForceFeedback;
-            initialValue.StartWhenConnected = saved.StartWhenConnected;
             Input[id] = initialValue;
             return initialValue;
         }

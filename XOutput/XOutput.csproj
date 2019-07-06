@@ -87,6 +87,7 @@
     <Compile Include="Devices\Input\DirectInput\DirectInputSource.cs" />
     <Compile Include="Devices\InputSourceTypes.cs" />
     <Compile Include="Devices\Input\InputConfig.cs" />
+    <Compile Include="Devices\Input\InputDevices.cs" />
     <Compile Include="Devices\Input\Keyboard\KeyboardSource.cs" />
     <Compile Include="Devices\SourceChangedEventArgs.cs" />
     <Compile Include="Devices\InputSource.cs" />
@@ -120,6 +121,11 @@
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Tools\RegistryModifier.cs" />
+    <Compile Include="UI\Component\InputModel.cs" />
+    <Compile Include="UI\Component\InputView.xaml.cs">
+      <DependentUpon>InputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Component\InputViewModel.cs" />
     <Compile Include="UI\Component\DPadModel.cs" />
     <Compile Include="UI\Component\DPadView.xaml.cs">
       <DependentUpon>DPadView.xaml</DependentUpon>
@@ -178,6 +184,11 @@
     <Compile Include="UI\Component\ButtonView.xaml.cs">
       <DependentUpon>ButtonView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Windows\InputSettingsModel.cs" />
+    <Compile Include="UI\Windows\InputSettingsViewModel.cs" />
+    <Compile Include="UI\Windows\InputSettingsWindow.xaml.cs">
+      <DependentUpon>InputSettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Windows\DiagnosticsModel.cs" />
     <Compile Include="UI\Windows\DiagnosticsViewModel.cs" />
     <Compile Include="UI\Windows\DiagnosticsWindow.xaml.cs">
@@ -212,6 +223,10 @@
     </Compile>
     <Compile Include="UpdateChecker\UpdateChecker.cs" />
     <Compile Include="UpdateChecker\Version.cs" />
+    <Page Include="UI\Component\InputView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI\Component\DPadView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -235,6 +250,10 @@
     <Page Include="UI\Component\XBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\InputSettingsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\Windows\DiagnosticsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

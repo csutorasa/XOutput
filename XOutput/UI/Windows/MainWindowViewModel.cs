@@ -156,6 +156,7 @@ namespace XOutput.UI.Windows
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), keyboardGameController, Model.IsAdmin, log));
             controllerView.ViewModel.Model.CanStart = installed;
             Model.Controllers.Add(controllerView);
+            InputDevices.Instance.Add(keyboard);
             Controllers.Instance.Add(keyboardGameController);
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
             logger.Info("Keyboard controller is connected");
@@ -234,6 +235,7 @@ namespace XOutput.UI.Windows
                     Model.Controllers.Remove(controllerView);
                     logger.Info($"{controller.ToString()} is disconnected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerDisconnected"), controller.DisplayName));
+                    InputDevices.Instance.Remove(controller.InputDevice);
                     Controllers.Instance.Remove(controller);
                 }
             }
@@ -255,11 +257,12 @@ namespace XOutput.UI.Windows
                     logger.Info($"{controller.ToString()} is connected.");
                     log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), controller.DisplayName));
                     Controllers.Instance.Add(controller, initialized);
-                    if (controller.InputDevice.InputConfiguration.StartWhenConnected)
+                    if (controller.Mapper.StartWhenConnected)
                     {
                         controllerView.ViewModel.Start();
                         logger.Info($"{controller.ToString()} controller is started automatically.");
                     }
+                    Model.Inputs.Add(new InputView(new InputViewModel(new InputModel(), device, Model.IsAdmin)));
                 }
             }
         }

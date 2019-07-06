@@ -13,6 +13,11 @@ namespace XOutput.Devices.Mapper
     /// </summary>
     public class InputMapper
     {
+        /// <summary>
+        /// Starts the mapping when connected.
+        /// </summary>
+        public bool StartWhenConnected { get; set; }
+
         public Dictionary<XInputTypes, MapperData> Mappings { get; set; }
 
         private ISet<IInputDevice> inputs = new HashSet<IInputDevice>();
