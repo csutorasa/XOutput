@@ -86,6 +86,7 @@ namespace XOutput.UI.Windows
             try
             {
                 LoadSettings(SettingsFilePath);
+                languageManager.Language = settings.Language;
                 logger.Info("Loading settings was successful.");
                 log(string.Format(Translate("LoadSettingsSuccess"), SettingsFilePath));
             }
@@ -190,7 +191,7 @@ namespace XOutput.UI.Windows
 
         public void AboutPopupShow()
         {
-            MessageBox.Show(Translate("AboutContent") + Environment.NewLine + $"Version {UpdateChecker.Version.AppVersion}", Translate("AboutMenu"));
+            MessageBox.Show(Translate("AboutContent") + Environment.NewLine + string.Format(Translate("Version"), UpdateChecker.Version.AppVersion), Translate("AboutMenu"));
         }
 
         public void VersionCompare(VersionCompare compare)

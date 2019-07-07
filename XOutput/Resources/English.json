@@ -60,6 +60,8 @@
   "SaveSettingsError": "Failed to save {0} file!",
   "SaveSettingsSuccess": "Successfully saved settings to {0} file.",
   "ScpInstalled": "ViGEm is already installed, SCPToolkit is not used anymore, it can be uninstalled.",
+  "SelectedDevice": "Selected device",
+  "SelectedValue": "Selected input",
   "SettingsMenu": "Settings",
   "ShowAllDevices": "Show all input devices",
   "Start": "Start",
@@ -69,6 +71,7 @@
   "Test": "Test",
   "ToolsMenu": "Tools",
   "True": "true",
+  "Version": "Version {0}",
   "VersionCheckError": "There was an error while checking for updates.",
   "VersionCheckNeedsUpgrade": "There is a new version available at https://github.com/csutorasa/XOutput/releases/latest.",
   "VersionCheckNewRelease": "This is a development release.",
@@ -90,5 +93,5 @@
   "XInputTypes.R2": "RT",
   "XInputTypes.R3": "RTB",
   "XInputTypes.RIGHT": "Right",
-  "XInputTypes.UP": "Up",
+  "XInputTypes.UP": "Up"
 }

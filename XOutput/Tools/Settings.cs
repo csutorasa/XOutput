@@ -44,6 +44,15 @@ namespace XOutput.Tools
         public bool CloseToTray { get; set; }
         public bool ShowAll { get; set; }
         public bool HidGuardianEnabled { get; set; }
+        public string Language
+        {
+            get => LanguageManager.Instance.Language;
+            set
+            {
+                LanguageManager.Instance.Language = value;
+            }
+        }
+
         public Dictionary<string, InputConfig> Input { get; set; }
         public List<InputMapper> Mapping { get; set; }
 
