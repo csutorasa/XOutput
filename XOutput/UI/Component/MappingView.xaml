@@ -9,7 +9,7 @@
              d:DesignHeight="30" d:DesignWidth="610">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="50"/>
+            <ColumnDefinition Width="70"/>
             <ColumnDefinition Width="2*" MinWidth="180"/>
             <ColumnDefinition Width="3*" MinWidth="270"/>
             <ColumnDefinition Width="*" MinWidth="90"/>
