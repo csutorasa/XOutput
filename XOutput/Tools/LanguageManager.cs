@@ -19,7 +19,7 @@ namespace XOutput.Tools
         private Dictionary<string, Dictionary<string, string>> data = new Dictionary<string, Dictionary<string, string>>();
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(LanguageManager));
-        private static LanguageManager instance = new LanguageManager("languages.txt");
+        private static LanguageManager instance = new LanguageManager();
         /// <summary>
         /// Gets the singleton instance of the class.
         /// </summary>
@@ -34,16 +34,21 @@ namespace XOutput.Tools
             get { return language; }
             set
             {
-                if (language != value)
+                var v = value;
+                if (!data.ContainsKey(v))
                 {
-                    language = value;
+                    v = "English";
+                }
+                if (language != v)
+                {
+                    language = v;
                     logger.Info("Language is set to " + language);
                     LanguageModel.Instance.Data = data[language];
                 }
             }
         }
 
-        private LanguageManager(string filePath)
+        private LanguageManager()
         {
             ResourceSet resourceSet = Properties.Resources.ResourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
             foreach (DictionaryEntry entry in resourceSet)
