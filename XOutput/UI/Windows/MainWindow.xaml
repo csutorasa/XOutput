@@ -6,7 +6,6 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:XOutput.UI.Windows"
         mc:Ignorable="d"
-        Loaded="WindowLoaded"
         Closed="WindowClosed"
         Closing="WindowClosing"
         d:DataContext="{d:DesignInstance Type=local:MainWindowModel, IsDesignTimeCreatable=False}"

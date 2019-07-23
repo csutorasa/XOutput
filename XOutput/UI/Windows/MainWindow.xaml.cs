@@ -52,9 +52,10 @@ namespace XOutput.UI.Windows
             }
             new WindowInteropHelper(this).EnsureHandle();
             InitializeComponent();
+            Initialize();
         }
 
-        private async void WindowLoaded(object sender, RoutedEventArgs e)
+        private async void Initialize()
         {
             viewModel.Initialize(Log);
             await logger.Info("The application has started.");
