@@ -99,6 +99,7 @@
     <Compile Include="Diagnostics\DiagnosticsResult.cs" />
     <Compile Include="Devices\Input\InputDiagnostics.cs" />
     <Compile Include="Diagnostics\IDiagnostics.cs" />
+    <Compile Include="Logging\PrettyPrint.cs" />
     <Compile Include="Tools\ArgumentParser.cs" />
     <Compile Include="Devices\DeviceInputChangedEventArgs.cs" />
     <Compile Include="Tools\Helper.cs" />
