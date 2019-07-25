@@ -33,7 +33,7 @@ namespace XOutput.UpdateChecker
         /// <returns></returns>
         private string GetLatestRelease(string response)
         {
-            return response;
+            return response.Trim();
         }
 
         /// <summary>
