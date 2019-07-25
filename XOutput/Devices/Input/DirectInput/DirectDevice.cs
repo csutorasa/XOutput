@@ -178,7 +178,7 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 actuators = new Dictionary<DeviceObjectInstance, Effect>();
             }
-            logger.Info(ToString());
+            logger.Info(joystick.Properties.InstanceName + " " + ToString());
             logger.Info(PrettyPrint.ToString(joystick));
             logger.Info(PrettyPrint.ToString(joystick.GetObjects()));
             foreach (var obj in joystick.GetObjects())
