@@ -133,13 +133,7 @@ namespace XOutput.Devices.Input.DirectInput
             this.deviceInstance = deviceInstance;
             this.joystick = joystick;
             var buttonObjectInstances = joystick.GetObjects(DeviceObjectTypeFlags.Button).Where(b => b.Usage > 0).OrderBy(b => b.ObjectId.InstanceNumber).Take(128).ToArray();
-            var buttons = buttonObjectInstances.Select(b => new DirectInputSource(this, "Button " + b.Usage, InputSourceTypes.Button, b.Offset, state => state.Buttons[b.ObjectId.InstanceNumber] ? 1 : 0)).ToArray();
-            int expectedButtons = Math.Min(joystick.Capabilities.ButtonCount, 128);
-            if (expectedButtons > buttons.Length)
-            {
-                var additionalButtons = Enumerable.Range(0, expectedButtons).Where(i => buttonObjectInstances.All(b => b.ObjectId.InstanceNumber != i)).Select(i => new DirectInputSource(this, "Button " + (i + 1), InputSourceTypes.Button, 2000 + i, state => state.Buttons[i] ? 1 : 0)).ToArray();
-                buttons = buttons.Concat(additionalButtons).ToArray();
-            }
+            var buttons = buttonObjectInstances.Select((b, i) => new DirectInputSource(this, "Button " + b.Usage, InputSourceTypes.Button, b.Offset, state => state.Buttons[i] ? 1 : 0)).ToArray();
             var axes = GetAxes().OrderBy(a => a.Usage).Take(24).Select(GetAxisSource);
             var sliders = GetSliders().OrderBy(a => a.Usage).Select(GetSliderSource);
             IEnumerable<DirectInputSource> dpads = new DirectInputSource[0];
