@@ -227,7 +227,7 @@ namespace XOutput.Devices.Input.DirectInput
         {
             try
             {
-                while (true)
+                while (Connected)
                 {
                     Connected = RefreshInput();
                     Thread.Sleep(ReadDelayMs);
