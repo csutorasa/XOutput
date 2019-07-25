@@ -209,6 +209,10 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 disposed = true;
                 inputRefresher?.Abort();
+                foreach (var effect in actuators.Values.Where(effect => effect != null))
+                {
+                    effect.Dispose();
+                }
                 joystick.Dispose();
             }
         }
@@ -267,10 +271,11 @@ namespace XOutput.Devices.Input.DirectInput
             var values = new Dictionary<DeviceObjectInstance, Effect>(actuators);
             foreach (var pair in values)
             {
+                var actuator = pair.Key;
                 var oldEffect = pair.Value;
                 oldEffect?.Dispose();
+                actuators[actuator] = null;
 
-                var actuator = pair.Key;
                 var isSmall = actuator.ObjectType == ObjectGuid.YAxis;
                 // All available axes will be added.
                 var axes = new List<int> { (int)actuator.ObjectId };
@@ -287,7 +292,7 @@ namespace XOutput.Devices.Input.DirectInput
                 effectParams.Duration = int.MaxValue;
                 effectParams.TriggerButton = -1;
                 effectParams.TriggerRepeatInterval = int.MaxValue;
-                effectParams.Gain = 10000;
+                effectParams.Gain = joystick.Properties.ForceFeedbackGain;
                 effectParams.SetAxes(axes.ToArray(), directions);
                 var cf = new ConstantForce();
                 cf.Magnitude = CalculateMagnitude(isSmall ? small : big);
