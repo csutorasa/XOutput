@@ -61,7 +61,13 @@ You can check if it is working in the Windows settings, or just select 'File->Ga
 
 -   Install [HidGuardian](https://forums.vigem.org/topic/271/hidguardian-v1-driver-installation).
 
-Add affected device manually:
+Affected devices and whitelist can be managed by the application, but it needs administrator priviledges.
+
+1.  Enable HidGuardian initialization in the settings.
+2.  Restart the application as administrator.
+3.  Add device to affected devices in the input settings.
+
+Add affected device manually (use this method only, if you want to hide non recognized HID devices):
 
 1.  Run `regedit` and go to `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters`
 2.  Create `multi-string` value with the name `AffectedDevices`
@@ -70,7 +76,7 @@ Add affected device manually:
 5.  Paste the values into `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters`
 6.  Reconnect devices
 
-Manage process whitelist manually:
+Manage process whitelist manually (use this method only, if you want to use HidGuardian for other applications):
 
 1.  Start XOutput (or any other application)
 2.  Open Task Manager, find your application, then go to details.
