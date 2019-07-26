@@ -88,7 +88,9 @@ namespace XOutput.UI.Converters
                 if (back)
                 {
                     if (highlight == true && XInputHelper.Instance.IsDPad(activeType.Value))
+                    {
                         return HighlightBackBrush;
+                    }
                     return DPadBackBrush;
                 }
             }
@@ -98,23 +100,35 @@ namespace XOutput.UI.Converters
                 if (back)
                 {
                     if (highlight == true && currentType == activeType)
+                    {
                         return HighlightBackBrush;
+                    }
                     else if (backgroundColors.ContainsKey(currentType))
+                    {
                         return backgroundColors[currentType];
+                    }
                 }
                 else if (label)
                 {
                     if (highlight == true && currentType == activeType)
+                    {
                         return HighlightLabelBrush;
+                    }
                     else if (labelColors.ContainsKey(currentType))
+                    {
                         return labelColors[currentType];
+                    }
                 }
                 else
                 {
                     if (highlight == true && currentType == activeType)
+                    {
                         return HighlightBrush;
+                    }
                     else if (foregroundColors.ContainsKey(currentType))
+                    {
                         return foregroundColors[currentType];
+                    }
                 }
             }
             return new SolidColorBrush(Colors.Black);

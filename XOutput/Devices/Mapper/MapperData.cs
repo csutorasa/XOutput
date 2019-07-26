@@ -69,7 +69,9 @@ namespace XOutput.Devices.Mapper
         {
             double range = MaxValue - MinValue;
             if (Math.Abs(range) < 0.0001)
+            {
                 return MinValue;
+            }
             var readvalue = value;
             if (Math.Abs(value - 0.5) < Deadzone)
             {
@@ -78,9 +80,13 @@ namespace XOutput.Devices.Mapper
 
             var mappedValue = (readvalue - MinValue) / range;
             if (mappedValue < 0)
+            {
                 mappedValue = 0;
+            }
             else if (mappedValue > 1)
+            {
                 mappedValue = 1;
+            }
             return mappedValue;
         }
     }

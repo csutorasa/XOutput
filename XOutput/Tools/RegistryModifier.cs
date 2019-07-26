@@ -43,9 +43,13 @@ namespace XOutput.Tools
             set
             {
                 if (value)
+                {
                     SetAutostart();
+                }
                 else
+                {
                     ClearAutostart();
+                }
             }
         }
 

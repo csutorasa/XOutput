@@ -166,7 +166,9 @@ namespace XOutput.Devices.Input.Keyboard
             }
             var changes = state.GetChanges(force);
             if (changes.Any())
+            {
                 InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(this, changes, new int[0]));
+            }
             return true;
         }
     }

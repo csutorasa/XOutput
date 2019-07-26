@@ -49,7 +49,9 @@ namespace XOutput.Devices.XInput.SCPToolkit
         public static bool SendToDevice(SafeFileHandle safeFileHandle, MessageType type, int? controller, byte[] input, byte[] output)
         {
             if (safeFileHandle.IsInvalid || safeFileHandle.IsClosed)
+            {
                 return false;
+            }
             int transfered = 0;
             var header = GetHeader(type, controller);
             var data = new byte[header.Length + input.Length];
@@ -87,10 +89,15 @@ namespace XOutput.Devices.XInput.SCPToolkit
                         path = Marshal.PtrToStringAuto(pDevicePathName).ToUpper(CultureInfo.InvariantCulture);
                         Marshal.FreeHGlobal(detailDataBuffer);
 
-                        if (memberIndex == instance) return true;
+                        if (memberIndex == instance)
+                        {
+                            return true;
+                        }
                     }
-                    else Marshal.FreeHGlobal(detailDataBuffer);
-
+                    else
+                    {
+                        Marshal.FreeHGlobal(detailDataBuffer);
+                    }
 
                     memberIndex++;
                 }
@@ -113,7 +120,9 @@ namespace XOutput.Devices.XInput.SCPToolkit
             SafeFileHandle handle = CreateFile(devicePath, (GENERIC_WRITE | GENERIC_READ), FILE_SHARE_READ | FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, UIntPtr.Zero);
 
             if (handle == null || handle.IsInvalid)
+            {
                 throw new IOException("SCP Device cannot be found");
+            }
 
             return handle;
         }

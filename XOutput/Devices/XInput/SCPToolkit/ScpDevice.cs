@@ -22,9 +22,13 @@ namespace XOutput.Devices.XInput.SCPToolkit
         {
             string devicePath = "";
             if (NativeMethods.Find(new Guid(SCPBusClassGUID), ref devicePath, instance))
+            {
                 safeFileHandle = NativeMethods.GetHandle(devicePath);
+            }
             else
+            {
                 throw new IOException("SCP Device cannot be found");
+            }
         }
         public ScpDevice(string devicePath)
         {
@@ -101,7 +105,10 @@ namespace XOutput.Devices.XInput.SCPToolkit
         private bool sendToDevice(NativeMethods.MessageType type, int? controller, byte[] input, byte[] output)
         {
             if (safeFileHandle.IsInvalid || safeFileHandle.IsClosed)
+            {
                 return false;
+            }
+
             return NativeMethods.SendToDevice(safeFileHandle, type, controller, input, output);
         }
 
@@ -118,23 +125,80 @@ namespace XOutput.Devices.XInput.SCPToolkit
             report[1] = 20; // Message length
 
             // Buttons
-            if (values[XInputTypes.UP] > 0.5) report[2] |= 1 << 0;
-            if (values[XInputTypes.DOWN] > 0.5) report[2] |= 1 << 1;
-            if (values[XInputTypes.LEFT] > 0.5) report[2] |= 1 << 2;
-            if (values[XInputTypes.RIGHT] > 0.5) report[2] |= 1 << 3;
-            if (values[XInputTypes.Start] > 0.5) report[2] |= 1 << 4;
-            if (values[XInputTypes.Back] > 0.5) report[2] |= 1 << 5;
-            if (values[XInputTypes.L3] > 0.5) report[2] |= 1 << 6;
-            if (values[XInputTypes.R3] > 0.5) report[2] |= 1 << 7;
+            if (values[XInputTypes.UP] > 0.5)
+            {
+                report[2] |= 1 << 0;
+            }
 
-            if (values[XInputTypes.L1] > 0.5) report[3] |= 1 << 0;
-            if (values[XInputTypes.R1] > 0.5) report[3] |= 1 << 1;
-            if (values[XInputTypes.Home] > 0.5) report[3] |= 1 << 2;
+            if (values[XInputTypes.DOWN] > 0.5)
+            {
+                report[2] |= 1 << 1;
+            }
 
-            if (values[XInputTypes.A] > 0.5) report[3] |= 1 << 4;
-            if (values[XInputTypes.B] > 0.5) report[3] |= 1 << 5;
-            if (values[XInputTypes.X] > 0.5) report[3] |= 1 << 6;
-            if (values[XInputTypes.Y] > 0.5) report[3] |= 1 << 7;
+            if (values[XInputTypes.LEFT] > 0.5)
+            {
+                report[2] |= 1 << 2;
+            }
+
+            if (values[XInputTypes.RIGHT] > 0.5)
+            {
+                report[2] |= 1 << 3;
+            }
+
+            if (values[XInputTypes.Start] > 0.5)
+            {
+                report[2] |= 1 << 4;
+            }
+
+            if (values[XInputTypes.Back] > 0.5)
+            {
+                report[2] |= 1 << 5;
+            }
+
+            if (values[XInputTypes.L3] > 0.5)
+            {
+                report[2] |= 1 << 6;
+            }
+
+            if (values[XInputTypes.R3] > 0.5)
+            {
+                report[2] |= 1 << 7;
+            }
+
+            if (values[XInputTypes.L1] > 0.5)
+            {
+                report[3] |= 1 << 0;
+            }
+
+            if (values[XInputTypes.R1] > 0.5)
+            {
+                report[3] |= 1 << 1;
+            }
+
+            if (values[XInputTypes.Home] > 0.5)
+            {
+                report[3] |= 1 << 2;
+            }
+
+            if (values[XInputTypes.A] > 0.5)
+            {
+                report[3] |= 1 << 4;
+            }
+
+            if (values[XInputTypes.B] > 0.5)
+            {
+                report[3] |= 1 << 5;
+            }
+
+            if (values[XInputTypes.X] > 0.5)
+            {
+                report[3] |= 1 << 6;
+            }
+
+            if (values[XInputTypes.Y] > 0.5)
+            {
+                report[3] |= 1 << 7;
+            }
 
             // Axes
             byte l2 = (byte)(values[XInputTypes.L2] * byte.MaxValue);

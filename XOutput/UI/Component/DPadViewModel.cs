@@ -12,7 +12,9 @@ namespace XOutput.UI.Component
         {
             this.dPadIndex = dPadIndex;
             if (showLabel)
+            {
                 Model.Label = "DPad" + (dPadIndex + 1);
+            }
         }
 
         public void UpdateValues(IDevice device)

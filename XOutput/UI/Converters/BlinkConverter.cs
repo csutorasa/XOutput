@@ -30,13 +30,17 @@ namespace XOutput.UI.Converters
             if (back)
             {
                 if (currentType == activeType)
+                {
                     return highlight == true ? Visibility.Visible : Visibility.Hidden;
+                }
                 return Visibility.Hidden;
             }
             else
             {
                 if (currentType == activeType)
+                {
                     return highlight == true ? Visibility.Hidden : Visibility.Visible;
+                }
                 return Visibility.Hidden;
             }
         }

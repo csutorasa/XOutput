@@ -161,9 +161,13 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 var constantForce = joystick.GetEffects().Where(x => x.Guid == EffectGuid.ConstantForce).FirstOrDefault();
                 if (constantForce == null)
+                {
                     force = joystick.GetEffects().FirstOrDefault();
+                }
                 else
+                {
                     force = constantForce;
+                }
                 actuators = joystick.GetObjects().Where(doi => doi.ObjectId.Flags.HasFlag(DeviceObjectTypeFlags.ForceFeedbackActuator)).ToDictionary(doi => doi, doi => (Effect)null);
             }
             else
@@ -275,8 +279,9 @@ namespace XOutput.Devices.Input.DirectInput
                 // If two axes are used only the first one will have direction 1.
                 var directions = new int[axes.Count];
                 if (directions.Length > 1)
+                {
                     directions[0] = 1;
-
+                }
                 var effectParams = new EffectParameters();
                 effectParams.Flags = EffectFlags.Cartesian | EffectFlags.ObjectIds;
                 effectParams.StartDelay = 0;
@@ -328,7 +333,9 @@ namespace XOutput.Devices.Input.DirectInput
                     var changes = state.GetChanges(force);
                     var dpadChanges = state.GetChangedDpads();
                     if (changes.Any() || dpadChanges.Any())
+                    {
                         InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(this, changes, dpadChanges));
+                    }
                     return true;
                 }
                 catch (Exception)
@@ -349,7 +356,9 @@ namespace XOutput.Devices.Input.DirectInput
         {
             var state = GetCurrentState();
             if (instanceNumber < 0)
+            {
                 throw new ArgumentException();
+            }
             switch (instanceNumber)
             {
                 case 0:
@@ -414,7 +423,9 @@ namespace XOutput.Devices.Input.DirectInput
         {
             var state = GetCurrentState();
             if (button < 1)
+            {
                 throw new ArgumentException();
+            }
             return state.Buttons[button - 1];
         }
 
@@ -427,7 +438,9 @@ namespace XOutput.Devices.Input.DirectInput
         {
             var state = GetCurrentState();
             if (slider < 1)
+            {
                 throw new ArgumentException();
+            }
             return state.Sliders[slider - 1];
         }
 

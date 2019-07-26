@@ -22,9 +22,13 @@ namespace XOutput.UI.Converters
         {
             decimal? d = value as decimal?;
             if (d.HasValue)
+            {
                 return d.Value.ToString("0");
+            }
             else
+            {
                 return "";
+            }
         }
 
         /// <summary>

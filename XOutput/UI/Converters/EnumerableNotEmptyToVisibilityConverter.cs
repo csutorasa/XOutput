@@ -25,7 +25,9 @@ namespace XOutput.UI.Converters
         {
             var testValue = (value as IEnumerable).Cast<object>().Any();
             if (parameter is string && (string)parameter == "invert")
+            {
                 testValue = !testValue;
+            }
             return testValue ? Visibility.Visible : Visibility.Collapsed;
         }
 

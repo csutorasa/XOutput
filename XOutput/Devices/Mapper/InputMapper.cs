@@ -60,7 +60,9 @@ namespace XOutput.Devices.Mapper
         public MapperData GetMapping(XInputTypes? type)
         {
             if (!type.HasValue)
+            {
                 return null;
+            }
             if (!Mappings.ContainsKey(type.Value))
             {
                 Mappings[type.Value] = new MapperData { InputType = null, MinValue = type.Value.GetDisableValue(), MaxValue = type.Value.GetDisableValue() };

@@ -111,7 +111,9 @@ namespace XOutput.Devices
         public int Start(Action onStop = null)
         {
             if (!HasXOutputInstalled)
+            {
                 return 0;
+            }
             controllerCount = Controllers.Instance.GetId();
             if (controller != null)
             {
@@ -190,7 +192,9 @@ namespace XOutput.Devices
         private void XInputInputChanged(object sender, DeviceInputChangedEventArgs e)
         {
             if (!xOutputInterface.Report(controllerCount, XInput.GetValues()))
+            {
                 Stop();
+            }
         }
 
         private void ControllerFeedbackReceived(object sender, Nefarius.ViGEm.Client.Targets.Xbox360.Xbox360FeedbackReceivedEventArgs e)

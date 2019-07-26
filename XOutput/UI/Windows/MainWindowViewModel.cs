@@ -236,7 +236,9 @@ namespace XOutput.UI.Windows
                 {
                     var device = directInputDevices.CreateDirectDevice(instance);
                     if (device == null)
+                    {
                         continue;
+                    }
                     InputMapper mapper = settings.GetMapper(device.ToString());
                     InputConfig inputConfig = settings.GetInputConfiguration(device.ToString(), device.InputConfiguration);
                     device.Disconnected -= DispatchRefreshGameControllers;

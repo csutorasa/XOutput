@@ -36,22 +36,32 @@ namespace XOutput.UpdateChecker
                     if (compareNotPresent)
                     {
                         if (currentNotPresent)
+                        {
                             return VersionCompare.UpToDate;
+                        }
                         else
+                        {
                             return VersionCompare.NewRelease;
+                        }
                     }
                     else
                     {
                         if (currentNotPresent)
+                        {
                             return VersionCompare.NeedsUpgrade;
+                        }
                         else
                         {
                             int currentValue = current[i];
                             int compareValue = compare[i];
                             if (currentValue > compareValue)
+                            {
                                 return VersionCompare.NewRelease;
+                            }
                             if (currentValue < compareValue)
+                            {
                                 return VersionCompare.NeedsUpgrade;
+                            }
                         }
                     }
                 }

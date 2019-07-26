@@ -33,9 +33,13 @@ namespace XOutput.UI.Component
         {
             NumericTextBox numericTextBox = d as NumericTextBox;
             if (numericTextBox.Value.HasValue)
+            {
                 numericTextBox.Text = decimal.Round(numericTextBox.Value.Value).ToString();
+            }
             else
+            {
                 numericTextBox.Text = "";
+            }
         }
 
         protected override void OnTextChanged(TextChangedEventArgs e)
@@ -50,18 +54,28 @@ namespace XOutput.UI.Component
                 if (decimal.TryParse(Text, out value))
                 {
                     if (Minimum.HasValue && value < Minimum)
+                    {
                         Value = Minimum.Value;
+                    }
                     else if (Maximum.HasValue && value > Maximum)
+                    {
                         Value = Maximum.Value;
+                    }
                     else
+                    {
                         Value = value;
+                    }
                 }
                 else
                 {
                     if (Minimum.HasValue)
+                    {
                         Value = Minimum.Value;
+                    }
                     else if (Maximum.HasValue)
+                    {
                         Value = Maximum.Value;
+                    }
                 }
                 Text = decimal.Round(Value.Value).ToString();
             }
