@@ -26,7 +26,7 @@ namespace XOutput.Logging
             System.Diagnostics.Trace.Listeners.Add(new TextWriterTraceListener(LogFile));
         }
 
-        public Task currentTask;
+        private Task currentTask;
 
         public TraceLogger(Type loggerType, int level) : base(loggerType, level)
         {

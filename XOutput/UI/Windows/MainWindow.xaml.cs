@@ -21,7 +21,7 @@ namespace XOutput.UI.Windows
 
         public MainWindow(MainWindowViewModel viewModel)
         {
-#if DEBUG == false
+#if !DEBUG
             Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => viewModel.UnhandledException(e.Exception);
 #endif
             this.viewModel = viewModel;
@@ -57,7 +57,10 @@ namespace XOutput.UI.Windows
                 var result = await new UpdateChecker.UpdateChecker().CompareRelease();
                 viewModel.VersionCompare(result);
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+                // Version comparison failed
+            }
         }
 
         public void Log(string msg)

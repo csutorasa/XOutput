@@ -21,8 +21,8 @@ namespace XOutput.Devices
         /// <summary>
         /// Created once not to create memory waste.
         /// </summary>
-        List<InputSource> changedSources;
-        List<int> changedDpad;
+        protected readonly List<InputSource> changedSources;
+        protected readonly List<int> changedDpad;
 
         public DeviceState(IEnumerable<InputSource> types, int dPadCount)
         {

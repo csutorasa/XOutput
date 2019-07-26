@@ -112,7 +112,7 @@ namespace XOutput.Tools
             if (initialValue == null)
             {
                 Input[id] = new InputConfig();
-                initialValue.ForceFeedback = false;
+                Input[id].ForceFeedback = false;
                 return Input[id];
             }
             if (!Input.ContainsKey(id))

@@ -29,7 +29,7 @@ namespace XOutput.UpdateChecker
                 logger.Debug("Latest application version: " + version);
                 var current = AppVersion.Split('.').Select(t => int.Parse(t)).ToArray();
                 var compare = version.Split('.').Select(t => int.Parse(t)).ToArray();
-                for (int i = 0; true; i++)
+                for (int i = 0; i < 100; i++)
                 {
                     bool currentNotPresent = i >= current.Length;
                     bool compareNotPresent = i >= compare.Length;
@@ -65,6 +65,7 @@ namespace XOutput.UpdateChecker
                         }
                     }
                 }
+                return VersionCompare.Error;
             }
             catch (Exception)
             {
