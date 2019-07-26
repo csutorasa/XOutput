@@ -152,7 +152,7 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 joystick.SetCooperativeLevel(new WindowInteropHelper(Application.Current.MainWindow).Handle, CooperativeLevel.Background | CooperativeLevel.Exclusive);
             }
-            catch
+            catch(Exception)
             {
                 logger.Warning($"Failed to set cooperative level to exclusive for {ToString()}");
             }
@@ -183,8 +183,10 @@ namespace XOutput.Devices.Input.DirectInput
             }
             state = new DeviceState(sources, joystick.Capabilities.PovCount);
             inputConfig = new InputConfig(ForceFeedbackCount);
-            inputRefresher = new Thread(InputRefresher);
-            inputRefresher.Name = ToString() + " input reader";
+            inputRefresher = new Thread(InputRefresher)
+            {
+                Name = ToString() + " input reader"
+            };
             inputRefresher.SetApartmentState(ApartmentState.STA);
             inputRefresher.IsBackground = true;
             Connected = true;
@@ -282,17 +284,21 @@ namespace XOutput.Devices.Input.DirectInput
                 {
                     directions[0] = 1;
                 }
-                var effectParams = new EffectParameters();
-                effectParams.Flags = EffectFlags.Cartesian | EffectFlags.ObjectIds;
-                effectParams.StartDelay = 0;
-                effectParams.SamplePeriod = joystick.Capabilities.ForceFeedbackSamplePeriod;
-                effectParams.Duration = int.MaxValue;
-                effectParams.TriggerButton = -1;
-                effectParams.TriggerRepeatInterval = int.MaxValue;
-                effectParams.Gain = joystick.Properties.ForceFeedbackGain;
+                var effectParams = new EffectParameters
+                {
+                    Flags = EffectFlags.Cartesian | EffectFlags.ObjectIds,
+                    StartDelay = 0,
+                    SamplePeriod = joystick.Capabilities.ForceFeedbackSamplePeriod,
+                    Duration = int.MaxValue,
+                    TriggerButton = -1,
+                    TriggerRepeatInterval = int.MaxValue,
+                    Gain = joystick.Properties.ForceFeedbackGain
+                };
                 effectParams.SetAxes(axes.ToArray(), directions);
-                var cf = new ConstantForce();
-                cf.Magnitude = CalculateMagnitude(isSmall ? small : big);
+                var cf = new ConstantForce
+                {
+                    Magnitude = CalculateMagnitude(isSmall ? small : big)
+                };
                 effectParams.Parameters = cf;
                 try
                 {
@@ -412,21 +418,6 @@ namespace XOutput.Devices.Input.DirectInput
                 default:
                     return 0;
             }
-        }
-
-        /// <summary>
-        /// Gets the current value of a button.
-        /// </summary>
-        /// <param name="button">Button index</param>
-        /// <returns>Value</returns>
-        private bool GetButtonValue(int button)
-        {
-            var state = GetCurrentState();
-            if (button < 1)
-            {
-                throw new ArgumentException();
-            }
-            return state.Buttons[button - 1];
         }
 
         /// <summary>

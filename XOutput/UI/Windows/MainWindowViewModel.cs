@@ -250,7 +250,7 @@ namespace XOutput.UI.Windows
 
         public void AddController(InputMapper mapper)
         {
-            var gameController = new GameController(mapper == null ? settings.CreateMapper(Guid.NewGuid().ToString()) : mapper);
+            var gameController = new GameController(mapper ?? settings.CreateMapper(Guid.NewGuid().ToString()));
             Controllers.Instance.Add(gameController);
 
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), gameController, Model.IsAdmin, log));
@@ -309,9 +309,11 @@ namespace XOutput.UI.Windows
             {
                 Thread.Sleep(1000);
                 dispatcher.Invoke(RefreshGameControllers);
-            });
-            delayThread.Name = "Device list refresh delay";
-            delayThread.IsBackground = true;
+            })
+            {
+                Name = "Device list refresh delay",
+                IsBackground = true
+            };
             delayThread.Start();
         }
 

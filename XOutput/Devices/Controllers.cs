@@ -55,7 +55,7 @@ namespace XOutput.Devices
             }
         }
 
-        public void Add(GameController controller, bool refresh = false)
+        public void Add(GameController controller)
         {
             controllers.Add(controller);
             Update(controller, InputDevices.Instance.GetDevices());

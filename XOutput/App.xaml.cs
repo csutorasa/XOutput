@@ -13,6 +13,8 @@ namespace XOutput
     /// </summary>
     public partial class App : Application
     {
+        private static MainWindowViewModel mainWindowViewModel;
+
         public App()
         {
             string exePath = Assembly.GetExecutingAssembly().Location;
@@ -31,6 +33,7 @@ namespace XOutput
                     App app = new App();
                     app.InitializeComponent();
                     app.Run();
+                    mainWindowViewModel.Dispose();
                 }
                 else
                 {
@@ -42,14 +45,14 @@ namespace XOutput
                 if (mutex != null)
                 {
                     mutex.Close();
-                    mutex = null;
                 }
             }
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow(new MainWindowViewModel(new MainWindowModel(), Dispatcher));
+            mainWindowViewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher);
+            var mainWindow = new MainWindow(mainWindowViewModel);
             MainWindow = mainWindow;
             if (!ArgumentParser.Instance.Minimized)
             {
