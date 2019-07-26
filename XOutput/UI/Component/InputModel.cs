@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using XOutput.Devices;
+﻿using System.Windows.Media;
 using XOutput.Devices.Input;
 
 namespace XOutput.UI.Component

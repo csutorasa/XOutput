@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace XOutput.Logging
 {
@@ -52,7 +51,7 @@ namespace XOutput.Logging
                 {
                     value = e.Message;
                 }
-                if(value == null)
+                if (value == null)
                 {
                     sb.AppendLine(intend + property.Name + ": null");
                 }

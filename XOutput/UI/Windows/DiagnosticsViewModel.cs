@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading;
-using XOutput.Devices.XInput;
+﻿using System.Collections.Generic;
 using XOutput.Diagnostics;
 using XOutput.UI.Component;
 

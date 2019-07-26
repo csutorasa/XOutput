@@ -1,12 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Resources;
-using System.Text;
 using XOutput.Logging;
 
 namespace XOutput.Tools

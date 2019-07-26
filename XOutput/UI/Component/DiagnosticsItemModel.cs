@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using XOutput.Devices.Mapper;
-using XOutput.Devices.XInput;
+﻿using System.Collections.ObjectModel;
 using XOutput.Diagnostics;
 
 namespace XOutput.UI
