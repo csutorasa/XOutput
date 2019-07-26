@@ -18,18 +18,18 @@ Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, 
 
 Install:
 
-- DirectX
-- Visual C++ Redistributable for Visual Studio 2015 32-bit
-- Visual C++ Redistributable for Visual Studio 2015 64-bit
-- all the drivers for your controllers
-- [.Net Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42642) if you do not have Windows 10
-- if you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
+  - DirectX
+  - Visual C++ Redistributable for Visual Studio 2015 32-bit
+  - Visual C++ Redistributable for Visual Studio 2015 64-bit
+  - all the drivers for your controllers
+  - [.Net Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42642) if you do not have Windows 10
+  - if you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
 Download the application:
 
-* Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
-* Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
-* Unzip to any directory
+  - Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
+  - Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
+  - Unzip to any directory
 
 ## How to use
 
@@ -59,7 +59,7 @@ You can check if it is working in the Windows settings, or just select 'File->Ga
 
 ## HidGuardian (exclusive mode)
 
-* Install [HidGuardian](https://forums.vigem.org/topic/271/hidguardian-v1-driver-installation).
+  - Install [HidGuardian](https://forums.vigem.org/topic/271/hidguardian-v1-driver-installation).
 
 Add affected device manually:
 
@@ -80,8 +80,8 @@ Manage process whitelist manually:
 
 ## Command line arguments
 
-* `--start="controller-displayname"` - defines a part of the display name of the controller to be started on application startup.
-* `--minimized` - starts the application minimized to tray
+  - `--start="controller-displayname"` - defines a part of the display name of the controller to be started on application startup.
+  - `--minimized` - starts the application minimized to tray
 
 ### Deadzone
 
@@ -92,7 +92,7 @@ If your analogue stick isn't in perfect condition, you may have what is called a
 XOutput has a diagnostics screen. A few tests are run to check if the application is working correctly.
 
 | Image                                    | Meaning                                                                                                  |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| green circle with a tick                 | Everything is optimal.                                                                                  |
-| yellow triangle with an exclamation mark | The experience may be sub-optimal. Some functions may not work, but the application is functional.  |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| green circle with a tick                 | Everything is optimal.                                                                                         |
+| yellow triangle with an exclamation mark | The experience may be sub-optimal. Some functions may not work, but the application is functional.            |
 | red circle with a minus sign             | Something is not working, the application cannot function properly. Some core features may be unusable. |
