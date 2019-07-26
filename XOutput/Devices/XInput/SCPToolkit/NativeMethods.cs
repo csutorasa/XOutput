@@ -73,7 +73,8 @@ namespace XOutput.Devices.XInput.SCPToolkit
 
                 deviceInfoSet = SetupDiGetClassDevs(ref target, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
 
-                DeviceInterfaceData.cbSize = da.cbSize = Marshal.SizeOf(DeviceInterfaceData);
+                da.cbSize = Marshal.SizeOf(DeviceInterfaceData);
+                DeviceInterfaceData.cbSize = da.cbSize;
 
                 while (SetupDiEnumDeviceInterfaces(deviceInfoSet, IntPtr.Zero, ref target, memberIndex, ref DeviceInterfaceData))
                 {
