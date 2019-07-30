@@ -21,7 +21,9 @@ namespace XOutput.Logging
                 {
                     File.Delete(LogFile);
                 }
-                catch { }
+                catch {
+                    // if the file is in use, append the file
+                }
             }
             System.Diagnostics.Trace.Listeners.Add(new TextWriterTraceListener(LogFile));
         }
