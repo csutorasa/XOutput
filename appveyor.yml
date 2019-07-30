@@ -14,6 +14,10 @@ skip_tags: true
 #    environment configuration    #
 #---------------------------------#
 
+environment:
+  sonarcloudtoken:
+    secure: VMTLc0vSBXvIH5sBuyKY6ri8IL3I5kYpXnCK3xYPkfXK0+tFnIwlotzE3Gn5Yu4u
+
 image: Visual Studio 2017
 
 init:
@@ -41,7 +45,13 @@ build:
   project: XOutput.sln
   include_nuget_references: true
   # MSBuild verbosity level - quiet|minimal|normal|detailed
-  verbosity: normal 
+  verbosity: normal
+  
+build_script:
+ - choco install "sonarscanner-msbuild-net46" -y
+ - SonarScanner.MSBuild.exe begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%"
+ - msbuild /verbosity:quiet "XOutput.sln"
+ - SonarScanner.MSBuild.exe end /d:"sonar.login=%sonarcloudtoken%"
   
 before_build:
   - nuget restore
