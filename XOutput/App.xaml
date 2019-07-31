@@ -4,7 +4,8 @@
              xmlns:s="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:XOutput"
              xmlns:Converters="clr-namespace:XOutput.UI.Converters"
-             Startup="Application_Startup">
+             Startup="Application_Startup"
+             Exit="Application_Exit">
     <Application.Resources>
         <ItemsPanelTemplate x:Key="VerticalStackPanel">
             <StackPanel Orientation="Vertical" Focusable="False"/>

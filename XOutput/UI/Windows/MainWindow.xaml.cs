@@ -22,7 +22,7 @@ namespace XOutput.UI.Windows
         public MainWindow(MainWindowViewModel viewModel)
         {
 #if !DEBUG
-            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => viewModel.UnhandledException(e.Exception);
+            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => Dispatcher.Invoke(() => viewModel.UnhandledException(e.Exception));
 #endif
             this.viewModel = viewModel;
             DataContext = viewModel;
@@ -39,12 +39,12 @@ namespace XOutput.UI.Windows
             }
             new WindowInteropHelper(this).EnsureHandle();
             InitializeComponent();
-            Initialize();
+            viewModel.Initialize(Log);
+            Dispatcher.Invoke(Initialize);
         }
 
-        private async void Initialize()
+        private async Task Initialize()
         {
-            viewModel.Initialize(Log);
             await logger.Info("The application has started.");
             await GetData();
         }

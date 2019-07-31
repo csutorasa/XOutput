@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using XOutput.Devices;
@@ -41,7 +42,7 @@ namespace XOutput.UI.Windows
             timer.Start();
         }
 
-        public async void UnhandledException(Exception exceptionObject)
+        public async Task UnhandledException(Exception exceptionObject)
         {
             await logger.Error(exceptionObject);
             MessageBox.Show(exceptionObject.Message + Environment.NewLine + exceptionObject.StackTrace);

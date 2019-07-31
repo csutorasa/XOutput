@@ -127,7 +127,7 @@ namespace XOutput.Devices.XInput.SCPToolkit
             // Buttons
             if (values[XInputTypes.UP] > 0.5)
             {
-                report[2] |= 1 << 0;
+                report[2] |= 1; // << 0;
             }
 
             if (values[XInputTypes.DOWN] > 0.5)
@@ -167,7 +167,7 @@ namespace XOutput.Devices.XInput.SCPToolkit
 
             if (values[XInputTypes.L1] > 0.5)
             {
-                report[3] |= 1 << 0;
+                report[3] |= 1; // << 0;
             }
 
             if (values[XInputTypes.R1] > 0.5)

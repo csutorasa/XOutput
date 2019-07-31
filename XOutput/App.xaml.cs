@@ -13,7 +13,7 @@ namespace XOutput
     /// </summary>
     public partial class App : Application
     {
-        private static MainWindowViewModel mainWindowViewModel;
+        private MainWindowViewModel mainWindowViewModel;
 
         public App()
         {
@@ -33,7 +33,6 @@ namespace XOutput
                     App app = new App();
                     app.InitializeComponent();
                     app.Run();
-                    mainWindowViewModel.Dispose();
                 }
                 else
                 {
@@ -58,6 +57,11 @@ namespace XOutput
             {
                 mainWindow.Show();
             }
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            mainWindowViewModel.Dispose();
         }
     }
 }

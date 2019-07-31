@@ -13,7 +13,11 @@ namespace XOutput.UI.Windows
         private string selectedLanguage;
         public string SelectedLanguage
         {
-            get => LanguageManager.Instance.Language;
+            get
+            {
+                selectedLanguage = LanguageManager.Instance.Language;
+                return selectedLanguage;
+            }
             set
             {
                 if (selectedLanguage != value)
