@@ -207,7 +207,7 @@ namespace XOutput.UI.Windows
                     log(Translate("VersionCheckUpToDate"));
                     break;
                 default:
-                    throw new ArgumentException();
+                    throw new ArgumentException(nameof(compare));
             }
         }
 

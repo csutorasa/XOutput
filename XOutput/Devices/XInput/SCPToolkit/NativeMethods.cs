@@ -62,7 +62,7 @@ namespace XOutput.Devices.XInput.SCPToolkit
 
         public static bool Find(Guid target, ref string path, int instance = 0)
         {
-            IntPtr detailDataBuffer = IntPtr.Zero;
+            IntPtr detailDataBuffer;
             IntPtr deviceInfoSet = IntPtr.Zero;
 
             try

@@ -68,10 +68,10 @@ namespace XOutput.Devices.XInput.SCPToolkit
         /// </summary>
         /// <param name="controllerCount">number of controller</param>
         /// <returns>If it was successful</returns>
-        public bool Plugin(int controller)
+        public bool Plugin(int controllerCount)
         {
             byte[] buffer = new byte[8];
-            return sendToDevice(NativeMethods.MessageType.Plugin, controller, buffer, null);
+            return sendToDevice(NativeMethods.MessageType.Plugin, controllerCount, buffer, null);
         }
 
         /// <summary>
@@ -79,10 +79,10 @@ namespace XOutput.Devices.XInput.SCPToolkit
         /// </summary>
         /// <param name="controllerCount">number of controller</param>
         /// <returns>If it was successful</returns>
-        public bool Unplug(int controller)
+        public bool Unplug(int controllerCount)
         {
             byte[] buffer = new byte[8];
-            return sendToDevice(NativeMethods.MessageType.Unplug, controller, buffer, null);
+            return sendToDevice(NativeMethods.MessageType.Unplug, controllerCount, buffer, null);
         }
 
         public bool UnplugAll()
@@ -97,9 +97,9 @@ namespace XOutput.Devices.XInput.SCPToolkit
         /// <param name="controllerCount">Number of controller</param>
         /// <param name="values">values for each XInput</param>
         /// <returns>If it was successful</returns>
-        public bool Report(int controller, Dictionary<XInputTypes, double> values)
+        public bool Report(int controllerCount, Dictionary<XInputTypes, double> values)
         {
-            return sendToDevice(NativeMethods.MessageType.Report, controller, GetBinaryData(values), null);
+            return sendToDevice(NativeMethods.MessageType.Report, controllerCount, GetBinaryData(values), null);
         }
 
         private bool sendToDevice(NativeMethods.MessageType type, int? controller, byte[] input, byte[] output)
@@ -127,7 +127,7 @@ namespace XOutput.Devices.XInput.SCPToolkit
             // Buttons
             if (values[XInputTypes.UP] > 0.5)
             {
-                report[2] |= 1; // << 0;
+                report[2] |= 1;
             }
 
             if (values[XInputTypes.DOWN] > 0.5)
@@ -167,7 +167,7 @@ namespace XOutput.Devices.XInput.SCPToolkit
 
             if (values[XInputTypes.L1] > 0.5)
             {
-                report[3] |= 1; // << 0;
+                report[3] |= 1;
             }
 
             if (values[XInputTypes.R1] > 0.5)
