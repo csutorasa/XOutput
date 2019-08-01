@@ -6,8 +6,6 @@
         xmlns:Components="clr-namespace:XOutput.UI.Component"
         xmlns:local="clr-namespace:XOutput.UI.Windows"
         mc:Ignorable="d"
-        Loaded="WindowLoaded"
-        Closed="WindowClosed"
         d:DataContext="{d:DesignInstance Type=local:DiagnosticsViewModel, IsDesignTimeCreatable=False}"
         Title="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DiagnosticsMenu'}" Height="750" Width="550">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
