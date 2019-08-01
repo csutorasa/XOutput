@@ -12,7 +12,7 @@ namespace XOutput.Tools
     /// </summary>
     public sealed class LanguageManager
     {
-        private Dictionary<string, Dictionary<string, string>> data = new Dictionary<string, Dictionary<string, string>>();
+        private readonly Dictionary<string, Dictionary<string, string>> data = new Dictionary<string, Dictionary<string, string>>();
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(LanguageManager));
         private static LanguageManager instance = new LanguageManager();

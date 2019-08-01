@@ -8,7 +8,7 @@ namespace XOutput.Devices.Input.DirectInput
     /// </summary>
     public class DirectInputSource : InputSource
     {
-        private Func<JoystickState, double> valueGetter;
+        private readonly Func<JoystickState, double> valueGetter;
 
         public DirectInputSource(IInputDevice inputDevice, string name, InputSourceTypes type, int offset, Func<JoystickState, double> valueGetter) : base(inputDevice, name, type, offset)
         {

@@ -29,7 +29,7 @@ namespace XOutput.Devices.Mapper
 
         public Dictionary<XInputTypes, MapperData> Mappings { get; set; }
 
-        private ISet<IInputDevice> inputs = new HashSet<IInputDevice>();
+        private readonly ISet<IInputDevice> inputs = new HashSet<IInputDevice>();
 
         public InputMapper()
         {

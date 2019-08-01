@@ -7,7 +7,7 @@ namespace XOutput.Devices.Input.Keyboard
     /// </summary>
     public class KeyboardSource : InputSource
     {
-        private Key key;
+        private readonly Key key;
 
         public KeyboardSource(IInputDevice inputDevice, string name, Key key) : base(inputDevice, name, InputSourceTypes.Button, (int)key)
         {

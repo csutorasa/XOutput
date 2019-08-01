@@ -11,7 +11,7 @@ namespace XOutput.Devices.Input
         /// </summary>
         public static InputDevices Instance => instance;
 
-        private List<IInputDevice> inputDevices = new List<IInputDevice>();
+        private readonly List<IInputDevice> inputDevices = new List<IInputDevice>();
 
         protected InputDevices()
         {

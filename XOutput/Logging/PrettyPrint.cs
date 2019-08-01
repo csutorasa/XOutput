@@ -5,7 +5,7 @@ using System.Text;
 
 namespace XOutput.Logging
 {
-    public class PrettyPrint
+    public static class PrettyPrint
     {
         public static string ToString(object obj)
         {

@@ -23,11 +23,11 @@ namespace XOutput.Devices
         /// <summary>
         /// Gets the changed values.
         /// </summary>
-        public IEnumerable<InputSource> ChangedValues => changedValues.ToArray();
+        public IEnumerable<InputSource> ChangedValues => changedValues;
         /// <summary>
         /// Gets the changed DPad values.
         /// </summary>
-        public IEnumerable<int> ChangedDPads => changedDPads.ToArray();
+        public IEnumerable<int> ChangedDPads => changedDPads;
 
         protected IDevice device;
         protected IEnumerable<InputSource> changedValues;

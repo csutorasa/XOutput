@@ -46,7 +46,7 @@ namespace XOutput.Devices
         protected int offset;
         protected double value;
 
-        public InputSource(IInputDevice inputDevice, string name, InputSourceTypes type, int offset)
+        protected InputSource(IInputDevice inputDevice, string name, InputSourceTypes type, int offset)
         {
             this.inputDevice = inputDevice;
             this.name = name;

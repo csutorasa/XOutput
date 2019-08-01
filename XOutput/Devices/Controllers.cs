@@ -14,8 +14,8 @@ namespace XOutput.Devices
         /// </summary>
         public static Controllers Instance => instance;
 
-        private List<int> ids = new List<int>();
-        private object lockObject = new object();
+        private readonly List<int> ids = new List<int>();
+        private readonly object lockObject = new object();
         private readonly List<GameController> controllers = new List<GameController>();
 
         private Controllers()

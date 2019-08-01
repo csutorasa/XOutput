@@ -14,13 +14,6 @@ namespace XOutput.Tools
     /// </summary>
     public sealed class Settings
     {
-        private const string LanguageKey = "Language";
-        private const string CloseToTrayKey = "CloseToTray";
-        private const string ShowAllKey = "ShowAll";
-        private const string HidGuardianEnabledKey = "HidGuardianEnabled";
-        private const string General = "General";
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(Settings));
-
         /// <summary>
         /// Reads a new setting from a file.
         /// </summary>
