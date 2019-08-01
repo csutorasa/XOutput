@@ -25,14 +25,12 @@ namespace XOutput.Devices.Mapper
             get => source;
             set
             {
-                if (value != source)
+                var newValue = value ?? DisabledInputSource.Instance;
+                if (newValue != source)
                 {
-                    source = value;
-                    if (source != null)
-                    {
-                        InputType = source.Offset.ToString();
-                        InputDevice = source.InputDevice.UniqueId;
-                    }
+                    source = newValue;
+                    InputType = source.Offset.ToString();
+                    InputDevice = source.InputDevice?.UniqueId;
                 }
             }
         }
@@ -53,8 +51,8 @@ namespace XOutput.Devices.Mapper
 
         public MapperData()
         {
-            InputType = null;
-            source = null;
+            InputType = "0";
+            source = DisabledInputSource.Instance;
             MinValue = 0;
             MaxValue = 0;
             Deadzone = 0;

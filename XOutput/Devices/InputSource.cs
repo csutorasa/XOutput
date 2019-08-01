@@ -1,4 +1,5 @@
 ﻿using XOutput.Devices.Input;
+using XOutput.Devices.XInput;
 
 namespace XOutput.Devices
 {
@@ -75,13 +76,13 @@ namespace XOutput.Devices
             return false;
         }
 
-        public double Get()
+        public double Get(XInputTypes type)
         {
             if (inputDevice != null)
             {
                 return inputDevice.Get(this);
             }
-            return 0;
+            return type.GetDisableValue();
         }
     }
 

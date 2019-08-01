@@ -75,15 +75,20 @@ namespace XOutput.Devices.Mapper
             inputs.Clear();
             foreach (var mapping in Mappings)
             {
-                mapping.Value.Source = null;
+                bool found = false;
                 foreach (var inputDevice in inputDevices)
                 {
                     if (mapping.Value.InputDevice != null && mapping.Value.InputType != null && mapping.Value.InputDevice == inputDevice.UniqueId)
                     {
                         mapping.Value.Source = inputDevice.Sources.FirstOrDefault(s => s.Offset.ToString() == mapping.Value.InputType);
                         inputs.Add(inputDevice);
+                        found = true;
                         break;
                     }
+                }
+                if(!found)
+                {
+                    mapping.Value.Source = null;
                 }
             }
             foreach (var inputDevice in inputs)

@@ -25,7 +25,7 @@ namespace XOutput.Devices.XInput
                 double value = 0;
                 if (mapping.InputType != null && mapping.InputDevice != null && mapping.Source != null)
                 {
-                    value = mapping.Source.Get();
+                    value = mapping.Source.Get(inputType);
                 }
                 double newValue = mapping.GetValue(value);
                 return RefreshValue(newValue);
