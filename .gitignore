@@ -2,3 +2,6 @@
 XOutput/bin/
 XOutput/obj/
 packages/
+TestResults/
+XOutputTests/bin/
+XOutputTests/obj/
