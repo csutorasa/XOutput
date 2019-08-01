@@ -97,10 +97,8 @@ namespace XOutput.UI.Windows
             }
             else
             {
-                viewModel.Finalizer();
-                viewModel.Dispose();
                 logger.Info("The application will exit.");
-                Environment.Exit(0);
+                Application.Current.Shutdown();
             }
 
         }
@@ -143,7 +141,6 @@ namespace XOutput.UI.Windows
 
         private async void WindowClosed(object sender, EventArgs e)
         {
-            viewModel.Finalizer();
             viewModel.Dispose();
             await logger.Info("The application will exit.");
         }

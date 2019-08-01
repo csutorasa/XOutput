@@ -50,6 +50,14 @@ namespace XOutput.UI.Windows
 
         public void Dispose()
         {
+            foreach (var device in Model.Inputs.Select(x => x.ViewModel.Model.Device))
+            {
+                device.Dispose();
+            }
+            foreach (var controller in Model.Controllers.Select(x => x.ViewModel.Model.Controller))
+            {
+                controller.Dispose();
+            }
             timer.Stop();
             directInputDevices.Dispose();
         }
@@ -154,14 +162,6 @@ namespace XOutput.UI.Windows
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
             logger.Info("Keyboard controller is connected");
             HandleArgs();
-        }
-
-        public void Finalizer()
-        {
-            foreach (var controller in Model.Controllers.Select(x => x.ViewModel.Model.Controller))
-            {
-                controller.Dispose();
-            }
         }
 
         public void SaveSettings()
