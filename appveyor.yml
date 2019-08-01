@@ -65,8 +65,6 @@ after_build:
 test:
 
 after_test:
-  - codecoverage.exe collect /output:VisualStudio.coverage
-  - codecoverage.exe analyze /output:TestResults\VisualStudio.coveragexml visualstudio.coverage
   - SonarScanner.MSBuild.exe end /d:"sonar.login=%sonarcloudtoken%"
 
 #---------------------------------#

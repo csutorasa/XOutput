@@ -39,10 +39,11 @@ namespace XOutput.UpdateChecker
         public async Task<VersionCompare> CompareRelease()
         {
             VersionCompare compare;
+            HttpResponseMessage response = null;
             try
             {
                 await logger.Debug("Getting " + GithubURL);
-                var response = await client.GetAsync(new Uri(GithubURL));
+                response = await client.GetAsync(new Uri(GithubURL));
                 response.EnsureSuccessStatusCode();
                 string content = await response.Content.ReadAsStringAsync();
                 string latestRelease = GetLatestRelease(content);
@@ -51,6 +52,10 @@ namespace XOutput.UpdateChecker
             catch (Exception)
             {
                 compare = VersionCompare.Error;
+            }
+            finally
+            {
+                response?.Dispose();
             }
             return await Task.Run(() => compare);
         }
