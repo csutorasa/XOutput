@@ -48,10 +48,9 @@ build:
   verbosity: normal
   
 build_script:
- - choco install "sonarscanner-msbuild-net46" -y
- - SonarScanner.MSBuild.exe begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%"
- - msbuild /verbosity:quiet "XOutput.sln"
- - SonarScanner.MSBuild.exe end /d:"sonar.login=%sonarcloudtoken%"
+  - choco install "sonarscanner-msbuild-net46" -y
+  - SonarScanner.MSBuild.exe begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%"
+  - msbuild /verbosity:quiet "XOutput.sln"
   
 before_build:
   - nuget restore
@@ -64,6 +63,11 @@ after_build:
 #---------------------------------#
 
 test:
+
+after_test:
+  - codecoverage.exe collect /output:VisualStudio.coverage
+  - codecoverage.exe analyze /output:TestResults\VisualStudio.coveragexml visualstudio.coverage
+  - SonarScanner.MSBuild.exe end /d:"sonar.login=%sonarcloudtoken%"
 
 #---------------------------------#
 #      artifacts configuration    #
