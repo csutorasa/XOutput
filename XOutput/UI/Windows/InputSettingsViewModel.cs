@@ -9,7 +9,7 @@ using XOutput.UI.Component;
 
 namespace XOutput.UI.Windows
 {
-    public class InputSettingsViewModel : ViewModelBase<InputSettingsModel>
+    public class InputSettingsViewModel : ViewModelBase<InputSettingsModel>, IDisposable
     {
         private readonly IInputDevice device;
         private readonly DispatcherTimer dispatcherTimer = new DispatcherTimer();

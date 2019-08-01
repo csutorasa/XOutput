@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using XOutput.Devices;
@@ -9,7 +10,7 @@ using XOutput.UI.Component;
 
 namespace XOutput.UI.Windows
 {
-    public class ControllerSettingsViewModel : ViewModelBase<ControllerSettingsModel>
+    public class ControllerSettingsViewModel : ViewModelBase<ControllerSettingsModel>, IDisposable
     {
         private readonly GameController controller;
 

@@ -5,7 +5,7 @@ namespace XOutput.Devices.Input
     /// <summary>
     /// Main interface of input devices.
     /// </summary>
-    public interface IInputDevice : IDevice, IDisposable
+    public interface IInputDevice : IDevice
     {
         /// <summary>
         /// This event is invoked if the device is disconnected.

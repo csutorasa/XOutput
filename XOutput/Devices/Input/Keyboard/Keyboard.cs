@@ -28,7 +28,7 @@ namespace XOutput.Devices.Input.Keyboard
         /// Never used.
         /// <para>Implements <see cref="IInputDevice.Disconnected"/></para>
         /// </summary>
-        public event DeviceDisconnectedHandler Disconnected { add { } remove { } }
+        public event DeviceDisconnectedHandler Disconnected;
         #endregion
 
         #region Properties
@@ -69,7 +69,7 @@ namespace XOutput.Devices.Input.Keyboard
         public string HardwareID => null;
         #endregion
 
-        private Thread inputRefresher;
+        private readonly Thread inputRefresher;
         private readonly KeyboardSource[] sources;
         private readonly DeviceState state;
         private readonly InputConfig inputConfig;
@@ -108,9 +108,9 @@ namespace XOutput.Devices.Input.Keyboard
         /// </summary>
         /// <param name="inputType">Source of input</param>
         /// <returns>Value</returns>
-        public double Get(InputSource inputType)
+        public double Get(InputSource source)
         {
-            return inputType.Value;
+            return source.Value;
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace XOutput.Devices.Input.Keyboard
         /// <param name="small">Small motor value</param>
         public void SetForceFeedback(double big, double small)
         {
-
+            // Keyboard has no force feedback
         }
 
         /// <summary>
@@ -147,7 +147,10 @@ namespace XOutput.Devices.Input.Keyboard
                     Thread.Sleep(ReadDelayMs);
                 }
             }
-            catch (ThreadAbortException) { }
+            catch (ThreadAbortException)
+            {
+                // Thread has been aborted
+            }
         }
 
         /// <summary>

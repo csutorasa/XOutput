@@ -15,7 +15,7 @@ namespace XOutput.Logging
         private readonly int level;
         public int Level => level;
 
-        public AbstractLogger(Type loggerType, int level)
+        protected AbstractLogger(Type loggerType, int level)
         {
             this.loggerType = loggerType;
             this.level = level;

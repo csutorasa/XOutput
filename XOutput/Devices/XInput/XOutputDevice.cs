@@ -83,13 +83,13 @@ namespace XOutput.Devices.XInput
 
         /// <summary>
         /// Gets the current state of the inputTpye.
-        /// <para>Implements <see cref="IDevice.Get(Enum)"/></para>
+        /// <para>Implements <see cref="IDevice.Get(InputSource)"/></para>
         /// </summary>
         /// <param name="inputType">Type of input</param>
         /// <returns>Value</returns>
-        public double Get(InputSource inputType)
+        public double Get(InputSource source)
         {
-            return inputType.Value;
+            return source.Value;
         }
 
         private void SourceInputChanged(object sender, DeviceInputChangedEventArgs e)
@@ -154,9 +154,10 @@ namespace XOutput.Devices.XInput
         /// <returns>Value</returns>
         public double Get(Enum inputType)
         {
-            if (inputType is XInputTypes)
+            XInputTypes? type = inputType as XInputTypes?;
+            if (type.HasValue)
             {
-                return sources.First(s => s.XInputType == (XInputTypes)inputType).Value;
+                return sources.First(s => s.XInputType == type.Value).Value;
             }
             return 0;
         }

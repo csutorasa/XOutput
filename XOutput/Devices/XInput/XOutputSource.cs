@@ -9,7 +9,7 @@ namespace XOutput.Devices.XInput
     {
         public XInputTypes XInputType => inputType;
 
-        XInputTypes inputType;
+        private readonly XInputTypes inputType;
 
 
         public XOutputSource(string name, XInputTypes type) : base(null, name, type.GetInputSourceType(), 0)

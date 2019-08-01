@@ -118,7 +118,7 @@ namespace XOutput.Devices.Input.DirectInput
         private readonly Dictionary<DeviceObjectInstance, Effect> actuators;
         private readonly InputConfig inputConfig;
         private bool connected = false;
-        private Thread inputRefresher;
+        private readonly Thread inputRefresher;
         private bool disposed = false;
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace XOutput.Devices.Input.DirectInput
             joystick.Acquire();
             if (deviceInstance.ForceFeedbackDriverGuid != Guid.Empty)
             {
-                var constantForce = joystick.GetEffects().Where(x => x.Guid == EffectGuid.ConstantForce).FirstOrDefault();
+                var constantForce = joystick.GetEffects().FirstOrDefault(x => x.Guid == EffectGuid.ConstantForce);
                 if (constantForce == null)
                 {
                     force = joystick.GetEffects().FirstOrDefault();
@@ -235,18 +235,21 @@ namespace XOutput.Devices.Input.DirectInput
                     Thread.Sleep(ReadDelayMs);
                 }
             }
-            catch (ThreadAbortException) { }
+            catch (ThreadAbortException)
+            {
+                // Thread has been aborted
+            }
         }
 
         /// <summary>
         /// Gets the current state of the inputTpye.
-        /// <para>Implements <see cref="IDevice.Get(Enum)"/></para>
+        /// <para>Implements <see cref="IDevice.Get(InputSource)"/></para>
         /// </summary>
-        /// <param name="inputType">Type of input</param>
+        /// <param name="source">Type of input</param>
         /// <returns>Value</returns>
-        public double Get(InputSource inputType)
+        public double Get(InputSource source)
         {
-            return inputType.Value;
+            return source.Value;
         }
 
         /// <summary>
@@ -360,61 +363,61 @@ namespace XOutput.Devices.Input.DirectInput
         /// <returns>Value</returns>
         private int GetAxisValue(int instanceNumber)
         {
-            var state = GetCurrentState();
+            var currentState = GetCurrentState();
             if (instanceNumber < 0)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(nameof(instanceNumber));
             }
             switch (instanceNumber)
             {
                 case 0:
-                    return state.X;
+                    return currentState.X;
                 case 1:
-                    return ushort.MaxValue - state.Y;
+                    return ushort.MaxValue - currentState.Y;
                 case 2:
-                    return state.Z;
+                    return currentState.Z;
                 case 3:
-                    return state.RotationX;
+                    return currentState.RotationX;
                 case 4:
-                    return ushort.MaxValue - state.RotationY;
+                    return ushort.MaxValue - currentState.RotationY;
                 case 5:
-                    return state.RotationZ;
+                    return currentState.RotationZ;
                 case 6:
-                    return state.AccelerationX;
+                    return currentState.AccelerationX;
                 case 7:
-                    return ushort.MaxValue - state.AccelerationY;
+                    return ushort.MaxValue - currentState.AccelerationY;
                 case 8:
-                    return state.AccelerationZ;
+                    return currentState.AccelerationZ;
                 case 9:
-                    return state.AngularAccelerationX;
+                    return currentState.AngularAccelerationX;
                 case 10:
-                    return ushort.MaxValue - state.AngularAccelerationY;
+                    return ushort.MaxValue - currentState.AngularAccelerationY;
                 case 11:
-                    return state.AngularAccelerationZ;
+                    return currentState.AngularAccelerationZ;
                 case 12:
-                    return state.ForceX;
+                    return currentState.ForceX;
                 case 13:
-                    return ushort.MaxValue - state.ForceY;
+                    return ushort.MaxValue - currentState.ForceY;
                 case 14:
-                    return state.ForceZ;
+                    return currentState.ForceZ;
                 case 15:
-                    return state.TorqueX;
+                    return currentState.TorqueX;
                 case 16:
-                    return ushort.MaxValue - state.TorqueY;
+                    return ushort.MaxValue - currentState.TorqueY;
                 case 17:
-                    return state.TorqueZ;
+                    return currentState.TorqueZ;
                 case 18:
-                    return state.VelocityX;
+                    return currentState.VelocityX;
                 case 19:
-                    return ushort.MaxValue - state.VelocityY;
+                    return ushort.MaxValue - currentState.VelocityY;
                 case 20:
-                    return state.VelocityZ;
+                    return currentState.VelocityZ;
                 case 21:
-                    return state.AngularVelocityX;
+                    return currentState.AngularVelocityX;
                 case 22:
-                    return ushort.MaxValue - state.AngularVelocityY;
+                    return ushort.MaxValue - currentState.AngularVelocityY;
                 case 23:
-                    return state.AngularVelocityZ;
+                    return currentState.AngularVelocityZ;
                 default:
                     return 0;
             }
@@ -427,12 +430,12 @@ namespace XOutput.Devices.Input.DirectInput
         /// <returns>Value</returns>
         private int GetSliderValue(int slider)
         {
-            var state = GetCurrentState();
+            var currentState = GetCurrentState();
             if (slider < 1)
             {
                 throw new ArgumentException();
             }
-            return state.Sliders[slider - 1];
+            return currentState.Sliders[slider - 1];
         }
 
         /// <summary>
@@ -442,8 +445,8 @@ namespace XOutput.Devices.Input.DirectInput
         /// <returns>Value</returns>
         private DPadDirection GetDPadValue(int dpad)
         {
-            JoystickState state = GetCurrentState();
-            switch (state.PointOfViewControllers[dpad])
+            JoystickState currentState = GetCurrentState();
+            switch (currentState.PointOfViewControllers[dpad])
             {
                 case -1: return DPadDirection.None;
                 case 0: return DPadDirection.Up;
