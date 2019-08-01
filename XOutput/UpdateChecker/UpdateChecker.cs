@@ -46,7 +46,7 @@ namespace XOutput.UpdateChecker
                 response.EnsureSuccessStatusCode();
                 string content = await response.Content.ReadAsStringAsync();
                 string latestRelease = GetLatestRelease(content);
-                compare = Version.Compare(latestRelease);
+                compare = Version.Compare(Version.AppVersion, latestRelease);
             }
             catch (Exception)
             {

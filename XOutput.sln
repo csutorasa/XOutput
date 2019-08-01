@@ -1,14 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput", "XOutput\XOutput.csproj", "{60F58071-D9D4-4A5E-ABCD-15A934D50C54}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutputTests", "XOutputTests\XOutputTests.csproj", "{FAEBF0BD-A628-4C98-950F-EBEF8EBE5714}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -18,11 +17,18 @@ Global
 		{60F58071-D9D4-4A5E-ABCD-15A934D50C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60F58071-D9D4-4A5E-ABCD-15A934D50C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60F58071-D9D4-4A5E-ABCD-15A934D50C54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAEBF0BD-A628-4C98-950F-EBEF8EBE5714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAEBF0BD-A628-4C98-950F-EBEF8EBE5714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAEBF0BD-A628-4C98-950F-EBEF8EBE5714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAEBF0BD-A628-4C98-950F-EBEF8EBE5714}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F772CE20-96A8-4157-995F-1B6A21A5A3BE}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

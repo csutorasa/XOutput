@@ -21,13 +21,13 @@ namespace XOutput.UpdateChecker
         /// </summary>
         /// <param name="version">reference version</param>
         /// <returns></returns>
-        public static VersionCompare Compare(string version)
+        public static VersionCompare Compare(string appVersion, string version)
         {
             try
             {
-                logger.Debug("Current application version: " + AppVersion);
+                logger.Debug("Current application version: " + appVersion);
                 logger.Debug("Latest application version: " + version);
-                var current = AppVersion.Split('.').Select(t => int.Parse(t)).ToArray();
+                var current = appVersion.Split('.').Select(t => int.Parse(t)).ToArray();
                 var compare = version.Split('.').Select(t => int.Parse(t)).ToArray();
                 for (int i = 0; i < 100; i++)
                 {

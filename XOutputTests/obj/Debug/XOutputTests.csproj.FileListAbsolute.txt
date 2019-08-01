@@ -1,0 +1,17 @@
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\XOutputTests.dll
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\XOutputTests.pdb
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\XOutput.exe
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\XOutput.pdb
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\XOutput.exe.config
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+D:\Programming\C#\XOutput\XOutputTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+D:\Programming\C#\XOutput\XOutputTests\obj\Debug\XOutputTests.csprojAssemblyReference.cache
+D:\Programming\C#\XOutput\XOutputTests\obj\Debug\XOutputTests.csproj.CoreCompileInputs.cache
+D:\Programming\C#\XOutput\XOutputTests\obj\Debug\XOutputTests.csproj.CopyComplete
+D:\Programming\C#\XOutput\XOutputTests\obj\Debug\XOutputTests.dll
+D:\Programming\C#\XOutput\XOutputTests\obj\Debug\XOutputTests.pdb
