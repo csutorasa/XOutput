@@ -8,7 +8,7 @@ namespace XOutput.UI
         private readonly M model;
         public M Model => model;
 
-        public ViewModelBase(M model)
+        protected ViewModelBase(M model)
         {
             this.model = model;
         }

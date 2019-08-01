@@ -433,7 +433,7 @@ namespace XOutput.Devices.Input.DirectInput
             var currentState = GetCurrentState();
             if (slider < 1)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(nameof(slider));
             }
             return currentState.Sliders[slider - 1];
         }
@@ -458,7 +458,7 @@ namespace XOutput.Devices.Input.DirectInput
                 case 27000: return DPadDirection.Left;
                 case 31500: return DPadDirection.Up | DPadDirection.Left;
                 default:
-                    throw new ArgumentException();
+                    throw new ArgumentException(nameof(dpad));
             }
         }
 

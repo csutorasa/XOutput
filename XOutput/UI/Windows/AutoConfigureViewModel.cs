@@ -93,13 +93,10 @@ namespace XOutput.UI.Windows
                     maxDiff = diff;
                 }
             }
-            if (maxDiff > 0.3)
+            if (maxDiff > 0.3 && maxType != Model.MaxType)
             {
-                if (maxType != Model.MaxType)
-                {
-                    Model.MaxType = maxType;
-                    CalculateStartValues();
-                }
+                Model.MaxType = maxType;
+                CalculateStartValues();
             }
             if (Model.MaxType != null)
             {

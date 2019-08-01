@@ -9,7 +9,7 @@ namespace XOutput.UI.Component
 {
     public class MappingViewModel : ViewModelBase<MappingModel>
     {
-        private GameController controller;
+        private readonly GameController controller;
 
         public MappingViewModel(MappingModel model, GameController controller, XInputTypes inputType) : base(model)
         {

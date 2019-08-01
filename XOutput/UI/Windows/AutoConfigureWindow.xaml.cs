@@ -37,7 +37,8 @@ namespace XOutput.UI.Windows
         {
             if (viewModel.IncreaseTime())
             {
-                if (!viewModel.SaveValues())
+                bool hasNextInput = viewModel.SaveValues();
+                if (!hasNextInput)
                 {
                     Close();
                 }

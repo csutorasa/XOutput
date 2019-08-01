@@ -24,7 +24,7 @@ namespace XOutput.UI.Converters
             bool? b = value as bool?;
             if (b == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(nameof(value));
             }
             else
             {

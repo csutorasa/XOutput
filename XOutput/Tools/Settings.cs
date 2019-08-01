@@ -100,7 +100,7 @@ namespace XOutput.Tools
         /// <param name="id">DeviceID</param>
         /// <param name="initialValue">Default config</param>
         /// <returns></returns>
-        public InputConfig GetInputConfiguration(string id, InputConfig initialValue)
+        public InputConfig GetOrCreateInputConfiguration(string id, InputConfig initialValue)
         {
             if (initialValue == null)
             {

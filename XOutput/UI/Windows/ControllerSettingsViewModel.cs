@@ -48,8 +48,6 @@ namespace XOutput.UI.Windows
 
         public void Update()
         {
-            UpdateInputControls();
-
             UpdateXInputControls();
         }
 
@@ -81,11 +79,6 @@ namespace XOutput.UI.Windows
             Model.MapperAxisViews.Clear();
             Model.MapperButtonViews.Clear();
             Model.MapperDPadViews.Clear();
-        }
-
-        private void UpdateInputControls()
-        {
-
         }
 
         private void CreateMappingControls()

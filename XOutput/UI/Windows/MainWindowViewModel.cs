@@ -48,11 +48,6 @@ namespace XOutput.UI.Windows
             MessageBox.Show(exceptionObject.Message + Environment.NewLine + exceptionObject.StackTrace);
         }
 
-        ~MainWindowViewModel()
-        {
-            Dispose();
-        }
-
         public void Dispose()
         {
             timer.Stop();
@@ -149,7 +144,7 @@ namespace XOutput.UI.Windows
 
             logger.Debug("Creating keyboard controller");
             Devices.Input.Keyboard.Keyboard keyboard = new Devices.Input.Keyboard.Keyboard();
-            InputConfig inputConfig = settings.GetInputConfiguration(keyboard.ToString(), keyboard.InputConfiguration);
+            settings.GetOrCreateInputConfiguration(keyboard.ToString(), keyboard.InputConfiguration);
             InputDevices.Instance.Add(keyboard);
             Model.Inputs.Add(new InputView(new InputViewModel(new InputModel(), keyboard, false)));
             foreach (var mapping in settings.Mapping)
@@ -240,8 +235,7 @@ namespace XOutput.UI.Windows
                     {
                         continue;
                     }
-                    InputMapper mapper = settings.GetMapper(device.ToString());
-                    InputConfig inputConfig = settings.GetInputConfiguration(device.ToString(), device.InputConfiguration);
+                    InputConfig inputConfig = settings.GetOrCreateInputConfiguration(device.ToString(), device.InputConfiguration);
                     device.Disconnected -= DispatchRefreshGameControllers;
                     device.Disconnected += DispatchRefreshGameControllers;
                     Model.Inputs.Add(new InputView(new InputViewModel(new InputModel(), device, Model.IsAdmin)));

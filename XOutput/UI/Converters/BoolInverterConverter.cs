@@ -43,7 +43,7 @@ namespace XOutput.UI.Converters
             }
             else
             {
-                throw new ArgumentException();
+                throw new ArgumentException(nameof(b));
             }
         }
     }

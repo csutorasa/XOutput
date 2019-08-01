@@ -17,15 +17,5 @@ namespace XOutput.UI.Windows
             DataContext = viewModel;
             InitializeComponent();
         }
-
-        private void WindowLoaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void WindowClosed(object sender, EventArgs e)
-        {
-
-        }
     }
 }
