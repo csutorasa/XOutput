@@ -5,3 +5,4 @@ packages/
 TestResults/
 XOutputTests/bin/
 XOutputTests/obj/
+*.nupkg
