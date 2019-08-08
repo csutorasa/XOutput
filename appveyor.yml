@@ -15,6 +15,7 @@ skip_tags: true
 #---------------------------------#
 
 environment:
+  versionnumber: 3.23
   sonarcloudtoken:
     secure: VMTLc0vSBXvIH5sBuyKY6ri8IL3I5kYpXnCK3xYPkfXK0+tFnIwlotzE3Gn5Yu4u
 
@@ -36,7 +37,7 @@ configuration: Release
 build_script:
   - dotnet tool install --global dotnet-sonarscanner
   - dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%" /d:sonar.cs.opencover.reportsPaths="XOutputTests\coverage.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs"
-  - dotnet build -c Release -p:Version=%APPVEYOR_BUILD_VERSION% -p:AssemblyVersion=%APPVEYOR_BUILD_VERSION% -p:FileVersion=%APPVEYOR_BUILD_VERSION%
+  - dotnet build -c Release -p:Version=%versionnumber% -p:AssemblyVersion=%versionnumber% -p:FileVersion=%versionnumber%
   
 before_build:
   - dotnet restore
