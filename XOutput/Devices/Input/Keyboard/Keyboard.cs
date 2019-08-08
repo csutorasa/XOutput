@@ -100,7 +100,7 @@ namespace XOutput.Devices.Input.Keyboard
         public void Dispose()
         {
             Disconnected?.Invoke(this, new DeviceDisconnectedEventArgs());
-            inputRefresher.Abort();
+            inputRefresher.Interrupt();
         }
 
         /// <summary>
@@ -148,9 +148,9 @@ namespace XOutput.Devices.Input.Keyboard
                     Thread.Sleep(ReadDelayMs);
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
-                // Thread has been aborted
+                // Thread has been interrupted
             }
         }
 

@@ -206,7 +206,7 @@ namespace XOutput.Devices.Input.DirectInput
             if (!disposed)
             {
                 disposed = true;
-                inputRefresher?.Abort();
+                inputRefresher?.Interrupt();
                 foreach (var effect in actuators.Values.Where(effect => effect != null))
                 {
                     effect.Dispose();
@@ -235,9 +235,9 @@ namespace XOutput.Devices.Input.DirectInput
                     Thread.Sleep(ReadDelayMs);
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
-                // Thread has been aborted
+                // Thread has been interrupted
             }
         }
 

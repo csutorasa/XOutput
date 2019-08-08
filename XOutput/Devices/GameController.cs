@@ -163,7 +163,7 @@ namespace XOutput.Devices
                 xOutputInterface?.Unplug(controllerCount);
                 logger.Info($"Emulation stopped on {ToString()}.");
                 resetId();
-                thread?.Abort();
+                thread?.Interrupt();
             }
         }
 
