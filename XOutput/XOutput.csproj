@@ -12,6 +12,17 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>XOutput</RootNamespace>
     <AssemblyName>XOutput</AssemblyName>
+    <Authors>Ármin Csutorás</Authors>
+    <Product>XOutput</Product>
+    <PackageId>XOutput</PackageId>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description></Description>
+    <Copyright>Copyright 2019</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
+    <!--<PackageIconUrl>Icon URL</PackageIconUrl>-->
+    <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
