@@ -39,17 +39,10 @@ assembly_info:
 platform: Any CPU
 
 configuration: Release
-
-build:
-  parallel: true
-  project: XOutput.sln
-  include_nuget_references: true
-  # MSBuild verbosity level - quiet|minimal|normal|detailed
-  verbosity: normal
   
 build_script:
   - dotnet tool install --global dotnet-sonarscanner
-  - dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%" /d:sonar.cs.opencover.reportsPaths="calculation.tests\coverage.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs"
+  - dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%" /d:sonar.cs.opencover.reportsPaths="XOutputTests\coverage.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs"
   - dotnet build -c Release
   
 before_build:
