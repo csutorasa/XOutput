@@ -21,9 +21,6 @@ namespace XOutput.UI.Windows
 
         public MainWindow(MainWindowViewModel viewModel)
         {
-#if !DEBUG
-            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => Dispatcher.Invoke(() => viewModel.UnhandledException(e.Exception));
-#endif
             this.viewModel = viewModel;
             DataContext = viewModel;
             if (ArgumentParser.Instance.Minimized)

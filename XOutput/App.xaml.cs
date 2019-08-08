@@ -2,7 +2,10 @@
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
+using XOutput.Logging;
 using XOutput.Tools;
 using XOutput.UI.Windows;
 
@@ -13,55 +16,56 @@ namespace XOutput
     /// </summary>
     public partial class App : Application
     {
+        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(App));
+
         private MainWindowViewModel mainWindowViewModel;
+        private readonly Mutex mutex = new Mutex(false, "XOutputRunningAlreadyMutex");
 
         public App()
         {
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
+#if !DEBUG
+            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => UnhandledException(e.Exception);
+#endif
         }
 
-        [STAThread]
-        public static void Main()
+        public async Task UnhandledException(Exception exceptionObject)
         {
-            Mutex mutex = new Mutex(false, "XOutputRunningAlreadyMutex");
-            try
-            {
-                if (mutex.WaitOne(0, false))
-                {
-                    App app = new App();
-                    app.InitializeComponent();
-                    app.Run();
-                }
-                else
-                {
-                    MessageBox.Show("An instance of the application is already running.");
-                }
-            }
-            finally
-            {
-                if (mutex != null)
-                {
-                    mutex.Close();
-                }
-            }
+            await logger.Error(exceptionObject);
+            MessageBox.Show(exceptionObject.Message + Environment.NewLine + exceptionObject.StackTrace);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            mainWindowViewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher);
-            var mainWindow = new MainWindow(mainWindowViewModel);
-            MainWindow = mainWindow;
-            if (!ArgumentParser.Instance.Minimized)
+            if (mutex.WaitOne(0, false))
             {
-                mainWindow.Show();
+                try {
+                    mainWindowViewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher);
+                    var mainWindow = new MainWindow(mainWindowViewModel);
+                    MainWindow = mainWindow;
+                    if (!ArgumentParser.Instance.Minimized)
+                    {
+                        mainWindow.Show();
+                    }
+                } catch (Exception ex) {
+                    logger.Error(ex);
+                    MessageBox.Show(ex.ToString());
+                    Application.Current.Shutdown();
+                }
+            }
+            else
+            {
+                MessageBox.Show("An instance of the application is already running.");
+                Application.Current.Shutdown();
             }
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             mainWindowViewModel.Dispose();
+            mutex?.Close();
         }
     }
 }

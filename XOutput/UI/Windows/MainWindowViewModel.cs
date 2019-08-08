@@ -42,12 +42,6 @@ namespace XOutput.UI.Windows
             timer.Start();
         }
 
-        public async Task UnhandledException(Exception exceptionObject)
-        {
-            await logger.Error(exceptionObject);
-            MessageBox.Show(exceptionObject.Message + Environment.NewLine + exceptionObject.StackTrace);
-        }
-
         public void Dispose()
         {
             foreach (var device in Model.Inputs.Select(x => x.ViewModel.Model.Device))

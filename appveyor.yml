@@ -48,24 +48,25 @@ build:
   verbosity: normal
   
 build_script:
-  - choco install "sonarscanner-msbuild-net46" -y
-  - SonarScanner.MSBuild.exe begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%"
-  - msbuild /verbosity:quiet "XOutput.sln"
+  - dotnet tool install --global dotnet-sonarscanner
+  - dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%" /d:sonar.cs.opencover.reportsPaths="calculation.tests\coverage.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs"
+  - dotnet build -c Release
   
 before_build:
-  - nuget restore
+  - dotnet restore
   
 after_build:
-  - 7z a XOutput.zip %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\XOutput.exe
+  - 7z a XOutput.zip %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\*.exe %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\*.dll
 
 #---------------------------------#
 #       tests configuration       #
 #---------------------------------#
 
-test:
+test_script:
+  - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 
 after_test:
-  - SonarScanner.MSBuild.exe end /d:"sonar.login=%sonarcloudtoken%"
+  - dotnet sonarscanner end
 
 #---------------------------------#
 #      artifacts configuration    #
