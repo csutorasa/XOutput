@@ -5,4 +5,5 @@ packages/
 TestResults/
 XOutputTests/bin/
 XOutputTests/obj/
+XOutputTests/coverage.opencover.xml
 *.nupkg
