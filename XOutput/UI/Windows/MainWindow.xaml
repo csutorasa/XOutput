@@ -20,7 +20,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <tb:TaskbarIcon Visibility="Visible" ToolTipText="XOutput" IconSource="/icon.ico" MenuActivation="RightClick" PopupActivation="LeftClick"
+        <tb:TaskbarIcon Visibility="Visible" ToolTipText="XOutput" IconSource="/Resources/icon.ico" MenuActivation="RightClick" PopupActivation="LeftClick"
                         TrayMouseDoubleClick="TaskbarIconTrayMouseDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
