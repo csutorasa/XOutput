@@ -1,7 +1,11 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Resources;
 using XOutput.Logging;
 
@@ -46,12 +50,15 @@ namespace XOutput.Tools
 
         private LanguageManager()
         {
-            ResourceSet resourceSet = Properties.Resources.ResourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
-            foreach (DictionaryEntry entry in resourceSet)
-            {
-                string resourceKey = entry.Key.ToString().Replace("_", " ");
-                string value = entry.Value as string;
-                data[resourceKey] = JsonConvert.DeserializeObject<Dictionary<string, string>>(value);
+            var assembly = Assembly.GetExecutingAssembly();
+            var serializer = new JsonSerializer();
+            foreach (var resourceName in assembly.GetManifestResourceNames().Where(s => s.StartsWith(assembly.GetName().Name + ".Resources.Languages.", StringComparison.CurrentCultureIgnoreCase))) {
+                string resourceKey = resourceName.Split('.')[3];
+                using (var stream = new JsonTextReader(new StreamReader(assembly.GetManifestResourceStream(resourceName))))
+                {
+                    data[resourceKey] = serializer.Deserialize<Dictionary<string, string>>(stream);
+                }
+                logger.Info(resourceKey + " language is loaded.");
             }
             Language = "English";
         }

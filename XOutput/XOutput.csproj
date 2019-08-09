@@ -38,7 +38,11 @@
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon.ico;Resrouces/*.*;Properties/*.*" />
+    <Resource Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Resources\Languages\*.json" />
+    <EmbeddedResource Include="Resources\Languages\*.json" />
   </ItemGroup>
 
 </Project>
