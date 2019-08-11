@@ -8,7 +8,7 @@
 param (
     [Parameter(Mandatory=$true)][string]$version
 )
-
+$ErrorActionPreference = 'Stop';
 $new_content = Get-Content .\XOutput\UpdateChecker\Version.cs | ForEach-Object {$_ -replace "public const string AppVersion = `".*`";","public const string AppVersion = `"$version`";"}
 $new_content | Out-File -Encoding utf8 -FilePath .\XOutput\UpdateChecker\Version.cs
 

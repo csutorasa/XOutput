@@ -13,6 +13,6 @@
     </metadata>
     
     <files>
-        <file src="XOutput\bin\Release\XOutput.exe" />
+        <file src="XOutput\bin\Release\net452\XOutput.exe" />
     </files>
 </package>
