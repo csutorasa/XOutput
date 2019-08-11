@@ -8,7 +8,7 @@
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>-->
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>XOutput</RootNamespace>
     <AssemblyName>XOutput</AssemblyName>
@@ -38,7 +38,11 @@
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon.ico;Resrouces/*.*;Properties/*.*" />
+    <Resource Include="Resources\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Resources\Languages\*.json" />
+    <EmbeddedResource Include="Resources\Languages\*.json" />
   </ItemGroup>
 
 </Project>
