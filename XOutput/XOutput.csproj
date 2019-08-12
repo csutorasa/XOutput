@@ -3,10 +3,6 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net452;netcoreapp3.0</TargetFrameworks>
-    <!--<PublishTrimmed>true</PublishTrimmed>
-    <PublishReadyToRun>true</PublishReadyToRun>
-    <PublishSingleFile>true</PublishSingleFile>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>-->
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -26,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="3.1.2" />
+    <PackageReference Include="Costura.Fody" Version="3.1.2" PrivateAssets="all" />
     <PackageReference Include="Fody" Version="3.2.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -44,5 +40,9 @@
     <Content Remove="Resources\Languages\*.json" />
     <EmbeddedResource Include="Resources\Languages\*.json" />
   </ItemGroup>
+
+  <!--<PropertyGroup>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>-->
 
 </Project>

@@ -274,8 +274,6 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 var actuator = pair.Key;
                 var oldEffect = pair.Value;
-                oldEffect?.Dispose();
-                actuators[actuator] = null;
 
                 var isSmall = actuator.ObjectType == ObjectGuid.YAxis;
                 // All available axes will be added.
@@ -306,11 +304,13 @@ namespace XOutput.Devices.Input.DirectInput
                 try
                 {
                     var newEffect = new Effect(joystick, force.Guid, effectParams);
+                    oldEffect?.Dispose();
                     newEffect.Start();
                     actuators[actuator] = newEffect;
                 }
                 catch (SharpDXException)
                 {
+                    actuators[actuator] = null;
                     logger.Warning($"Failed to create and start effect for {ToString()}");
                 }
             }
