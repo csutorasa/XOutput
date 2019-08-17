@@ -115,7 +115,7 @@ namespace XOutput.Devices.Input.DirectInput
         private readonly DirectInputSource[] sources;
         private readonly DeviceState state;
         private readonly EffectInfo force;
-        private readonly Dictionary<DeviceObjectInstance, Effect> actuators;
+        private readonly List<DirectDeviceForceFeedback> actuators = new List<DirectDeviceForceFeedback>();
         private readonly InputConfig inputConfig;
         private bool connected = false;
         private readonly Thread inputRefresher;
@@ -168,11 +168,19 @@ namespace XOutput.Devices.Input.DirectInput
                 {
                     force = constantForce;
                 }
-                actuators = joystick.GetObjects().Where(doi => doi.ObjectId.Flags.HasFlag(DeviceObjectTypeFlags.ForceFeedbackActuator)).ToDictionary(doi => doi, doi => (Effect)null);
-            }
-            else
-            {
-                actuators = new Dictionary<DeviceObjectInstance, Effect>();
+                var actuatorAxes = joystick.GetObjects().Where(doi => doi.ObjectId.Flags.HasFlag(DeviceObjectTypeFlags.ForceFeedbackActuator)).ToArray();
+                for (int i = 0; i < actuatorAxes.Length; i++)
+                {
+                    if (i + 1 < actuatorAxes.Length)
+                    {
+                        actuators.Add(new DirectDeviceForceFeedback(joystick, force, actuatorAxes[i], actuatorAxes[i + 1]));
+                        i++;
+                    }
+                    else
+                    {
+                        actuators.Add(new DirectDeviceForceFeedback(joystick, force, actuatorAxes[i]));
+                    }
+                }
             }
             logger.Info(joystick.Properties.InstanceName + " " + ToString());
             logger.Info(PrettyPrint.ToString(joystick));
@@ -207,9 +215,9 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 disposed = true;
                 inputRefresher?.Interrupt();
-                foreach (var effect in actuators.Values.Where(effect => effect != null))
+                foreach (var actuator in actuators)
                 {
-                    effect.Dispose();
+                    actuator.Dispose();
                 }
                 joystick.Dispose();
             }
@@ -269,50 +277,9 @@ namespace XOutput.Devices.Input.DirectInput
                 big = 0;
                 small = 0;
             }
-            var values = new Dictionary<DeviceObjectInstance, Effect>(actuators);
-            foreach (var pair in values)
+            foreach (var actuator in actuators)
             {
-                var actuator = pair.Key;
-                var oldEffect = pair.Value;
-
-                var isSmall = actuator.ObjectType == ObjectGuid.YAxis;
-                // All available axes will be added.
-                var axes = new List<int> { (int)actuator.ObjectId };
-                axes.AddRange(actuators.Keys.Select(a => (int)a.ObjectId).Where(a => a != (int)actuator.ObjectId));
-                // If two axes are used only the first one will have direction 1.
-                var directions = new int[axes.Count];
-                if (directions.Length > 1)
-                {
-                    directions[0] = 1;
-                }
-                var effectParams = new EffectParameters
-                {
-                    Flags = EffectFlags.Cartesian | EffectFlags.ObjectIds,
-                    StartDelay = 0,
-                    SamplePeriod = joystick.Capabilities.ForceFeedbackSamplePeriod,
-                    Duration = int.MaxValue,
-                    TriggerButton = -1,
-                    TriggerRepeatInterval = int.MaxValue,
-                    Gain = joystick.Properties.ForceFeedbackGain
-                };
-                effectParams.SetAxes(axes.ToArray(), directions);
-                var cf = new ConstantForce
-                {
-                    Magnitude = CalculateMagnitude(isSmall ? small : big)
-                };
-                effectParams.Parameters = cf;
-                try
-                {
-                    var newEffect = new Effect(joystick, force.Guid, effectParams);
-                    oldEffect?.Dispose();
-                    newEffect.Start();
-                    actuators[actuator] = newEffect;
-                }
-                catch (SharpDXException)
-                {
-                    actuators[actuator] = null;
-                    logger.Warning($"Failed to create and start effect for {ToString()}");
-                }
+                actuator.SetForceFeedback(big, small);
             }
         }
 
@@ -510,16 +477,6 @@ namespace XOutput.Devices.Input.DirectInput
                 Connected = false;
                 return new JoystickState();
             }
-        }
-
-        /// <summary>
-        /// Calculates the magnitude value from 0-1 values.
-        /// </summary>
-        /// <param name="value">ratio</param>
-        /// <returns>magnitude value</returns>
-        private int CalculateMagnitude(double value)
-        {
-            return (int)(10000 * value);
         }
 
         private DirectInputSource GetAxisSource(DeviceObjectInstance instance)
