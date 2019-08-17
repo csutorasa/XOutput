@@ -65,7 +65,7 @@ namespace XOutput.Devices.Mapper
             }
             if (!Mappings.ContainsKey(type.Value))
             {
-                Mappings[type.Value] = new MapperData { InputType = null, MinValue = type.Value.GetDisableValue(), MaxValue = type.Value.GetDisableValue() };
+                Mappings[type.Value] = new MapperData { Source = DisabledInputSource.Instance };
             }
             return Mappings[type.Value];
         }
@@ -76,24 +76,23 @@ namespace XOutput.Devices.Mapper
             foreach (var mapping in Mappings)
             {
                 bool found = false;
-                foreach (var inputDevice in inputDevices)
+                if (mapping.Value.InputDevice != null && mapping.Value.InputType != null)
                 {
-                    if (mapping.Value.InputDevice != null && mapping.Value.InputType != null && mapping.Value.InputDevice == inputDevice.UniqueId)
+                    foreach (var inputDevice in inputDevices)
                     {
-                        mapping.Value.Source = inputDevice.Sources.FirstOrDefault(s => s.Offset.ToString() == mapping.Value.InputType);
-                        inputs.Add(inputDevice);
-                        found = true;
-                        break;
+                        if (mapping.Value.InputDevice == inputDevice.UniqueId)
+                        {
+                            mapping.Value.Source = inputDevice.Sources.FirstOrDefault(s => s.Offset.ToString() == mapping.Value.InputType);
+                            inputs.Add(inputDevice);
+                            found = true;
+                            break;
+                        }
                     }
                 }
                 if(!found)
                 {
-                    mapping.Value.Source = null;
+                    mapping.Value.Source = DisabledInputSource.Instance;
                 }
-            }
-            foreach (var inputDevice in inputs)
-            {
-                inputDevice.RefreshInput(true);
             }
         }
 

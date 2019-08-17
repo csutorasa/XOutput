@@ -23,7 +23,7 @@ namespace XOutput.Devices.XInput
             if (mapping != null)
             {
                 double value = 0;
-                if (mapping.InputType != null && mapping.InputDevice != null && mapping.Source != null)
+                if (mapping.Source != null)
                 {
                     value = mapping.Source.Get(inputType);
                 }

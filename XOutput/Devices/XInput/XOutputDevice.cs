@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XOutput.Devices.Input;
 using XOutput.Devices.Mapper;
+using XOutput.Logging;
 
 namespace XOutput.Devices.XInput
 {
@@ -16,6 +17,7 @@ namespace XOutput.Devices.XInput
         /// XInput devices has 1 DPad.
         /// </summary>
         public const int DPadCount = 1;
+        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(XOutputDevice));
         #endregion
 
         #region Events
@@ -71,6 +73,7 @@ namespace XOutput.Devices.XInput
             {
                 source.InputChanged += SourceInputChanged;
             }
+            RefreshInput(true);
         }
 
         public void Dispose()
@@ -114,7 +117,7 @@ namespace XOutput.Devices.XInput
             var changes = state.GetChanges(force);
             dPads[0] = DPadHelper.GetDirection(GetBool(XInputTypes.UP), GetBool(XInputTypes.DOWN), GetBool(XInputTypes.LEFT), GetBool(XInputTypes.RIGHT));
             state.SetDPad(0, dPads[0]);
-            var changedDPads = state.GetChangedDpads();
+            var changedDPads = state.GetChangedDpads(force);
             if (changedDPads.Any() || changes.Any())
             {
                 InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(this, changes, changedDPads));

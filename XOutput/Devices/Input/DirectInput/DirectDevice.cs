@@ -307,7 +307,7 @@ namespace XOutput.Devices.Input.DirectInput
                         }
                     }
                     var changes = state.GetChanges(force);
-                    var dpadChanges = state.GetChangedDpads();
+                    var dpadChanges = state.GetChangedDpads(force);
                     if (changes.Any() || dpadChanges.Any())
                     {
                         InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(this, changes, dpadChanges));

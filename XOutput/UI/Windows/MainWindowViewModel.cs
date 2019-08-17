@@ -214,9 +214,9 @@ namespace XOutput.UI.Windows
                 if (device is DirectDevice && (!instances.Any(x => x.InstanceGuid == ((DirectDevice)device).Id) || !device.Connected))
                 {
                     Model.Inputs.Remove(inputView);
+                    InputDevices.Instance.Remove(device);
                     inputView.ViewModel.Dispose();
                     device.Dispose();
-                    InputDevices.Instance.Remove(device);
                 }
             }
             foreach (var instance in instances)

@@ -64,6 +64,7 @@ namespace XOutput.Devices
         public void Remove(GameController controller)
         {
             controllers.Remove(controller);
+            Update(controller, InputDevices.Instance.GetDevices());
         }
 
         public void Update(GameController controller, IEnumerable<IInputDevice> inputDevices)

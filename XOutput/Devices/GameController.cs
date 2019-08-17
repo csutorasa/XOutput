@@ -80,12 +80,12 @@ namespace XOutput.Devices
             }
             else if (ScpDevice.IsAvailable())
             {
-                logger.Info("SCP Toolkit devices are used.");
+                logger.Warning("SCP Toolkit devices are used.");
                 return new ScpDevice();
             }
             else
             {
-                logger.Warning("Neither ViGEm nor SCP devices can be used.");
+                logger.Error("Neither ViGEm nor SCP devices can be used.");
                 return null;
             }
         }

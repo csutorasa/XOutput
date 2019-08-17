@@ -27,6 +27,7 @@ namespace XOutput.Devices.Input
         public void Remove(IInputDevice inputDevice)
         {
             inputDevices.Remove(inputDevice);
+            Controllers.Instance.Update(inputDevices);
         }
 
         public IEnumerable<IInputDevice> GetDevices()

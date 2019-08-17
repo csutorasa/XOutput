@@ -65,9 +65,9 @@ namespace XOutput.Devices
             return force ? values : changedSources;
         }
 
-        public IEnumerable<int> GetChangedDpads()
+        public IEnumerable<int> GetChangedDpads(bool force = false)
         {
-            return changedDpad;
+            return force ? Enumerable.Range(0, dPads.Length) : changedDpad;
         }
     }
 }

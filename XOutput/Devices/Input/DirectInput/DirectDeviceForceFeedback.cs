@@ -124,8 +124,8 @@ namespace XOutput.Devices.Input.DirectInput
             }
             catch (SharpDXException)
             {
-                return null;
                 logger.Warning($"Failed to create and start effect for {ToString()}");
+                return null;
             }
         }
 
