@@ -155,7 +155,6 @@ namespace XOutput.UI.Windows
             }
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), LanguageModel.Instance.Translate("Keyboard")));
             logger.Info("Keyboard controller is connected");
-            HandleArgs();
         }
 
         public void SaveSettings()
@@ -304,23 +303,6 @@ namespace XOutput.UI.Windows
                 IsBackground = true
             };
             delayThread.Start();
-        }
-
-        private void HandleArgs()
-        {
-            foreach (var viewModel in Model.Controllers.Select(v => v.ViewModel).OrderBy(v => v.Model.Controller.DisplayName).ToArray())
-            {
-                var displayName = viewModel.Model.DisplayName;
-                foreach (var startupController in ArgumentParser.Instance.StartControllers)
-                {
-                    if (displayName.Contains(startupController))
-                    {
-                        viewModel.Start();
-                        logger.Info($"{startupController} controller is started automatically");
-                        break;
-                    }
-                }
-            }
         }
     }
 }

@@ -87,7 +87,6 @@ Manage process whitelist manually (use this method only, if you want to use HidG
 
 ## Command line arguments
 
--   `--start="controller-displayname"` - defines a part of the display name of the controller to be started on application startup.
 -   `--minimized` - starts the application minimized to tray
 
 ### Deadzone
