@@ -268,7 +268,16 @@ namespace XOutput.UI.Windows
         public void OpenWindowsGameControllerSettings()
         {
             logger.Debug("Starting " + GameControllersSettings);
-            Process.Start(GameControllersSettings);
+            new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "/C " + GameControllersSettings,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                },
+            }.Start();
             logger.Debug("Started " + GameControllersSettings);
         }
 
