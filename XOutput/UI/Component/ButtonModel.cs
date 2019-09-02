@@ -26,7 +26,7 @@ namespace XOutput.UI.Component
                 if (this.value != value)
                 {
                     this.value = value;
-                    OnPropertyChanged(nameof(ButtonModel.Value));
+                    OnPropertyChanged(nameof(Value));
                 }
             }
         }
