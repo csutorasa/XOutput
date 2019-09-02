@@ -182,6 +182,10 @@ namespace XOutput.Devices
                     Thread.Sleep(100);
                 }
             }
+            catch (ThreadInterruptedException)
+            {
+
+            }
             finally
             {
                 onStop?.Invoke();
