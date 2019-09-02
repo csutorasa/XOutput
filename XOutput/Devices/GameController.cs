@@ -53,7 +53,7 @@ namespace XOutput.Devices
         private Thread thread;
         private bool running;
         private int controllerCount = 0;
-        private Nefarius.ViGEm.Client.Targets.Xbox360Controller controller;
+        private Nefarius.ViGEm.Client.Targets.IXbox360Controller controller;
 
         public GameController(InputMapper mapper)
         {
@@ -101,7 +101,7 @@ namespace XOutput.Devices
         public void Dispose()
         {
             Stop();
-            xInput.Dispose();
+            xInput?.Dispose();
             xOutputInterface?.Dispose();
         }
 

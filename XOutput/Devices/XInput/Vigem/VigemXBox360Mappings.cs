@@ -7,9 +7,9 @@ namespace XOutput.Devices.XInput.Vigem
     /// </summary>
     public class VigemXbox360ButtonMapping
     {
-        public Xbox360Buttons Type { get; set; }
+        public Xbox360Button Type { get; set; }
 
-        public VigemXbox360ButtonMapping(Xbox360Buttons button)
+        public VigemXbox360ButtonMapping(Xbox360Button button)
         {
             Type = button;
         }
@@ -25,23 +25,34 @@ namespace XOutput.Devices.XInput.Vigem
     /// </summary>
     public class VigemXbox360AxisMapping
     {
-        public Xbox360Axes Type { get; set; }
+        public Xbox360Axis Type { get; set; }
 
-        public VigemXbox360AxisMapping(Xbox360Axes button)
+        public VigemXbox360AxisMapping(Xbox360Axis axis)
         {
-            Type = button;
+            Type = axis;
         }
 
         public short GetValue(double value)
         {
-            if (Type == Xbox360Axes.LeftTrigger || Type == Xbox360Axes.RightTrigger)
-            {
-                return (byte)(value * byte.MaxValue);
-            }
-            else
-            {
-                return (short)((value - 0.5) * 2 * short.MaxValue);
-            }
+            return (short)((value - 0.5) * 2 * short.MaxValue);
+        }
+    }
+
+    /// <summary>
+    /// Mapping value helper for Vigem axes
+    /// </summary>
+    public class VigemXbox360SliderMapping
+    {
+        public Xbox360Slider Type { get; set; }
+
+        public VigemXbox360SliderMapping(Xbox360Slider slider)
+        {
+            Type = slider;
+        }
+
+        public byte GetValue(double value)
+        {
+            return (byte)(value * byte.MaxValue);
         }
     }
 }

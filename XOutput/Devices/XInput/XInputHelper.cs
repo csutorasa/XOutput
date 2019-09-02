@@ -35,6 +35,7 @@ namespace XOutput.Devices.XInput
         private readonly IEnumerable<XInputTypes> buttons;
         private readonly IEnumerable<XInputTypes> axes;
         private readonly IEnumerable<XInputTypes> dPad;
+        private readonly IEnumerable<XInputTypes> sliders;
 
         public XInputHelper()
         {
@@ -42,6 +43,7 @@ namespace XOutput.Devices.XInput
             buttons = values.Where(v => IsButton(v)).ToArray();
             axes = values.Where(v => IsAxis(v)).ToArray();
             dPad = values.Where(v => IsDPad(v)).ToArray();
+            sliders = values.Where(v => IsSlider(v)).ToArray();
         }
 
         public XOutputSource[] GenerateSources()
@@ -49,7 +51,8 @@ namespace XOutput.Devices.XInput
             var buttonSources = buttons.Select(b => new XOutputSource(b.ToString(), b));
             var axisSources = axes.Select(a => new XOutputSource(a.ToString(), a));
             var dpadSources = dPad.Select(d => new XOutputSource(d.ToString(), d));
-            return buttonSources.Concat(axisSources).Concat(dpadSources).ToArray();
+            var sliderSources = sliders.Select(d => new XOutputSource(d.ToString(), d));
+            return buttonSources.Concat(axisSources).Concat(dpadSources).Concat(sliderSources).ToArray();
         }
 
         /// <summary>
@@ -66,6 +69,22 @@ namespace XOutput.Devices.XInput
                 case XInputTypes.LY:
                 case XInputTypes.RX:
                 case XInputTypes.RY:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets if the value is slider type.
+        /// <para>Implements <see cref="IInputHelper{T}.IsAxis(T)"/> enum value</para>
+        /// </summary>
+        /// <param name="type"><see cref="XInputTypes"/> enum value</param>
+        /// <returns></returns>
+        public bool IsSlider(XInputTypes input)
+        {
+            switch (input)
+            {
                 case XInputTypes.L2:
                 case XInputTypes.R2:
                     return true;
@@ -161,6 +180,10 @@ namespace XOutput.Devices.XInput
         {
             return XInputHelper.Instance.IsButton(input);
         }
+        public static bool IsSlider(this XInputTypes input)
+        {
+            return XInputHelper.Instance.IsSlider(input);
+        }
 
         public static double GetDisableValue(this XInputTypes input)
         {
@@ -180,6 +203,10 @@ namespace XOutput.Devices.XInput
             else if (input.IsDPad())
             {
                 return InputSourceTypes.Dpad;
+            }
+            else if (input.IsSlider())
+            {
+                return InputSourceTypes.Slider;
             }
             throw new NotImplementedException("ERROR");
         }
