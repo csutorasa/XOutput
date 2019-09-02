@@ -149,6 +149,11 @@ namespace XOutput.UI.Windows
             settings.GetOrCreateInputConfiguration(keyboard.ToString(), keyboard.InputConfiguration);
             InputDevices.Instance.Add(keyboard);
             Model.Inputs.Add(new InputView(new InputViewModel(new InputModel(), keyboard, false)));
+            logger.Debug("Creating mouse controller");
+            Devices.Input.Mouse.Mouse mouse = new Devices.Input.Mouse.Mouse();
+            settings.GetOrCreateInputConfiguration(mouse.ToString(), mouse.InputConfiguration);
+            InputDevices.Instance.Add(mouse);
+            Model.Inputs.Add(new InputView(new InputViewModel(new InputModel(), mouse, false)));
             foreach (var mapping in settings.Mapping)
             {
                 AddController(mapping);

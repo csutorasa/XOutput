@@ -120,6 +120,7 @@ namespace XOutput.Devices.Input.DirectInput
         private bool connected = false;
         private readonly Thread inputRefresher;
         private bool disposed = false;
+        private DeviceInputChangedEventArgs deviceInputChangedEventArgs;
 
         /// <summary>
         /// Creates a new DirectDevice instance.
@@ -190,6 +191,7 @@ namespace XOutput.Devices.Input.DirectInput
                 logger.Info("  " + obj.Name + " " + obj.ObjectId + " offset: " + obj.Offset + " objecttype: " + obj.ObjectType.ToString() + " " + obj.Usage);
             }
             state = new DeviceState(sources, joystick.Capabilities.PovCount);
+            deviceInputChangedEventArgs = new DeviceInputChangedEventArgs(this);
             inputConfig = new InputConfig(ForceFeedbackCount);
             inputRefresher = new Thread(InputRefresher)
             {
@@ -310,7 +312,8 @@ namespace XOutput.Devices.Input.DirectInput
                     var dpadChanges = state.GetChangedDpads(force);
                     if (changes.Any() || dpadChanges.Any())
                     {
-                        InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(this, changes, dpadChanges));
+                        deviceInputChangedEventArgs.Refresh(changes, dpadChanges);
+                        InputChanged?.Invoke(this, deviceInputChangedEventArgs);
                     }
                     return true;
                 }

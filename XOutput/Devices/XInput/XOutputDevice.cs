@@ -44,6 +44,7 @@ namespace XOutput.Devices.XInput
         private readonly DPadDirection[] dPads = new DPadDirection[DPadCount];
         private readonly XOutputSource[] sources;
         private readonly DeviceState state;
+        private DeviceInputChangedEventArgs deviceInputChangedEventArgs;
 
         /// <summary>
         /// Creates a new XDevice.
@@ -55,6 +56,7 @@ namespace XOutput.Devices.XInput
             this.mapper = mapper;
             sources = XInputHelper.Instance.GenerateSources();
             state = new DeviceState(sources, DPadCount);
+            deviceInputChangedEventArgs = new DeviceInputChangedEventArgs(this);
         }
 
         ~XOutputDevice()
@@ -120,7 +122,8 @@ namespace XOutput.Devices.XInput
             var changedDPads = state.GetChangedDpads(force);
             if (changedDPads.Any() || changes.Any())
             {
-                InputChanged?.Invoke(this, new DeviceInputChangedEventArgs(this, changes, changedDPads));
+                deviceInputChangedEventArgs.Refresh(changes, changedDPads);
+                InputChanged?.Invoke(this, deviceInputChangedEventArgs);
             }
             return true;
         }

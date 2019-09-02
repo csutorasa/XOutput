@@ -33,9 +33,25 @@ namespace XOutput.Devices
         protected IEnumerable<InputSource> changedValues;
         protected IEnumerable<int> changedDPads;
 
-        public DeviceInputChangedEventArgs(IDevice device, IEnumerable<InputSource> changedValues, IEnumerable<int> changedDPads)
+        public DeviceInputChangedEventArgs(IDevice device)
         {
             this.device = device;
+            changedValues = new InputSource[0];
+            changedDPads = new int[0];
+        }
+
+        public void Refresh(IEnumerable<InputSource> changedValues)
+        {
+            this.changedValues = changedValues;
+        }
+
+        public void Refresh(IEnumerable<int> changedDPads)
+        {
+            this.changedDPads = changedDPads;
+        }
+
+        public void Refresh(IEnumerable<InputSource> changedValues, IEnumerable<int> changedDPads)
+        {
             this.changedDPads = changedDPads;
             this.changedValues = changedValues;
         }

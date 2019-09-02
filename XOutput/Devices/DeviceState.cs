@@ -23,12 +23,14 @@ namespace XOutput.Devices
         /// </summary>
         protected readonly List<InputSource> changedSources;
         protected readonly List<int> changedDpad;
+        protected readonly List<int> allDpads;
 
         public DeviceState(IEnumerable<InputSource> types, int dPadCount)
         {
             values = types.ToArray();
             changedSources = new List<InputSource>(types.Count());
             dPads = new DPadDirection[dPadCount];
+            allDpads = Enumerable.Range(0, dPads.Length).ToList();
             changedDpad = new List<int>();
         }
 
@@ -67,7 +69,7 @@ namespace XOutput.Devices
 
         public IEnumerable<int> GetChangedDpads(bool force = false)
         {
-            return force ? Enumerable.Range(0, dPads.Length) : changedDpad;
+            return force ? allDpads : changedDpad;
         }
     }
 }

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Input;
 
-namespace XOutput.Devices.Input.Keyboard
+namespace XOutput.Devices.Input.Mouse
 {
     /// <summary>
     /// Keyboard input device.
     /// </summary>
-    public sealed class Keyboard : IInputDevice
+    public sealed class Mouse : IInputDevice
     {
         #region Constants
         /// <summary>
@@ -32,12 +32,12 @@ namespace XOutput.Devices.Input.Keyboard
         #endregion
 
         #region Properties
-        public int ButtonCount => Enum.GetValues(typeof(Key)).Length;
+        public int ButtonCount => Enum.GetValues(typeof(MouseButton)).Length;
         /// <summary>
         /// Gets the translated name of the keyboard.
         /// <para>Implements <see cref="IInputDevice.DisplayName"/></para>
         /// </summary>
-        public string DisplayName => LanguageModel.Instance.Translate("Keyboard");
+        public string DisplayName => LanguageModel.Instance.Translate("Mouse");
         /// <summary>
         /// Returns true always, as keyboard is expected to be connected at all times.
         /// <para>Implements <see cref="IInputDevice.Connected"/></para>
@@ -46,7 +46,7 @@ namespace XOutput.Devices.Input.Keyboard
         /// <summary>
         /// <para>Implements <see cref="IInputDevice.UniqueId"/></para>
         /// </summary>
-        public string UniqueId => "Keyboard";
+        public string UniqueId => "Mouse";
         /// <summary>
         /// Keyboards have no DPads.
         /// <para>Implements <see cref="IDevice.DPads"/></para>
@@ -70,7 +70,7 @@ namespace XOutput.Devices.Input.Keyboard
         #endregion
 
         private readonly Thread inputRefresher;
-        private readonly KeyboardSource[] sources;
+        private readonly MouseSource[] sources;
         private readonly DeviceState state;
         private readonly InputConfig inputConfig;
         private DeviceInputChangedEventArgs deviceInputChangedEventArgs;
@@ -78,20 +78,20 @@ namespace XOutput.Devices.Input.Keyboard
         /// <summary>
         /// Creates a new keyboard device instance.
         /// </summary>
-        public Keyboard()
+        public Mouse()
         {
-            sources = Enum.GetValues(typeof(Key)).OfType<Key>().Where(x => x != Key.None).OrderBy(x => x.ToString()).Select(x => new KeyboardSource(this, x.ToString(), x)).ToArray();
+            sources = Enum.GetValues(typeof(MouseButton)).OfType<MouseButton>().Select(x => new MouseSource(this, x.ToString(), x)).ToArray();
             state = new DeviceState(sources, 0);
             deviceInputChangedEventArgs = new DeviceInputChangedEventArgs(this);
             inputConfig = new InputConfig();
             inputRefresher = new Thread(InputRefresher);
-            inputRefresher.Name = "Keyboard input notification";
+            inputRefresher.Name = "Mouse input notification";
             inputRefresher.SetApartmentState(ApartmentState.STA);
             inputRefresher.IsBackground = true;
             inputRefresher.Start();
         }
 
-        ~Keyboard()
+        ~Mouse()
         {
             Dispose();
         }
@@ -123,7 +123,7 @@ namespace XOutput.Devices.Input.Keyboard
         /// <returns>Friendly name</returns>
         public override string ToString()
         {
-            return "Keyboard";
+            return "Mouse";
         }
 
         /// <summary>

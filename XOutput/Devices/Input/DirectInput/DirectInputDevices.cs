@@ -41,7 +41,7 @@ namespace XOutput.Devices.Input.DirectInput
         {
             if (allDevices)
             {
-                return directInput.GetDevices().Where(di => di.Type != DeviceType.Keyboard);
+                return directInput.GetDevices().Where(di => di.Type != DeviceType.Keyboard && di.Type != DeviceType.Mouse);
             }
             else
             {
