@@ -478,7 +478,7 @@ namespace XOutput.Devices.Input.DirectInput
             catch (Exception)
             {
                 Connected = false;
-                return new JoystickState();
+                throw;
             }
         }
 
