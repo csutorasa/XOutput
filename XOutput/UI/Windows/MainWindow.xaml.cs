@@ -167,5 +167,12 @@ namespace XOutput.UI.Windows
             Topmost = false;
             Focus();
         }
+
+        public void ForceShow()
+        {
+            Dispatcher.Invoke(() => {
+                TaskbarIconTrayMouseDoubleClick(this, null);
+            });
+        }
     }
 }

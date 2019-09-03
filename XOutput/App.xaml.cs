@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using XOutput.Logging;
 using XOutput.Tools;
 using XOutput.UI.Windows;
@@ -19,13 +17,14 @@ namespace XOutput
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(App));
 
         private MainWindowViewModel mainWindowViewModel;
-        private readonly Mutex mutex = new Mutex(false, "XOutputRunningAlreadyMutex");
+        private SingleInstanceProvider singleInstanceProvider;
 
         public App()
         {
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
+            singleInstanceProvider = SingleInstanceProvider.Instance;
 #if !DEBUG
             Dispatcher.UnhandledException += async (object sender, DispatcherUnhandledExceptionEventArgs e) => await UnhandledException(e.Exception);
 #endif
@@ -39,12 +38,14 @@ namespace XOutput
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            if (mutex.WaitOne(0, false))
+            if (singleInstanceProvider.TryGetLock())
             {
+                singleInstanceProvider.StartNamedPipe();
                 try {
                     mainWindowViewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher);
                     var mainWindow = new MainWindow(mainWindowViewModel);
                     MainWindow = mainWindow;
+                    singleInstanceProvider.ShowEvent += mainWindow.ForceShow;
                     if (!ArgumentParser.Instance.Minimized)
                     {
                         mainWindow.Show();
@@ -57,15 +58,16 @@ namespace XOutput
             }
             else
             {
-                MessageBox.Show("An instance of the application is already running.");
+                singleInstanceProvider.Notify();
                 Application.Current.Shutdown();
             }
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            mainWindowViewModel.Dispose();
-            mutex?.Close();
+            mainWindowViewModel?.Dispose();
+            singleInstanceProvider.StopNamedPipe();
+            singleInstanceProvider.Close();
         }
     }
 }
