@@ -21,6 +21,13 @@ namespace XOutput
 
         public App()
         {
+            DependencyEmbedder dependencyEmbedder = DependencyEmbedder.Instance;
+            dependencyEmbedder.AddPackage("Newtonsoft.Json");
+            dependencyEmbedder.AddPackage("SharpDX.DirectInput");
+            dependencyEmbedder.AddPackage("SharpDX");
+            dependencyEmbedder.AddPackage("Hardcodet.Wpf.TaskbarNotification");
+            dependencyEmbedder.AddPackage("Nefarius.ViGEm.Client");
+            dependencyEmbedder.Initialize();
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
