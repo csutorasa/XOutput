@@ -30,7 +30,6 @@ namespace XOutput.Tools
 
         private Thread notifyThread;
         private readonly Mutex mutex = new Mutex(false, MutexName);
-        private NamedPipeServerStream notifyWait;
 
         public bool TryGetLock()
         {
@@ -58,7 +57,6 @@ namespace XOutput.Tools
         public void StopNamedPipe()
         {
             notifyThread?.Interrupt();
-            notifyWait?.Close();
         }
 
         public bool Notify()
