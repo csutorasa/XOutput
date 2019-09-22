@@ -19,11 +19,11 @@ namespace XOutput.UI.Windows
         private bool hardExit = false;
         private WindowState restoreState = WindowState.Normal;
 
-        public MainWindow(MainWindowViewModel viewModel)
+        public MainWindow(MainWindowViewModel viewModel, ArgumentParser argumentParser)
         {
             this.viewModel = viewModel;
             DataContext = viewModel;
-            if (ArgumentParser.Instance.Minimized)
+            if (argumentParser.Minimized)
             {
                 Visibility = Visibility.Hidden;
                 ShowInTaskbar = false;

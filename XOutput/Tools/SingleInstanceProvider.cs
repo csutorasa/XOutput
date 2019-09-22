@@ -14,12 +14,6 @@ namespace XOutput.Tools
     {
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(SingleInstanceProvider));
 
-        private static SingleInstanceProvider instance = new SingleInstanceProvider();
-        /// <summary>
-        /// Gets the singleton instance of the class.
-        /// </summary>
-        public static SingleInstanceProvider Instance => instance;
-
         private const string MutexName = "XOutputRunningAlreadyMutex";
         private const string PipeName = "XOutputRunningAlreadyNamedPipe";
         private const string ShowCommand = "Show";

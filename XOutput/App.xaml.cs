@@ -18,10 +18,11 @@ namespace XOutput
 
         private MainWindowViewModel mainWindowViewModel;
         private SingleInstanceProvider singleInstanceProvider;
+        private ArgumentParser argumentParser;
 
         public App()
         {
-            DependencyEmbedder dependencyEmbedder = DependencyEmbedder.Instance;
+            DependencyEmbedder dependencyEmbedder = new DependencyEmbedder();
             dependencyEmbedder.AddPackage("Newtonsoft.Json");
             dependencyEmbedder.AddPackage("SharpDX.DirectInput");
             dependencyEmbedder.AddPackage("SharpDX");
@@ -31,7 +32,11 @@ namespace XOutput
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
-            singleInstanceProvider = SingleInstanceProvider.Instance;
+            singleInstanceProvider = new SingleInstanceProvider();
+            argumentParser = new ArgumentParser();
+
+            ApplicationContext globalContext = ApplicationContext.Global;
+            globalContext.Resolvers.Add(Resolver.CreateSingleton(argumentParser));
 #if !DEBUG
             Dispatcher.UnhandledException += async (object sender, DispatcherUnhandledExceptionEventArgs e) => await UnhandledException(e.Exception);
 #endif
@@ -50,10 +55,10 @@ namespace XOutput
                 singleInstanceProvider.StartNamedPipe();
                 try {
                     mainWindowViewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher);
-                    var mainWindow = new MainWindow(mainWindowViewModel);
+                    var mainWindow = new MainWindow(mainWindowViewModel, argumentParser);
                     MainWindow = mainWindow;
                     singleInstanceProvider.ShowEvent += mainWindow.ForceShow;
-                    if (!ArgumentParser.Instance.Minimized)
+                    if (!argumentParser.Minimized)
                     {
                         mainWindow.Show();
                     }
