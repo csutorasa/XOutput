@@ -68,9 +68,7 @@ namespace XOutput.Tools.Tests
         {
             ApplicationContext firstContext = new ApplicationContext();
             firstContext.Resolvers.Add(Resolver.Create(new Func<int, double>((a) => 10.1)));
-            ApplicationContext secondContext = new ApplicationContext();
-            secondContext.Resolvers.Add(Resolver.Create(new Func<int>(() => 5)));
-            ApplicationContext context = firstContext.Merge(secondContext);
+            ApplicationContext context = firstContext.WithResolvers(Resolver.Create(new Func<int>(() => 5)));
             double value = context.Resolve<double>();
             Assert.AreEqual(10.1, value);
         }
@@ -87,6 +85,24 @@ namespace XOutput.Tools.Tests
             mock.Verify(p => p.Dispose(), Times.Never);
             context.Close();
             mock.Verify(p => p.Dispose(), Times.Once);
+        }
+
+        [TestMethod]
+        public void ConfiguartionTest()
+        {
+            ApplicationContext context = new ApplicationContext();
+            context.AddFromConfiguration(typeof(Configuration));
+            int value = context.Resolve<int>();
+            Assert.AreEqual(5, value);
+        }
+    }
+
+    static class Configuration
+    {
+        [ResolverMethod]
+        public static int GetInt()
+        {
+            return 5;
         }
     }
 }

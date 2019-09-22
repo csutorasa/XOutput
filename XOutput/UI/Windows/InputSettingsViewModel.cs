@@ -11,17 +11,19 @@ namespace XOutput.UI.Windows
 {
     public class InputSettingsViewModel : ViewModelBase<InputSettingsModel>, IDisposable
     {
+        private readonly HidGuardianManager hidGuardianManager;
         private readonly IInputDevice device;
         private readonly DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private int state = 0;
 
-        public InputSettingsViewModel(InputSettingsModel model, IInputDevice device, bool isAdmin) : base(model)
+        public InputSettingsViewModel(InputSettingsModel model, HidGuardianManager hidGuardianManager, IInputDevice device, bool isAdmin) : base(model)
         {
+            this.hidGuardianManager = hidGuardianManager;
             this.device = device;
             Model.IsAdmin = isAdmin && device.HardwareID != null;
             if (Model.IsAdmin)
             {
-                Model.HidGuardianAdded = HidGuardianManager.Instance.IsAffected(device.HardwareID);
+                Model.HidGuardianAdded = hidGuardianManager.IsAffected(device.HardwareID);
             }
             Model.Title = device.DisplayName;
             CreateInputControls();
@@ -65,19 +67,19 @@ namespace XOutput.UI.Windows
 
         public void AddHidGuardian()
         {
-            HidGuardianManager.Instance.AddAffectedDevice(device.HardwareID);
+            hidGuardianManager.AddAffectedDevice(device.HardwareID);
             if (Model.IsAdmin)
             {
-                Model.HidGuardianAdded = HidGuardianManager.Instance.IsAffected(device.HardwareID);
+                Model.HidGuardianAdded = hidGuardianManager.IsAffected(device.HardwareID);
             }
         }
 
         public void RemoveHidGuardian()
         {
-            HidGuardianManager.Instance.RemoveAffectedDevice(device.HardwareID);
+            hidGuardianManager.RemoveAffectedDevice(device.HardwareID);
             if (Model.IsAdmin)
             {
-                Model.HidGuardianAdded = HidGuardianManager.Instance.IsAffected(device.HardwareID);
+                Model.HidGuardianAdded = hidGuardianManager.IsAffected(device.HardwareID);
             }
         }
 

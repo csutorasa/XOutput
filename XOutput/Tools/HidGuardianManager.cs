@@ -9,12 +9,6 @@ namespace XOutput.Tools
         static readonly string WHITE_LIST = PARAMETERS + "\\Whitelist";
         static readonly string AFFECTED_DEVICES = "AffectedDevices";
 
-        private static HidGuardianManager instance = new HidGuardianManager(RegistryModifier.Instance);
-        /// <summary>
-        /// Gets the singleton instance of the class.
-        /// </summary>
-        public static HidGuardianManager Instance => instance;
-
         private RegistryModifier registryModifier;
 
         public HidGuardianManager(RegistryModifier registryModifier)

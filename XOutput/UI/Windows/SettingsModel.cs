@@ -6,6 +6,7 @@ namespace XOutput.UI.Windows
     public class SettingsModel : ModelBase
     {
         private readonly Settings settings;
+        private readonly RegistryModifier registryModifier;
 
         private readonly ObservableCollection<string> languages = new ObservableCollection<string>();
         public ObservableCollection<string> Languages => languages;
@@ -44,12 +45,12 @@ namespace XOutput.UI.Windows
 
         public bool RunAtStartup
         {
-            get => RegistryModifier.Instance.Autostart;
+            get => registryModifier.Autostart;
             set
             {
-                if (RegistryModifier.Instance.Autostart != value)
+                if (registryModifier.Autostart != value)
                 {
-                    RegistryModifier.Instance.Autostart = value;
+                    registryModifier.Autostart = value;
                     OnPropertyChanged(nameof(RunAtStartup));
                 }
             }
@@ -68,8 +69,9 @@ namespace XOutput.UI.Windows
             }
         }
 
-        public SettingsModel(Settings settings)
+        public SettingsModel(RegistryModifier registryModifier, Settings settings)
         {
+            this.registryModifier = registryModifier;
             this.settings = settings;
         }
     }

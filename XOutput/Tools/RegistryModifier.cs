@@ -19,11 +19,6 @@ namespace XOutput.Tools
         /// </summary>
         public const string AutostartParams = " --minimized";
 
-        private static RegistryModifier instance = new RegistryModifier();
-        /// <summary>
-        /// Gets the singleton instance of the class.
-        /// </summary>
-        public static RegistryModifier Instance => instance;
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(RegistryModifier));
 
         /// <summary>

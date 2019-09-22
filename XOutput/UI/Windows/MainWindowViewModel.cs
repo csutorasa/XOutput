@@ -27,16 +27,19 @@ namespace XOutput.UI.Windows
         private const string GameControllersSettings = "joy.cpl";
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindowViewModel));
+        private readonly HidGuardianManager hidGuardianManager;
+        private readonly Dispatcher dispatcher;
+
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly DirectInputDevices directInputDevices = new DirectInputDevices();
         private Action<string> log;
-        private readonly Dispatcher dispatcher;
         private Settings settings;
         private bool installed;
 
-        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher) : base(model)
+        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher, HidGuardianManager hidGuardianManager) : base(model)
         {
             this.dispatcher = dispatcher;
+            this.hidGuardianManager = hidGuardianManager;
             timer.Interval = TimeSpan.FromMilliseconds(10000);
             timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
             timer.Start();
@@ -96,7 +99,7 @@ namespace XOutput.UI.Windows
             {
                 try
                 {
-                    HidGuardianManager.Instance.ResetPid(pid);
+                    hidGuardianManager.ResetPid(pid);
                     Model.IsAdmin = true;
                     logger.Info("HidGuardian registry is set");
                     log(string.Format(Translate("HidGuardianEnabledSuccessfully"), pid.ToString()));
@@ -288,7 +291,9 @@ namespace XOutput.UI.Windows
 
         public void OpenSettings()
         {
-            new SettingsWindow(new SettingsViewModel(new SettingsModel(settings))).ShowDialog();
+            ApplicationContext context = ApplicationContext.Global.WithSingletons(settings);
+            SettingsWindow settingsWindow = context.Resolve<SettingsWindow>();
+            settingsWindow.ShowDialog();
         }
 
         public void OpenDiagnostics()
@@ -297,7 +302,9 @@ namespace XOutput.UI.Windows
                 .Select(d => new InputDiagnostics(d)).OfType<IDiagnostics>().ToList();
             elements.Insert(0, new Devices.XInput.XInputDiagnostics());
 
-            new DiagnosticsWindow(new DiagnosticsViewModel(new DiagnosticsModel(), elements)).ShowDialog();
+            ApplicationContext context = ApplicationContext.Global.WithSingletons(new DiagnosticsModel(elements));
+            DiagnosticsWindow diagnosticsWindow = context.Resolve<DiagnosticsWindow>();
+            diagnosticsWindow.ShowDialog();
         }
 
         private string Translate(string key)

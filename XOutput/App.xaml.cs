@@ -32,11 +32,14 @@ namespace XOutput
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
-            singleInstanceProvider = new SingleInstanceProvider();
-            argumentParser = new ArgumentParser();
 
             ApplicationContext globalContext = ApplicationContext.Global;
-            globalContext.Resolvers.Add(Resolver.CreateSingleton(argumentParser));
+            globalContext.Resolvers.Add(Resolver.CreateSingleton(Dispatcher));
+            globalContext.AddFromConfiguration(typeof(ApplicationConfiguration));
+            globalContext.AddFromConfiguration(typeof(UI.UIConfiguration));
+
+            singleInstanceProvider = new SingleInstanceProvider();
+            argumentParser = globalContext.Resolve<ArgumentParser>();
 #if !DEBUG
             Dispatcher.UnhandledException += async (object sender, DispatcherUnhandledExceptionEventArgs e) => await UnhandledException(e.Exception);
 #endif
@@ -54,8 +57,8 @@ namespace XOutput
             {
                 singleInstanceProvider.StartNamedPipe();
                 try {
-                    mainWindowViewModel = new MainWindowViewModel(new MainWindowModel(), Dispatcher);
-                    var mainWindow = new MainWindow(mainWindowViewModel, argumentParser);
+                    var mainWindow = ApplicationContext.Global.Resolve<MainWindow>();
+                    mainWindowViewModel = mainWindow.ViewModel;
                     MainWindow = mainWindow;
                     singleInstanceProvider.ShowEvent += mainWindow.ForceShow;
                     if (!argumentParser.Minimized)
