@@ -183,9 +183,12 @@ namespace XOutput.Devices.Input.DirectInput
                     }
                 }
             }
-            logger.Info(joystick.Properties.InstanceName + " " + ToString());
-            logger.Info(PrettyPrint.ToString(joystick));
-            logger.Info(PrettyPrint.ToString(joystick.GetObjects()));
+            try
+            {
+                logger.Info(joystick.Properties.InstanceName + " " + ToString());
+                logger.Info(PrettyPrint.ToString(joystick));
+                logger.Info(PrettyPrint.ToString(joystick.GetObjects()));
+            } catch { }
             foreach (var obj in joystick.GetObjects())
             {
                 logger.Info("  " + obj.Name + " " + obj.ObjectId + " offset: " + obj.Offset + " objecttype: " + obj.ObjectType.ToString() + " " + obj.Usage);

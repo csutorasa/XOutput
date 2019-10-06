@@ -48,7 +48,6 @@ namespace XOutput.UI.Windows
 
         public async Task GetData()
         {
-
             try
             {
                 var result = await new UpdateChecker.UpdateChecker().CompareRelease();
