@@ -19,7 +19,7 @@ environment:
   sonarcloudtoken:
     secure: VMTLc0vSBXvIH5sBuyKY6ri8IL3I5kYpXnCK3xYPkfXK0+tFnIwlotzE3Gn5Yu4u
 
-image: Visual Studio 2019 Preview
+image: Visual Studio 2019
 
 init:
   - git config --global core.autocrlf input
