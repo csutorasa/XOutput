@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using XOutput.Logging;
 using XOutput.Tools;
 using XOutput.UI.Windows;
