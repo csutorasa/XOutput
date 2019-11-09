@@ -35,6 +35,7 @@ platform: Any CPU
 configuration: Release
   
 build_script:
+  - dotnet add XOutput package Nefarius.ViGEm.Client -s https://ci.appveyor.com/nuget/vigem-net-ci -v 1.16.138
   - dotnet tool install --global dotnet-sonarscanner
   - dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%" /d:sonar.cs.opencover.reportsPaths="XOutputTests\coverage.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs"
   - dotnet msbuild -p:Configuration=Release -p:Version=%versionnumber% -p:AssemblyVersion=%versionnumber% -p:FileVersion=%versionnumber%
