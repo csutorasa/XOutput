@@ -2,7 +2,7 @@
 #      general configuration      #
 #---------------------------------#
 
-version: 3.24-{branch}-{build}
+version: 3.25-{branch}-{build}
 
 branches:
   only:
@@ -15,7 +15,7 @@ skip_tags: true
 #---------------------------------#
 
 environment:
-  versionnumber: 3.24
+  versionnumber: 3.25
   sonarcloudtoken:
     secure: VMTLc0vSBXvIH5sBuyKY6ri8IL3I5kYpXnCK3xYPkfXK0+tFnIwlotzE3Gn5Yu4u
 
