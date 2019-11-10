@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace XOutput.UI.Windows
@@ -27,6 +28,10 @@ namespace XOutput.UI.Windows
         {
             await Task.Delay(100);
             viewModel.Initialize();
+            viewModel.IsMouseOverButtons = () =>
+            {
+                return DisableButton.IsMouseOver || SaveButton.IsMouseOver;
+            };
             if (timed)
             {
                 timer.Interval = TimeSpan.FromMilliseconds(25);

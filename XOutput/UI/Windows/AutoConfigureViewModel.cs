@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Threading;
 using XOutput.Devices;
 using XOutput.Devices.Input;
+using XOutput.Devices.Input.Mouse;
 using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
 using XOutput.Tools;
@@ -24,6 +26,7 @@ namespace XOutput.UI.Windows
         private XInputTypes xInputType;
         private readonly InputSource[] inputTypes;
         private DateTime lastTime;
+        public Func<bool> IsMouseOverButtons { get; set; }
 
         public AutoConfigureViewModel(AutoConfigureModel model, IEnumerable<IInputDevice> inputDevices, InputMapper mapper, XInputTypes[] valuesToRead) : base(model)
         {
@@ -79,6 +82,10 @@ namespace XOutput.UI.Windows
         /// </summary>
         private void ReadValues(object sender, DeviceInputChangedEventArgs e)
         {
+            if(e.Device is Mouse && (IsMouseOverButtons?.Invoke() ?? false))
+            {
+                return;
+            }
             var inputDevice = e.Device;
             InputSource maxType = null;
             double maxDiff = 0;

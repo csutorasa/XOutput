@@ -62,10 +62,10 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="1" Click="DisableClick"
+            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="1" Click="DisableClick" Name="DisableButton"
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Disable'}"/>
-            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="2" Click="SaveClick"
-                IsEnabled="{Binding Model.MaxType, Converter={StaticResource NotNullToBoolConverter}}" 
+            <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="2" Click="SaveClick" Name="SaveButton"
+                IsEnabled="{Binding Model.MaxType, Converter={StaticResource NotNullToBoolConverter}}"
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Save'}"/>
             <Button Margin="5 0" Padding="10" Grid.Row="3" Grid.Column="3" Click="CancelClick"
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Cancel'}" />
