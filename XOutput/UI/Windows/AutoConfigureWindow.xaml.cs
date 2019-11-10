@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -22,8 +23,9 @@ namespace XOutput.UI.Windows
             InitializeComponent();
         }
 
-        private void WindowLoaded(object sender, RoutedEventArgs e)
+        private async void WindowLoaded(object sender, RoutedEventArgs e)
         {
+            await Task.Delay(100);
             viewModel.Initialize();
             if (timed)
             {
