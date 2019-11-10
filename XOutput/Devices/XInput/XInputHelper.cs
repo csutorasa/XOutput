@@ -69,6 +69,8 @@ namespace XOutput.Devices.XInput
                 case XInputTypes.LY:
                 case XInputTypes.RX:
                 case XInputTypes.RY:
+                case XInputTypes.L2:
+                case XInputTypes.R2:
                     return true;
                 default:
                     return false;
