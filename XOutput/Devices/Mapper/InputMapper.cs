@@ -27,13 +27,13 @@ namespace XOutput.Devices.Mapper
         /// </summary>
         public string ForceFeedbackDevice { get; set; }
 
-        public Dictionary<XInputTypes, MapperData> Mappings { get; set; }
+        public Dictionary<XInputTypes, MapperDataCollection> Mappings { get; set; }
 
         private readonly ISet<IInputDevice> inputs = new HashSet<IInputDevice>();
 
         public InputMapper()
         {
-            Mappings = new Dictionary<XInputTypes, MapperData>();
+            Mappings = new Dictionary<XInputTypes, MapperDataCollection>();
         }
 
         public ISet<IInputDevice> GetInputs()
@@ -47,7 +47,7 @@ namespace XOutput.Devices.Mapper
         /// <param name="type"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public void SetMapping(XInputTypes type, MapperData to)
+        public void SetMapping(XInputTypes type, MapperDataCollection to)
         {
             Mappings[type] = to;
         }
@@ -57,7 +57,7 @@ namespace XOutput.Devices.Mapper
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public MapperData GetMapping(XInputTypes? type)
+        public MapperDataCollection GetMapping(XInputTypes? type)
         {
             if (!type.HasValue)
             {
@@ -65,7 +65,7 @@ namespace XOutput.Devices.Mapper
             }
             if (!Mappings.ContainsKey(type.Value))
             {
-                Mappings[type.Value] = new MapperData { Source = DisabledInputSource.Instance };
+                Mappings[type.Value] = new MapperDataCollection(new MapperData { Source = DisabledInputSource.Instance });
             }
             return Mappings[type.Value];
         }
@@ -75,23 +75,26 @@ namespace XOutput.Devices.Mapper
             inputs.Clear();
             foreach (var mapping in Mappings)
             {
-                bool found = false;
-                if (mapping.Value.InputDevice != null && mapping.Value.InputType != null)
+                foreach (var mapperData in mapping.Value.Mappers)
                 {
-                    foreach (var inputDevice in inputDevices)
+                    bool found = false;
+                    if (mapperData.InputDevice != null && mapperData.InputType != null)
                     {
-                        if (mapping.Value.InputDevice == inputDevice.UniqueId)
+                        foreach (var inputDevice in inputDevices)
                         {
-                            mapping.Value.Source = inputDevice.Sources.FirstOrDefault(s => s.Offset.ToString() == mapping.Value.InputType);
-                            inputs.Add(inputDevice);
-                            found = true;
-                            break;
+                            if (mapperData.InputDevice == inputDevice.UniqueId)
+                            {
+                                mapperData.Source = inputDevice.Sources.FirstOrDefault(s => s.Offset.ToString() == mapperData.InputType);
+                                inputs.Add(inputDevice);
+                                found = true;
+                                break;
+                            }
                         }
                     }
-                }
-                if(!found)
-                {
-                    mapping.Value.Source = DisabledInputSource.Instance;
+                    if (!found)
+                    {
+                        mapperData.Source = DisabledInputSource.Instance;
+                    }
                 }
             }
         }

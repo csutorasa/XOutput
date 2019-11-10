@@ -66,24 +66,28 @@ namespace XOutput.Devices.Mapper
         public double GetValue(double value)
         {
             double range = MaxValue - MinValue;
+            double mappedValue;
             if (Math.Abs(range) < 0.0001)
             {
-                return MinValue;
+                mappedValue = MinValue;
             }
-            var readvalue = value;
-            if (Math.Abs(value - 0.5) < Deadzone)
+            else
             {
-                readvalue = 0.5;
-            }
+                var readvalue = value;
+                if (Math.Abs(value - 0.5) < Deadzone)
+                {
+                    readvalue = 0.5;
+                }
 
-            var mappedValue = (readvalue - MinValue) / range;
-            if (mappedValue < 0)
-            {
-                mappedValue = 0;
-            }
-            else if (mappedValue > 1)
-            {
-                mappedValue = 1;
+                mappedValue = (readvalue - MinValue) / range;
+                if (mappedValue < 0)
+                {
+                    mappedValue = 0;
+                }
+                else if (mappedValue > 1)
+                {
+                    mappedValue = 1;
+                }
             }
             return mappedValue;
         }

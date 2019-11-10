@@ -87,7 +87,7 @@ namespace XOutput.Tools
                 mapper.Name = "Controller";
                 foreach (var type in XInputHelper.Instance.Values)
                 {
-                    mapper.SetMapping(type, new MapperData());
+                    mapper.SetMapping(type, new MapperDataCollection(new MapperData()));
                 }
                 Mapping.Add(mapper);
             }

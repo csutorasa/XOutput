@@ -19,15 +19,10 @@ namespace XOutput.Devices.XInput
 
         internal bool Refresh(InputMapper mapper)
         {
-            var mapping = mapper.GetMapping(inputType);
-            if (mapping != null)
+            var mappingCollection = mapper.GetMapping(inputType);
+            if (mappingCollection != null)
             {
-                double value = 0;
-                if (mapping.Source != null)
-                {
-                    value = mapping.Source.Get(inputType);
-                }
-                double newValue = mapping.GetValue(value);
+                double newValue = mappingCollection.GetValue(inputType);
                 return RefreshValue(newValue);
             }
             return false;

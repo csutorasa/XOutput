@@ -14,8 +14,8 @@ namespace XOutput.UI.Component
         public MappingViewModel(MappingModel model, GameController controller, XInputTypes inputType) : base(model)
         {
             this.controller = controller;
-            var mapperData = controller.Mapper.GetMapping(inputType);
             Model.XInputType = inputType;
+            var mapperData = GetMapperData();
             Model.MapperData = mapperData;
             SetSelected(mapperData);
         }
@@ -41,7 +41,7 @@ namespace XOutput.UI.Component
 
         protected MapperData GetMapperData()
         {
-            return controller.Mapper.GetMapping(Model.XInputType);
+            return controller.Mapper.GetMapping(Model.XInputType).Mappers[0]; // TODO
         }
 
         protected void SetSelected(MapperData mapperData)

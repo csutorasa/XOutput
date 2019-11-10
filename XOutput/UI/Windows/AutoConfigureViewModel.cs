@@ -106,7 +106,8 @@ namespace XOutput.UI.Windows
 
         public bool SaveDisableValues()
         {
-            MapperData md = mapper.GetMapping(xInputType);
+            var mapperCollection = mapper.GetMapping(xInputType);
+            MapperData md = mapperCollection.Mappers[0]; // TODO
             if (md.InputType == null)
             {
                 md.Source = inputTypes.First();
@@ -120,7 +121,8 @@ namespace XOutput.UI.Windows
         {
             if (Model.MaxType != null)
             {
-                MapperData md = mapper.GetMapping(xInputType);
+                var mapperCollection = mapper.GetMapping(xInputType);
+                MapperData md = mapperCollection.Mappers[0]; // TODO
                 md.Source = Model.MaxType;
                 md.MinValue = Model.MinValue / 100;
                 md.MaxValue = Model.MaxValue / 100;
