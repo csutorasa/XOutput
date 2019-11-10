@@ -52,8 +52,8 @@ namespace XOutput.Devices.Input.Mouse
 
     public class MouseHookEventArgs
     {
-        public MouseButton Button;
-        public MouseButtonState State;
+        public MouseButton Button { get; set; }
+        public MouseButtonState State { get; set; }
 
         internal MouseHookEventArgs(MouseButton button, MouseButtonState state)
         {
