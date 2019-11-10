@@ -16,7 +16,6 @@
             <TextBlock Margin="10" Text="{Binding Model.DisplayName}" TextWrapping="NoWrap" HorizontalAlignment="Stretch"/>
         </Grid>
         <Button Grid.Column="1" FontSize="14" Margin="5" Click="OpenClick"
-                IsEnabled="{Binding Model.Started, Converter={StaticResource BoolInverterConverter}}"
                 Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Edit'}" />
     </Grid>
 </UserControl>
