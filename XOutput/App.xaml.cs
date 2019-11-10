@@ -41,6 +41,7 @@ namespace XOutput
 
             singleInstanceProvider = new SingleInstanceProvider();
             argumentParser = globalContext.Resolve<ArgumentParser>();
+            globalContext.Resolve<Devices.Input.Mouse.MouseHook>();
 #if !DEBUG
             Dispatcher.UnhandledException += async (object sender, DispatcherUnhandledExceptionEventArgs e) => await UnhandledException(e.Exception);
 #endif

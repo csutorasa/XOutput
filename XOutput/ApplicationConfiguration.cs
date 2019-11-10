@@ -25,5 +25,10 @@ namespace XOutput
         {
             return new RegistryModifier();
         }
+        [ResolverMethod]
+        public static Devices.Input.Mouse.MouseHook GetMouseHook()
+        {
+            return new Devices.Input.Mouse.MouseHook();
+        }
     }
 }
