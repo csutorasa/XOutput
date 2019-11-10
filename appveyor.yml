@@ -45,7 +45,7 @@ before_build:
   - dotnet restore
   
 after_build:
-  - 7z a XOutput.zip %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\*.exe %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\*.dll
+  - 7z a XOutput.zip %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\*.exe
 
 #---------------------------------#
 #       tests configuration       #
