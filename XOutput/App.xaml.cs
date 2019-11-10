@@ -41,7 +41,6 @@ namespace XOutput
 
             singleInstanceProvider = new SingleInstanceProvider();
             argumentParser = globalContext.Resolve<ArgumentParser>();
-            globalContext.Resolve<Devices.Input.Mouse.MouseHook>();
 #if !DEBUG
             Dispatcher.UnhandledException += async (object sender, DispatcherUnhandledExceptionEventArgs e) => await UnhandledException(e.Exception);
 #endif
@@ -67,6 +66,7 @@ namespace XOutput
                     {
                         mainWindow.Show();
                     }
+                    ApplicationContext.Global.Resolve<Devices.Input.Mouse.MouseHook>().StartHook();
                 } catch (Exception ex) {
                     logger.Error(ex);
                     MessageBox.Show(ex.ToString());
@@ -85,6 +85,7 @@ namespace XOutput
             mainWindowViewModel?.Dispose();
             singleInstanceProvider.StopNamedPipe();
             singleInstanceProvider.Close();
+            ApplicationContext.Global.Close();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace XOutput.Devices.Input.Mouse
         private IntPtr hookPtr = IntPtr.Zero;
         private HookProc hook;
 
-        public MouseHook()
+        public void StartHook()
         {
             hook = (nCode, wParam, lParam) =>
             {
