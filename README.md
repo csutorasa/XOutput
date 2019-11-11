@@ -32,6 +32,15 @@ Download the application:
 -   Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
 -   Unzip to any directory
 
+## How to upgrade
+
+Download the application:
+
+-   Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
+-   Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
+-   Unzip to the same directory as before
+-   Delete the old `settings.json` file before starting the application
+
 ## How to use
 
 If all the requirements are installed, the software should start up without any error messages.
