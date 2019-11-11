@@ -95,6 +95,10 @@ namespace XOutput.UI.Windows
             {
                 Model.MapperAxisViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
             }
+            foreach (var xInputType in XInputHelper.Instance.Sliders)
+            {
+                Model.MapperAxisViews.Add(new MappingView(new MappingViewModel(new MappingModel(), controller, xInputType)));
+            }
         }
 
         private void CreateXInputControls()

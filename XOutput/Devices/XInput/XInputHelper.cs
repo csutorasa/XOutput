@@ -27,6 +27,10 @@ namespace XOutput.Devices.XInput
         /// </summary>
         public IEnumerable<XInputTypes> Axes => axes;
         /// <summary>
+        /// Gets all axis values.
+        /// </summary>
+        public IEnumerable<XInputTypes> Sliders => sliders;
+        /// <summary>
         /// Gets all dpad values.
         /// </summary>
         public IEnumerable<XInputTypes> DPad => dPad;
@@ -69,8 +73,6 @@ namespace XOutput.Devices.XInput
                 case XInputTypes.LY:
                 case XInputTypes.RX:
                 case XInputTypes.RY:
-                case XInputTypes.L2:
-                case XInputTypes.R2:
                     return true;
                 default:
                     return false;
