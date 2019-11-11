@@ -12,7 +12,7 @@ namespace XOutput.UpdateChecker
         /// <summary>
         /// Current application version.
         /// </summary>
-        public const string AppVersion = "3.26";
+        public const string AppVersion = "3.27";
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(Version));
 
