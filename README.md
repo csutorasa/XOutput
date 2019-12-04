@@ -76,6 +76,7 @@ Affected devices and whitelist can be managed by the application, but it needs a
 1.  Enable HidGuardian initialization in the settings.
 2.  Restart the application as administrator.
 3.  Add device to affected devices in the input settings.
+4.  Reconnect device or reboot PC
 
 Add affected device manually (use this method only, if you want to hide non recognized HID devices):
 
