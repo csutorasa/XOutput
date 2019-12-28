@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace XOutput.Devices.Input
 {
-    public class InputDevices
+    public class InputDevices : IDisposable
     {
 
         private static InputDevices instance = new InputDevices();
@@ -33,6 +34,12 @@ namespace XOutput.Devices.Input
         public IEnumerable<IInputDevice> GetDevices()
         {
             return inputDevices.ToArray();
+        }
+
+        public void Dispose()
+        {
+            inputDevices.ForEach(d => d.Dispose());
+            inputDevices.Clear();
         }
     }
 }

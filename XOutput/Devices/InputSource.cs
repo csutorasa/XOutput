@@ -80,7 +80,7 @@ namespace XOutput.Devices
         {
             if (inputDevice != null)
             {
-                return inputDevice.Get(this);
+                return Value;
             }
             return type.GetDisableValue();
         }
