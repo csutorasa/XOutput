@@ -79,6 +79,10 @@ namespace XOutput.Tools
         public ApplicationContext WithSingletons(params object[] instances)
         {
             ApplicationContext newContext = new ApplicationContext();
+            foreach (var type in constructorResolvedTypes)
+            {
+                newContext.constructorResolvedTypes.Add(type);
+            }
             newContext.Resolvers.AddRange(Resolvers);
             newContext.Resolvers.AddRange(instances.Select(i => Resolver.CreateSingleton(i)));
             return newContext;

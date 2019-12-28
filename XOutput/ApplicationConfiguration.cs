@@ -15,15 +15,5 @@ namespace XOutput
         {
             return new ArgumentParser(Environment.GetCommandLineArgs().Skip(1).ToArray());
         }
-        [ResolverMethod]
-        public static HidGuardianManager GetHidGuardianManager(RegistryModifier registryModifier)
-        {
-            return new HidGuardianManager(registryModifier);
-        }
-        [ResolverMethod]
-        public static RegistryModifier GetRegistryModifier()
-        {
-            return new RegistryModifier();
-        }
     }
 }

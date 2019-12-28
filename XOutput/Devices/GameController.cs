@@ -90,11 +90,6 @@ namespace XOutput.Devices
             }
         }
 
-        ~GameController()
-        {
-            Dispose();
-        }
-
         /// <summary>
         /// Disposes all used resources
         /// </summary>

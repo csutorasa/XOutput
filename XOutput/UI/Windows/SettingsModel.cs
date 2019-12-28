@@ -45,12 +45,19 @@ namespace XOutput.UI.Windows
 
         public bool RunAtStartup
         {
-            get => registryModifier.Autostart;
+            get => registryModifier.GetAutostart();
             set
             {
-                if (registryModifier.Autostart != value)
+                if (registryModifier.GetAutostart() != value)
                 {
-                    registryModifier.Autostart = value;
+                    if (value)
+                    {
+                        registryModifier.SetAutostart();
+                    }
+                    else
+                    {
+                        registryModifier.ClearAutostart();
+                    }
                     OnPropertyChanged(nameof(RunAtStartup));
                 }
             }
