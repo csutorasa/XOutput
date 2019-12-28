@@ -74,6 +74,7 @@ namespace XOutput.Devices.Input.Mouse
         private readonly DeviceState state;
         private readonly InputConfig inputConfig;
         private DeviceInputChangedEventArgs deviceInputChangedEventArgs;
+        private bool disposed = false;
 
         /// <summary>
         /// Creates a new keyboard device instance.
@@ -91,29 +92,17 @@ namespace XOutput.Devices.Input.Mouse
             inputRefresher.Start();
         }
 
-        ~Mouse()
-        {
-            Dispose();
-        }
-
         /// <summary>
         /// Disposes all resources.
         /// </summary>
         public void Dispose()
         {
-            Disconnected?.Invoke(this, new DeviceDisconnectedEventArgs());
-            inputRefresher.Interrupt();
-        }
-
-        /// <summary>
-        /// Gets the current state of the inputTpye.
-        /// <para>Implements <see cref="IDevice.Get(InputSource)"/></para>
-        /// </summary>
-        /// <param name="inputType">Source of input</param>
-        /// <returns>Value</returns>
-        public double Get(InputSource source)
-        {
-            return source.Value;
+            if (!disposed)
+            {
+                disposed = true;
+                inputRefresher?.Interrupt();
+                inputRefresher?.Join();
+            }
         }
 
         /// <summary>
@@ -152,7 +141,7 @@ namespace XOutput.Devices.Input.Mouse
             }
             catch (ThreadInterruptedException)
             {
-                // Thread has been interrupted
+                throw;
             }
         }
 

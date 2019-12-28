@@ -86,17 +86,6 @@ namespace XOutput.Devices.XInput
             }
         }
 
-        /// <summary>
-        /// Gets the current state of the inputTpye.
-        /// <para>Implements <see cref="IDevice.Get(InputSource)"/></para>
-        /// </summary>
-        /// <param name="inputType">Type of input</param>
-        /// <returns>Value</returns>
-        public double Get(InputSource source)
-        {
-            return source.Value;
-        }
-
         private void SourceInputChanged(object sender, DeviceInputChangedEventArgs e)
         {
             RefreshInput();

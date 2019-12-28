@@ -21,12 +21,6 @@ namespace XOutput.Devices
         /// </summary>
         IEnumerable<InputSource> Sources { get; }
         /// <summary>
-        /// Gets the current state of the <paramref name="inputType"/>.
-        /// </summary>
-        /// <param name="inputType">Type of input</param>
-        /// <returns>Value</returns>
-        double Get(InputSource source);
-        /// <summary>
         /// Refreshes the current state. Triggers <see cref="InputChanged"/> event.
         /// </summary>
         /// <returns>if the input was available</returns>

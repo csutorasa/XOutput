@@ -12,7 +12,7 @@ namespace XOutput.UI.Component
 
         public void UpdateValues(IDevice device)
         {
-            Model.Value = (int)(device.Get(Model.Type) * Model.Max);
+            Model.Value = (int)(Model.Type.Value * Model.Max);
         }
     }
 }

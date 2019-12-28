@@ -185,13 +185,13 @@ namespace XOutput.Devices.Input.DirectInput
             }
             try
             {
-                logger.Info(joystick.Properties.InstanceName + " " + ToString());
-                logger.Info(PrettyPrint.ToString(joystick));
-                logger.Info(PrettyPrint.ToString(joystick.GetObjects()));
+                logger.Info(() => joystick.Properties.InstanceName + " " + ToString());
+                logger.Info(() => PrettyPrint.ToString(joystick));
+                logger.Debug(() => PrettyPrint.ToString(joystick.GetObjects()));
             } catch { }
             foreach (var obj in joystick.GetObjects())
             {
-                logger.Info("  " + obj.Name + " " + obj.ObjectId + " offset: " + obj.Offset + " objecttype: " + obj.ObjectType.ToString() + " " + obj.Usage);
+                logger.Debug(() => "  " + obj.Name + " " + obj.ObjectId + " offset: " + obj.Offset + " objecttype: " + obj.ObjectType.ToString() + " " + obj.Usage);
             }
             state = new DeviceState(sources, joystick.Capabilities.PovCount);
             deviceInputChangedEventArgs = new DeviceInputChangedEventArgs(this);
@@ -206,11 +206,6 @@ namespace XOutput.Devices.Input.DirectInput
             inputRefresher.Start();
         }
 
-        ~DirectDevice()
-        {
-            Dispose();
-        }
-
         /// <summary>
         /// Disposes all resources.
         /// </summary>
@@ -220,6 +215,7 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 disposed = true;
                 inputRefresher?.Interrupt();
+                inputRefresher?.Join();
                 foreach (var actuator in actuators)
                 {
                     actuator.Dispose();
@@ -250,19 +246,8 @@ namespace XOutput.Devices.Input.DirectInput
             }
             catch (ThreadInterruptedException)
             {
-                // Thread has been interrupted
+                throw;
             }
-        }
-
-        /// <summary>
-        /// Gets the current state of the inputTpye.
-        /// <para>Implements <see cref="IDevice.Get(InputSource)"/></para>
-        /// </summary>
-        /// <param name="source">Type of input</param>
-        /// <returns>Value</returns>
-        public double Get(InputSource source)
-        {
-            return source.Value;
         }
 
         /// <summary>

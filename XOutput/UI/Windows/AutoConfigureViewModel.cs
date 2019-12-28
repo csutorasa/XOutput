@@ -72,7 +72,7 @@ namespace XOutput.UI.Windows
             {
                 foreach (var inputDevice in inputDevices)
                 {
-                    referenceValues[type] = inputDevice.Get(type);
+                    referenceValues[type] = type.Value;
                 }
             }
         }
@@ -92,7 +92,7 @@ namespace XOutput.UI.Windows
             foreach (var type in e.ChangedValues)
             {
                 double oldValue = referenceValues[type];
-                double newValue = inputDevice.Get(type);
+                double newValue = type.Value;
                 double diff = Math.Abs(newValue - oldValue);
                 if (diff > maxDiff)
                 {
@@ -187,7 +187,7 @@ namespace XOutput.UI.Windows
 
         private void CalculateValues()
         {
-            double current = Model.MaxType.InputDevice.Get(Model.MaxType);
+            double current = Model.MaxType.Value;
 
             double min = Math.Min(current, Model.MinValue / 100);
             double minValue = Math.Round(min * 100);
@@ -205,7 +205,7 @@ namespace XOutput.UI.Windows
 
         private void CalculateStartValues()
         {
-            double current = Model.MaxType.InputDevice.Get(Model.MaxType);
+            double current = Model.MaxType.Value;
             double reference = referenceValues[Model.MaxType];
 
             double min = Math.Min(current, reference);
