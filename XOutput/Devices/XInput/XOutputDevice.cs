@@ -68,13 +68,19 @@ namespace XOutput.Devices.XInput
         {
             foreach (var source in boundSources)
             {
-                source.InputChanged -= SourceInputChanged;
+                if (!sources.Contains(source))
+                {
+                    source.InputChanged -= SourceInputChanged;
+                }
+            }
+            foreach (var source in sources)
+            {
+                if (!boundSources.Contains(source))
+                {
+                    source.InputChanged += SourceInputChanged;
+                }
             }
             boundSources = sources;
-            foreach (var source in boundSources)
-            {
-                source.InputChanged += SourceInputChanged;
-            }
             RefreshInput(true);
         }
 

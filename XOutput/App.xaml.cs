@@ -41,15 +41,12 @@ namespace XOutput
 
             singleInstanceProvider = new SingleInstanceProvider();
             argumentParser = globalContext.Resolve<ArgumentParser>();
-#if !DEBUG
             Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => UnhandledException(e.Exception);
-#endif
         }
 
         public void UnhandledException(Exception exceptionObject)
         {
             logger.Error(exceptionObject);
-            MessageBox.Show(exceptionObject.Message + Environment.NewLine + exceptionObject.StackTrace);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -71,7 +68,6 @@ namespace XOutput
 #endif
                 } catch (Exception ex) {
                     logger.Error(ex);
-                    MessageBox.Show(ex.ToString());
                     Application.Current.Shutdown();
                 }
             }
