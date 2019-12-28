@@ -1,18 +1,52 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Reflection;
+using System.Windows;
+using XOutput.Logging;
 
 namespace XOutput.UI
 {
-    public abstract class ModelBase : INotifyPropertyChanged
+    public abstract class ModelBase : INotifyPropertyChanged, ICleanUp
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private bool cleanup = false;
 
         /// <summary>
         /// Invokes the property changed event
         /// </summary>
         /// <param name="name">Name of the property that changed</param>
-        protected void OnPropertyChanged(string name)
+        protected void OnPropertyChanged(params string[] propertyNames)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (cleanup)
+            {
+                return;
+            }
+            foreach (var propertyName in propertyNames)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        protected bool Set<T>(T newValue, ref T currentValue, params string[] propertyNames)
+        {
+            if (cleanup)
+            {
+                return false;
+            }
+            bool changed = false;
+            if (!Equals(currentValue, newValue))
+            {
+                currentValue = newValue;
+                OnPropertyChanged(propertyNames);
+                changed = true;
+            }
+            return changed;
+        }
+
+        public virtual void CleanUp()
+        {
+            cleanup = true;
         }
     }
 }
