@@ -42,13 +42,13 @@ namespace XOutput
             singleInstanceProvider = new SingleInstanceProvider();
             argumentParser = globalContext.Resolve<ArgumentParser>();
 #if !DEBUG
-            Dispatcher.UnhandledException += async (object sender, DispatcherUnhandledExceptionEventArgs e) => await UnhandledException(e.Exception);
+            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => UnhandledException(e.Exception);
 #endif
         }
 
-        public async Task UnhandledException(Exception exceptionObject)
+        public void UnhandledException(Exception exceptionObject)
         {
-            await logger.Error(exceptionObject);
+            logger.Error(exceptionObject);
             MessageBox.Show(exceptionObject.Message + Environment.NewLine + exceptionObject.StackTrace);
         }
 

@@ -42,7 +42,7 @@ namespace XOutput.UpdateChecker
             HttpResponseMessage response = null;
             try
             {
-                await logger.Debug("Getting " + GithubURL);
+                logger.Debug("Getting " + GithubURL);
                 response = await client.GetAsync(new Uri(GithubURL));
                 response.EnsureSuccessStatusCode();
                 string content = await response.Content.ReadAsStringAsync();

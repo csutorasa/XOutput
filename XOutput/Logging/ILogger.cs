@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace XOutput.Logging
 {
@@ -10,72 +9,107 @@ namespace XOutput.Logging
         /// </summary>
         /// <param name="log">log message</param>
         /// <returns></returns>
-        Task Trace(string log);
+        void Trace(string log);
         /// <summary>
         /// Writes a trace log with lazy evaluation.
         /// </summary>
         /// <param name="log">log message generator</param>
         /// <returns></returns>
-        Task Trace(Func<string> log);
+        void Trace(Func<string> log);
         /// <summary>
         /// Writes a debug log.
         /// </summary>
         /// <param name="log">log message</param>
         /// <returns></returns>
-        Task Debug(string log);
+        void Debug(string log);
         /// <summary>
         /// Writes a debug log with lazy evaluation.
         /// </summary>
         /// <param name="log">log message generator</param>
         /// <returns></returns>
-        Task Debug(Func<string> log);
+        void Debug(Func<string> log);
         /// <summary>
         /// Writes a info log.
         /// </summary>
         /// <param name="log">log message</param>
         /// <returns></returns>
-        Task Info(string log);
+        void Info(string log);
         /// <summary>
         /// Writes a info log with lazy evaluation.
         /// </summary>
         /// <param name="log">log message generator</param>
         /// <returns></returns>
-        Task Info(Func<string> log);
+        void Info(Func<string> log);
         /// <summary>
         /// Writes a warning log.
         /// </summary>
         /// <param name="log">log message</param>
         /// <returns></returns>
-        Task Warning(string log);
+        void Warning(string log);
         /// <summary>
         /// Writes a warning log with lazy evaluation.
         /// </summary>
         /// <param name="log">log message generator</param>
         /// <returns></returns>
-        Task Warning(Func<string> log);
+        void Warning(Func<string> log);
         /// <summary>
         /// Writes a warning log.
         /// </summary>
         /// <param name="ex">exception</param>
         /// <returns></returns>
-        Task Warning(Exception ex);
+        void Warning(Exception ex);
+        /// <summary>
+        /// Writes a warning log.
+        /// </summary>
+        /// <param name="log">log message</param>
+        /// <param name="ex">exception</param>
+        /// <returns></returns>
+        void Warning(string log, Exception ex);
+        /// <summary>
+        /// Writes a warning log with lazy evaluation.
+        /// </summary>
+        /// <param name="log">log message generator</param>
+        /// <param name="ex">exception</param>
+        /// <returns></returns>
+        void Warning(Func<string> log, Exception ex);
         /// <summary>
         /// Writes a error log.
         /// </summary>
         /// <param name="log">log message</param>
         /// <returns></returns>
-        Task Error(string log);
+        void Error(string log);
         /// <summary>
         /// Writes a error log with lazy evaluation.
         /// </summary>
         /// <param name="log">log message generator</param>
         /// <returns></returns>
-        Task Error(Func<string> log);
+        void Error(Func<string> log);
         /// <summary>
         /// Writes a error log.
         /// </summary>
         /// <param name="ex">exception</param>
         /// <returns></returns>
-        Task Error(Exception ex);
+        void Error(Exception ex);
+        /// <summary>
+        /// Writes a error log.
+        /// </summary>
+        /// <param name="log">log message</param>
+        /// <param name="ex">exception</param>
+        /// <returns></returns>
+        void Error(string log, Exception ex);
+        /// <summary>
+        /// Writes a error log with lazy evaluation.
+        /// </summary>
+        /// <param name="log">log message generator</param>
+        /// <param name="ex">exception</param>
+        /// <returns></returns>
+        void Error(Func<string> log, Exception ex);
+
+        void SafeCall(Action action);
+        void SafeCall(Action action, string log);
+        void SafeCall(Action action, string log, LogLevel level);
+        T SafeCall<T>(Func<T> action);
+        T SafeCall<T>(Func<T> action, string log);
+        T SafeCall<T>(Func<T> action, string log, LogLevel level);
     }
 }

@@ -42,7 +42,7 @@ namespace XOutput.UI.Windows
 
         private async Task Initialize()
         {
-            await logger.Info("The application has started.");
+            logger.Info("The application has started.");
             await GetData();
         }
 
@@ -135,10 +135,10 @@ namespace XOutput.UI.Windows
             }
         }
 
-        private async void WindowClosed(object sender, EventArgs e)
+        private void WindowClosed(object sender, EventArgs e)
         {
             viewModel.Dispose();
-            await logger.Info("The application will exit.");
+            logger.Info("The application will exit.");
         }
 
         private void CheckBoxChecked(object sender, RoutedEventArgs e)
