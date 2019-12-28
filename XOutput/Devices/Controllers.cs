@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using XOutput.Devices.Input;
 
 namespace XOutput.Devices
@@ -6,7 +7,7 @@ namespace XOutput.Devices
     /// <summary>
     /// Threadsafe method to get ID of the controllers.
     /// </summary>
-    public sealed class Controllers
+    public sealed class Controllers : IDisposable
     {
         private static Controllers instance = new Controllers();
         /// <summary>
@@ -84,6 +85,12 @@ namespace XOutput.Devices
         public IEnumerable<GameController> GetControllers()
         {
             return controllers.ToArray();
+        }
+
+        public void Dispose()
+        {
+            controllers.ForEach(c => c.Dispose());
+            controllers.Clear();
         }
     }
 }
