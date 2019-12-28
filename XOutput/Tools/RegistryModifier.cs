@@ -10,7 +10,7 @@ namespace XOutput.Tools
         /// <summary>
         /// Startup registry key.
         /// </summary>
-        public static readonly string AutostartRegistry = Registry.CurrentUser.ToString() + @"\\Software\Microsoft\Windows\CurrentVersion\Run";
+        public static readonly string AutostartRegistry = Registry.CurrentUser.ToString() + @"\Software\Microsoft\Windows\CurrentVersion\Run";
         /// <summary>
         /// XOutput registry value
         /// </summary>
