@@ -3,8 +3,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using XOutput.Logging;
+using XOutput.Tools;
 
-namespace XOutput.UpdateChecker
+namespace XOutput.Versioning
 {
     public sealed class UpdateChecker : IDisposable
     {
@@ -16,6 +17,7 @@ namespace XOutput.UpdateChecker
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(UpdateChecker));
         private readonly HttpClient client = new HttpClient();
 
+        [ResolverMethod]
         public UpdateChecker()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;

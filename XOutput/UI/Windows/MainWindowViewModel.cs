@@ -16,7 +16,7 @@ using XOutput.Diagnostics;
 using XOutput.Logging;
 using XOutput.Tools;
 using XOutput.UI.Component;
-using XOutput.UpdateChecker;
+using XOutput.Versioning;
 
 namespace XOutput.UI.Windows
 {
@@ -27,8 +27,9 @@ namespace XOutput.UI.Windows
         private const string GameControllersSettings = "joy.cpl";
 
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindowViewModel));
-        private readonly HidGuardianManager hidGuardianManager;
         private readonly Dispatcher dispatcher;
+        private readonly UpdateChecker updateChecker;
+        private readonly HidGuardianManager hidGuardianManager;
 
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly DirectInputDevices directInputDevices = new DirectInputDevices();
@@ -36,9 +37,11 @@ namespace XOutput.UI.Windows
         private Settings settings;
         private bool installed;
 
-        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher, HidGuardianManager hidGuardianManager) : base(model)
+        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher, HidGuardianManager hidGuardianManager,
+            UpdateChecker updateChecker) : base(model)
         {
             this.dispatcher = dispatcher;
+            this.updateChecker = updateChecker;
             this.hidGuardianManager = hidGuardianManager;
             timer.Interval = TimeSpan.FromMilliseconds(10000);
             timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
@@ -185,30 +188,31 @@ namespace XOutput.UI.Windows
 
         public void AboutPopupShow()
         {
-            MessageBox.Show(Translate("AboutContent") + Environment.NewLine + string.Format(Translate("Version"), UpdateChecker.Version.AppVersion), Translate("AboutMenu"));
+            MessageBox.Show(Translate("AboutContent") + Environment.NewLine + string.Format(Translate("Version"), Versioning.Version.AppVersion), Translate("AboutMenu"));
         }
 
-        public void VersionCompare(VersionCompare compare)
+        public async Task CompareVersion()
         {
-            switch (compare)
+            var result = await updateChecker.CompareRelease();
+            switch (result)
             {
-                case UpdateChecker.VersionCompare.Error:
+                case VersionCompare.Error:
                     logger.Warning("Failed to check latest version");
                     log(Translate("VersionCheckError"));
                     break;
-                case UpdateChecker.VersionCompare.NeedsUpgrade:
+                case VersionCompare.NeedsUpgrade:
                     logger.Info("New version is available");
                     log(Translate("VersionCheckNeedsUpgrade"));
                     break;
-                case UpdateChecker.VersionCompare.NewRelease:
+                case VersionCompare.NewRelease:
                     log(Translate("VersionCheckNewRelease"));
                     break;
-                case UpdateChecker.VersionCompare.UpToDate:
+                case VersionCompare.UpToDate:
                     logger.Info("Version is up-to-date");
                     log(Translate("VersionCheckUpToDate"));
                     break;
                 default:
-                    throw new ArgumentException(nameof(compare));
+                    throw new ArgumentException(nameof(result));
             }
         }
 

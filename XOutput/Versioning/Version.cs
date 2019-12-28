@@ -2,7 +2,7 @@
 using System.Linq;
 using XOutput.Logging;
 
-namespace XOutput.UpdateChecker
+namespace XOutput.Versioning
 {
     /// <summary>
     /// Version related informations.

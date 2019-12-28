@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using XOutput.UpdateChecker;
+using XOutput.Versioning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XOutput.UpdateChecker.Tests
+namespace XOutput.Versioning.Tests
 {
     [TestClass()]
     public class VersionTests

@@ -50,8 +50,7 @@ namespace XOutput.UI.Windows
         {
             try
             {
-                var result = await new UpdateChecker.UpdateChecker().CompareRelease();
-                viewModel.VersionCompare(result);
+                await viewModel.CompareVersion();
             }
             catch (Exception)
             {
