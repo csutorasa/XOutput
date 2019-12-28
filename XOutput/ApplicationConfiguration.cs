@@ -13,7 +13,7 @@ namespace XOutput
         [ResolverMethod]
         public static ArgumentParser GetArgumentParser()
         {
-            return new ArgumentParser();
+            return new ArgumentParser(Environment.GetCommandLineArgs().Skip(1).ToArray());
         }
         [ResolverMethod]
         public static HidGuardianManager GetHidGuardianManager(RegistryModifier registryModifier)
@@ -24,11 +24,6 @@ namespace XOutput
         public static RegistryModifier GetRegistryModifier()
         {
             return new RegistryModifier();
-        }
-        [ResolverMethod]
-        public static Devices.Input.Mouse.MouseHook GetMouseHook()
-        {
-            return new Devices.Input.Mouse.MouseHook();
         }
     }
 }

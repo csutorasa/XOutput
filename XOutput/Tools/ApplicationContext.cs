@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,19 +10,30 @@ namespace XOutput.Tools
 {
     public class ApplicationContext
     {
-        private static ApplicationContext global = new ApplicationContext();
+        private static readonly ApplicationContext global = new ApplicationContext();
         public static ApplicationContext Global => global;
 
         private readonly List<Resolver> resolvers = new List<Resolver>();
         public List<Resolver> Resolvers => resolvers;
+        private readonly ISet<Type> constructorResolvedTypes = new HashSet<Type>();
+
+        private readonly object lockObj = new object();
 
         public T Resolve<T>()
         {
-            return (T)Resolve(typeof(T));
+            lock (lockObj)
+            {
+                return (T)Resolve(typeof(T));
+            }
         }
 
         private object Resolve(Type type)
         {
+            if (!constructorResolvedTypes.Contains(type))
+            {
+                Resolvers.AddRange(GetConstructorResolvers(type));
+                constructorResolvedTypes.Add(type);
+            }
             List<Resolver> currentResolvers = resolvers.Where(r => r.CreatedType.IsAssignableFrom(type)).ToList();
             if (currentResolvers.Count == 0)
             {
@@ -35,10 +47,25 @@ namespace XOutput.Tools
             return resolver.Create(resolver.GetDependencies().Select(d => Resolve(d)).ToArray());
         }
 
+        private IEnumerable<Resolver> GetConstructorResolvers(Type type)
+        {
+            return type.GetConstructors()
+                .Where(m => m.GetCustomAttributes(true).OfType<ResolverMethod>().Any())
+                .ToDictionary(m => m, m => m.GetCustomAttributes(true).OfType<ResolverMethod>().First())
+                .Select(constructor =>
+                {
+                    Func<object[], object> creator = ((parameters) => constructor.Key.Invoke(parameters));
+                    return Resolver.Create(creator, constructor.Key, type, constructor.Value.Scope);
+                })
+                .ToList();
+        }
+
         public List<T> ResolveAll<T>()
         {
-            List<Resolver> currentResolvers = resolvers.Where(r => r.CreatedType.IsAssignableFrom(typeof(T))).ToList();
-            return resolvers.Select(r => r.Create(r.GetDependencies().Select(d => Resolve(d)).ToArray())).OfType<T>().ToList();
+            lock(lockObj) {
+                List<Resolver> currentResolvers = resolvers.Where(r => r.CreatedType.IsAssignableFrom(typeof(T))).ToList();
+                return resolvers.Select(r => r.Create(r.GetDependencies().Select(d => Resolve(d)).ToArray())).OfType<T>().ToList();
+            }
         }
 
         public ApplicationContext WithResolvers(params Resolver[] tempResolvers)
@@ -59,73 +86,93 @@ namespace XOutput.Tools
 
         public void AddFromConfiguration(Type type)
         {
-            foreach (var method in type.GetMethods()
-                .Where(m => m.ReturnType != typeof(void))
-                .Where(m => m.IsStatic)
-                .Where(m => m.GetCustomAttributes(true).OfType<ResolverMethod>().Any())
-                .ToDictionary(m => m, m => m.GetCustomAttributes(true).OfType<ResolverMethod>().First()))
+            lock (lockObj)
             {
-                Type[] funcTypes = method.Key.GetParameters().Select(p => p.ParameterType).Concat(new[] { method.Key.ReturnType }).ToArray();
-                Delegate del = Delegate.CreateDelegate(Expression.GetFuncType(funcTypes), method.Key);
-                resolvers.Add(Resolver.Create(del, method.Value.Singleton));
+                foreach (var method in type.GetMethods()
+                    .Where(m => m.ReturnType != typeof(void))
+                    .Where(m => m.IsStatic)
+                    .Where(m => m.GetCustomAttributes(true).OfType<ResolverMethod>().Any())
+                    .ToDictionary(m => m, m => m.GetCustomAttributes(true).OfType<ResolverMethod>().First()))
+                {
+                    Func<object[], object> creator = ((parameters) => method.Key.Invoke(null, parameters));
+                    var createdType = method.Key.ReturnType;
+                    resolvers.Add(Resolver.Create(creator, method.Key, createdType, method.Value.Scope));
+                }
             }
         }
 
         public void Close()
         {
-            foreach(var singleton in resolvers.Where(r => r.IsSingleton).Where(r => typeof(IDisposable).IsAssignableFrom(r.CreatedType)).Select(r => r.Create(new object[0])).OfType<IDisposable>())
+            lock (lockObj)
             {
-                singleton.Dispose();
+                foreach (var singleton in resolvers.Where(r => r.IsSingleton).Where(r => typeof(IDisposable).IsAssignableFrom(r.CreatedType)).Select(r => r.Create(new object[0])).OfType<IDisposable>())
+                {
+                    singleton.Dispose();
+                }
+                Resolvers.Clear();
             }
-            Resolvers.Clear();
         }
     }
 
-    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
-    public class ResolverMethod : Attribute
+    public enum Scope
     {
-        public bool Singleton { get; private set; }
-        public ResolverMethod(bool singleton = true)
+        Singleton,
+        Prototype
+    }
+
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor, Inherited = false, AllowMultiple = false)]
+    public sealed class ResolverMethod : Attribute
+    {
+        public Scope Scope { get; private set; }
+        public ResolverMethod(Scope scope = Scope.Singleton)
         {
-            Singleton = singleton;
+            Scope = scope;
         }
     }
 
     public class Resolver
     {
-        private Delegate creator;
-        private Type[] dependencies;
-        private Type type;
-        private bool isSingleton;
+        private readonly Func<object[], object> creator;
+        private readonly Type[] dependencies;
+        private readonly Type type;
+        private readonly Scope scope;
         private object singletonValue;
-        public bool IsSingleton => isSingleton;
-        public bool IsResolvedSingleton => isSingleton && singletonValue != null;
+        public Tools.Scope Scope => scope;
+        public bool IsSingleton => scope == Tools.Scope.Singleton;
+        public bool IsResolvedSingleton => IsSingleton && singletonValue != null;
 
         public bool HasDependecies => dependencies.Length > 0;
         public Type CreatedType => type;
 
-        protected Resolver(Delegate creator, Type[] dependencies, Type type, bool isSingleton)
+        protected Resolver(Func<object[], object> creator, Type[] dependencies, Type type, Scope scope)
         {
             this.creator = creator;
             this.dependencies = dependencies;
             this.type = type;
-            this.isSingleton = isSingleton;
+            this.scope = scope;
         }
 
-        public static Resolver Create(Delegate creator, bool isSingleton = false)
+        public static Resolver Create(Delegate creator, Scope scope = Scope.Singleton)
         {
-            var dependencies = creator.Method.GetParameters().Select(pi => pi.ParameterType).ToArray();
-            return new Resolver(creator, dependencies, creator.Method.ReturnType, isSingleton);
+            Func<object[], object> func = (args) => creator.DynamicInvoke(args);
+            var parameters = creator.Method.GetParameters().Select(p => p.ParameterType).ToArray();
+            return new Resolver(func, parameters, creator.Method.ReturnType, scope);
+        }
+
+        public static Resolver Create(Func<object[], object>  creator, MethodBase method, Type returnType, Scope scope)
+        {
+            var parameters = method.GetParameters().Select(p => p.ParameterType).ToArray();
+            return new Resolver(creator, parameters, returnType, scope);
         }
 
         public static Resolver CreateSingleton<T>(T singleton)
         {
-            return Create(new Func<T>(() => singleton), true);
+            return new Resolver((args) => singleton, new Type[0], singleton.GetType(), Tools.Scope.Singleton);
         }
 
         internal static Resolver CreateSingleton(object singleton)
         {
-            return new Resolver(new Func<object>(() => singleton), new Type[0], singleton.GetType(), true);
+            return new Resolver((args) => singleton, new Type[0], singleton.GetType(), Tools.Scope.Singleton);
         }
 
         public Type[] GetDependencies()
@@ -139,7 +186,7 @@ namespace XOutput.Tools
             {
                 return singletonValue;
             }
-            object value = creator.DynamicInvoke(values);
+            object value = creator.Invoke(values);
             if(IsSingleton)
             {
                 singletonValue = value;
@@ -149,20 +196,31 @@ namespace XOutput.Tools
 
         public override string ToString()
         {
-            return (isSingleton ? "singleton " : "") + type.FullName + ", dependencies: " + string.Join(", ", dependencies.Select(d => d.FullName));
+            return (IsSingleton ? "singleton " : "") + type.FullName + ", dependencies: " + string.Join(", ", dependencies.Select(d => d.FullName));
         }
     }
 
     public class NoValueFoundException : Exception
     {
-        public NoValueFoundException(Type type) : base($"No value found for {type.FullName}") { }
+        public NoValueFoundException() { }
+
+        public NoValueFoundException(string message) : base(message) { }
+
+        public NoValueFoundException(string message, Exception innerException) : base(message, innerException) { }
+
+        public NoValueFoundException(Type type) : this($"No value found for {type.FullName}") { }
     }
 
     public class MultipleValuesFoundException : Exception
     {
-        private List<Resolver> resolvers;
+        private readonly List<Resolver> resolvers;
         public List<Resolver> Resolvers => resolvers;
-        public MultipleValuesFoundException(Type type, List<Resolver> resolvers) : base($"Multiple values found for {type.FullName}")
+        public MultipleValuesFoundException() { }
+
+        public MultipleValuesFoundException(string message) : base(message) { }
+
+        public MultipleValuesFoundException(string message, Exception innerException) : base(message, innerException) { }
+        public MultipleValuesFoundException(Type type, List<Resolver> resolvers) : this($"Multiple values found for {type.FullName}")
         {
             this.resolvers = resolvers;
         }

@@ -18,11 +18,6 @@ namespace XOutput.Tools
         /// </summary>
         public bool Minimized => minimized;
 
-        public ArgumentParser() : this(Environment.GetCommandLineArgs().Skip(1).ToArray())
-        {
-            
-        }
-
         public ArgumentParser(IEnumerable<string> arguments)
         {
             var args = arguments.ToList();

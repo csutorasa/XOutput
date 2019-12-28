@@ -5,8 +5,10 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using XOutput.Tools;
 
 namespace XOutput.Devices.Input.Mouse
 {
@@ -16,17 +18,26 @@ namespace XOutput.Devices.Input.Mouse
         private IntPtr hookPtr = IntPtr.Zero;
         private HookProc hook;
 
+        [ResolverMethod]
+        public MouseHook()
+        {
+
+        }
+
         public void StartHook()
         {
             hook = (nCode, wParam, lParam) =>
             {
                 if (nCode >= 0)
                 {
-                    var args = MouseHookEventArgs.Create((MouseMessage)wParam, lParam);
-                    if (args != null)
+                    ThreadPool.QueueUserWorkItem((state) =>
                     {
-                        MouseEvent?.Invoke(args);
-                    }
+                        var args = MouseHookEventArgs.Create((MouseMessage)wParam, lParam);
+                        if (args != null)
+                        {
+                            MouseEvent?.Invoke(args);
+                        }
+                    });
                 }
                 return NativeMethods.CallNextHookEx(hookPtr, nCode, wParam, lParam);
             };
