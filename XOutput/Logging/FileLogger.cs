@@ -34,7 +34,7 @@ namespace XOutput.Logging
         /// <returns></returns>
         protected override void Log(LogLevel loglevel, StackFrame stackFrame, string log)
         {
-            File.AppendAllLines(LogFile, new string[] { CreatePrefix(DateTime.Now, loglevel, LoggerType, stackFrame) + log });
+            File.AppendAllText(LogFile, CreatePrefix(DateTime.Now, loglevel, LoggerType, stackFrame) + log + Environment.NewLine);
         }
     }
 }
