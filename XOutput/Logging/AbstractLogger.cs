@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -10,6 +11,8 @@ namespace XOutput.Logging
     /// </summary>
     public abstract class AbstractLogger : ILogger
     {
+        public const string LogFile = "XOutput.log";
+
         private readonly Type loggerType;
         public Type LoggerType => loggerType;
         private readonly int level;

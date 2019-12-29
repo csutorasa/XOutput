@@ -10,8 +10,6 @@ namespace XOutput.Logging
     /// </summary>
     public class TraceLogger : AbstractLogger
     {
-        public const string LogFile = "XOutput.log";
-
         static TraceLogger()
         {
             System.Diagnostics.Trace.AutoFlush = true;

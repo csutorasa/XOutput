@@ -7,8 +7,6 @@ namespace XOutput.Logging
 {
     public class FileLogger : AbstractLogger
     {
-        public const string LogFile = "XOutput.log";
-
         public FileLogger(Type loggerType, int level) : base(loggerType, level)
         {
 
