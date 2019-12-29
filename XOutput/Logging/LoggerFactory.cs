@@ -27,7 +27,11 @@ namespace XOutput.Logging
         /// <returns></returns>
         public static ILogger GetLogger(Type type, int level)
         {
+#if DEBUG
             return new TraceLogger(type, level);
+#else
+            return new FileLogger(type, level);
+#endif
         }
     }
 }
