@@ -105,6 +105,10 @@ namespace XOutput.Logging
         /// <returns></returns>
         void Error(Func<string> log, Exception ex);
 
+        void Log(string log, LogLevel level);
+        void Log(string log, Exception ex, LogLevel level);
+        void Log(Func<string> log, LogLevel level);
+
         void SafeCall(Action action);
         void SafeCall(Action action, string log);
         void SafeCall(Action action, string log, LogLevel level);

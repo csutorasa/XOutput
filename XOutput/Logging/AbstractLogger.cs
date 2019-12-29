@@ -172,6 +172,21 @@ namespace XOutput.Logging
             }
         }
 
+        public void Log(string log, LogLevel level)
+        {
+            LogCheck(level, new StackTrace().GetFrame(1), log);
+        }
+
+        public void Log(string log, Exception ex, LogLevel level)
+        {
+            LogCheck(level, new StackTrace().GetFrame(1), log, ex);
+        }
+
+        public void Log(Func<string> log, LogLevel level)
+        {
+            LogCheck(level, new StackTrace().GetFrame(1), log());
+        }
+
         /// <summary>
         /// Writes the log.
         /// </summary>

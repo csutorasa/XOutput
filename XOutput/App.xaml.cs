@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -18,11 +19,13 @@ namespace XOutput
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(App));
 
         private MainWindowViewModel mainWindowViewModel;
-        private SingleInstanceProvider singleInstanceProvider;
-        private ArgumentParser argumentParser;
 
         public App()
         {
+            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
+            AppDomain.CurrentDomain.FirstChanceException += (object sender, FirstChanceExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Info);
+            AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) => UnhandledException(e.ExceptionObject as Exception, LogLevel.Error);
+            TaskScheduler.UnobservedTaskException += (object sender, UnobservedTaskExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
             DependencyEmbedder dependencyEmbedder = new DependencyEmbedder();
             dependencyEmbedder.AddPackage("Newtonsoft.Json");
             dependencyEmbedder.AddPackage("SharpDX.DirectInput");
@@ -33,24 +36,22 @@ namespace XOutput
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
+        }
 
+        public void UnhandledException(Exception exceptionObject, LogLevel level)
+        {
+            logger.Log(exceptionObject.ToString(), level);
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
             ApplicationContext globalContext = ApplicationContext.Global;
             globalContext.Resolvers.Add(Resolver.CreateSingleton(Dispatcher));
             globalContext.AddFromConfiguration(typeof(ApplicationConfiguration));
             globalContext.AddFromConfiguration(typeof(UI.UIConfiguration));
 
-            singleInstanceProvider = new SingleInstanceProvider();
-            argumentParser = globalContext.Resolve<ArgumentParser>();
-            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => UnhandledException(e.Exception);
-        }
-
-        public void UnhandledException(Exception exceptionObject)
-        {
-            logger.Error(exceptionObject);
-        }
-
-        private void Application_Startup(object sender, StartupEventArgs e)
-        {
+            var singleInstanceProvider = globalContext.Resolve<SingleInstanceProvider>();
+            var argumentParser = globalContext.Resolve<ArgumentParser>();
             if (singleInstanceProvider.TryGetLock())
             {
                 singleInstanceProvider.StartNamedPipe();
@@ -81,8 +82,6 @@ namespace XOutput
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             mainWindowViewModel?.Dispose();
-            singleInstanceProvider.StopNamedPipe();
-            singleInstanceProvider.Close();
             ApplicationContext.Global.Close();
         }
     }

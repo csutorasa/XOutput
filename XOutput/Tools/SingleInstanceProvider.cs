@@ -10,7 +10,7 @@ using XOutput.Logging;
 
 namespace XOutput.Tools
 {
-    public class SingleInstanceProvider
+    public class SingleInstanceProvider : IDisposable
     {
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(SingleInstanceProvider));
 
@@ -25,6 +25,12 @@ namespace XOutput.Tools
         private Thread notifyThread;
         private readonly Mutex mutex = new Mutex(false, MutexName);
 
+        [ResolverMethod]
+        public SingleInstanceProvider()
+        {
+
+        }
+
         public bool TryGetLock()
         {
             return mutex.WaitOne(0, false);
@@ -37,7 +43,13 @@ namespace XOutput.Tools
 
         public void Close()
         {
+            StopNamedPipe();
             mutex.Close();
+        }
+
+        public void Dispose()
+        {
+            Close();
         }
 
         public void StartNamedPipe()

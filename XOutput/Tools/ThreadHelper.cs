@@ -28,16 +28,15 @@ namespace XOutput.Tools
                 catch (ThreadInterruptedException)
                 {
                     logger.Debug(() => $"Thread {parameters.Name} is interrupted.");
-                    throw;
                 }
                 catch (Exception e)
                 {
                     logger.Error($"Thread {parameters.Name} failed with error.", e);
-                    parameters?.Error(e);
+                    parameters.Error?.Invoke(e);
                 }
                 finally
                 {
-                    parameters?.Finally();
+                    parameters.Finally?.Invoke();
                 }
                 logger.Debug(() => $"Thread {parameters.Name} is stopped.");
             });
