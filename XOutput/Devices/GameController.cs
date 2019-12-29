@@ -8,6 +8,7 @@ using XOutput.Devices.XInput;
 using XOutput.Devices.XInput.SCPToolkit;
 using XOutput.Devices.XInput.Vigem;
 using XOutput.Logging;
+using XOutput.Tools;
 
 namespace XOutput.Devices
 {
@@ -121,11 +122,17 @@ namespace XOutput.Devices
             }
             if (xOutputInterface.Plugin(controllerCount))
             {
-                thread = new Thread(() => ReadAndReportValues(onStop));
+                thread = ThreadHelper.CreateAndStart(new ThreadStartParameters {
+                    Name = $"Emulated controller {controllerCount} output refresher",
+                    IsBackground = true,
+                    Task = () => ReadAndReportValues(onStop),
+                    Error = (ex) => {
+                        logger.Error("Failed to read from device", ex);
+                        Stop();
+                    },
+                    Finally = onStop,
+                });
                 running = true;
-                thread.Name = $"Emulated controller {controllerCount} output refresher";
-                thread.IsBackground = true;
-                thread.Start();
                 logger.Info($"Emulation started on {ToString()}.");
                 if (ForceFeedbackSupported)
                 {
@@ -158,8 +165,9 @@ namespace XOutput.Devices
                 xOutputInterface?.Unplug(controllerCount);
                 logger.Info($"Emulation stopped on {ToString()}.");
                 resetId();
-                thread?.Interrupt();
-                thread?.Join();
+                if (thread != null) {
+                    ThreadHelper.StopAndWait(thread);
+                }
             }
         }
 
@@ -170,26 +178,10 @@ namespace XOutput.Devices
 
         private void ReadAndReportValues(Action onStop)
         {
-            try
+            XInput.InputChanged += XInputInputChanged;
+            while (running)
             {
-                XInput.InputChanged += XInputInputChanged;
-                while (running)
-                {
-                    Thread.Sleep(100);
-                }
-            }
-            catch (ThreadInterruptedException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                logger.Error("Failed to read from device", ex);
-                Stop();
-            }
-            finally
-            {
-                onStop?.Invoke();
+                Thread.Sleep(100);
             }
         }
 

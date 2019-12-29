@@ -42,15 +42,20 @@ namespace XOutput.Tools
 
         public void StartNamedPipe()
         {
-            notifyThread = new Thread(() => ReadPipe());
-            notifyThread.IsBackground = true;
-            notifyThread.Name = "XOutputRunningAlreadyNamedPipe reader";
-            notifyThread.Start();
+            notifyThread = ThreadHelper.CreateAndStart(new ThreadStartParameters
+            {
+                Name = "XOutputRunningAlreadyNamedPipe reader",
+                IsBackground = true,
+                Task = () => ReadPipe(),
+            });
         }
 
         public void StopNamedPipe()
         {
-            notifyThread?.Interrupt();
+            if (notifyThread != null)
+            {
+                ThreadHelper.StopAndWait(notifyThread);
+            }
         }
 
         public bool Notify()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
+using XOutput.Tools;
 
 namespace XOutput.Devices.Input.Mouse
 {
@@ -85,10 +86,13 @@ namespace XOutput.Devices.Input.Mouse
             state = new DeviceState(sources, 0);
             deviceInputChangedEventArgs = new DeviceInputChangedEventArgs(this);
             inputConfig = new InputConfig();
-            inputRefresher = new Thread(InputRefresher);
-            inputRefresher.Name = "Mouse input notification";
+            inputRefresher = ThreadHelper.Create(new ThreadStartParameters
+            {
+                Name = "Mouse input notification",
+                IsBackground = true,
+                Task = InputRefresher,
+            }); 
             inputRefresher.SetApartmentState(ApartmentState.STA);
-            inputRefresher.IsBackground = true;
             inputRefresher.Start();
         }
 
@@ -131,17 +135,10 @@ namespace XOutput.Devices.Input.Mouse
         /// </summary>
         private void InputRefresher()
         {
-            try
+            while (true)
             {
-                while (true)
-                {
-                    RefreshInput();
-                    Thread.Sleep(ReadDelayMs);
-                }
-            }
-            catch (ThreadInterruptedException)
-            {
-                throw;
+                RefreshInput();
+                Thread.Sleep(ReadDelayMs);
             }
         }
 

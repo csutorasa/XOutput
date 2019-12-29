@@ -318,16 +318,15 @@ namespace XOutput.UI.Windows
 
         private void DispatchRefreshGameControllers(object sender, DeviceDisconnectedEventArgs e)
         {
-            Thread delayThread = new Thread(() =>
-            {
-                Thread.Sleep(1000);
-                dispatcher.Invoke(RefreshGameControllers);
-            })
+            Thread delayThread = ThreadHelper.CreateAndStart(new ThreadStartParameters
             {
                 Name = "Device list refresh delay",
-                IsBackground = true
-            };
-            delayThread.Start();
+                IsBackground = true,
+                Task = () => {
+                    Thread.Sleep(1000);
+                    dispatcher.Invoke(RefreshGameControllers);
+                },
+            });
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using XOutput.Logging;
+using XOutput.Tools;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -196,12 +197,13 @@ namespace XOutput.Devices.Input.DirectInput
             state = new DeviceState(sources, joystick.Capabilities.PovCount);
             deviceInputChangedEventArgs = new DeviceInputChangedEventArgs(this);
             inputConfig = new InputConfig(ForceFeedbackCount);
-            inputRefresher = new Thread(InputRefresher)
+            inputRefresher = ThreadHelper.Create(new ThreadStartParameters
             {
-                Name = ToString() + " input reader"
-            };
+                Name = ToString() + " input reader",
+                IsBackground = true,
+                Task = InputRefresher,
+            });
             inputRefresher.SetApartmentState(ApartmentState.STA);
-            inputRefresher.IsBackground = true;
             Connected = true;
             inputRefresher.Start();
         }
@@ -214,8 +216,10 @@ namespace XOutput.Devices.Input.DirectInput
             if (!disposed)
             {
                 disposed = true;
-                inputRefresher?.Interrupt();
-                inputRefresher?.Join();
+                if (inputRefresher != null)
+                {
+                    ThreadHelper.StopAndWait(inputRefresher);
+                }
                 foreach (var actuator in actuators)
                 {
                     actuator.Dispose();
@@ -236,17 +240,10 @@ namespace XOutput.Devices.Input.DirectInput
 
         private void InputRefresher()
         {
-            try
+            while (Connected)
             {
-                while (Connected)
-                {
-                    Connected = RefreshInput();
-                    Thread.Sleep(ReadDelayMs);
-                }
-            }
-            catch (ThreadInterruptedException)
-            {
-                throw;
+                Connected = RefreshInput();
+                Thread.Sleep(ReadDelayMs);
             }
         }
 
