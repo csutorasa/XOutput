@@ -171,7 +171,7 @@ namespace XOutput.Tools
 
         public static Resolver CreateSingleton<T>(T singleton)
         {
-            return new Resolver((args) => singleton, new Type[0], singleton.GetType(), Tools.Scope.Singleton);
+            return new Resolver((args) => singleton, new Type[0], typeof(T), Tools.Scope.Singleton);
         }
 
         internal static Resolver CreateSingleton(object singleton)

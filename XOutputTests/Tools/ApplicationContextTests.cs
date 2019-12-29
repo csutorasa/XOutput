@@ -35,7 +35,7 @@ namespace XOutput.Tools.Tests
         public void PrototypeTest()
         {
             ApplicationContext context = new ApplicationContext();
-            context.Resolvers.Add(Resolver.Create(new Func<object>(() => new object())));
+            context.Resolvers.Add(Resolver.Create(new Func<object>(() => new object()), Scope.Prototype));
             object first = context.Resolve<object>();
             object second = context.Resolve<object>();
             Assert.AreNotSame(first, second);
