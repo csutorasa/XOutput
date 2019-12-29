@@ -15,6 +15,20 @@ namespace XOutput.Logging
         private readonly int level;
         public int Level => level;
 
+        static AbstractLogger() {
+            
+            if (File.Exists(LogFile))
+            {
+                try
+                {
+                    File.Delete(LogFile);
+                }
+                catch {
+                    // if the file is in use, append the file
+                }
+            }
+        }
+
         protected AbstractLogger(Type loggerType, int level)
         {
             this.loggerType = loggerType;

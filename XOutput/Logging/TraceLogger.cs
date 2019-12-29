@@ -15,16 +15,6 @@ namespace XOutput.Logging
         static TraceLogger()
         {
             System.Diagnostics.Trace.AutoFlush = true;
-            if (File.Exists(LogFile))
-            {
-                try
-                {
-                    File.Delete(LogFile);
-                }
-                catch {
-                    // if the file is in use, append the file
-                }
-            }
             System.Diagnostics.Trace.Listeners.Add(new TextWriterTraceListener(LogFile));
         }
 

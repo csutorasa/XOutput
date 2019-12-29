@@ -11,17 +11,7 @@ namespace XOutput.Logging
 
         public FileLogger(Type loggerType, int level) : base(loggerType, level)
         {
-            if (File.Exists(LogFile))
-            {
-                try
-                {
-                    File.Delete(LogFile);
-                }
-                catch
-                {
-                    // if the file is in use, append the file
-                }
-            }
+
         }
 
         /// <summary>
