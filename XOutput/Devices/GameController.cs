@@ -125,7 +125,7 @@ namespace XOutput.Devices
                 thread = ThreadHelper.CreateAndStart(new ThreadStartParameters {
                     Name = $"Emulated controller {controllerCount} output refresher",
                     IsBackground = true,
-                    Task = () => ReadAndReportValues(onStop),
+                    Task = () => ReadAndReportValues(),
                     Error = (ex) => {
                         logger.Error("Failed to read from device", ex);
                         Stop();
@@ -176,7 +176,7 @@ namespace XOutput.Devices
             return DisplayName;
         }
 
-        private void ReadAndReportValues(Action onStop)
+        private void ReadAndReportValues()
         {
             XInput.InputChanged += XInputInputChanged;
             while (running)
