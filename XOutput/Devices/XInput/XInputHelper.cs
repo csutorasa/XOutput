@@ -50,12 +50,12 @@ namespace XOutput.Devices.XInput
             sliders = values.Where(v => IsSlider(v)).ToArray();
         }
 
-        public XOutputSource[] GenerateSources()
+        public T[] GenerateSources<T>(Func<string, XInputTypes, T> creator)
         {
-            var buttonSources = buttons.Select(b => new XOutputSource(b.ToString(), b));
-            var axisSources = axes.Select(a => new XOutputSource(a.ToString(), a));
-            var dpadSources = dPad.Select(d => new XOutputSource(d.ToString(), d));
-            var sliderSources = sliders.Select(d => new XOutputSource(d.ToString(), d));
+            var buttonSources = buttons.Select(b => creator(b.ToString(), b));
+            var axisSources = axes.Select(a => creator(a.ToString(), a));
+            var dpadSources = dPad.Select(d => creator(d.ToString(), d));
+            var sliderSources = sliders.Select(d => creator(d.ToString(), d));
             return buttonSources.Concat(axisSources).Concat(dpadSources).Concat(sliderSources).ToArray();
         }
 

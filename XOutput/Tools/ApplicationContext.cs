@@ -47,6 +47,26 @@ namespace XOutput.Tools
             return resolver.Create(resolver.GetDependencies().Select(d => Resolve(d)).ToArray());
         }
 
+        private object Resolve(Dependency dependency)
+        {
+            try
+            {
+                return Resolve(dependency.Type);
+            }
+            catch (NoValueFoundException)
+            {
+                if(dependency.Required)
+                {
+                    throw;
+                }
+                if (dependency.Type.IsValueType)
+                {
+                    return Activator.CreateInstance(dependency.Type);
+                }
+                return null;
+            }
+        }
+
         private IEnumerable<Resolver> GetConstructorResolvers(Type type)
         {
             return type.GetConstructors()
@@ -124,6 +144,12 @@ namespace XOutput.Tools
         Prototype
     }
 
+    public class Dependency
+    {
+        public Type Type { get; set; }
+        public bool Required { get; set; }
+    }
+
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor, Inherited = false, AllowMultiple = false)]
     public sealed class ResolverMethod : Attribute
     {
@@ -137,7 +163,7 @@ namespace XOutput.Tools
     public class Resolver
     {
         private readonly Func<object[], object> creator;
-        private readonly Type[] dependencies;
+        private readonly Dependency[] dependencies;
         private readonly Type type;
         private readonly Scope scope;
         private object singletonValue;
@@ -148,7 +174,7 @@ namespace XOutput.Tools
         public bool HasDependecies => dependencies.Length > 0;
         public Type CreatedType => type;
 
-        protected Resolver(Func<object[], object> creator, Type[] dependencies, Type type, Scope scope)
+        protected Resolver(Func<object[], object> creator, Dependency[] dependencies, Type type, Scope scope)
         {
             this.creator = creator;
             this.dependencies = dependencies;
@@ -159,27 +185,34 @@ namespace XOutput.Tools
         public static Resolver Create(Delegate creator, Scope scope = Scope.Singleton)
         {
             Func<object[], object> func = (args) => creator.DynamicInvoke(args);
-            var parameters = creator.Method.GetParameters().Select(p => p.ParameterType).ToArray();
+            var parameters = creator.Method.GetParameters().Select(p => new Dependency
+            {
+                Type = p.ParameterType,
+                Required = true,
+            }).ToArray();
             return new Resolver(func, parameters, creator.Method.ReturnType, scope);
         }
 
         public static Resolver Create(Func<object[], object>  creator, MethodBase method, Type returnType, Scope scope)
         {
-            var parameters = method.GetParameters().Select(p => p.ParameterType).ToArray();
+            var parameters = method.GetParameters().Select(p => new Dependency { 
+                Type = p.ParameterType,
+                Required = true,
+            }).ToArray();
             return new Resolver(creator, parameters, returnType, scope);
         }
 
         public static Resolver CreateSingleton<T>(T singleton)
         {
-            return new Resolver((args) => singleton, new Type[0], typeof(T), Tools.Scope.Singleton);
+            return new Resolver((args) => singleton, new Dependency[0], typeof(T), Tools.Scope.Singleton);
         }
 
         internal static Resolver CreateSingleton(object singleton)
         {
-            return new Resolver((args) => singleton, new Type[0], singleton.GetType(), Tools.Scope.Singleton);
+            return new Resolver((args) => singleton, new Dependency[0], singleton.GetType(), Tools.Scope.Singleton);
         }
 
-        public Type[] GetDependencies()
+        public Dependency[] GetDependencies()
         {
             return dependencies.ToArray();
         }
@@ -200,7 +233,7 @@ namespace XOutput.Tools
 
         public override string ToString()
         {
-            return (IsSingleton ? "singleton " : "") + type.FullName + ", dependencies: " + string.Join(", ", dependencies.Select(d => d.FullName));
+            return (IsSingleton ? "singleton " : "") + type.FullName + ", dependencies: " + string.Join(", ", dependencies.Select(d => d.Type.FullName));
         }
     }
 

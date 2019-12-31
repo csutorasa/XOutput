@@ -54,7 +54,7 @@ namespace XOutput.Devices.XInput
         public XOutputDevice(InputMapper mapper)
         {
             this.mapper = mapper;
-            sources = XInputHelper.Instance.GenerateSources();
+            sources = XInputHelper.Instance.GenerateSources((name, type) => new XOutputSource(name, type));
             state = new DeviceState(sources, DPadCount);
             deviceInputChangedEventArgs = new DeviceInputChangedEventArgs(this);
         }

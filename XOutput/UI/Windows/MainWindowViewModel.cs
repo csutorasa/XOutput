@@ -10,6 +10,7 @@ using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.Mapper;
+using XOutput.Devices.XInput;
 using XOutput.Devices.XInput.SCPToolkit;
 using XOutput.Devices.XInput.Vigem;
 using XOutput.Diagnostics;
@@ -30,19 +31,20 @@ namespace XOutput.UI.Windows
         private readonly Dispatcher dispatcher;
         private readonly UpdateChecker updateChecker;
         private readonly HidGuardianManager hidGuardianManager;
+        private readonly XOutputManager xOutputManager;
 
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly DirectInputDevices directInputDevices = new DirectInputDevices();
         private Action<string> log;
         private Settings settings;
-        private bool installed;
 
-        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher, HidGuardianManager hidGuardianManager,
-            UpdateChecker updateChecker) : base(model)
+        public MainWindowViewModel(MainWindowModel model, Dispatcher dispatcher,
+            UpdateChecker updateChecker, HidGuardianManager hidGuardianManager, XOutputManager xOutputManager) : base(model)
         {
             this.dispatcher = dispatcher;
             this.updateChecker = updateChecker;
             this.hidGuardianManager = hidGuardianManager;
+            this.xOutputManager = xOutputManager;
             timer.Interval = TimeSpan.FromMilliseconds(10000);
             timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
             timer.Start();
@@ -119,33 +121,29 @@ namespace XOutput.UI.Windows
                     MessageBox.Show(ex.ToString());
                 }
             }
-            bool vigem = VigemDevice.IsAvailable();
-            bool scp = ScpDevice.IsAvailable();
-            if (vigem)
+            if (xOutputManager.IsVigem)
             {
-                if (scp)
+                if (xOutputManager.IsScp)
                 {
-                    logger.Info("SCPToolkit is installed only.");
+                    logger.Info("SCPToolkit is obsolete.");
                     log(Translate("ScpInstalled"));
-                }
-                installed = true;
-            }
-            else
-            {
-                if (scp)
-                {
-                    logger.Info("ViGEm is installed.");
-                    log(Translate("VigemNotInstalled"));
-                    installed = true;
                 }
                 else
                 {
-                    logger.Error("Neither ViGEm nor SCPToolkit is installed.");
-                    string error = Translate("VigemAndScpNotInstalled");
-                    log(error);
-                    installed = false;
-                    MessageBox.Show(error, Translate("Error"));
+                    logger.Info("ViGEm is installed.");
                 }
+            }
+            else if (xOutputManager.IsScp)
+            {
+                logger.Info("ScpToolkit is installed only.");
+                log(Translate("VigemNotInstalled"));
+            }
+            else
+            {
+                logger.Error("Neither ViGEm nor SCPToolkit is installed.");
+                string error = Translate("VigemAndScpNotInstalled");
+                log(error);
+                MessageBox.Show(error, Translate("Error"));
             }
             Model.Settings = settings;
             RefreshGameControllers();
@@ -254,7 +252,7 @@ namespace XOutput.UI.Windows
             Controllers.Instance.Add(gameController);
 
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), gameController, Model.IsAdmin, log));
-            controllerView.ViewModel.Model.CanStart = installed;
+            controllerView.ViewModel.Model.CanStart = xOutputManager.HasDevice;
             controllerView.RemoveClicked += RemoveController;
             Model.Controllers.Add(controllerView);
             log(string.Format(LanguageModel.Instance.Translate("ControllerConnected"), gameController.DisplayName));

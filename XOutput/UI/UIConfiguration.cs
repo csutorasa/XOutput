@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using XOutput.Devices.XInput;
 using XOutput.Tools;
 using XOutput.UI.Windows;
 using XOutput.Versioning;
@@ -19,9 +20,9 @@ namespace XOutput.UI
         }
 
         [ResolverMethod(Scope.Prototype)]
-        public static MainWindowViewModel GetMainWindowViewModel(MainWindowModel model, Dispatcher dispatcher, HidGuardianManager hidGuardianManager, UpdateChecker updateChecker)
+        public static MainWindowViewModel GetMainWindowViewModel(MainWindowModel model, Dispatcher dispatcher, HidGuardianManager hidGuardianManager, UpdateChecker updateChecker, XOutputManager xOutputManager)
         {
-            return new MainWindowViewModel(model, dispatcher, hidGuardianManager, updateChecker);
+            return new MainWindowViewModel(model, dispatcher, updateChecker, hidGuardianManager, xOutputManager);
         }
 
         [ResolverMethod(Scope.Prototype)]

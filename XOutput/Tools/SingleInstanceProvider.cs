@@ -24,6 +24,7 @@ namespace XOutput.Tools
 
         private Thread notifyThread;
         private readonly Mutex mutex = new Mutex(false, MutexName);
+        private CancellationTokenSource source;
 
         [ResolverMethod]
         public SingleInstanceProvider()
@@ -66,6 +67,7 @@ namespace XOutput.Tools
         {
             if (notifyThread != null)
             {
+                source?.Cancel();
                 ThreadHelper.StopAndWait(notifyThread);
             }
         }
@@ -81,23 +83,19 @@ namespace XOutput.Tools
             }
         }
 
-        private void ReadPipe()
+        private async Task ReadPipe()
         {
-            bool running = true;
-            while (running)
+            source = new CancellationTokenSource();
+            while (!source.IsCancellationRequested)
             {
                 using (var notifyWait = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1))
                 {
-                    notifyWait.WaitForConnection();
+                    await Task.Run(() => notifyWait.WaitForConnection(), source.Token);
                     try
                     {
                         StreamString ss = new StreamString(notifyWait);
                         string command = ss.ReadString();
                         ss.WriteString(ProcessCommand(command));
-                    }
-                    catch(ThreadInterruptedException)
-                    {
-                        running = false;
                     }
                     catch (IOException e)
                     {

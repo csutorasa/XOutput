@@ -25,6 +25,10 @@ namespace XOutput.Tools
                 {
                     parameters.Task();
                 }
+                catch (ThreadAbortException)
+                {
+                    logger.Debug(() => $"Thread {parameters.Name} is aborted.");
+                }
                 catch (ThreadInterruptedException)
                 {
                     logger.Debug(() => $"Thread {parameters.Name} is interrupted.");
