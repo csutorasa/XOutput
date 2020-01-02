@@ -1,0 +1,420 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
+
+    <title>XOutput</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none; 
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        html, body, .root {
+            min-height: 100%;
+            height: 100%;
+            max-height: 100%;
+            overflow: hidden;
+        }
+        .root {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: stretch;
+        }
+        table {
+            height: 100%;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table td {
+            width: 33%;
+            text-align: center;
+        }
+        .button {
+            background-color: lightgray; 
+            text-align: center;
+            align-content: middle;
+        }
+        .circle {
+            border-radius: 1000px;
+        }
+        .slider {
+            background-color: gray;
+            position: relative;
+        }
+        .fill {
+            background-color: lightblue;
+            position: absolute;
+        }
+        .text {
+            text-align: center;
+            position: absolute;
+            color: white;
+        }
+        .slider .fill {
+            top: 0;
+            bottom: 0;
+            left: 0;
+        }
+        .slider .text {
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        .twodimensional {
+            background-color: gray;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none; 
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            position: relative;
+        }
+        .dpad {
+            background-color: gray;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none; 
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="root">
+        <div class="button" style="width: 20%; height: 25%;" name="L2">
+           L2
+        </div>
+        <div class="slider" style="width: 30%; height: 25%;" name="L2">
+            <div class="fill"></div>
+            <div class="text">L2</div>
+        </div>
+        <div class="slider" style="width: 30%; height: 25%;" name="R2">
+            <div class="fill"></div>
+            <div class="text">R2</div>
+        </div>
+        <div class="button" style="width: 20%; height: 25%;" name="R2">
+           R2
+        </div>
+        <div class="dpad" style="width: 30%; height: 40%;">
+            <div class="fill"></div>
+            <div class="text">DPad</div>
+        </div>
+        <div style="width: 35%; height: 40%;">
+            <table>
+                <tr>
+                    <td class="button circle" name="Back">Back</td>
+                    <td onclick="fullscreen()" ontouchstart="fullscreen()">Fullscreen</td>
+                    <td class="button circle" name="Start">Start</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="button circle" name="Home">Home</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="button circle" name="L3">L3</td>
+                    <td></td>
+                    <td class="button circle" name="R3">R3</td>
+                </tr>
+            </table>
+        </div>
+        <div style="width: 35%; height: 40%;">
+            <table>
+                <tr>
+                    <td></td>
+                    <td class="button circle" style="background-color: yellow; color: orangered;" name="Y">Y</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="button circle" style="background-color: blue; color: lightblue;" name="X">X</td>
+                    <td></td>
+                    <td class="button circle" style="background-color: red; color: darkred;" name="B">B</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="button circle" style="background-color: green; color: lightgreen;" name="A">A</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div class="button" style="width: 20%; height: 35%;" name="L1">
+           L1
+        </div>
+        <div class="twodimensional" style="width: 30%; height: 35%;" name="L">
+            <div class="fill"></div>
+            <div class="text">L</div>
+        </div>
+        <div class="twodimensional" style="width: 30%; height: 35%;" name="R">
+            <div class="fill"></div>
+            <div class="text">R</div>
+        </div>
+        <div class="button" style="width: 20%; height: 35%;" name="R1">
+           R1
+        </div>
+    </div>
+
+
+    <script>
+        const host = "<<<host>>>";
+        const port = "<<<port>>>";
+
+        class Communication {
+            connect(host, port) {
+                this.websocket = new WebSocket("ws://" + host + ":" + port + "/");
+                this.websocket.onopen = (event) => this.onOpen(event);
+                this.websocket.onerror = (event) => this.onError(event);
+                this.websocket.onclose = (event) => this.onClose(event);
+            }
+            onOpen(event) {
+                console.log("Connected to " + host + ":" + port);
+            }
+            onError(event) {
+                console.error(event.message);
+                if (this.isReady()) {
+                    this.sendDebug(event.message);
+                }
+            }
+            onClose(event) {
+                console.log("Disconnected from " + host + ":" + port);
+                this.websocket = null;
+            }
+            isReady() {
+                return this.websocket && this.websocket.readyState == WebSocket.OPEN;
+            }
+            sendMessage(type, text) {
+                this.websocket.send(type + "|" + text);
+            }
+            sendInput(input, value) {
+                this.websocket.send("input|" + input + "," + value);
+            }
+            sendInputs(input1, value1, input2, value2) {
+                this.websocket.send("input|" + input1 + "," + value1 + ";" + input2 + "," + value2);
+            }
+            sendDPad(up, down, left, right) {
+                this.websocket.send("input|UP," + up + ";DOWN," + down + ";LEFT," + left + ";RIGHT," + right);
+            }
+            sendDebug(text) {
+                this.websocket.send("debug|" + text);
+            }
+        }
+        const communication = new Communication();
+        communication.connect(host, port);
+        window.onerror = function(msg, url, line, col) {
+            if (communication.isReady()) {
+                communication.sendDebug("Error in " + url + " at " + line + ":" + col + " " + msg);
+            }
+        };
+
+        let mouseEvent;
+        const touchEvents = {};
+
+        class XInputEvent {
+            constructor(onMove, onEnd) {
+                this.onMove = onMove;
+                this.onEnd = onEnd;
+            }
+        }
+
+        function fullscreen() {
+            document.querySelector(".root").requestFullscreen().catch((err) => {
+                communication.sendDebug(err);
+            });
+        }
+        function clearMouseEvent() {
+            if (mouseEvent) {
+                mouseEvent.onEnd();
+                mouseEvent = null;
+            }
+        }
+        function moveMouse(event) {
+            if (mouseEvent) {
+                mouseEvent.onMove(event);
+            }
+        }
+        function clearTouchEvent(number) {
+            if (number) {
+                const event = touchEvents[number];
+                if (event) {
+                    event.onEnd();
+                    delete touchEvents[number];
+                }
+            } else {
+                for (let key in Object.keys(touchEvents)) {
+                    const event = touchEvents[key];
+                    event.onEnd();
+                    delete touchEvents[key];
+                }
+            }
+        }
+        function moveTouch(event) {
+            Array.from(event.touches).forEach(t => {
+                if (t.identifier in touchEvents) {
+                    const event = touchEvents[t.identifier];
+                    event.onMove(t);
+                }
+            });
+        }
+
+        document.addEventListener('mousemove', (event) => moveMouse(event));
+        document.addEventListener('mouseup', () => clearMouseEvent());
+        document.addEventListener('touchmove', (event) => { moveTouch(event); event.preventDefault(); });
+        document.addEventListener('touchend', (event) => { Array.from(event.changedTouches).forEach(t => clearTouchEvent(t.identifier)); event.preventDefault(); });
+        document.addEventListener('touchcancel', () => clearTouchEvent());
+
+        function createButtonEvent(button) {
+            const key = button.getAttribute("name");
+            let fill = null;
+            if (key == 'L2' || key == 'R2') {
+                cell = document.querySelector(".slider[name=" + key + "]");
+                fill = cell.querySelector(".fill");
+                fill.style.width = (cell.offsetWidth) + "px";
+            }
+            communication.sendInput(key, 1);
+            return new XInputEvent(() => {}, () => { 
+                communication.sendInput(key, 0);
+                if (fill) {
+                    fill.style.width = "0px";
+                }
+            });
+        }
+        function createSliderEvent(slider, event) {
+            const key = slider.getAttribute("name");
+            const xRatio = event.offsetX / slider.offsetWidth;
+            const yRatio = event.offsetY / slider.offsetHeight;
+            const value = xRatio > 1 ? 1 : (xRatio < 0 ? 0 : xRatio);
+            const fill = slider.querySelector('.fill');
+            fill.style.width = (value * slider.offsetWidth) + "px";
+            communication.sendInput(key, value);
+            return new XInputEvent((event) => {
+                const sliderX = window.pageXOffset + slider.getBoundingClientRect().left;
+                const sliderY = window.pageYOffset + slider.getBoundingClientRect().top;
+                const xRatio = (event.pageX - sliderX) / slider.offsetWidth;
+                const yRatio = (event.pageY - sliderY) / slider.offsetHeight;
+                const value = xRatio > 1 ? 1 : (xRatio < 0 ? 0 : xRatio);
+                fill.style.width = (value * slider.offsetWidth) + "px";
+                communication.sendInput(key, value);
+            }, () => {
+                communication.sendInput(key, 0);
+                if (fill) {
+                    fill.style.width = "0px";
+                }
+            });
+        }
+
+        function fillAxis(fill, axis, xValue, yValue) {
+            fill.style.width = (Math.abs(xValue - 0.5) * axis.offsetWidth) + "px";
+            fill.style.left = (Math.min(xValue, 0.5) * axis.offsetWidth) + "px";
+            fill.style.height = (Math.abs(yValue - 0.5) * axis.offsetHeight) + "px";
+            fill.style.top = (Math.min(yValue, 0.5) * axis.offsetHeight) + "px";
+        }
+
+        function createAxisEvent(axis, event) {
+            const key = axis.getAttribute("name");
+            const xRatio = event.offsetX / axis.offsetWidth;
+            const yRatio = event.offsetY / axis.offsetHeight;
+            const xValue = xRatio > 1 ? 1 : (xRatio < 0 ? 0 : xRatio);
+            const yValue = yRatio > 1 ? 1 : (yRatio < 0 ? 0 : yRatio);
+            const fill = axis.querySelector('.fill');
+            fillAxis(fill, axis, xValue, yValue);
+            communication.sendInputs(key + "X", xValue, key + "Y", 1 - yValue);
+            return new XInputEvent((event) => {
+                const sliderX = window.pageXOffset + axis.getBoundingClientRect().left;
+                const sliderY = window.pageYOffset + axis.getBoundingClientRect().top;
+                const xRatio = (event.pageX - sliderX) / axis.offsetWidth;
+                const yRatio = (event.pageY - sliderY) / axis.offsetHeight;
+                const xValue = xRatio > 1 ? 1 : (xRatio < 0 ? 0 : xRatio);
+                const yValue = yRatio > 1 ? 1 : (yRatio < 0 ? 0 : yRatio);
+                fillAxis(fill, axis, xValue, yValue);
+                communication.sendInputs(key + "X", xValue, key + "Y", 1 - yValue);
+            }, () => {
+                communication.sendInputs(key + "X", 0.5, key + "Y", 0.5);
+                fillAxis(fill, axis, 0.5, 0.5);
+            });
+        }
+
+        function fillDPad(fill, dpad, up, down, left, right) {
+            fill.style.left = (0.375 * dpad.offsetWidth) + "px";
+            fill.style.top = (0.375 * dpad.offsetHeight) + "px";
+            if (up || down || left || right) {
+                fill.style.width = (0.25 * dpad.offsetWidth) + "px";
+                fill.style.height = (0.25 * dpad.offsetHeight) + "px";
+                if (up) {
+                    fill.style.top = "0px";
+                } else if (down) {
+                    fill.style.top = (0.75 * dpad.offsetHeight) + "px";
+                }
+                if (left) {
+                    fill.style.left = "0px";
+                } else if (right) {
+                    fill.style.left = (0.75 * dpad.offsetWidth) + "px";
+                }
+            } else {
+                fill.style.width = "0px";
+                fill.style.height = "0px";
+            }
+        }
+
+        function createDPadEvent(dpad, event) {
+            const xRatio = event.offsetX / dpad.offsetWidth;
+            const yRatio = event.offsetY / dpad.offsetHeight;
+            const xValue = xRatio > 1 ? 1 : (xRatio < 0 ? 0 : xRatio);
+            const yValue = yRatio > 1 ? 1 : (yRatio < 0 ? 0 : yRatio);
+            const up = yValue < 0.25 ? 1 : 0;
+            const down = yValue > 0.75 ? 1 : 0;
+            const left = xValue < 0.25 ? 1 : 0;
+            const right = xValue > 0.75 ? 1 : 0;
+            const fill = dpad.querySelector('.fill');
+            fillDPad(fill, dpad, up, down, left, right);
+            communication.sendDPad(up, down, left, right);
+            return new XInputEvent((event) => {
+                const sliderX = window.pageXOffset + dpad.getBoundingClientRect().left;
+                const sliderY = window.pageYOffset + dpad.getBoundingClientRect().top;
+                const xRatio = (event.pageX - sliderX) / dpad.offsetWidth;
+                const yRatio = (event.pageY - sliderY) / dpad.offsetHeight;
+                const xValue = xRatio > 1 ? 1 : (xRatio < 0 ? 0 : xRatio);
+                const yValue = yRatio > 1 ? 1 : (yRatio < 0 ? 0 : yRatio);
+                const up = yValue < 0.25 ? 1 : 0;
+                const down = yValue > 0.75 ? 1 : 0;
+                const left = xValue < 0.25 ? 1 : 0;
+                const right = xValue > 0.75 ? 1 : 0;
+                fillDPad(fill, dpad, up, down, left, right);
+                communication.sendDPad(up, down, left, right);
+            }, () => {
+                communication.sendDPad(0, 0, 0, 0);
+                fillDPad(fill, dpad, 0, 0, 0, 0);
+            });
+        }
+
+        function registerStartEvents(className, eventCreator) {
+            Array.from(document.getElementsByClassName(className)).forEach(element => {
+                    element.addEventListener('mousedown', (event) => {
+                    if (mouseEvent) {
+                        clearMouseEvent();
+                    }
+                    mouseEvent = eventCreator(element, event);
+                });
+                element.addEventListener('touchstart', (event) => { 
+                    Array.from(event.changedTouches).forEach(t => {
+                        const e = eventCreator(element, event);
+                        touchEvents[t.identifier] = e;
+                    });
+                    event.preventDefault();
+                });
+            });
+        }
+
+        registerStartEvents('button', createButtonEvent);
+        registerStartEvents('slider', createSliderEvent);
+        registerStartEvents('twodimensional', createAxisEvent);
+        registerStartEvents('dpad', createDPadEvent);
+    </script>
+</body>
+</html>
