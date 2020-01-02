@@ -59,7 +59,7 @@ namespace XOutput.Tools
             {
                 Name = "XOutputRunningAlreadyNamedPipe reader",
                 IsBackground = true,
-                Task = () => ReadPipe(),
+                Task = async () => await ReadPipe(),
             });
         }
 
