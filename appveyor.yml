@@ -35,19 +35,19 @@ platform: Any CPU
 configuration: Release
   
 build_script:
-  - cd Web && npm install && cd ..
-  - dotnet tool install --global dotnet-sonarscanner
-  - dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%" /d:sonar.cs.opencover.reportsPaths="XOutputTests\coverage.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs"
-  - dotnet msbuild -p:Configuration=Release -p:Version=%versionnumber% -p:AssemblyVersion=%versionnumber% -p:FileVersion=%versionnumber%
-#  - dotnet build -c Release -p:Version=%versionnumber% -p:AssemblyVersion=%versionnumber% -p:FileVersion=%versionnumber%
+  - cmd: cd Web && npm install && cd ..
+  - cmd: dotnet tool install --global dotnet-sonarscanner
+  - cmd: dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%" /d:sonar.cs.opencover.reportsPaths="XOutputTests\coverage.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs"
+  - cmd: dotnet msbuild -p:Configuration=Release -p:Version=%versionnumber% -p:AssemblyVersion=%versionnumber% -p:FileVersion=%versionnumber%
+#  - cmd: dotnet build -c Release -p:Version=%versionnumber% -p:AssemblyVersion=%versionnumber% -p:FileVersion=%versionnumber%
 
 before_build:
   - ps: Install-Product node lts
-  - dotnet add XOutput package Nefarius.ViGEm.Client -s https://ci.appveyor.com/nuget/vigem-net-ci -v 1.16.138
-  - dotnet restore
+  - cmd: dotnet add XOutput package Nefarius.ViGEm.Client -s https://ci.appveyor.com/nuget/vigem-net-ci -v 1.16.138
+  - cmd: dotnet restore
   
 after_build:
-  - 7z a XOutput.zip %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\*.exe
+  - cmd: 7z a XOutput.zip %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\*.exe
 
 #---------------------------------#
 #       tests configuration       #
