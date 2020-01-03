@@ -18,7 +18,6 @@ namespace XOutput.Server
         private readonly XOutputManager xOutputManager;
 
         private string errorPage;
-        private string indexPage;
 
         [ResolverMethod]
         public FileService(XOutputManager xOutputManager)
@@ -26,7 +25,6 @@ namespace XOutput.Server
             this.xOutputManager = xOutputManager;
 
             errorPage = ReadResource("error.html");
-            indexPage = ReadResource("index.html");
         }
 
         public bool Handle(HttpListenerContext httpContext)
@@ -36,30 +34,32 @@ namespace XOutput.Server
                 return false;
             }
             string path = httpContext.Request.Url.LocalPath;
-            if (path == "/" || path == "/index.html")
+            if (xOutputManager.HasDevice)
+            {
+                string file = path;
+                if (file == "/")
+                {
+                    file = "/index.html";
+                }
+                file = "." + file.Replace("/", "\\");
+                if(!File.Exists(file))
+                {
+                    return false;
+                }
+                var content = File.ReadAllText(file);
+                string customContent = content
+                    .Replace("<<<host>>>", httpContext.Request.Url.Host)
+                    .Replace("<<<port>>>", httpContext.Request.Url.Port.ToString());
+                httpContext.Response.ContentType = "text/html";
+                WriteTo(httpContext.Response.OutputStream, customContent);
+            }
+            else
             {
                 httpContext.Response.ContentType = "text/html";
-                if (xOutputManager.HasDevice)
-                {
-#if DEBUG
-                    if(File.Exists("index.html"))
-                    {
-                        indexPage = File.ReadAllText("index.html");
-                    }
-#endif
-                    string customIndexPage = indexPage
-                        .Replace("<<<host>>>", httpContext.Request.Url.Host)
-                        .Replace("<<<port>>>", httpContext.Request.Url.Port.ToString());
-                    WriteTo(httpContext.Response.OutputStream, customIndexPage);
-                }
-                else
-                {
-                    WriteTo(httpContext.Response.OutputStream, errorPage);
-                }
-                httpContext.Response.Close();
-                return true;
+                WriteTo(httpContext.Response.OutputStream, errorPage);
             }
-            return false;
+            httpContext.Response.Close();
+            return true;
         }
 
         private string ReadResource(string resource)
