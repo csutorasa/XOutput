@@ -41,6 +41,7 @@ module.exports = {
         {
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
+                    fs.mkdirSync(path.resolve(__dirname, '../XOutput/bin/Debug/net452/'));
                     fs.createReadStream('dist/index.html').pipe(fs.createWriteStream('../XOutput/bin/Debug/net452/index.html'));
                 });
             }
