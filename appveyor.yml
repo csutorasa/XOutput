@@ -42,7 +42,7 @@ build_script:
 #  - dotnet build -c Release -p:Version=%versionnumber% -p:AssemblyVersion=%versionnumber% -p:FileVersion=%versionnumber%
 
 before_build:
-  - Install-Product node lts
+  - ps: Install-Product node lts
   - dotnet add XOutput package Nefarius.ViGEm.Client -s https://ci.appveyor.com/nuget/vigem-net-ci -v 1.16.138
   - dotnet restore
   
