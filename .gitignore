@@ -5,6 +5,7 @@
 # Output
 */bin
 */obj
+Web/dist
 
 # Nuget packages
 packages
@@ -13,3 +14,6 @@ packages
 # Test result files
 TestResults
 XOutputTests/coverage.opencover.xml
+
+# node modules
+Web/node_modules

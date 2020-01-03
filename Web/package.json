@@ -1,0 +1,26 @@
+{
+  "name": "xoutput",
+  "version": "1.0.0",
+  "description": "XOutput web UI",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode=development --config webpack.dev.config.js --watch",
+    "install": "webpack --mode=production",
+    "test": "echo \"No test specified\""
+  },
+  "author": "Ármin Csutorás",
+  "license": "MIT",
+  "devDependencies": {
+    "css-loader": "^3.4.1",
+    "html-webpack-inline-source-plugin": "0.0.10",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.13.0",
+    "raw-loader": "^4.0.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.1.2",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.4",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}

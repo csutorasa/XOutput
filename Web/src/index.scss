@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+html, body, body > div, .root {
+    min-height: 100%;
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+}
+.root {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: stretch;
+    background-color: white;
+}
+table {
+    height: 100%;
+    width: 100%;
+    border-collapse: collapse;
+}
+table td {
+    width: 33%;
+    text-align: center;
+}
+.button {
+    background-color: lightgray; 
+    text-align: center;
+    align-content: middle;
+}
+.circle {
+    border-radius: 1000px;
+}
+.slider {
+    background-color: gray;
+    position: relative;
+}
+.fill {
+    background-color: lightblue;
+    position: absolute;
+}
+.text {
+    text-align: center;
+    position: absolute;
+    color: white;
+}
+.slider .fill {
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+.slider .text {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.twodimensional {
+    background-color: gray;
+    position: relative;
+}
+.dpad {
+    background-color: gray;
+    position: relative;
+}
