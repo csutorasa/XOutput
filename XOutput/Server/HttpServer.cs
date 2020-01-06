@@ -49,7 +49,7 @@ namespace XOutput.Server
             {
                 logger.Warning(ex);
                 var domainUser = WindowsIdentity.GetCurrent().Name;
-                commandRunner.StartPowershellAdmin($"netsh http add urlacl url={uri} user={domainUser}");
+                commandRunner.RunCmdAdmin($"netsh http add urlacl url={uri} user={domainUser}");
                 listener = new HttpListener();
                 listener.Prefixes.Add(uri);
                 listener.Start();

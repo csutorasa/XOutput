@@ -51,6 +51,27 @@ namespace XOutput.Tools
             }
         }
 
+        public void RunCmdAdmin(string command)
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "/C " + command,
+                    CreateNoWindow = true,
+                    UseShellExecute = true,
+                    Verb = "runas",
+                },
+            };
+            process.Start();
+            process.WaitForExit();
+            if (0 != process.ExitCode)
+            {
+                throw new Exception($"Process exited with {process.ExitCode}");
+            }
+        }
+
         public void StartPowershellAdmin(string command)
         {
             var process = new Process
