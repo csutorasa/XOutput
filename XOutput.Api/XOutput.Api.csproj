@@ -3,12 +3,11 @@
   <PropertyGroup>
     <OutputType>library</OutputType>
     <TargetFrameworks>net452;netcoreapp3.1</TargetFrameworks>
-    <!--<TargetFrameworks>net452</TargetFrameworks>-->
-    <RootNamespace>XOutput</RootNamespace>
-    <AssemblyName>XOutput</AssemblyName>
+    <RootNamespace>XOutput.Api</RootNamespace>
+    <AssemblyName>XOutput.Api</AssemblyName>
     <Authors>Ármin Csutorás</Authors>
-    <Product>XOutput</Product>
-    <PackageId>XOutput</PackageId>
+    <Product>XOutput.Api</Product>
+    <PackageId>XOutput.Api</PackageId>
     <NeutralLanguage>en</NeutralLanguage>
     <Description></Description>
     <Copyright>Copyright 2019</Copyright>
@@ -20,9 +19,6 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework) == 'net452'">
-    <Reference Include="System.Net.Http" />
   </ItemGroup>
 
 </Project>
