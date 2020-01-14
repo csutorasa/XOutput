@@ -5,21 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
+using XOutput.Core.External;
 
 namespace XOutput.Core
 {
     public static class CoreConfiguration
     {
         [ResolverMethod]
-        public static FileManager GetFileManager()
+        public static ConfigurationManager GetConfigurationManager()
         {
-            return new FileManager();
+            return new JsonConfigurationManager();
         }
 
         [ResolverMethod]
-        public static IConfigurationManager GetConfigurationManager(FileManager fileManager)
+        public static CommandRunner GetCommandRunner()
         {
-            return new JsonConfigurationManager(fileManager);
+            return new CommandRunner();
         }
     }
 }

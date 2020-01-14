@@ -16,17 +16,5 @@ namespace XOutput
         {
             return new ArgumentParser(Environment.GetCommandLineArgs().Skip(1).ToArray());
         }
-
-        [ResolverMethod]
-        public static FileManager GetFileManager()
-        {
-            return new FileManager();
-        }
-
-        [ResolverMethod]
-        public static IConfigurationManager GetConfigurationManager(FileManager fileManager)
-        {
-            return new JsonConfigurationManager(fileManager);
-        }
     }
 }

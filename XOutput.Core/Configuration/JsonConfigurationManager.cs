@@ -8,28 +8,16 @@ using System.Threading.Tasks;
 
 namespace XOutput.Core.Configuration
 {
-    public class JsonConfigurationManager : IConfigurationManager
+    public class JsonConfigurationManager : ConfigurationManager
     {
-        private readonly FileManager fileManager;
-
-        public JsonConfigurationManager(FileManager fileManager)
+        protected override string ConfigurationToString<T>(T configuration)
         {
-            this.fileManager = fileManager;
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
-        public void Save<T>(string filePath, T configuration) where T : Configuration
+        protected override T StringToConfiguration<T>(string configuration)
         {
-            File.WriteAllText(filePath, JsonConvert.SerializeObject(this, Formatting.Indented));
-        }
-
-        public T Load<T>(string filePath) where T : Configuration, new()
-        {
-            if (File.Exists(filePath))
-            {
-                var text = File.ReadAllText(filePath);
-                return JsonConvert.DeserializeObject<T>(text);
-            }
-            return new T();
+            return JsonConvert.DeserializeObject<T>(configuration);
         }
     }
 }
