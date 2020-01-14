@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>library</OutputType>
+    <TargetFrameworks>net452;netcoreapp3.1</TargetFrameworks>
+    <!--<TargetFrameworks>net452</TargetFrameworks>-->
+    <RootNamespace>XOutput</RootNamespace>
+    <AssemblyName>XOutput</AssemblyName>
+    <Authors>Ármin Csutorás</Authors>
+    <Product>XOutput</Product>
+    <PackageId>XOutput</PackageId>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description></Description>
+    <Copyright>Copyright 2019</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework) == 'net452'">
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+</Project>
