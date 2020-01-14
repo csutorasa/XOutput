@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using XOutput.Core.Configuration;
 using XOutput.Devices.Input;
 using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
