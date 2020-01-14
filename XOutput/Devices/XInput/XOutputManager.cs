@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using XOutput.Devices.XInput.SCPToolkit;
 using XOutput.Devices.XInput.Vigem;
-using XOutput.Tools;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.XInput
 {

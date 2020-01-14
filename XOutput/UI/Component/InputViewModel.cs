@@ -5,6 +5,7 @@ using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Tools;
 using XOutput.UI.Windows;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.UI.Component
 {

@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using XOutput.Tools;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.Mouse
 {

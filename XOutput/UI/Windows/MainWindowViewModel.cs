@@ -18,6 +18,7 @@ using XOutput.Logging;
 using XOutput.Tools;
 using XOutput.UI.Component;
 using XOutput.Versioning;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.UI.Windows
 {

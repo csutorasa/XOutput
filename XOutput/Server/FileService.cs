@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using XOutput.Devices.XInput;
-using XOutput.Tools;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Server
 {

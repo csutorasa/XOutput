@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using XOutput.Logging;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Tools
 {

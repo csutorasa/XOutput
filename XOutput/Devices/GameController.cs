@@ -9,6 +9,7 @@ using XOutput.Devices.XInput.SCPToolkit;
 using XOutput.Devices.XInput.Vigem;
 using XOutput.Logging;
 using XOutput.Tools;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices
 {

@@ -12,7 +12,7 @@ using XOutput.Api.Message;
 using XOutput.Api.Serialization;
 using XOutput.Devices.XInput;
 using XOutput.Logging;
-using XOutput.Tools;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Server
 {

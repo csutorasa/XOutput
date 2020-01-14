@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Tools
 {

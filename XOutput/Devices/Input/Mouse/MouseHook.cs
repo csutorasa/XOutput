@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using XOutput.Tools;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.Mouse
 {

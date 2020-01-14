@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.Collections.Generic;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Tools
 {

@@ -5,9 +5,11 @@ using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using XOutput.Core;
 using XOutput.Logging;
 using XOutput.Tools;
 using XOutput.UI.Windows;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput
 {
@@ -26,13 +28,6 @@ namespace XOutput
             AppDomain.CurrentDomain.FirstChanceException += (object sender, FirstChanceExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Info);
             AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) => UnhandledException(e.ExceptionObject as Exception, LogLevel.Error);
             TaskScheduler.UnobservedTaskException += (object sender, UnobservedTaskExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
-            DependencyEmbedder dependencyEmbedder = new DependencyEmbedder();
-            dependencyEmbedder.AddPackage("Newtonsoft.Json");
-            dependencyEmbedder.AddPackage("SharpDX.DirectInput");
-            dependencyEmbedder.AddPackage("SharpDX");
-            dependencyEmbedder.AddPackage("Hardcodet.Wpf.TaskbarNotification");
-            dependencyEmbedder.AddPackage("Nefarius.ViGEm.Client");
-            dependencyEmbedder.Initialize();
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
@@ -47,6 +42,8 @@ namespace XOutput
         {
             ApplicationContext globalContext = ApplicationContext.Global;
             globalContext.Resolvers.Add(Resolver.CreateSingleton(Dispatcher));
+            globalContext.AddFromConfiguration(typeof(CoreConfiguration));
+            globalContext.AddFromConfiguration(typeof(ApiConfiguration));
             globalContext.AddFromConfiguration(typeof(ApplicationConfiguration));
             globalContext.AddFromConfiguration(typeof(UI.UIConfiguration));
 

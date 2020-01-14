@@ -4,19 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XOutput.Core.Configuration;
-using XOutput.Tools;
 using XOutput.Core.DependencyInjection;
 
-namespace XOutput
+namespace XOutput.Core
 {
-    public static class ApplicationConfiguration
+    public static class CoreConfiguration
     {
-        [ResolverMethod]
-        public static ArgumentParser GetArgumentParser()
-        {
-            return new ArgumentParser(Environment.GetCommandLineArgs().Skip(1).ToArray());
-        }
-
         [ResolverMethod]
         public static FileManager GetFileManager()
         {

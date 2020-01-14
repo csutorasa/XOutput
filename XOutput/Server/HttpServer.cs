@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using XOutput.Logging;
 using XOutput.Tools;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Server
 {

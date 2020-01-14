@@ -8,6 +8,7 @@ using XOutput.Devices.XInput;
 using XOutput.Tools;
 using XOutput.UI.Windows;
 using XOutput.Versioning;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.UI
 {
