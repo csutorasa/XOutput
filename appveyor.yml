@@ -37,7 +37,7 @@ configuration: Release
 build_script:
   - cmd: cd Web && npm install && cd ..
   - cmd: dotnet tool install --global dotnet-sonarscanner
-  - cmd: dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%" /d:sonar.cs.opencover.reportsPaths="XOutputTests\coverage.*.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs"
+  - cmd: dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%" /d:sonar.cs.opencover.reportsPaths="*Tests\coverage.*.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs"
   - cmd: dotnet msbuild -p:Configuration=Release -p:Version=%versionnumber% -p:AssemblyVersion=%versionnumber% -p:FileVersion=%versionnumber%
 #  - cmd: dotnet build -c Release -p:Version=%versionnumber% -p:AssemblyVersion=%versionnumber% -p:FileVersion=%versionnumber%
 
