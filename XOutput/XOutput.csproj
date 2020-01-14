@@ -39,33 +39,11 @@
     <Content Remove="Resources\Languages\*.json" />
     <EmbeddedResource Include="Resources\Languages\*.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Remove="Resources\Web\*" />
-    <EmbeddedResource Include="Resources\Web\*" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
     <ProjectReference Include="..\XOutput.Server\XOutput.Server.csproj" />
-  </ItemGroup>
-  <!-- Creating single file output -->
-  <ItemGroup Condition="$(TargetFramework) == 'net452'">
-    <EmbeddedResource Include="$(NuGetPackageRoot)\newtonsoft.json\12.0.3\lib\net45\Newtonsoft.Json.dll" />
-    <EmbeddedResource Include="$(NuGetPackageRoot)\sharpdx\4.2.0\lib\net45\SharpDX.dll" />
-    <EmbeddedResource Include="$(NuGetPackageRoot)\sharpdx.directinput\4.2.0\lib\net45\SharpDX.DirectInput.dll" />
-    <EmbeddedResource Include="$(NuGetPackageRoot)\hardcodet.notifyicon.wpf\1.0.8\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll" />
-    <EmbeddedResource Include="$(NuGetPackageRoot)\nefarius.vigem.client\1.16.138\lib\net452\Nefarius.ViGEm.Client.dll" />
-  </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework) == 'netcoreapp3.0'">
-    <EmbeddedResource Include="$(NuGetPackageRoot)\newtonsoft.json\12.0.3\lib\netstandard2.0\Newtonsoft.Json.dll" />
-    <EmbeddedResource Include="$(NuGetPackageRoot)\sharpdx\4.2.0\lib\netstandard1.1\SharpDX.dll" />
-    <EmbeddedResource Include="$(NuGetPackageRoot)\sharpdx.directinput\4.2.0\lib\netstandard1.3\SharpDX.DirectInput.dll" />
-    <EmbeddedResource Include="$(NuGetPackageRoot)\hardcodet.notifyicon.wpf\1.0.8\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll" />
-    <EmbeddedResource Include="$(NuGetPackageRoot)\nefarius.vigem.client\1.16.138\lib\netcoreapp2.2\Nefarius.ViGEm.Client.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Resources\Web\error.html" />
   </ItemGroup>
 
 </Project>
