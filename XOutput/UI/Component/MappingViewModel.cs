@@ -1,4 +1,5 @@
-﻿using XOutput.Devices;
+﻿using XOutput.Core.Number;
+using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
@@ -46,7 +47,7 @@ namespace XOutput.UI.Component
 
         protected void SetSelected(MapperData mapperData)
         {
-            if (Helper.DoubleEquals(mapperData.MinValue, Model.XInputType.GetDisableValue()) && Helper.DoubleEquals(mapperData.MaxValue, Model.XInputType.GetDisableValue()))
+            if (NumberHelper.DoubleEquals(mapperData.MinValue, Model.XInputType.GetDisableValue()) && NumberHelper.DoubleEquals(mapperData.MaxValue, Model.XInputType.GetDisableValue()))
             {
                 Model.SelectedInput = DisabledInputSource.Instance;
                 Model.ConfigVisibility = System.Windows.Visibility.Collapsed;

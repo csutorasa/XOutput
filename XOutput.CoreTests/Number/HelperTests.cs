@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 
-namespace XOutput.Tools.Tests
+namespace XOutput.Core.Number.Tests
 {
     [TestClass()]
     public class HelperTests
@@ -18,7 +18,7 @@ namespace XOutput.Tools.Tests
         [DataTestMethod]
         public void DoubleEquals(double a, double b, bool equals)
         {
-            Assert.AreEqual(equals, Helper.DoubleEquals(a, b));
+            Assert.AreEqual(equals, NumberHelper.DoubleEquals(a, b));
         }
     }
 }

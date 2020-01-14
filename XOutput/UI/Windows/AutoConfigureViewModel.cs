@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using XOutput.Core.Number;
 using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Devices.Input.Mouse;
@@ -195,7 +196,7 @@ namespace XOutput.UI.Windows
             double max = Math.Max(current, Model.MaxValue / 100);
             double maxValue = Math.Round(max * 100);
 
-            if (!Helper.DoubleEquals(minValue, Model.MinValue) || !Helper.DoubleEquals(maxValue, Model.MaxValue))
+            if (!NumberHelper.DoubleEquals(minValue, Model.MinValue) || !NumberHelper.DoubleEquals(maxValue, Model.MaxValue))
             {
                 Model.MinValue = minValue;
                 Model.MaxValue = maxValue;

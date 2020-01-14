@@ -43,6 +43,10 @@
     <Content Remove="Resources\Web\*" />
     <EmbeddedResource Include="Resources\Web\*" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
+  </ItemGroup>
   <!-- Creating single file output -->
   <ItemGroup Condition="$(TargetFramework) == 'net452'">
     <EmbeddedResource Include="$(NuGetPackageRoot)\newtonsoft.json\12.0.3\lib\net45\Newtonsoft.Json.dll" />

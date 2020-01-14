@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29209.152
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput", "XOutput\XOutput.csproj", "{1A831445-0E59-4230-806A-D5180D24B346}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XOutput", "XOutput\XOutput.csproj", "{1A831445-0E59-4230-806A-D5180D24B346}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutputTests", "XOutputTests\XOutputTests.csproj", "{28AA076A-103D-4208-ADF6-5EECA60CB7E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XOutputTests", "XOutputTests\XOutputTests.csproj", "{28AA076A-103D-4208-ADF6-5EECA60CB7E0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XOutput.Core", "XOutput.Core\XOutput.Core.csproj", "{28926084-C21A-4533-BD72-793859047735}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XOutput.CoreTests", "XOutput.CoreTests\XOutput.CoreTests.csproj", "{10B7530B-E510-4723-A397-1ACE2007BA88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,30 @@ Global
 		{28AA076A-103D-4208-ADF6-5EECA60CB7E0}.Release|x64.Build.0 = Release|Any CPU
 		{28AA076A-103D-4208-ADF6-5EECA60CB7E0}.Release|x86.ActiveCfg = Release|Any CPU
 		{28AA076A-103D-4208-ADF6-5EECA60CB7E0}.Release|x86.Build.0 = Release|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Debug|x64.Build.0 = Debug|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Debug|x86.Build.0 = Debug|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Release|x64.ActiveCfg = Release|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Release|x64.Build.0 = Release|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Release|x86.ActiveCfg = Release|Any CPU
+		{28926084-C21A-4533-BD72-793859047735}.Release|x86.Build.0 = Release|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Debug|x64.Build.0 = Debug|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Debug|x86.Build.0 = Debug|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Release|x64.ActiveCfg = Release|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Release|x64.Build.0 = Release|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Release|x86.ActiveCfg = Release|Any CPU
+		{10B7530B-E510-4723-A397-1ACE2007BA88}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
