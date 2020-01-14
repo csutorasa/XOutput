@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace XOutput.Api.Message
 {
-    public abstract class MessageBase
+    public class MessageBase
     {
         public string Type { get; set; }
     }

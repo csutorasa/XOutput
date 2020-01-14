@@ -42,7 +42,7 @@ module.exports = {
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
                     fs.mkdirSync(path.resolve(__dirname, '../XOutput/bin/Release/net452/web'), { recursive: true });
-                    fs.createReadStream('dist/index.html').pipe(fs.createWriteStream('../XOutput/bin/Debug/net452/web/index.html'));
+                    fs.createReadStream('dist/index.html').pipe(fs.createWriteStream('../XOutput/bin/Release/net452/web/index.html'));
                 });
             }
         }

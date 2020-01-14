@@ -20,7 +20,7 @@ namespace XOutput.Api.Serialization
 
         public MessageBase ReadMessage(string input)
         {
-            return JsonConvert.DeserializeObject<MessageBase>(input);
+            return JsonConvert.DeserializeObject<MessageBase>(input, converter);
         }
     }
 }

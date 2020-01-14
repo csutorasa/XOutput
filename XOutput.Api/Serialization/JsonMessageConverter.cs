@@ -16,6 +16,7 @@ namespace XOutput.Api.Serialization
         static JsonMessageConverter()
         {
             messageTypeMapping.Add(InputDataMessage.MessageType, () => new InputDataMessage());
+            messageTypeMapping.Add(DebugMessage.MessageType, () => new DebugMessage());
         }
 
         public override bool CanConvert(Type objectType)
@@ -43,7 +44,7 @@ namespace XOutput.Api.Serialization
             {
                 return messageTypeMapping[type]();
             }
-            return null;
+            return new MessageBase { Type = type };
         }
     }
 }

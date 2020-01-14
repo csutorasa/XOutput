@@ -28,19 +28,49 @@ export class Communication {
     isReady(): boolean {
         return this.websocket && this.websocket.readyState == WebSocket.OPEN;
     }
-    private sendMessage(type: string, text: string): void {
-        this.websocket.send(type + "|" + text);
+    private sendMessage(obj: object): void {
+        this.websocket.send(JSON.stringify(obj));
+    }
+    private sendInputData(...data: { InputType: string, Value: number }[]): void {
+        this.sendMessage({
+            Type: "InputData",
+            Data: data
+        });
     }
     sendInput(input: string, value: number): void {
-        this.websocket.send("input|" + input + "," + value);
+        this.sendInputData({
+            InputType: input,
+            Value: value,
+        });
     }
     sendInputs(input1: string, value1: number, input2: string, value2: number): void {
-        this.websocket.send("input|" + input1 + "," + value1 + ";" + input2 + "," + value2);
+        this.sendInputData({
+            InputType: input1,
+            Value: value1,
+        }, {
+            InputType: input2,
+            Value: value2,
+        });
     }
     sendDPad(up: number, down: number, left: number, right: number): void {
-        this.websocket.send("input|UP," + up + ";DOWN," + down + ";LEFT," + left + ";RIGHT," + right);
+        this.sendInputData({
+            InputType: "UP",
+            Value: up,
+        }, {
+            InputType: "DOWN",
+            Value: down,
+        }, {
+            InputType: "LEFT",
+            Value: left,
+        }, {
+            InputType: "RIGHT",
+            Value: right,
+        });
     }
     sendDebug(text: string): void {
-        this.websocket.send("debug|" + text);
+        this.sendMessage({
+            Type: "Debug",
+            Data: text
+        });
     }
 }

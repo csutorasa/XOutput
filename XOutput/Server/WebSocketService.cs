@@ -8,6 +8,8 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using XOutput.Api.Message;
+using XOutput.Api.Serialization;
 using XOutput.Devices.XInput;
 using XOutput.Logging;
 using XOutput.Tools;
@@ -61,15 +63,16 @@ namespace XOutput.Server
                         {
                             continue;
                         }
-                        int index = requestMessage.IndexOf("|");
-                        if (index < 0)
+                        try
                         {
+                            var message = new MessageReader().ReadMessage(requestMessage);
+                            ProcessMessage(outputDevice, message);
+                        }
+                        catch (Exception)
+                        { 
                             logger.Warning("Invalid websocket message: " + requestMessage);
                             continue;
                         }
-                        string messageType = requestMessage.Substring(0, index);
-                        string messageText = requestMessage.Substring(index + 1);
-                        ProcessMessage(outputDevice, messageType, messageText);
                     }
                     if (ws.State != WebSocketState.Closed)
                     {
@@ -110,27 +113,26 @@ namespace XOutput.Server
             }
         }
 
-        private void ProcessMessage(WebXOutputDevice device, string messageType, string messageText)
+        private void ProcessMessage(WebXOutputDevice device, MessageBase message)
         {
-            if (messageType == "input")
+            string messageType = message.Type;
+            if (messageType == InputDataMessage.MessageType)
             {
-                string[] inputs = messageText.Split(';');
-                foreach (string input in inputs)
+                var inputs = (message as InputDataMessage).Data;
+                foreach (var input in inputs)
                 {
-                    string[] data = input.Split(',');
                     XInputTypes type;
-                    double value;
-                    if (data.Length != 2 || !Enum.TryParse(data[0], out type) || !double.TryParse(data[1], NumberStyles.Number, CultureInfo.CreateSpecificCulture("en-US"), out value))
+                    if (!Enum.TryParse(input.InputType, out type))
                     {
                         logger.Error("Invalid input message: " + input);
                         continue;
                     }
-                    device.Sources.OfType<WebXOutputSource>().First(s => s.XInputType == type).SetValue(value);
+                    device.Sources.OfType<WebXOutputSource>().First(s => s.XInputType == type).SetValue(input.Value);
                 }
             }
-            else if (messageType == "debug")
+            else if (messageType == DebugMessage.MessageType)
             {
-                logger.Info("Message from client: " + messageText);
+                logger.Info("Message from client: " + (message as DebugMessage).Data);
             }
             else
             {

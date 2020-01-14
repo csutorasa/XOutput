@@ -45,6 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
   </ItemGroup>
   <!-- Creating single file output -->
