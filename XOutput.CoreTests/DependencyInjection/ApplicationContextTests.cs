@@ -63,6 +63,21 @@ namespace XOutput.Core.DependencyInjection.Tests
         }
 
         [TestMethod]
+        public void ResolveAllSubclassTest()
+        {
+            ApplicationContext context = new ApplicationContext();
+            context.Resolvers.Add(Resolver.Create(new Func<A>(() => new A())));
+            context.Resolvers.Add(Resolver.Create(new Func<B>(() => new B())));
+            context.Resolvers.Add(Resolver.Create(new Func<C>(() => new C())));
+            List<A> aValues = context.ResolveAll<A>();
+            List<B> bValues = context.ResolveAll<B>();
+            List<I> iValues = context.ResolveAll<I>();
+            Assert.AreEqual(2, aValues.Count);
+            Assert.AreEqual(1, bValues.Count);
+            Assert.AreEqual(3, iValues.Count);
+        }
+
+        [TestMethod]
         public void MergedDependencyTest()
         {
             ApplicationContext firstContext = new ApplicationContext();
@@ -103,5 +118,25 @@ namespace XOutput.Core.DependencyInjection.Tests
         {
             return 5;
         }
+    }
+
+    interface I
+    {
+
+    }
+
+    class A : I
+    {
+
+    }
+
+    class B : A
+    {
+
+    }
+
+    class C : I
+    {
+
     }
 }

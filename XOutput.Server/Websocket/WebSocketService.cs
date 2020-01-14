@@ -10,22 +10,26 @@ using System.Threading;
 using System.Threading.Tasks;
 using XOutput.Api.Message;
 using XOutput.Api.Serialization;
-using XOutput.Devices.XInput;
-using XOutput.Logging;
 using XOutput.Core.DependencyInjection;
+using NLog;
 
-namespace XOutput.Server
+namespace XOutput.Server.Websocket
 {
     public class WebSocketService
     {
-        private static ILogger logger = LoggerFactory.GetLogger(typeof(WebSocketService));
 
-        private readonly XOutputManager xOutputManager;
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        [ResolverMethod]
-        public WebSocketService(XOutputManager xOutputManager)
+        private readonly List<IMessageHandler> restHandlers;
+        private readonly MessageReader messageReader;
+        private readonly MessageWriter messageWriter;
+
+       [ResolverMethod]
+        public WebSocketService(ApplicationContext applicationContext, MessageReader messageReader, MessageWriter messageWriter)
         {
-            this.xOutputManager = xOutputManager;
+            restHandlers = applicationContext.ResolveAll<IMessageHandler>();
+            this.messageReader = messageReader;
+            this.messageWriter = messageWriter;
         }
 
         public bool Handle(HttpListenerContext httpContext, CancellationToken cancellationToken)
@@ -33,11 +37,6 @@ namespace XOutput.Server
             if (!httpContext.Request.IsWebSocketRequest)
             {
                 return false;
-            }
-            if (!xOutputManager.HasDevice)
-            { 
-                httpContext.Response.StatusCode = 500;
-                httpContext.Response.Close();
             }
             Task.Run(() => HandleWebSocketAsync(httpContext, cancellationToken));
             return true;
@@ -54,23 +53,36 @@ namespace XOutput.Server
                     return;
                 }
                 using (ws)
-                using (var outputDevice = new WebXOutputDevice(xOutputManager))
+                // using (var outputDevice = new WebXOutputDevice(xOutputManager))
                 {
+                    var websocketSessionContext = new WebsocketSessionContext((message) => WriteStringAsync(ws, cancellationToken, messageWriter.WriteMessage(message)));
                     while (ws.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
                     {
-                        string requestMessage = await ReadString(ws, cancellationToken).ConfigureAwait(false);
+                        string requestMessage = await ReadStringAsync(ws, cancellationToken).ConfigureAwait(false);
                         if(requestMessage == null)
                         {
                             continue;
                         }
                         try
                         {
-                            var message = new MessageReader().ReadMessage(requestMessage);
-                            ProcessMessage(outputDevice, message);
+                            var message = messageReader.ReadMessage(requestMessage);
+                            List<IMessageHandler> acceptedHandlers = restHandlers.Where(h => h.HandledType == message.GetType()).ToList();
+                            if (acceptedHandlers.Count == 0)
+                            {
+                                logger.Error("No handlers found for {0}", message.Type);
+                            }
+                            else if (acceptedHandlers.Count == 1)
+                            {
+                                acceptedHandlers[0].HandleMessage(message, websocketSessionContext);
+                            }
+                            else
+                            {
+                                logger.Error("Multiple handlers found for {0}", message.Type);
+                            }
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         { 
-                            logger.Warning("Invalid websocket message: " + requestMessage);
+                            logger.Warn(e, "Error while handling websocket message: " + requestMessage);
                             continue;
                         }
                     }
@@ -82,11 +94,11 @@ namespace XOutput.Server
             }
             catch (Exception ex)
             {
-                logger.Error("Error while handling websocket", ex);
+                logger.Error(ex, "Error while handling websocket");
             }
         }
 
-        private async Task<string> ReadString(WebSocket ws, CancellationToken cancellationToken)
+        private async Task<string> ReadStringAsync(WebSocket ws, CancellationToken cancellationToken)
         {
             using (var ms = new MemoryStream())
             {
@@ -113,31 +125,11 @@ namespace XOutput.Server
             }
         }
 
-        private void ProcessMessage(WebXOutputDevice device, MessageBase message)
+        private Task WriteStringAsync(WebSocket ws, CancellationToken cancellationToken, string message)
         {
-            string messageType = message.Type;
-            if (messageType == InputDataMessage.MessageType)
-            {
-                var inputs = (message as InputDataMessage).Data;
-                foreach (var input in inputs)
-                {
-                    XInputTypes type;
-                    if (!Enum.TryParse(input.InputType, out type))
-                    {
-                        logger.Error("Invalid input message: " + input);
-                        continue;
-                    }
-                    device.Sources.OfType<WebXOutputSource>().First(s => s.XInputType == type).SetValue(input.Value);
-                }
-            }
-            else if (messageType == DebugMessage.MessageType)
-            {
-                logger.Info("Message from client: " + (message as DebugMessage).Data);
-            }
-            else
-            {
-                logger.Warning("Unknown messageType: " + messageType);
-            }
+            var data = Encoding.UTF8.GetBytes(message);
+            ArraySegment<byte> buffer = new ArraySegment<byte>(data);
+            return ws.SendAsync(buffer, WebSocketMessageType.Text, true, cancellationToken);
         }
     }
 }

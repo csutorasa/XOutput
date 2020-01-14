@@ -47,6 +47,7 @@
   <ItemGroup>
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
+    <ProjectReference Include="..\XOutput.Server\XOutput.Server.csproj" />
   </ItemGroup>
   <!-- Creating single file output -->
   <ItemGroup Condition="$(TargetFramework) == 'net452'">

@@ -15,17 +15,21 @@ namespace XOutput.Core.Configuration
             File.WriteAllText(filePath, ConfigurationToString(configuration));
         }
 
-        protected abstract string ConfigurationToString<T>(T configuration) where T : Configuration;
-        protected abstract T StringToConfiguration<T>(string configuration) where T : Configuration;
-
-        public T Load<T>(string filePath) where T : Configuration, new()
+        public T Load<T>(string filePath, Func<T> defaultGetter) where T : Configuration
         {
             if (File.Exists(filePath))
             {
                 var text = File.ReadAllText(filePath);
                 return StringToConfiguration<T>(text);
             }
-            return new T();
+            if (defaultGetter != null)
+            {
+                return defaultGetter();
+            }
+            return default;
         }
+
+        protected abstract string ConfigurationToString<T>(T configuration) where T : Configuration;
+        protected abstract T StringToConfiguration<T>(string configuration) where T : Configuration;
     }
 }

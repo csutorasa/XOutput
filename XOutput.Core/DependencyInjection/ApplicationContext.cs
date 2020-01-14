@@ -13,9 +13,28 @@ namespace XOutput.Core.DependencyInjection
         private static readonly ApplicationContext global = new ApplicationContext();
         public static ApplicationContext Global => global;
 
+        static ApplicationContext()
+        {
+            global.Resolvers.Add(Resolver.CreateSingleton(global));
+        }
+
         private readonly List<Resolver> resolvers = new List<Resolver>();
         public List<Resolver> Resolvers => resolvers;
         private readonly ISet<Type> constructorResolvedTypes = new HashSet<Type>();
+        private readonly TypeFinder typeFinder = new TypeFinder();
+
+        public void Discover()
+        {
+            var types = typeFinder.GetAllTypes(a => a.FullName.StartsWith("XOutput"));
+            foreach (var type in types)
+            {
+                if (!constructorResolvedTypes.Contains(type))
+                {
+                    Resolvers.AddRange(GetConstructorResolvers(type));
+                    constructorResolvedTypes.Add(type);
+                }
+            }
+        }
 
         private readonly object lockObj = new object();
 
@@ -83,8 +102,9 @@ namespace XOutput.Core.DependencyInjection
         public List<T> ResolveAll<T>()
         {
             lock(lockObj) {
-                List<Resolver> currentResolvers = resolvers.Where(r => r.CreatedType.IsAssignableFrom(typeof(T))).ToList();
-                return resolvers.Select(r => r.Create(r.GetDependencies().Select(d => Resolve(d)).ToArray())).OfType<T>().ToList();
+                var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).ToList();
+                List<Resolver> currentResolvers = resolvers.Where(r => typeof(T).IsAssignableFrom(r.CreatedType)).ToList();
+                return currentResolvers.Select(r => r.Create(r.GetDependencies().Select(d => Resolve(d)).ToArray())).OfType<T>().ToList();
             }
         }
 

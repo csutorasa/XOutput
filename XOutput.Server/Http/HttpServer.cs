@@ -8,18 +8,20 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using XOutput.Logging;
-using XOutput.Tools;
 using XOutput.Core.DependencyInjection;
+using NLog;
+using XOutput.Core.External;
+using XOutput.Server.Websocket;
+using XOutput.Server.Rest;
 
-namespace XOutput.Server
+namespace XOutput.Server.Http
 {
-    public class HttpServer : IDisposable
+    public class HttpServer
     {
-        private static ILogger logger = LoggerFactory.GetLogger(typeof(HttpServer));
+        private static ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly CommandRunner commandRunner;
-        private readonly FileService fileService;
+        private readonly RestService restService;
         private readonly WebSocketService webSocketService;
 
         private bool running;
@@ -27,10 +29,10 @@ namespace XOutput.Server
         private HttpListener listener;
 
         [ResolverMethod]
-        public HttpServer(CommandRunner commandRunner, FileService fileService, WebSocketService webSocketService)
+        public HttpServer(CommandRunner commandRunner, RestService restService, WebSocketService webSocketService)
         {
             this.commandRunner = commandRunner;
-            this.fileService = fileService;
+            this.restService = restService;
             this.webSocketService = webSocketService;
         }
 
@@ -48,9 +50,9 @@ namespace XOutput.Server
                 listener.Start();
             } catch(HttpListenerException ex)
             {
-                logger.Warning(ex);
+                logger.Warn(ex);
                 var domainUser = WindowsIdentity.GetCurrent().Name;
-                commandRunner.RunCmdAdmin($"netsh http add urlacl url={uri} user={domainUser}");
+                commandRunner.RunCmd($"netsh http add urlacl url={uri} user={domainUser}");
                 listener = new HttpListener();
                 listener.Prefixes.Add(uri);
                 listener.Start();
@@ -83,11 +85,6 @@ namespace XOutput.Server
             }
         }
 
-        public void Dispose()
-        {
-            Stop();
-        }
-
         private async Task AcceptClientsAsync(HttpListener server)
         {
             while (running)
@@ -95,7 +92,7 @@ namespace XOutput.Server
                 try
                 {
                     var httpContext = await server.GetContextAsync();
-                    if (!webSocketService.Handle(httpContext, cancellationTokenSource.Token) && !fileService.Handle(httpContext))
+                    if (!webSocketService.Handle(httpContext, cancellationTokenSource.Token) && !restService.Handle(httpContext))
                     {
                         httpContext.Response.StatusCode = 404;
                         httpContext.Response.Close();
@@ -103,7 +100,7 @@ namespace XOutput.Server
                 } 
                 catch (Exception ex)
                 {
-                    logger.Error("Failed to handle connection", ex);
+                    logger.Error(ex, "Failed to handle connection");
                 }
             }
         }

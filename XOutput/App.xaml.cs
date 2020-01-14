@@ -10,6 +10,7 @@ using XOutput.Logging;
 using XOutput.Tools;
 using XOutput.UI.Windows;
 using XOutput.Core.DependencyInjection;
+using XOutput.Server.Http;
 
 namespace XOutput
 {
@@ -49,6 +50,7 @@ namespace XOutput
 
             var singleInstanceProvider = globalContext.Resolve<SingleInstanceProvider>();
             var argumentParser = globalContext.Resolve<ArgumentParser>();
+            globalContext.Discover();
             if (singleInstanceProvider.TryGetLock())
             {
                 singleInstanceProvider.StartNamedPipe();
@@ -61,7 +63,7 @@ namespace XOutput
                     {
                         mainWindow.Show();
                     }
-                    globalContext.Resolve<Server.HttpServer>().Start("http://192.168.1.2:8000/");
+                    globalContext.Resolve<HttpServer>().Start("http://192.168.1.2:8000/");
 #if !DEBUG
                     ApplicationContext.Global.Resolve<Devices.Input.Mouse.MouseHook>().StartHook();              
 #endif
