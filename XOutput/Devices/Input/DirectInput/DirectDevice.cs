@@ -196,7 +196,10 @@ namespace XOutput.Devices.Input.DirectInput
                     logger.Debug(() => $"Collection {obj.CollectionNumber} name: {obj.Name} id: {obj.ObjectId} type: {obj.ObjectType} offset: {obj.Offset}");
                 }
             }
-            catch { }
+            catch
+            {
+                // Ignore failed logging
+            }
             foreach (var obj in joystick.GetObjects())
             {
                 logger.Debug(() => "  " + obj.Name + " " + obj.ObjectId + " offset: " + obj.Offset + " objecttype: " + obj.ObjectType.ToString() + " " + obj.Usage);
