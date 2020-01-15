@@ -47,8 +47,7 @@ namespace XOutput.Server.Http
             catch (HttpListenerException ex)
             {
                 logger.Warn(ex);
-                var domainUser = Environment.UserDomainName + "\\" + Environment.UserName;
-                commandRunner.RunCmd($"netsh http add urlacl url={uri} user={domainUser}");
+                AddPersmissions(uri);
                 listener = new HttpListener();
                 listener.Prefixes.Add(uri);
                 listener.Start();
@@ -59,7 +58,7 @@ namespace XOutput.Server.Http
 
         public void AddPersmissions(string uri)
         {
-            var domainUser = WindowsIdentity.GetCurrent().Name;
+            var domainUser = Environment.UserDomainName + "\\" + Environment.UserName;
             commandRunner.RunCmd($"netsh http add urlacl url={uri} user={domainUser}");
         }
 

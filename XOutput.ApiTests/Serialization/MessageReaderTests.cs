@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
+using System.Text;
 
 /* Unmerged change from project 'XOutput.ApiTests (netcoreapp3.1)'
 Before:
@@ -54,6 +56,18 @@ namespace XOutput.Api.Serialization.Tests
             var message = reader.ReadMessage(input) as MessageBase;
             Assert.IsNotNull(message);
             Assert.AreEqual("test", message.Type);
+        }
+
+        [TestMethod]
+        public void UnknownMessageStreamTest()
+        {
+            string input = "{\"Type\":\"test\"}";
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(input)))
+            {
+                var message = reader.ReadMessage(new StreamReader(ms)) as MessageBase;
+                Assert.IsNotNull(message);
+                Assert.AreEqual("test", message.Type);
+            }
         }
     }
 }

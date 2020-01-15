@@ -7,9 +7,9 @@ namespace XOutput.Core.Threading
     {
         private bool Stopped => thread == null || thread.ThreadState.HasFlag(ThreadState.Stopped) || thread.ThreadState.HasFlag(ThreadState.Aborted) || thread.ThreadState.HasFlag(ThreadState.Unstarted);
 
-        private Thread thread;
-        private CancellationTokenSource tokenSource;
-        private ThreadResult result;
+        private readonly Thread thread;
+        private readonly CancellationTokenSource tokenSource;
+        private readonly ThreadResult result;
 
         internal ThreadContext(Thread thread, CancellationTokenSource tokenSource, ThreadResult result)
         {

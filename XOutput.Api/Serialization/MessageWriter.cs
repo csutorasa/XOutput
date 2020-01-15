@@ -14,6 +14,7 @@ namespace XOutput.Api.Serialization
         public void WriteMessage(MessageBase message, StreamWriter output)
         {
             output.Write(WriteMessage(message));
+            output.Flush();
         }
     }
 }

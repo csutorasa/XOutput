@@ -134,6 +134,15 @@ namespace XOutput.Core.DependencyInjection.Tests
             int value = context.Resolve<int>();
             Assert.AreEqual(5, value);
         }
+
+        [TestMethod]
+        public void DiscoverTest()
+        {
+            ApplicationContext context = new ApplicationContext();
+            context.Discover();
+            R value = context.Resolve<R>();
+            Assert.IsNotNull(value);
+        }
     }
 
     static class Configuration
@@ -163,5 +172,11 @@ namespace XOutput.Core.DependencyInjection.Tests
     class C : I
     {
 
+    }
+
+    class R
+    {
+        [ResolverMethod]
+        public R() { }
     }
 }

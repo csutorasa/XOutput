@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace XOutput.Core.DependencyInjection
 {
     [Serializable]
-    public sealed class MultipleValuesFoundException : Exception, ISerializable
+    public sealed class MultipleValuesFoundException : Exception
     {
         private readonly List<Resolver> resolvers;
         public List<Resolver> Resolvers => resolvers;
@@ -23,6 +23,11 @@ namespace XOutput.Core.DependencyInjection
         private MultipleValuesFoundException(SerializationInfo info, StreamingContext context)
         {
 
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
         }
     }
 }

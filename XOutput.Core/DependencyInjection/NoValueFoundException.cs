@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace XOutput.Core.DependencyInjection
 {
     [Serializable]
-    public sealed class NoValueFoundException : Exception, ISerializable
+    public sealed class NoValueFoundException : Exception
     {
         public NoValueFoundException() { }
 
@@ -17,6 +17,11 @@ namespace XOutput.Core.DependencyInjection
         private NoValueFoundException(SerializationInfo info, StreamingContext context)
         {
 
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
         }
     }
 }
