@@ -97,6 +97,7 @@ namespace XOutput.Devices.Input.Mouse
             if (!disposed)
             {
                 disposed = true;
+                Disconnected?.Invoke(this, new DeviceDisconnectedEventArgs());
                 inputRefresher?.Cancel().Wait();
             }
         }

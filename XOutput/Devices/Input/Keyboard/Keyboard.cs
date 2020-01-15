@@ -98,6 +98,7 @@ namespace XOutput.Devices.Input.Keyboard
             {
                 disposed = true;
                 inputRefresher?.Cancel().Wait();
+                Disconnected?.Invoke(this, new DeviceDisconnectedEventArgs());
             }
         }
 
