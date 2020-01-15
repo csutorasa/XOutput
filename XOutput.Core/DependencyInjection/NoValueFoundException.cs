@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace XOutput.Core.DependencyInjection
 {
     [Serializable]
-    public sealed class NoValueFoundException : Exception
+    public sealed class NoValueFoundException : Exception, ISerializable
     {
         public NoValueFoundException() { }
 

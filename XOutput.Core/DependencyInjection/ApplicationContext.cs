@@ -99,7 +99,6 @@ namespace XOutput.Core.DependencyInjection
         {
             lock (lockObj)
             {
-                var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).ToList();
                 List<Resolver> currentResolvers = resolvers.Where(r => typeof(T).IsAssignableFrom(r.CreatedType)).ToList();
                 return currentResolvers.Select(r => r.Create(r.GetDependencies().Select(d => Resolve(d)).ToArray())).OfType<T>().ToList();
             }

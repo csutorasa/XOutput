@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace XOutput.Core.DependencyInjection
 {
     [Serializable]
-    public sealed class MultipleValuesFoundException : Exception
+    public sealed class MultipleValuesFoundException : Exception, ISerializable
     {
         private readonly List<Resolver> resolvers;
         public List<Resolver> Resolvers => resolvers;

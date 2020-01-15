@@ -1,23 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-/* Unmerged change from project 'XOutput.CoreTests (netcoreapp3.1)'
-Before:
-using System;
-After:
 using Moq;
 using System;
-*/
-using Moq;
-using System;
-using System.Collections.
-/* Unmerged change from project 'XOutput.CoreTests (netcoreapp3.1)'
-Before:
-using System.Threading.Tasks;
-using Moq;
-After:
-using System.Threading.Tasks;
-*/
-Generic;
+using System.Collections.Generic;
 
 namespace XOutput.Core.DependencyInjection.Tests
 {
@@ -91,11 +75,39 @@ namespace XOutput.Core.DependencyInjection.Tests
         }
 
         [TestMethod]
-        public void MergedDependencyTest()
+        [ExpectedException(typeof(NoValueFoundException))]
+        public void NoValueFoundTest()
+        {
+            ApplicationContext context = new ApplicationContext();
+            context.Resolve<int>();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MultipleValuesFoundException))]
+        public void MultipleValuesFoundTest()
+        {
+            ApplicationContext context = new ApplicationContext();
+            context.Resolvers.Add(Resolver.Create(new Func<int>(() => 10)));
+            context.Resolvers.Add(Resolver.Create(new Func<int>(() => 10)));
+            context.Resolve<int>();
+        }
+
+        [TestMethod]
+        public void MergedDependencyResolversTest()
         {
             ApplicationContext firstContext = new ApplicationContext();
             firstContext.Resolvers.Add(Resolver.Create(new Func<int, double>((a) => 10.1)));
             ApplicationContext context = firstContext.WithResolvers(Resolver.Create(new Func<int>(() => 5)));
+            double value = context.Resolve<double>();
+            Assert.AreEqual(10.1, value);
+        }
+
+        [TestMethod]
+        public void MergedDependencySingletonsTest()
+        {
+            ApplicationContext firstContext = new ApplicationContext();
+            firstContext.Resolvers.Add(Resolver.Create(new Func<int, double>((a) => 10.1)));
+            ApplicationContext context = firstContext.WithSingletons(5);
             double value = context.Resolve<double>();
             Assert.AreEqual(10.1, value);
         }

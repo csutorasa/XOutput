@@ -1,19 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-/* Unmerged change from project 'XOutput.CoreTests (netcoreapp3.1)'
-Before:
-using System;
-After:
-using Moq;
-using System;
-*/
-
-/* Unmerged change from project 'XOutput.CoreTests (netcoreapp3.1)'
-Before:
-using System.Threading.Tasks;
-using Moq;
-After:
-using System.Threading.Tasks;
-*/
 
 
 namespace XOutput.Core.Number.Tests

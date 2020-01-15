@@ -47,7 +47,7 @@ namespace XOutput.Server.Http
             catch (HttpListenerException ex)
             {
                 logger.Warn(ex);
-                var domainUser = WindowsIdentity.GetCurrent().Name;
+                var domainUser = Environment.UserDomainName + "\\" + Environment.UserName;
                 commandRunner.RunCmd($"netsh http add urlacl url={uri} user={domainUser}");
                 listener = new HttpListener();
                 listener.Prefixes.Add(uri);
