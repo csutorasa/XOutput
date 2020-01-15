@@ -1,21 +1,15 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace XOutput.Core.Configuration
 {
-    public interface Configuration : IEquatable<Configuration>
+    public interface IConfiguration : IEquatable<IConfiguration>
     {
 
     }
 
     public static class ConfigurationHelper
     {
-        public static bool Compare<T>(this T a, T b) where T : Configuration
+        public static bool Compare<T>(this T a, T b) where T : IConfiguration
         {
             if (ReferenceEquals(a, b))
             {

@@ -10,6 +10,7 @@ using XOutput.Devices.XInput.Vigem;
 using XOutput.Logging;
 using XOutput.Tools;
 using XOutput.Core.DependencyInjection;
+using XOutput.Core.Threading;
 
 namespace XOutput.Devices
 {
@@ -52,7 +53,7 @@ namespace XOutput.Devices
         private readonly InputMapper mapper;
         private readonly XOutputDevice xInput;
         private readonly XOutputManager xOutputManager;
-        private Thread thread;
+        private ThreadContext threadContext;
         private bool running;
         private int controllerCount = 0;
         private Nefarius.ViGEm.Client.Targets.IXbox360Controller controller;
@@ -103,16 +104,7 @@ namespace XOutput.Devices
             controllerCount = xOutputManager.Start();
             if (controllerCount != 0)
             {
-                thread = ThreadHelper.CreateAndStart(new ThreadStartParameters {
-                    Name = $"Emulated controller {controllerCount} output refresher",
-                    IsBackground = true,
-                    Task = () => ReadAndReportValues(),
-                    Error = (ex) => {
-                        logger.Error("Failed to read from device", ex);
-                        Stop();
-                    },
-                    Finally = onStop,
-                });
+                threadContext = ThreadCreator.Create($"Emulated controller {controllerCount} output refresher", token => ReadAndReportValues(token, onStop)).Start();
                 running = true;
                 logger.Info($"Emulation started on {ToString()}.");
                 if (ForceFeedbackSupported)
@@ -142,8 +134,8 @@ namespace XOutput.Devices
                 xOutputManager.Stop(controllerCount);
                 controllerCount = 0;
                 logger.Info($"Emulation stopped on {ToString()}.");
-                if (thread != null) {
-                    ThreadHelper.StopAndWait(thread);
+                if (threadContext != null) {
+                    threadContext.Cancel().Wait();
                 }
             }
         }
@@ -153,12 +145,23 @@ namespace XOutput.Devices
             return DisplayName;
         }
 
-        private void ReadAndReportValues()
+        private void ReadAndReportValues(CancellationToken token, Action onStop)
         {
             XInput.InputChanged += XInputInputChanged;
-            while (running)
+            try
             {
-                Thread.Sleep(100);
+                while (running && !token.IsCancellationRequested)
+                {
+                    Thread.Sleep(100);
+                }
+            } catch (Exception)
+            {
+
+                Stop();
+            }
+            finally
+            {
+                onStop?.Invoke();
             }
         }
 

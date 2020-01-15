@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using XOutput.Core.Threading;
 using XOutput.Devices.Input;
 using XOutput.Devices.Mapper;
 using XOutput.Logging;
@@ -46,7 +47,7 @@ namespace XOutput.Devices.XInput
         #endregion
 
         private readonly XOutputManager xOutputManager;
-        private readonly Thread inputRefresher;
+        private readonly ThreadContext inputRefresher;
         private readonly DPadDirection[] dPads = new DPadDirection[DPadCount];
         private readonly WebXOutputSource[] sources;
         private readonly DeviceState state;
@@ -64,14 +65,7 @@ namespace XOutput.Devices.XInput
             sources = XInputHelper.Instance.GenerateSources((name, type) => new WebXOutputSource(name, type));
             state = new DeviceState(sources, DPadCount);
             deviceInputChangedEventArgs = new DeviceInputChangedEventArgs(this);
-            inputRefresher = ThreadHelper.Create(new ThreadStartParameters
-            {
-                Name = "Keyboard input notification",
-                IsBackground = true,
-                Task = InputRefresher,
-                Finally = () => { xOutputManager.Stop(controllerCount); }
-            });
-            inputRefresher.Start();
+            inputRefresher = ThreadCreator.Create("Keyboard input notification", InputRefresher).Start();
         }
 
         ~WebXOutputDevice()
@@ -81,20 +75,27 @@ namespace XOutput.Devices.XInput
 
         public void Dispose()
         {
-            inputRefresher?.Interrupt();
+            inputRefresher?.Cancel().Wait();
         }
 
-        private void InputRefresher()
+        private void InputRefresher(CancellationToken token)
         {
             controllerCount = xOutputManager.Start();
             if (controllerCount == 0)
             {
                 return;
             }
-            while (true)
+            try
             {
-                RefreshInput();
-                Thread.Sleep(ReadDelayMs);
+                while (!token.IsCancellationRequested)
+                {
+                    RefreshInput();
+                    Thread.Sleep(ReadDelayMs);
+                }
+            } 
+            finally 
+            {
+                xOutputManager.Stop(controllerCount);
             }
         }
 

@@ -19,6 +19,7 @@ using XOutput.Tools;
 using XOutput.UI.Component;
 using XOutput.Versioning;
 using XOutput.Core.DependencyInjection;
+using XOutput.Core.Threading;
 
 namespace XOutput.UI.Windows
 {
@@ -317,15 +318,10 @@ namespace XOutput.UI.Windows
 
         private void DispatchRefreshGameControllers(object sender, DeviceDisconnectedEventArgs e)
         {
-            Thread delayThread = ThreadHelper.CreateAndStart(new ThreadStartParameters
-            {
-                Name = "Device list refresh delay",
-                IsBackground = true,
-                Task = () => {
-                    Thread.Sleep(1000);
-                    dispatcher.Invoke(RefreshGameControllers);
-                },
-            });
+            ThreadCreator.Create("Device list refresh delay", (token) => {
+                Thread.Sleep(1000);
+                dispatcher.Invoke(RefreshGameControllers);
+            }).Start();
         }
     }
 }

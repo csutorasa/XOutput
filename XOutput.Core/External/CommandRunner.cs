@@ -23,7 +23,7 @@ namespace XOutput.Core.External
             }
             else
             {
-                throw new Exception($"Process exited with {process.ExitCode}");
+                throw new ProcessErrorException(process);
             }
         }
 

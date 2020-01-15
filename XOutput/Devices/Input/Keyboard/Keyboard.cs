@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
+using XOutput.Core.Threading;
 using XOutput.Tools;
 
 namespace XOutput.Devices.Input.Keyboard
@@ -70,7 +71,7 @@ namespace XOutput.Devices.Input.Keyboard
         public string HardwareID => null;
         #endregion
 
-        private readonly Thread inputRefresher;
+        private readonly ThreadContext inputRefresher;
         private readonly KeyboardSource[] sources;
         private readonly DeviceState state;
         private readonly InputConfig inputConfig;
@@ -86,14 +87,7 @@ namespace XOutput.Devices.Input.Keyboard
             state = new DeviceState(sources, 0);
             deviceInputChangedEventArgs = new DeviceInputChangedEventArgs(this);
             inputConfig = new InputConfig();
-            inputRefresher = ThreadHelper.Create(new ThreadStartParameters
-            {
-                Name = "Keyboard input notification",
-                IsBackground = true,
-                Task = InputRefresher,
-            });
-            inputRefresher.SetApartmentState(ApartmentState.STA);
-            inputRefresher.Start();
+            inputRefresher = ThreadCreator.Create("Keyboard input notification", InputRefresher).SetApartmentState(ApartmentState.STA).Start();
         }
 
         /// <summary>
@@ -104,8 +98,7 @@ namespace XOutput.Devices.Input.Keyboard
             if (!disposed)
             {
                 disposed = true;
-                inputRefresher?.Interrupt();
-                inputRefresher?.Join();
+                inputRefresher?.Cancel().Wait();
             }
         }
 
@@ -133,9 +126,9 @@ namespace XOutput.Devices.Input.Keyboard
         /// <summary>
         /// Refreshes the current state. Triggers <see cref="InputChanged"/> event.
         /// </summary>
-        private void InputRefresher()
+        private void InputRefresher(CancellationToken token)
         {
-            while (true)
+            while (!token.IsCancellationRequested)
             {
                 RefreshInput();
                 Thread.Sleep(ReadDelayMs);

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
+using XOutput.Core.Threading;
 using XOutput.Logging;
 using XOutput.Tools;
 
@@ -119,7 +120,7 @@ namespace XOutput.Devices.Input.DirectInput
         private readonly List<DirectDeviceForceFeedback> actuators = new List<DirectDeviceForceFeedback>();
         private readonly InputConfig inputConfig;
         private bool connected = false;
-        private readonly Thread inputRefresher;
+        private readonly ThreadContext inputRefresher;
         private bool disposed = false;
         private DeviceInputChangedEventArgs deviceInputChangedEventArgs;
 
@@ -197,15 +198,8 @@ namespace XOutput.Devices.Input.DirectInput
             state = new DeviceState(sources, joystick.Capabilities.PovCount);
             deviceInputChangedEventArgs = new DeviceInputChangedEventArgs(this);
             inputConfig = new InputConfig(ForceFeedbackCount);
-            inputRefresher = ThreadHelper.Create(new ThreadStartParameters
-            {
-                Name = ToString() + " input reader",
-                IsBackground = true,
-                Task = InputRefresher,
-            });
-            inputRefresher.SetApartmentState(ApartmentState.STA);
+            inputRefresher = ThreadCreator.Create(ToString() + " input reader", InputRefresher).Start();
             Connected = true;
-            inputRefresher.Start();
         }
 
         /// <summary>
@@ -218,7 +212,7 @@ namespace XOutput.Devices.Input.DirectInput
                 disposed = true;
                 if (inputRefresher != null)
                 {
-                    ThreadHelper.StopAndWait(inputRefresher);
+                    inputRefresher.Cancel().Wait();
                 }
                 foreach (var actuator in actuators)
                 {
@@ -238,9 +232,9 @@ namespace XOutput.Devices.Input.DirectInput
             return UniqueId;
         }
 
-        private void InputRefresher()
+        private void InputRefresher(CancellationToken token)
         {
-            while (Connected)
+            while (Connected && !token.IsCancellationRequested)
             {
                 Connected = RefreshInput();
                 Thread.Sleep(ReadDelayMs);

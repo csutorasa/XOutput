@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using XOutput.Logging;
 using XOutput.Core.DependencyInjection;
+using XOutput.Core.Threading;
 
 namespace XOutput.Tools
 {
@@ -23,9 +21,8 @@ namespace XOutput.Tools
 
         public event Action ShowEvent;
 
-        private Thread notifyThread;
+        private ThreadContext notifyThreadContext;
         private readonly Mutex mutex = new Mutex(false, MutexName);
-        private CancellationTokenSource source;
 
         [ResolverMethod]
         public SingleInstanceProvider()
@@ -51,25 +48,25 @@ namespace XOutput.Tools
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             Close();
         }
 
         public void StartNamedPipe()
         {
-            notifyThread = ThreadHelper.CreateAndStart(new ThreadStartParameters
-            {
-                Name = "XOutputRunningAlreadyNamedPipe reader",
-                IsBackground = true,
-                Task = async () => await ReadPipe(),
-            });
+            notifyThreadContext = ThreadCreator.Create("XOutputRunningAlreadyNamedPipe reader", ReadPipe).Start();
         }
 
         public void StopNamedPipe()
         {
-            if (notifyThread != null)
+            if (notifyThreadContext != null)
             {
-                source?.Cancel();
-                ThreadHelper.StopAndWait(notifyThread);
+                notifyThreadContext.Cancel().Wait();
             }
         }
 
@@ -84,24 +81,21 @@ namespace XOutput.Tools
             }
         }
 
-        private async Task ReadPipe()
+        private void ReadPipe(CancellationToken token)
         {
-            source = new CancellationTokenSource();
-            while (!source.IsCancellationRequested)
+            using (var notifyServerStream = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous))
             {
-                using (var notifyWait = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1))
+                token.Register(() => {
+                    notifyServerStream?.SafePipeHandle.Close();
+                    notifyServerStream?.Close();
+                });
+                while (!token.IsCancellationRequested)
                 {
-                    await Task.Run(() => notifyWait.WaitForConnection(), source.Token);
-                    try
-                    {
-                        StreamString ss = new StreamString(notifyWait);
-                        string command = ss.ReadString();
-                        ss.WriteString(ProcessCommand(command));
-                    }
-                    catch (IOException e)
-                    {
-                        logger.Error(e);
-                    }
+                    notifyServerStream.WaitForConnection();
+                    StreamString ss = new StreamString(notifyServerStream);
+                    string command = ss.ReadString();
+                    ss.WriteString(ProcessCommand(command));
+                    notifyServerStream.Disconnect();
                 }
             }
         }
@@ -120,12 +114,11 @@ namespace XOutput.Tools
     class StreamString
     {
         private Stream ioStream;
-        private UnicodeEncoding streamEncoding;
+        private UnicodeEncoding streamEncoding = new UnicodeEncoding();
 
         public StreamString(Stream ioStream)
         {
             this.ioStream = ioStream;
-            streamEncoding = new UnicodeEncoding();
         }
 
         public string ReadString()
@@ -143,9 +136,9 @@ namespace XOutput.Tools
         {
             byte[] outBuffer = streamEncoding.GetBytes(outString);
             int len = outBuffer.Length;
-            if (len > UInt16.MaxValue)
+            if (len > ushort.MaxValue)
             {
-                len = (int)UInt16.MaxValue;
+                len = ushort.MaxValue;
             }
             ioStream.WriteByte((byte)(len / 256));
             ioStream.WriteByte((byte)(len & 255));
