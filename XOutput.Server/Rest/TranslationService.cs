@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Server.Rest

@@ -1,8 +1,4 @@
-﻿using Microsoft.Win32;
-using System.Diagnostics;
-using XOutput.Logging;
-
-namespace XOutput.Tools
+﻿namespace XOutput.Tools
 {
     public interface IRegistryModifierService
     {

@@ -1,7 +1,6 @@
-﻿using System;
+﻿using NLog;
 using System.Collections.Generic;
 using System.Linq;
-using XOutput.Logging;
 
 namespace XOutput.Tools
 {
@@ -10,7 +9,7 @@ namespace XOutput.Tools
     /// </summary>
     public class ArgumentParser
     {
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(ArgumentParser));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly bool minimized;
         /// <summary>
@@ -28,7 +27,7 @@ namespace XOutput.Tools
             }
             foreach (var arg in args)
             {
-                logger.Warning($"Unused command line argument: {arg}");
+                logger.Warn($"Unused command line argument: {arg}");
             }
         }
     }

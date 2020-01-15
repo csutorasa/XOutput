@@ -1,10 +1,23 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+/* Unmerged change from project 'XOutput.CoreTests (netcoreapp3.1)'
+Before:
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+After:
+using Moq;
+using System;
+*/
+using Moq;
+using System;
+using System.Collections.
+/* Unmerged change from project 'XOutput.CoreTests (netcoreapp3.1)'
+Before:
 using System.Threading.Tasks;
 using Moq;
+After:
+using System.Threading.Tasks;
+*/
+Generic;
 
 namespace XOutput.Core.DependencyInjection.Tests
 {

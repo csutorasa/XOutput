@@ -3,7 +3,6 @@ using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
-using XOutput.Tools;
 using XOutput.UI.Windows;
 
 namespace XOutput.UI.Component

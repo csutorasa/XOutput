@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using NLog;
+using SharpDX;
 using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
@@ -7,8 +8,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using XOutput.Core.Threading;
-using XOutput.Logging;
-using XOutput.Tools;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -111,7 +110,7 @@ namespace XOutput.Devices.Input.DirectInput
         }
         #endregion
 
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(DirectDevice));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private readonly DeviceInstance deviceInstance;
         private readonly Joystick joystick;
         private readonly DirectInputSource[] sources;
@@ -155,9 +154,9 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 joystick.SetCooperativeLevel(new WindowInteropHelper(Application.Current.MainWindow).Handle, CooperativeLevel.Background | CooperativeLevel.Exclusive);
             }
-            catch(Exception)
+            catch (Exception)
             {
-                logger.Warning($"Failed to set cooperative level to exclusive for {ToString()}");
+                logger.Warn($"Failed to set cooperative level to exclusive for {ToString()}");
             }
             joystick.Acquire();
             if (deviceInstance.ForceFeedbackDriverGuid != Guid.Empty)
@@ -188,9 +187,16 @@ namespace XOutput.Devices.Input.DirectInput
             try
             {
                 logger.Info(() => joystick.Properties.InstanceName + " " + ToString());
-                logger.Info(() => PrettyPrint.ToString(joystick));
-                logger.Debug(() => PrettyPrint.ToString(joystick.GetObjects()));
-            } catch { }
+                logger.Info(() => "AxeCount " + joystick.Capabilities.AxeCount);
+                logger.Info(() => "ButtonCount " + joystick.Capabilities.ButtonCount);
+                logger.Info(() => "PovCount " + joystick.Capabilities.PovCount);
+                logger.Info(() => "Flags " + joystick.Capabilities.Flags);
+                foreach (var obj in joystick.GetObjects())
+                {
+                    logger.Debug(() => $"Collection {obj.CollectionNumber} name: {obj.Name} id: {obj.ObjectId} type: {obj.ObjectType} offset: {obj.Offset}");
+                }
+            }
+            catch { }
             foreach (var obj in joystick.GetObjects())
             {
                 logger.Debug(() => "  " + obj.Name + " " + obj.ObjectId + " offset: " + obj.Offset + " objecttype: " + obj.ObjectType.ToString() + " " + obj.Usage);
@@ -298,7 +304,7 @@ namespace XOutput.Devices.Input.DirectInput
                 }
                 catch (Exception)
                 {
-                    logger.Warning($"Poll failed for {ToString()}");
+                    logger.Warn($"Poll failed for {ToString()}");
                     return false;
                 }
             }

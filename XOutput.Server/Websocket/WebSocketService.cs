@@ -1,6 +1,6 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -8,10 +8,8 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using XOutput.Api.Message;
 using XOutput.Api.Serialization;
 using XOutput.Core.DependencyInjection;
-using NLog;
 
 namespace XOutput.Server.Websocket
 {
@@ -24,7 +22,7 @@ namespace XOutput.Server.Websocket
         private readonly MessageReader messageReader;
         private readonly MessageWriter messageWriter;
 
-       [ResolverMethod]
+        [ResolverMethod]
         public WebSocketService(ApplicationContext applicationContext, MessageReader messageReader, MessageWriter messageWriter)
         {
             restHandlers = applicationContext.ResolveAll<IMessageHandler>();
@@ -59,7 +57,7 @@ namespace XOutput.Server.Websocket
                     while (ws.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
                     {
                         string requestMessage = await ReadStringAsync(ws, cancellationToken).ConfigureAwait(false);
-                        if(requestMessage == null)
+                        if (requestMessage == null)
                         {
                             continue;
                         }
@@ -81,7 +79,7 @@ namespace XOutput.Server.Websocket
                             }
                         }
                         catch (Exception e)
-                        { 
+                        {
                             logger.Warn(e, "Error while handling websocket message: " + requestMessage);
                             continue;
                         }

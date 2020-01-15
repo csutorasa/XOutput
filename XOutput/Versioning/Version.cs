@@ -1,6 +1,6 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Linq;
-using XOutput.Logging;
 
 namespace XOutput.Versioning
 {
@@ -14,7 +14,7 @@ namespace XOutput.Versioning
         /// </summary>
         public const string AppVersion = "3.27";
 
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(Version));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Compares the version with the current version.

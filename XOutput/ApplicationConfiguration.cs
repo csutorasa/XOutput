@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XOutput.Core.Configuration;
-using XOutput.Tools;
 using XOutput.Core.DependencyInjection;
+using XOutput.Tools;
 
 namespace XOutput
 {

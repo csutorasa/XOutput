@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace XOutput.UI
+﻿namespace XOutput.UI
 {
     public abstract class ViewModelBase<M> : ICleanUp where M : ModelBase
     {

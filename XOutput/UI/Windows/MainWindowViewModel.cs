@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,20 +7,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using XOutput.Core.DependencyInjection;
+using XOutput.Core.Threading;
 using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
-using XOutput.Devices.XInput.SCPToolkit;
-using XOutput.Devices.XInput.Vigem;
 using XOutput.Diagnostics;
-using XOutput.Logging;
 using XOutput.Tools;
 using XOutput.UI.Component;
 using XOutput.Versioning;
-using XOutput.Core.DependencyInjection;
-using XOutput.Core.Threading;
 
 namespace XOutput.UI.Windows
 {
@@ -29,7 +27,7 @@ namespace XOutput.UI.Windows
         private const string SettingsFilePath = "settings.json";
         private const string GameControllersSettings = "joy.cpl";
 
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindowViewModel));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private readonly Dispatcher dispatcher;
         private readonly UpdateChecker updateChecker;
         private readonly HidGuardianManager hidGuardianManager;
@@ -97,7 +95,7 @@ namespace XOutput.UI.Windows
             }
             catch (Exception ex)
             {
-                logger.Warning("Loading settings was unsuccessful.");
+                logger.Warn("Loading settings was unsuccessful.");
                 string error = string.Format(Translate("LoadSettingsError"), SettingsFilePath) + Environment.NewLine + ex.Message;
                 log(error);
                 MessageBox.Show(error, Translate("Warning"));
@@ -114,7 +112,7 @@ namespace XOutput.UI.Windows
                 catch (UnauthorizedAccessException)
                 {
                     Model.IsAdmin = false;
-                    logger.Warning("Not running in elevated mode.");
+                    logger.Warn("Not running in elevated mode.");
                     log(Translate("HidGuardianNotAdmin"));
                 }
                 catch (Exception ex)
@@ -178,8 +176,7 @@ namespace XOutput.UI.Windows
             }
             catch (Exception ex)
             {
-                logger.Warning("Saving settings was unsuccessful.");
-                logger.Warning(ex);
+                logger.Warn(ex, "Saving settings was unsuccessful.");
                 string error = string.Format(Translate("SaveSettingsError"), SettingsFilePath) + Environment.NewLine + ex.Message;
                 log(error);
                 MessageBox.Show(error, Translate("Warning"));
@@ -197,7 +194,7 @@ namespace XOutput.UI.Windows
             switch (result)
             {
                 case VersionCompare.Error:
-                    logger.Warning("Failed to check latest version");
+                    logger.Warn("Failed to check latest version");
                     log(Translate("VersionCheckError"));
                     break;
                 case VersionCompare.NeedsUpgrade:
@@ -318,7 +315,8 @@ namespace XOutput.UI.Windows
 
         private void DispatchRefreshGameControllers(object sender, DeviceDisconnectedEventArgs e)
         {
-            ThreadCreator.Create("Device list refresh delay", (token) => {
+            ThreadCreator.Create("Device list refresh delay", (token) =>
+            {
                 Thread.Sleep(1000);
                 dispatcher.Invoke(RefreshGameControllers);
             }).Start();

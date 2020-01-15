@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Resources;
-using XOutput.Logging;
 
 namespace XOutput.Tools
 {
@@ -18,7 +15,7 @@ namespace XOutput.Tools
     {
         private readonly Dictionary<string, Dictionary<string, string>> data = new Dictionary<string, Dictionary<string, string>>();
 
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(LanguageManager));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private static LanguageManager instance = new LanguageManager();
         /// <summary>
         /// Gets the singleton instance of the class.
@@ -52,7 +49,8 @@ namespace XOutput.Tools
         {
             var assembly = Assembly.GetExecutingAssembly();
             var serializer = new JsonSerializer();
-            foreach (var resourceName in assembly.GetManifestResourceNames().Where(s => s.StartsWith(assembly.GetName().Name + ".Resources.Languages.", StringComparison.CurrentCultureIgnoreCase))) {
+            foreach (var resourceName in assembly.GetManifestResourceNames().Where(s => s.StartsWith(assembly.GetName().Name + ".Resources.Languages.", StringComparison.CurrentCultureIgnoreCase)))
+            {
                 string resourceKey = resourceName.Split('.')[3];
                 using (var stream = new JsonTextReader(new StreamReader(assembly.GetManifestResourceStream(resourceName))))
                 {

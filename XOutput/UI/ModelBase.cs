@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Reflection;
-using System.Windows;
-using XOutput.Logging;
+﻿using System.ComponentModel;
 
 namespace XOutput.UI
 {

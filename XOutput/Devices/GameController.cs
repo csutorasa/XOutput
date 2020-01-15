@@ -1,16 +1,14 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Linq;
 using System.Threading;
+using XOutput.Core.DependencyInjection;
+using XOutput.Core.Threading;
 using XOutput.Devices.Input;
 using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
-using XOutput.Devices.XInput.SCPToolkit;
 using XOutput.Devices.XInput.Vigem;
-using XOutput.Logging;
-using XOutput.Tools;
-using XOutput.Core.DependencyInjection;
-using XOutput.Core.Threading;
 
 namespace XOutput.Devices
 {
@@ -48,7 +46,7 @@ namespace XOutput.Devices
         /// </summary>
         public IInputDevice ForceFeedbackDevice { get; set; }
 
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(GameController));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly InputMapper mapper;
         private readonly XOutputDevice xInput;
@@ -134,7 +132,8 @@ namespace XOutput.Devices
                 xOutputManager.Stop(controllerCount);
                 controllerCount = 0;
                 logger.Info($"Emulation stopped on {ToString()}.");
-                if (threadContext != null) {
+                if (threadContext != null)
+                {
                     threadContext.Cancel().Wait();
                 }
             }
@@ -154,7 +153,8 @@ namespace XOutput.Devices
                 {
                     Thread.Sleep(100);
                 }
-            } catch (Exception)
+            }
+            catch (Exception)
             {
 
                 Stop();

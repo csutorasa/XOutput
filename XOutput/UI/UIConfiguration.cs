@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading;
+﻿using System.Windows.Threading;
+using XOutput.Core.DependencyInjection;
 using XOutput.Devices.XInput;
 using XOutput.Tools;
 using XOutput.UI.Windows;
 using XOutput.Versioning;
-using XOutput.Core.DependencyInjection;
 
 namespace XOutput.UI
 {

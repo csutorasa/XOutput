@@ -93,7 +93,7 @@ namespace XOutput.Devices.XInput.Vigem
                         var mapping = axisMappings[value.Key];
                         controller.SetAxisValue(mapping.Type, mapping.GetValue(value.Value));
                     }
-                    else if(value.Key.IsSlider())
+                    else if (value.Key.IsSlider())
                     {
                         var mapping = sliderMappings[value.Key];
                         controller.SetSliderValue(mapping.Type, mapping.GetValue(value.Value));

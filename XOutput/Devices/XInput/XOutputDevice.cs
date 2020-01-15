@@ -1,9 +1,9 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using XOutput.Devices.Input;
 using XOutput.Devices.Mapper;
-using XOutput.Logging;
 
 namespace XOutput.Devices.XInput
 {
@@ -17,7 +17,7 @@ namespace XOutput.Devices.XInput
         /// XInput devices has 1 DPad.
         /// </summary>
         public const int DPadCount = 1;
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(XOutputDevice));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         #endregion
 
         #region Events

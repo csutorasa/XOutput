@@ -1,9 +1,9 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
-using XOutput.Logging;
 using XOutput.Tools;
 
 namespace XOutput.UI.Windows
@@ -13,7 +13,7 @@ namespace XOutput.UI.Windows
     /// </summary>
     public partial class MainWindow : Window, IViewBase<MainWindowViewModel, MainWindowModel>
     {
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(MainWindow));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private readonly MainWindowViewModel viewModel;
         public MainWindowViewModel ViewModel => viewModel;
         private bool hardExit = false;
@@ -168,7 +168,8 @@ namespace XOutput.UI.Windows
 
         public void ForceShow()
         {
-            Dispatcher.Invoke(() => {
+            Dispatcher.Invoke(() =>
+            {
                 TaskbarIconTrayMouseDoubleClick(this, null);
             });
         }

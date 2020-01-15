@@ -1,8 +1,8 @@
-﻿using SharpDX.DirectInput;
+﻿using NLog;
+using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XOutput.Logging;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -17,7 +17,7 @@ namespace XOutput.Devices.Input.DirectInput
         private const string EmulatedSCPID = "028e045e-0000-0000-0000-504944564944";
 
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(DirectDevice));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         ~DirectInputDevices()
         {

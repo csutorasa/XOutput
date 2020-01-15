@@ -1,12 +1,9 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using XOutput.Core.Threading;
-using XOutput.Devices.Input;
-using XOutput.Devices.Mapper;
-using XOutput.Logging;
-using XOutput.Tools;
 
 namespace XOutput.Devices.XInput
 {
@@ -24,7 +21,7 @@ namespace XOutput.Devices.XInput
         /// The delay in milliseconds to sleep between input reads.
         /// </summary>
         public const int ReadDelayMs = 1;
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(WebXOutputDevice));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         #endregion
 
         #region Events
@@ -92,8 +89,8 @@ namespace XOutput.Devices.XInput
                     RefreshInput();
                     Thread.Sleep(ReadDelayMs);
                 }
-            } 
-            finally 
+            }
+            finally
             {
                 xOutputManager.Stop(controllerCount);
             }

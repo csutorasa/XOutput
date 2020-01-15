@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace XOutput.Devices.Input
+﻿namespace XOutput.Devices.Input
 {
     /// <summary>
     /// Main interface of input devices.

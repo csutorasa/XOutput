@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
+using NLog;
 using System;
 using System.Diagnostics;
-using XOutput.Logging;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Tools
@@ -21,7 +21,7 @@ namespace XOutput.Tools
         /// </summary>
         public const string AutostartParams = " --minimized";
 
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(RegistryModifier));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IRegistryModifierService registryModifierService;
         private readonly IRegistryModifierService externalRegistryModifierService;

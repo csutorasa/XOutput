@@ -1,12 +1,7 @@
-﻿using SharpDX;
+﻿using NLog;
+using SharpDX;
 using SharpDX.DirectInput;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Windows;
-using System.Windows.Interop;
-using XOutput.Logging;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -15,16 +10,16 @@ namespace XOutput.Devices.Input.DirectInput
     /// </summary>
     public class DirectDeviceForceFeedback : IDisposable
     {
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(DirectDeviceForceFeedback));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private readonly Joystick joystick;
         private readonly EffectInfo force;
         private DeviceObjectInstance bigActuator;
-        public DeviceObjectInstance BigActuator 
+        public DeviceObjectInstance BigActuator
         {
             get => bigActuator;
-            set 
+            set
             {
-                if (bigActuator != value) 
+                if (bigActuator != value)
                 {
                     bigActuator = value;
                     RefreshAxes();
@@ -32,12 +27,12 @@ namespace XOutput.Devices.Input.DirectInput
             }
         }
         private DeviceObjectInstance smallActuator;
-        public DeviceObjectInstance SmallActuator 
+        public DeviceObjectInstance SmallActuator
         {
             get => smallActuator;
-            set 
+            set
             {
-                if (smallActuator != value) 
+                if (smallActuator != value)
                 {
                     smallActuator = value;
                     RefreshAxes();
@@ -53,12 +48,12 @@ namespace XOutput.Devices.Input.DirectInput
         private readonly int gain;
         private readonly int samplePeriod;
         private int axisCount;
-        
+
         public DirectDeviceForceFeedback(Joystick joystick, EffectInfo force, DeviceObjectInstance actuator) : this(joystick, force, actuator, null)
         {
-            
+
         }
-        
+
         public DirectDeviceForceFeedback(Joystick joystick, EffectInfo force, DeviceObjectInstance bigActuator, DeviceObjectInstance smallActuator)
         {
             this.bigActuator = bigActuator;
@@ -124,7 +119,7 @@ namespace XOutput.Devices.Input.DirectInput
             }
             catch (SharpDXException)
             {
-                logger.Warning($"Failed to create and start effect for {ToString()}");
+                logger.Warn($"Failed to create and start effect for {ToString()}");
                 return null;
             }
         }
@@ -151,7 +146,7 @@ namespace XOutput.Devices.Input.DirectInput
                 smallAxes = null;
                 smallDirections = null;
             }
-            else if (axisCount == 1) 
+            else if (axisCount == 1)
             {
                 if (smallActuator == null)
                 {

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Input;
 using XOutput.Core.Threading;
-using XOutput.Tools;
 
 namespace XOutput.Devices.Input.Mouse
 {

@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XOutput.Core.DependencyInjection
 {
@@ -74,7 +70,7 @@ namespace XOutput.Core.DependencyInjection
             }
             catch (NoValueFoundException)
             {
-                if(dependency.Required)
+                if (dependency.Required)
                 {
                     throw;
                 }
@@ -101,7 +97,8 @@ namespace XOutput.Core.DependencyInjection
 
         public List<T> ResolveAll<T>()
         {
-            lock(lockObj) {
+            lock (lockObj)
+            {
                 var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).ToList();
                 List<Resolver> currentResolvers = resolvers.Where(r => typeof(T).IsAssignableFrom(r.CreatedType)).ToList();
                 return currentResolvers.Select(r => r.Create(r.GetDependencies().Select(d => Resolve(d)).ToArray())).OfType<T>().ToList();

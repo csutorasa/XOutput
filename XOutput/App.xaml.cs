@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
@@ -6,11 +7,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using XOutput.Core;
-using XOutput.Logging;
-using XOutput.Tools;
-using XOutput.UI.Windows;
 using XOutput.Core.DependencyInjection;
 using XOutput.Server.Http;
+using XOutput.Tools;
+using XOutput.UI.Windows;
 
 namespace XOutput
 {
@@ -19,7 +19,7 @@ namespace XOutput
     /// </summary>
     public partial class App : Application
     {
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(App));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private MainWindowViewModel mainWindowViewModel;
 
@@ -36,7 +36,7 @@ namespace XOutput
 
         public void UnhandledException(Exception exceptionObject, LogLevel level)
         {
-            logger.Log(exceptionObject.ToString(), level);
+            logger.Log(level, exceptionObject);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -54,7 +54,8 @@ namespace XOutput
             if (singleInstanceProvider.TryGetLock())
             {
                 singleInstanceProvider.StartNamedPipe();
-                try {
+                try
+                {
                     var mainWindow = ApplicationContext.Global.Resolve<MainWindow>();
                     mainWindowViewModel = mainWindow.ViewModel;
                     MainWindow = mainWindow;
@@ -67,7 +68,9 @@ namespace XOutput
 #if !DEBUG
                     ApplicationContext.Global.Resolve<Devices.Input.Mouse.MouseHook>().StartHook();              
 #endif
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     logger.Error(ex);
                     Application.Current.Shutdown();
                 }

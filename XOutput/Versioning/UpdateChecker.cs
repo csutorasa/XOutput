@@ -1,8 +1,8 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using XOutput.Logging;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Versioning
@@ -14,7 +14,7 @@ namespace XOutput.Versioning
         /// </summary>
         private const string GithubURL = "https://raw.githubusercontent.com/csutorasa/XOutput/master/latest.version";
 
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(UpdateChecker));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private readonly HttpClient client = new HttpClient();
 
         [ResolverMethod]

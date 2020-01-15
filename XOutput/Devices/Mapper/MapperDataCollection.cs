@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XOutput.Devices.XInput;
 
 namespace XOutput.Devices.Mapper
@@ -11,7 +9,8 @@ namespace XOutput.Devices.Mapper
     {
         public List<MapperData> Mappers { get; set; }
 
-        public double CenterPoint {
+        public double CenterPoint
+        {
             get => centerPoint;
             set
             {

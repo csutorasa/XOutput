@@ -1,6 +1,4 @@
-﻿using XOutput.Devices.Mapper;
-
-namespace XOutput.Devices.XInput
+﻿namespace XOutput.Devices.XInput
 {
     public class WebXOutputSource : InputSource
     {
@@ -23,6 +21,6 @@ namespace XOutput.Devices.XInput
         public void SetValue(double value)
         {
             newValue = value;
-        } 
+        }
     }
 }

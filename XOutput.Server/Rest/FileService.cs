@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Server.Rest
@@ -51,7 +43,7 @@ namespace XOutput.Server.Rest
 
         private void WriteTo(Stream outputStream, string text)
         {
-            using(StreamWriter sw = new StreamWriter(outputStream))
+            using (StreamWriter sw = new StreamWriter(outputStream))
             {
                 sw.Write(text);
             }

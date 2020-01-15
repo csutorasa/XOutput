@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Media;
 using System.Windows.Threading;
+using XOutput.Core.DependencyInjection;
 using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Tools;
 using XOutput.UI.Windows;
-using XOutput.Core.DependencyInjection;
 
 namespace XOutput.UI.Component
 {

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Text;
 using System.Threading;
-using XOutput.Logging;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Threading;
 
@@ -11,7 +11,7 @@ namespace XOutput.Tools
 {
     public class SingleInstanceProvider : IDisposable
     {
-        private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(SingleInstanceProvider));
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private const string MutexName = "XOutputRunningAlreadyMutex";
         private const string PipeName = "XOutputRunningAlreadyNamedPipe";
@@ -85,7 +85,8 @@ namespace XOutput.Tools
         {
             using (var notifyServerStream = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous))
             {
-                token.Register(() => {
+                token.Register(() =>
+                {
                     notifyServerStream?.SafePipeHandle.Close();
                     notifyServerStream?.Close();
                 });
@@ -102,7 +103,7 @@ namespace XOutput.Tools
 
         private string ProcessCommand(string request)
         {
-            if(request == ShowCommand)
+            if (request == ShowCommand)
             {
                 ShowEvent?.Invoke();
                 return OkResponse;

@@ -9,7 +9,7 @@ namespace XOutput.Tools
         [ResolverMethod]
         public CommandRunner()
         {
-            
+
         }
 
         public Process StartCmdAsync(string command)

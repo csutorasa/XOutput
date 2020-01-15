@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace XOutput.Core.External
 {
@@ -19,7 +15,8 @@ namespace XOutput.Core.External
 
         public ProcessErrorException(string message, Exception innerException) : base(message, innerException) { }
 
-        public ProcessErrorException(Process process) : this($"Process failed with exit code {process.ExitCode}") {
+        public ProcessErrorException(Process process) : this($"Process failed with exit code {process.ExitCode}")
+        {
             Process = process;
         }
 

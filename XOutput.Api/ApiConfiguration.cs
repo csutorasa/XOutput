@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XOutput.Api.Serialization;
-using XOutput.Core.Configuration;
+﻿using XOutput.Api.Serialization;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Core

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
+﻿using NLog;
+using System;
 using System.Net;
 using System.Security.Principal;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using XOutput.Core.DependencyInjection;
-using NLog;
 using XOutput.Core.External;
-using XOutput.Server.Websocket;
 using XOutput.Server.Rest;
+using XOutput.Server.Websocket;
 
 namespace XOutput.Server.Http
 {
@@ -48,7 +43,8 @@ namespace XOutput.Server.Http
             try
             {
                 listener.Start();
-            } catch(HttpListenerException ex)
+            }
+            catch (HttpListenerException ex)
             {
                 logger.Warn(ex);
                 var domainUser = WindowsIdentity.GetCurrent().Name;
@@ -97,7 +93,7 @@ namespace XOutput.Server.Http
                         httpContext.Response.StatusCode = 404;
                         httpContext.Response.Close();
                     }
-                } 
+                }
                 catch (Exception ex)
                 {
                     logger.Error(ex, "Failed to handle connection");

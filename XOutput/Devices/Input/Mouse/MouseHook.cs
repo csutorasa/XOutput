@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using XOutput.Core.DependencyInjection;
 
@@ -74,7 +70,7 @@ namespace XOutput.Devices.Input.Mouse
 
         internal static MouseHookEventArgs Create(MouseMessage wParam, IntPtr lParam)
         {
-            switch(wParam)
+            switch (wParam)
             {
                 case MouseMessage.WM_LBUTTONDOWN:
                     return new MouseHookEventArgs(MouseButton.Left, MouseButtonState.Pressed);
