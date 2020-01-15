@@ -3,8 +3,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const fs = require('fs');
 
+const net452dir = path.resolve(__dirname, '../XOutput/bin/Release/net452/web');
+const nercoreapp31dir = path.resolve(__dirname, '../XOutput/bin/Release/netcoreapp3.1/web');
+
+fs.mkdirSync(net452dir, { recursive: true });
+fs.mkdirSync(nercoreapp31dir, { recursive: true });
+
 module.exports = {
-    entry: './src/index.ts',
+    entry: {
+        'index': './src/index.ts',
+    },
     module: {
         rules: [
             {
@@ -30,19 +38,18 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
-    }, plugins: [
+        filename: '[name].js',
+    },
+    plugins: [
         new HtmlWebpackPlugin({
-            title: 'XOutput',
-            inlineSource: '.(js|css)$'
+            title: 'XOutput'
         }),
-        new HtmlWebpackInlineSourcePlugin(),
         {
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
-                    fs.mkdirSync(path.resolve(__dirname, '../XOutput/bin/Release/net452/web'), { recursive: true });
-                    fs.createReadStream('dist/index.html').pipe(fs.createWriteStream('../XOutput/bin/Release/net452/web/index.html'));
+                    fs.createReadStream('dist/index.html').pipe(fs.createWriteStream(net452dir + '/index.html'));
+                    fs.createReadStream('dist/index.js').pipe(fs.createWriteStream(net452dir + '/index.js'));
                 });
             }
         }
