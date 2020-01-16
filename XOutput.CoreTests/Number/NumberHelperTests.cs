@@ -4,7 +4,7 @@
 namespace XOutput.Core.Number.Tests
 {
     [TestClass()]
-    public class HelperTests
+    public class NumberHelperTests
     {
         [DataRow(5, 5, true)]
         [DataRow(5, 5.0000001, true)]

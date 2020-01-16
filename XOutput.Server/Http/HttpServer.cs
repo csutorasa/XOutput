@@ -58,8 +58,9 @@ namespace XOutput.Server.Http
 
         public void AddPersmissions(string uri)
         {
-            var domainUser = Environment.UserDomainName + "\\" + Environment.UserName;
-            commandRunner.RunCmd($"netsh http add urlacl url={uri} user={domainUser}");
+            var domainUser = Environment.UserDomainName + "\\\\" + Environment.UserName;
+            var process = commandRunner.CreatePowershell($"netsh http add urlacl url={uri} user={domainUser}");
+            commandRunner.RunProcess(process);
         }
 
         public void Stop()

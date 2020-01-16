@@ -46,4 +46,10 @@
     <ProjectReference Include="..\XOutput.Server\XOutput.Server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

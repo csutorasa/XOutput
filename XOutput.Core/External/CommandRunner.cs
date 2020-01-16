@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using NLog;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,39 +7,32 @@ namespace XOutput.Core.External
 {
     public class CommandRunner
     {
-        public Task<Process> StartCmdAsync(string command, CancellationToken? token = null)
-        {
-            return RunProcessAsync("cmd.exe", $"/C {command}", token);
-        }
+        private static ILogger logger = LogManager.GetCurrentClassLogger();
 
-        public string RunCmd(string command)
+        public Process CreatePowershell(string command)
         {
-            var task = RunProcessAsync("cmd.exe", $"/C {command}");
-            task.Wait();
-            var process = task.Result;
-            if (0 == process.ExitCode)
-            {
-                return process.StandardOutput.ReadToEnd();
-            }
-            else
-            {
-                throw new ProcessErrorException(process);
-            }
-        }
-
-        private Task<Process> RunProcessAsync(string filename, string arguments = null, CancellationToken? token = null)
-        {
+            string escapedCommand = GetEscapedCommand(command);
             var startInfo = new ProcessStartInfo
             {
-                FileName = filename,
-                Arguments = arguments,
+                FileName = "powershell",
+                Arguments = "-Command \"" + escapedCommand + "\"",
                 CreateNoWindow = true,
                 UseShellExecute = false,
             };
-            var process = new Process
+            return new Process
             {
                 StartInfo = startInfo,
             };
+        }
+
+        public void RunProcess(Process process)
+        {
+            process.Start();
+            WaitForExit(process);
+        }
+
+        public Task RunProcessAsync(Process process, CancellationToken? token = null)
+        {
             process.Start();
             token?.Register(() =>
             {
@@ -46,9 +40,20 @@ namespace XOutput.Core.External
             });
             return Task.Run(() =>
             {
-                process.WaitForExit();
-                return process;
+                WaitForExit(process);
             });
+        }
+
+        private void WaitForExit(Process process)
+        {
+            logger.Info("{0} {1} is started", process.StartInfo.FileName, process.StartInfo.Arguments);
+            process.WaitForExit();
+            logger.Info("{0} {1} is exited with code {2}", process.StartInfo.FileName, process.StartInfo.Arguments, process.ExitCode);
+        }
+
+        private string GetEscapedCommand(string command)
+        {
+            return command.Replace("\\", "\\\\").Replace("\"", "\\\"");
         }
     }
 }
