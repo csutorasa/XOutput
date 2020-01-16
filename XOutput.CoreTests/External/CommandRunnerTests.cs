@@ -13,7 +13,7 @@ namespace XOutput.Core.External.Tests
         {
             Process process = commandRunner.CreatePowershell("echo \"asd\"");
             Assert.AreEqual("powershell", process.StartInfo.FileName);
-            Assert.AreEqual("-Command \"echo \\\"asd\\\"", process.StartInfo.Arguments);
+            Assert.AreEqual("-Command \"echo \\\"asd\\\"\"", process.StartInfo.Arguments);
             Assert.IsTrue(process.StartInfo.CreateNoWindow);
             Assert.IsFalse(process.StartInfo.UseShellExecute);
         }
