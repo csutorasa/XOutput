@@ -1,7 +1,6 @@
 ﻿using NLog;
 using System;
 using System.Net;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using XOutput.Core.DependencyInjection;

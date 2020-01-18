@@ -1,6 +1,7 @@
 # IDE
 .vs
 .vscode
+.idea
 
 # Output
 */bin

@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <OutputType>library</OutputType>
-    <TargetFrameworks>net452;netcoreapp3.1</TargetFrameworks>
-    <!--<TargetFrameworks>net452</TargetFrameworks>-->
     <RootNamespace>XOutput.Server</RootNamespace>
     <AssemblyName>XOutput.Server</AssemblyName>
     <Authors>Ármin Csutorás</Authors>
@@ -18,6 +16,14 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <TargetFrameworks>net452;netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
@@ -25,6 +31,9 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.6.8" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Devices\Emulation\" />
   </ItemGroup>
 
 </Project>

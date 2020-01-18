@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <!--<TargetFrameworks>net452;netcoreapp3.0</TargetFrameworks>-->
-    <TargetFrameworks>net452</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -20,6 +18,15 @@
     <!--<PackageIconUrl>Icon URL</PackageIconUrl>-->
     <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <!--<TargetFrameworks>net452;netcoreapp3.1</TargetFrameworks>-->
+    <TargetFrameworks>net452</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
