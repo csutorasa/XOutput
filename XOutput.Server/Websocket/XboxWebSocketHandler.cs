@@ -13,8 +13,6 @@ namespace XOutput.Server.Websocket.Xbox
 {
     class XboxWebSocketHandler : IWebSocketHandler
     {
-        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
-
         private readonly EmulatorService emulatorService;
 
         [ResolverMethod]
@@ -33,10 +31,11 @@ namespace XOutput.Server.Websocket.Xbox
             string emulatorName = context.Request.Url.LocalPath.Replace("/microsoftxbox360/", "");
             var emulator = emulatorService.FindEmulator<IXboxEmulator>(DeviceTypes.MicrosoftXbox360, emulatorName);
             var device = emulator.CreateDevice();
-            var handlers = new List<IMessageHandler>();
-            handlers.Add(new DebugMessageHandler());
-            handlers.Add(new XboxInputMessageHandler(device));
-            return handlers;
+            return new List<IMessageHandler>
+            {
+                new DebugMessageHandler(),
+                new XboxInputMessageHandler(device),
+            };
         }
     }
 }

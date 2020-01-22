@@ -6,7 +6,7 @@ namespace XOutput.Api.Serialization
 {
     public class MessageReader
     {
-        private JsonMessageConverter converter = new JsonMessageConverter();
+        private readonly JsonMessageConverter converter = new JsonMessageConverter();
 
         public MessageBase ReadMessage(StreamReader input)
         {

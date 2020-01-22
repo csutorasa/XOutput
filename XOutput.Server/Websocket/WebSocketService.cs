@@ -67,7 +67,7 @@ namespace XOutput.Server.Websocket
                 }
                 using (ws)
                 {
-                    var messageHandlers = acceptedHandler.CreateHandlers(httpContext, (message) => WriteStringAsync(ws, cancellationToken, messageWriter.WriteMessage(message)));
+                    var messageHandlers = acceptedHandler.CreateHandlers(httpContext, (message) => WriteStringAsync(ws, messageWriter.WriteMessage(message), cancellationToken));
 
                     while (ws.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
                     {
@@ -138,7 +138,7 @@ namespace XOutput.Server.Websocket
             }
         }
 
-        private Task WriteStringAsync(WebSocket ws, CancellationToken cancellationToken, string message)
+        private Task WriteStringAsync(WebSocket ws, string message, CancellationToken cancellationToken)
         {
             var data = Encoding.UTF8.GetBytes(message);
             ArraySegment<byte> buffer = new ArraySegment<byte>(data);

@@ -11,8 +11,6 @@ namespace XOutput.Server.Websocket.Xbox
 {
     class XboxInputMessageHandler : IMessageHandler
     {
-        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
-
         private XboxDevice device;
 
         public XboxInputMessageHandler(XboxDevice device)

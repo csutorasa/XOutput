@@ -1,4 +1,5 @@
-﻿using XOutput.Api.Devices;
+﻿using System.Collections.Generic;
+using XOutput.Api.Devices;
 
 namespace XOutput.Server.Emulation
 {
@@ -6,7 +7,7 @@ namespace XOutput.Server.Emulation
     {
         bool Installed { get; }
         string Name { get; }
-        DeviceTypes[] SupportedDeviceTypes { get; }
+        IEnumerable<DeviceTypes> SupportedDeviceTypes { get; }
         void Close();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Nefarius.ViGEm.Client;
 using Nefarius.ViGEm.Client.Exceptions;
 using System;
+using System.Collections.Generic;
 using XOutput.Api.Devices;
 using XOutput.Core.DependencyInjection;
 
@@ -12,7 +13,7 @@ namespace XOutput.Server.Emulation.ViGEm
 
         public string Name => "ViGEm";
 
-        public DeviceTypes[] SupportedDeviceTypes { get; } = new DeviceTypes[] { DeviceTypes.MicrosoftXbox360 };
+        public IEnumerable<DeviceTypes> SupportedDeviceTypes { get; } = new DeviceTypes[] { DeviceTypes.MicrosoftXbox360 };
 
         private ViGEmClient client;
 

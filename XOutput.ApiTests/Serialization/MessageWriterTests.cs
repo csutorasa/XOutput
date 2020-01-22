@@ -24,7 +24,7 @@ namespace XOutput.Api.Serialization.Tests
     [TestClass()]
     public class MessageWriterTests
     {
-        private MessageWriter writer = new MessageWriter();
+        private readonly MessageWriter writer = new MessageWriter();
 
         [TestMethod]
         public void ForceFeedbackTest()
