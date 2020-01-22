@@ -29,11 +29,9 @@
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Nefarius.ViGEm.Client" Version="1.16.138" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.6.8" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Devices\Emulation\" />
   </ItemGroup>
 
 </Project>

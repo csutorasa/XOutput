@@ -27,7 +27,7 @@ namespace XOutput.Server.Rest
                 .Replace("<<<host>>>", context.Request.Url.Host)
                 .Replace("<<<port>>>", context.Request.Url.Port.ToString());
             context.Response.ContentType = "text/html";
-            WriteTo(context.Response.OutputStream, customContent);
+            context.Response.OutputStream.WriteText(customContent);
         }
 
         private string GetPath(HttpListenerContext context)
@@ -39,14 +39,6 @@ namespace XOutput.Server.Rest
                 file = "/index.html";
             }
             return "." + file.Replace("/", "\\");
-        }
-
-        private void WriteTo(Stream outputStream, string text)
-        {
-            using (StreamWriter sw = new StreamWriter(outputStream))
-            {
-                sw.Write(text);
-            }
         }
     }
 }

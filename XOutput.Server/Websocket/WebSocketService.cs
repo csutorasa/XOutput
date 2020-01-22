@@ -18,14 +18,14 @@ namespace XOutput.Server.Websocket
 
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly List<IMessageHandler> restHandlers;
+        private readonly List<IWebSocketHandler> webSocketHandlers;
         private readonly MessageReader messageReader;
         private readonly MessageWriter messageWriter;
 
         [ResolverMethod]
         public WebSocketService(ApplicationContext applicationContext, MessageReader messageReader, MessageWriter messageWriter)
         {
-            restHandlers = applicationContext.ResolveAll<IMessageHandler>();
+            webSocketHandlers = applicationContext.ResolveAll<IWebSocketHandler>();
             this.messageReader = messageReader;
             this.messageWriter = messageWriter;
         }
@@ -44,6 +44,21 @@ namespace XOutput.Server.Websocket
         {
             try
             {
+                List<IWebSocketHandler> acceptedHandlers = webSocketHandlers.Where(h => h.CanHandle(httpContext)).ToList();
+                if (acceptedHandlers.Count == 0)
+                {
+                    httpContext.Response.StatusCode = 404;
+                    httpContext.Response.Close();
+                    return;
+                }
+                else if (acceptedHandlers.Count > 1)
+                {
+                    logger.Error("Multiple handlers found for {0}", httpContext.Request.Url);
+                    httpContext.Response.StatusCode = 500;
+                    httpContext.Response.Close();
+                    return;
+                }
+                var acceptedHandler = acceptedHandlers[0];
                 var websocketContext = await httpContext.AcceptWebSocketAsync(null).ConfigureAwait(false);
                 var ws = websocketContext.WebSocket;
                 if (ws == null)
@@ -51,9 +66,9 @@ namespace XOutput.Server.Websocket
                     return;
                 }
                 using (ws)
-                // using (var outputDevice = new WebXOutputDevice(xOutputManager))
                 {
-                    var websocketSessionContext = new WebsocketSessionContext((message) => WriteStringAsync(ws, cancellationToken, messageWriter.WriteMessage(message)));
+                    var messageHandlers = acceptedHandler.CreateHandlers(httpContext, (message) => WriteStringAsync(ws, cancellationToken, messageWriter.WriteMessage(message)));
+
                     while (ws.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
                     {
                         string requestMessage = await ReadStringAsync(ws, cancellationToken).ConfigureAwait(false);
@@ -64,14 +79,14 @@ namespace XOutput.Server.Websocket
                         try
                         {
                             var message = messageReader.ReadMessage(requestMessage);
-                            List<IMessageHandler> acceptedHandlers = restHandlers.Where(h => h.HandledType == message.GetType()).ToList();
-                            if (acceptedHandlers.Count == 0)
+                            var acceptedMessageHandlers = messageHandlers.Where(h => h.CanHandle(message)).ToList();
+                            if (acceptedMessageHandlers.Count == 0)
                             {
                                 logger.Error("No handlers found for {0}", message.Type);
                             }
-                            else if (acceptedHandlers.Count == 1)
+                            else if (acceptedMessageHandlers.Count == 1)
                             {
-                                acceptedHandlers[0].HandleMessage(message, websocketSessionContext);
+                                acceptedMessageHandlers[0].Handle(message);
                             }
                             else
                             {

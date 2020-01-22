@@ -18,6 +18,7 @@ After:
 using XOutput.Api.Message;
 */
 XOutput.Api.Message;
+using XOutput.Api.Message.Xbox;
 
 namespace XOutput.Api.Serialization.Tests
 {
@@ -47,6 +48,17 @@ namespace XOutput.Api.Serialization.Tests
             Assert.IsNotNull(message);
             Assert.AreEqual("Debug", message.Type);
             Assert.AreEqual("test", message.Data);
+        }
+
+        [TestMethod]
+        public void XboxInputTest()
+        {
+            string input = "{\"Type\":\"XboxInput\",\"LX\":0.5}";
+            var message = reader.ReadMessage(input) as XboxInputMessage;
+            Assert.IsNotNull(message);
+            Assert.AreEqual("XboxInput", message.Type);
+            Assert.AreEqual(0.5, message.LX.Value, 0.001);
+            Assert.IsNull(message.LY);
         }
 
         [TestMethod]

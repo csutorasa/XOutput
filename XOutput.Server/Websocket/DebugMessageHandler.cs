@@ -1,22 +1,33 @@
 ﻿using NLog;
+using System.Net;
 using XOutput.Api.Message;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Server.Websocket
 {
-    class DebugMessageHandler : MessageHandler<DebugMessage>
+    class DebugMessageHandler : IMessageHandler
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        [ResolverMethod]
         public DebugMessageHandler()
         {
 
         }
 
-        public override void Handle(DebugMessage message, WebsocketSessionContext context)
+        public bool CanHandle(MessageBase message)
         {
-            logger.Info("Message from client: " + message.Data);
+            return message is DebugMessage;
+        }
+
+        public void Handle(MessageBase message)
+        {
+            var debugMessage = message as DebugMessage;
+            logger.Info("Message from client: " + debugMessage.Data);
+        }
+
+        public void Close()
+        {
+
         }
     }
 }
