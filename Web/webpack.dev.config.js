@@ -40,7 +40,6 @@ module.exports = {
             title: 'XOutput',
             inlineSource: '.(js|css)$'
         }),
-        new HtmlWebpackInlineSourcePlugin(),
         {
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {

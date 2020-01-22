@@ -11,7 +11,12 @@ import { DPadFlow } from './events/dpad';
 
 const host = "<<<host>>>";
 const port = "<<<port>>>";
+import React from 'react';
+import { render } from 'react-dom';
+import { Hello } from './ui/main';
 
+render(Hello, document.body);
+/*
 const communication = new Communication();
 communication.connect(host, port);
 window.onerror = function(msg, url, line, col) {
@@ -23,7 +28,7 @@ const eventHolder = new EventHolder();
 
 const element = document.createElement('div');
 element.innerHTML = bodyHtml;
-document.body.appendChild(element);
+//document.body.appendChild(element);
 
 function openFullscreen() {
     document.querySelector(".root").requestFullscreen().catch((err) => {
@@ -67,3 +72,4 @@ document.addEventListener('touchcancel', () => eventHolder.touchEndAll());
 const fullscreen = document.querySelector('.fullscreen');
 fullscreen.addEventListener('click', () => openFullscreen());
 fullscreen.addEventListener('touchstart', () => openFullscreen());
+*/

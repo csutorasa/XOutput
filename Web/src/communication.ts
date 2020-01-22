@@ -31,7 +31,7 @@ export class Communication {
     private sendMessage(obj: object): void {
         this.websocket.send(JSON.stringify(obj));
     }
-    private sendInputData(...data: { InputType: string, Value: number }[]): void {
+    private sendInputData(...data: { InputType: string, Value: number|boolean }[]): void {
         this.sendMessage({
             Type: "InputData",
             Data: data
