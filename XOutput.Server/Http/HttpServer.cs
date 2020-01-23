@@ -95,7 +95,10 @@ namespace XOutput.Server.Http
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, "Failed to handle connection");
+                    if (server.IsListening)
+                    {
+                        logger.Error(ex, "Failed to handle connection");
+                    }
                 }
             }
         }

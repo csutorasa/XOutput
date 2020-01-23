@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Threading;
 using XOutput.Core;
 using XOutput.Core.DependencyInjection;
-using XOutput.Server.Http;
 using XOutput.Tools;
 using XOutput.UI.Windows;
 
@@ -64,7 +63,6 @@ namespace XOutput
                     {
                         mainWindow.Show();
                     }
-                    globalContext.Resolve<HttpServer>().Start("http://192.168.1.2:8000/");
 #if !DEBUG
                     ApplicationContext.Global.Resolve<Devices.Input.Mouse.MouseHook>().StartHook();              
 #endif

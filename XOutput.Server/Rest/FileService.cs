@@ -38,7 +38,7 @@ namespace XOutput.Server.Rest
             {
                 file = "/index.html";
             }
-            return "." + file.Replace("/", "\\");
+            return ".\\web" + file.Replace("/", "\\");
         }
     }
 }

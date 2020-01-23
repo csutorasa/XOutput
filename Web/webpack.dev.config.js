@@ -1,10 +1,16 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const fs = require('fs');
 
-const net452dir = path.resolve(__dirname, '../XOutput/bin/Debug/net452/web');
-const nercoreapp31dir = path.resolve(__dirname, '../XOutput/bin/Debug/netcoreapp3.1/web');
+const net452dir = path.resolve(__dirname, '../XOutput.Server/bin/Debug/net452/web');
+const nercoreapp31dir = path.resolve(__dirname, '../XOutput.Server/bin/Debug/netcoreapp3.1/web');
+
+fs.mkdirSync(net452dir, { recursive: true });
+fs.mkdirSync(nercoreapp31dir, { recursive: true });
+
+function copyFile(file) {
+    fs.createReadStream(path.join('dist', file)).pipe(fs.createWriteStream(path.join(net452dir, file)));
+}
 
 module.exports = {
     entry: './src/index.ts',
@@ -43,8 +49,8 @@ module.exports = {
         {
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
-                    fs.createReadStream('dist/index.html').pipe(fs.createWriteStream(net452dir + '/index.html'));
-                    fs.createReadStream('dist/index.js').pipe(fs.createWriteStream(net452dir + '/index.js'));
+                    copyFile('index.html');
+                    copyFile('bundle.js');
                 });
             }
         }
