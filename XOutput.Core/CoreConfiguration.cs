@@ -1,5 +1,6 @@
 ﻿using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
+using XOutput.Core.Exceptions;
 using XOutput.Core.External;
 
 namespace XOutput.Core
@@ -16,6 +17,12 @@ namespace XOutput.Core
         public static CommandRunner GetCommandRunner()
         {
             return new CommandRunner();
+        }
+
+        [ResolverMethod]
+        public static ExceptionHandler GetExceptionHandler()
+        {
+            return new ExceptionHandler();
         }
     }
 }

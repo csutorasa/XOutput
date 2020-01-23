@@ -23,12 +23,12 @@ namespace XOutput.Server.Websocket.Xbox
 
         public bool CanHandle(HttpListenerContext context)
         {
-            return context.Request.Url.LocalPath.StartsWith("/microsoftxbox360/", StringComparison.InvariantCultureIgnoreCase);
+            return context.Request.Url.LocalPath.StartsWith("/MicrosoftXbox360/");
         }
 
         public List<IMessageHandler> CreateHandlers(HttpListenerContext context, Func<MessageBase, Task> sendFunction)
         {
-            string emulatorName = context.Request.Url.LocalPath.Replace("/microsoftxbox360/", "");
+            string emulatorName = context.Request.Url.LocalPath.Replace("/MicrosoftXbox360/", "");
             var emulator = emulatorService.FindEmulator<IXboxEmulator>(DeviceTypes.MicrosoftXbox360, emulatorName);
             var device = emulator.CreateDevice();
             return new List<IMessageHandler>

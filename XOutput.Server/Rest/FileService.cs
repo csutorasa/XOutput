@@ -1,11 +1,17 @@
 ﻿using System.IO;
 using System.Net;
+using System.Collections.Generic;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Server.Rest
 {
     public class FileService : IRestHandler
     {
+        private static readonly Dictionary<string, string> ExtensionMapping = new Dictionary<string, string>
+        {
+            { ".html", "text/html" },
+            { ".js", "text/javascript" },
+        };
 
         [ResolverMethod]
         public FileService()
@@ -23,11 +29,8 @@ namespace XOutput.Server.Rest
         {
             string path = GetPath(context);
             var content = File.ReadAllText(path);
-            string customContent = content
-                .Replace("<<<host>>>", context.Request.Url.Host)
-                .Replace("<<<port>>>", context.Request.Url.Port.ToString());
-            context.Response.ContentType = "text/html";
-            context.Response.OutputStream.WriteText(customContent);
+            context.Response.ContentType = GetContentType(path);
+            context.Response.OutputStream.WriteText(content);
         }
 
         private string GetPath(HttpListenerContext context)
@@ -39,6 +42,17 @@ namespace XOutput.Server.Rest
                 file = "/index.html";
             }
             return ".\\web" + file.Replace("/", "\\");
+        }
+
+        private string GetContentType(string path)
+        {
+            string extension = Path.GetExtension(path);
+            string contentType;
+            if (ExtensionMapping.TryGetValue(extension, out contentType))
+            {
+                return contentType;
+            }
+            return "text/plain";
         }
     }
 }

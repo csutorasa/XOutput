@@ -1,11 +1,11 @@
-import { Communication } from "../communication";
+import { WebSocketService } from "../communication/websocket";
 import { AbstractInputFlow, UIInputEvent } from "./base";
 
 export class ButtonFlow extends AbstractInputFlow<number> {
     private key: string;
     private fillContainer: HTMLElement;
 
-    constructor(communication: Communication, element: HTMLElement) {
+    constructor(communication: WebSocketService, element: HTMLElement) {
         super(communication, element);
         this.key = element.getAttribute("name");
         if (this.key == 'L2' || this.key == 'R2') {

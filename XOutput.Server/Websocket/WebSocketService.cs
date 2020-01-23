@@ -103,6 +103,7 @@ namespace XOutput.Server.Websocket
                     {
                         await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Done", CancellationToken.None);
                     }
+                    messageHandlers.ForEach(h => h.Close());
                 }
             }
             catch (Exception ex)

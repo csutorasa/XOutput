@@ -1,31 +1,34 @@
 import './index.scss'
 import bodyHtml from './index.html';
 
-import { Communication } from './communication';
+import { render } from 'react-dom';
+import { RootElement } from './ui/main';
+import { Websocket } from './communication/websocket';
 import { UIInputFlow } from './events/base';
 import { EventHolder } from './events/eventholder';
 import { ButtonFlow } from './events/button';
 import { AxisFlow } from './events/axis';
 import { SliderFlow } from './events/slider';
 import { DPadFlow } from './events/dpad';
+import { Http } from './communication/http'; 
+import { Rest } from './communication/rest';
 
-const host = "<<<host>>>";
-const port = "<<<port>>>";
-import React from 'react';
-import { render } from 'react-dom';
-import { Hello } from './ui/main';
+const host = window.location.hostname;
+const port = window.location.port;
+Http.initialize(host, port);
+Websocket.initialize(host, port);
 
-render(Hello, document.body);
-/*
-const communication = new Communication();
-communication.connect(host, port);
 window.onerror = function(msg, url, line, col) {
-    if (communication.isReady()) {
-        communication.sendDebug("Error in " + url + " at " + line + ":" + col + " " + msg);
+    if (Websocket.isReady()) {
+        Websocket.sendDebug("Error in " + url + " at " + line + ":" + col + " " + msg);
     }
 };
 const eventHolder = new EventHolder();
 
+const element = document.createElement('div');
+document.body.appendChild(element);
+render(RootElement, element);
+/*
 const element = document.createElement('div');
 element.innerHTML = bodyHtml;
 //document.body.appendChild(element);

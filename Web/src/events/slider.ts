@@ -1,10 +1,10 @@
-import { Communication } from "../communication";
+import { WebSocketService } from "../communication/websocket";
 import { AbstractInputFlow, UIInputEvent } from "./base";
 
 export class SliderFlow extends AbstractInputFlow<number> {
     private key: string;
 
-    constructor(communication: Communication, element: HTMLElement) {
+    constructor(communication: WebSocketService, element: HTMLElement) {
         super(communication, element);
         this.key = element.getAttribute("name");
     }

@@ -1,4 +1,4 @@
-import { Communication } from "../communication";
+import { WebSocketService } from "../communication/websocket";
 import { UIInputEvent, AbstractInputFlow } from "./base";
 
 type AxisValue = { x: number, y: number };
@@ -6,7 +6,7 @@ type AxisValue = { x: number, y: number };
 export class AxisFlow extends AbstractInputFlow<AxisValue> {
     private key: string;
 
-    constructor(communication: Communication, element: HTMLElement) {
+    constructor(communication: WebSocketService, element: HTMLElement) {
         super(communication, element);
         this.key = element.getAttribute("name");
     }

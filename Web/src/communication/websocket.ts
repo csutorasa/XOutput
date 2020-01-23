@@ -1,15 +1,23 @@
-export class Communication {
+export class WebSocketService {
     private websocket: WebSocket;
     private host: string;
     private port: string | number;
 
-    connect(host: string, port: string | number): void {
-        this.websocket = new WebSocket("ws://" + host + ":" + port + "/");
+    initialize(host: string, port: string | number): void {
         this.host = host;
         this.port = port;
-        this.websocket.onopen = (event) => this.onOpen(event);
-        this.websocket.onerror = (event) => this.onError(event);
-        this.websocket.onclose = (event) => this.onClose(event as CloseEvent);
+    }
+
+    connect(path: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.websocket = new WebSocket(`ws://${this.host}:${this.port}/${path}`);
+            this.websocket.onopen = (event) => {
+                resolve();
+                this.onOpen(event);
+            };
+            this.websocket.onerror = (event) => this.onError(event);
+            this.websocket.onclose = (event) => this.onClose(event as CloseEvent);
+        });
     }
     private onOpen(event: Event): void {
         console.log("Connected to " + this.host + ":" + this.port);
@@ -24,6 +32,9 @@ export class Communication {
     private onClose(event: CloseEvent): void {
         console.log("Disconnected from " + this.host + ":" + this.port);
         this.websocket = null;
+    }
+    close(): void {
+        this.websocket.close();
     }
     isReady(): boolean {
         return this.websocket && this.websocket.readyState == WebSocket.OPEN;
@@ -74,3 +85,5 @@ export class Communication {
         });
     }
 }
+
+export const Websocket = new WebSocketService();

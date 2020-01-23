@@ -1,4 +1,4 @@
-import { Communication } from "../communication";
+import { WebSocketService } from "../communication/websocket";
 
 export type UIInputEvent = Touch | MouseEvent;
 
@@ -12,7 +12,7 @@ export abstract class AbstractInputFlow<T> implements UIInputFlow {
 
     protected fillElement: HTMLElement;
 
-    protected constructor(protected communication: Communication, protected element: HTMLElement) {
+    protected constructor(protected communication: WebSocketService, protected element: HTMLElement) {
         this.fillElement = element.querySelector('.fill');
     }
 
