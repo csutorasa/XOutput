@@ -1,9 +1,11 @@
 import React, { MouseEvent, ReactElement } from "react";
+import { Dpad } from "./dpad";
 import { Slider } from "./slider";
 import { Button } from "./button";
 import { Axis } from "./axis";
 import { ListEmulatorsResponse, Rest, EmulatorResponse } from "../communication/rest";
 import { Websocket } from "../communication/websocket";
+import { Square } from "./square";
 
 enum MainMenuStatus {
     New,
@@ -74,109 +76,46 @@ export class MainMenu extends React.Component<any, MainMenuState, any> {
             return <h1>Loading</h1>;
         }
         if (this.state.status == MainMenuStatus.Connected) {
-            return 'Connected';
+            return <div className="root">
+                <Button input="L2" style={{gridColumn: "span 4", gridRow: "span 5"}}></Button>
+                <Slider input="L2" style={{gridColumn: "span 6", gridRow: "span 5"}}></Slider>
+                <Slider input="R2" style={{gridColumn: "span 6", gridRow: "span 5"}}></Slider>
+                <Button input="R2" style={{gridColumn: "span 4", gridRow: "span 5"}}></Button>
+
+                <Dpad style={{gridColumn: "span 7", gridRow: "span 8"}}></Dpad>
+                <Square style={{gridColumn: "span 7", gridRow: "span 8"}}>
+                    <div><Button input="Back" circle={true}></Button></div>
+                    <div className="fullscreen">Fullscreen</div>
+                    <div><Button input="Start" circle={true}></Button></div>
+                    <div></div>
+                    <div><Button input="Home" circle={true}></Button></div>
+                    <div></div>
+                    <div><Button input="L3" circle={true}></Button></div>
+                    <div></div>
+                    <div><Button input="R3" circle={true}></Button></div>
+                </Square>
+                <Square style={{gridColumn: "span 6", gridRow: "span 8"}}>
+                    <div></div>
+                    <div><Button input="Y" circle={true} style={{ backgroundColor: "yellow", color: "orangered" }}></Button></div>
+                    <div></div>
+                    <div><Button input="X" circle={true} style={{ backgroundColor: "blue", color: "lightblue" }}></Button></div>
+                    <div></div>
+                    <div><Button input="B" circle={true} style={{ backgroundColor: "red", color: "darkred" }}></Button></div>
+                    <div></div>
+                    <div><Button input="A" circle={true} style={{ backgroundColor: "green", color: "lightgreen" }}></Button></div>
+                    <div></div>
+                </Square>
+
+                <Button input="L1" style={{gridColumn: "span 4", gridRow: "span 7"}}></Button>
+                <Axis input="L" style={{gridColumn: "span 6", gridRow: "span 7"}}></Axis>
+                <Axis input="R" style={{gridColumn: "span 6", gridRow: "span 7"}}></Axis>
+                <Button input="R1" style={{gridColumn: "span 4", gridRow: "span 7"}}></Button>
+            </div>;
         }
         return 'INVALID STATE';
-        /*return <>
-            <Button input="L1" flexGrow={2}></Button>
-            <Axis input="L" flexGrow={3}></Axis>
-            <Axis input="R" flexGrow={3}></Axis>
-            <Button input="R1" flexGrow={2}></Button>
-        </>;*/
     }
 }
 
 export const RootElement = <>
     <MainMenu></MainMenu>
 </>;
-
-class FirstLine extends React.Component {
-    render() {
-        return <>
-            <Button input="L2" flexGrow={2}></Button>
-            <Slider input="L2" flexGrow={3}></Slider>
-            <Slider input="R2" flexGrow={3}></Slider>
-            <Button input="R2" flexGrow={2}></Button>
-        </>;
-    }
-}
-
-class SecondLine extends React.Component {
-    render() {
-        return <>
-            <div className="dpad" style={{ flexGrow: 6, width: "1%" }}>
-                <div className="fill"></div>
-                <div className="text">DPad</div>
-            </div>
-            <div style={{ flexGrow: 7 }}>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td className="button circle Back">Back</td>
-                            <td className="fullscreen">Fullscreen</td>
-                            <td className="button circle Start">Start</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td className="button circle Home">Home</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td className="button circle L3">L3</td>
-                            <td></td>
-                            <td className="button circle R3">R3</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div style={{ flexGrow: 7 }}>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td className="button circle Y" style={{ backgroundColor: "yellow", color: "orangered" }}>Y</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td className="button circle X" style={{ backgroundColor: "blue", color: "lightblue" }}>X</td>
-                            <td></td>
-                            <td className="button circle B" style={{ backgroundColor: "red", color: "darkred" }}>B</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td className="button circle A" style={{ backgroundColor: "green", color: "lightgreen" }}>A</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </>;
-    }
-}
-
-class ThirdLine extends React.Component {
-    render() {
-        return <>
-            <Button input="L1" flexGrow={2}></Button>
-            <Axis input="L" flexGrow={3}></Axis>
-            <Axis input="R" flexGrow={3}></Axis>
-            <Button input="R1" flexGrow={2}></Button>
-        </>;
-    }
-}
-
-
-export const Hello = <div className="root">
-    {/* <div style={{ width: 0, height: "25%" }}></div> */}
-    <FirstLine></FirstLine>
-
-    <div style={{ flexBasis: "100%", height: 0 }}></div>
-
-    {/* <div style={{ width: 0, height: "40%" }}></div> */}
-    <SecondLine></SecondLine>
-
-    <div style={{ flexBasis: "100%", height: 0 }}></div>
-
-    {/* <div style={{ width: 0, height: "35%" }}></div> */}
-    <ThirdLine></ThirdLine>
-</div>;

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 
 export interface SliderProp {
     input: string;
-    flexGrow: number;
+    style: CSSProperties;
 }
 
 export class Slider extends React.Component<SliderProp> {
@@ -12,9 +12,11 @@ export class Slider extends React.Component<SliderProp> {
     }
 
     render() {
-        return <div className="slider" style={{ flexGrow: this.props.flexGrow }}>
+        return <div className="slider" style={this.props.style}>
             <div className="fill"></div>
-            <div className="text">{this.props.input}</div>
+            <div className="text">
+                <div className="inner">{this.props.input}</div>
+            </div>
         </div>;
     }
 }

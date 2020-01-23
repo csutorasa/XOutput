@@ -1,8 +1,8 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 
 export interface AxisProp {
     input: string;
-    flexGrow: number;
+    style: CSSProperties;
 }
 
 export class Axis extends React.Component<AxisProp> {
@@ -12,9 +12,11 @@ export class Axis extends React.Component<AxisProp> {
     }
 
     render() {
-        return <div className="twodimensional" style={{ flexGrow: this.props.flexGrow }}>
+        return <div className="twodimensional" style={this.props.style}>
             <div className="fill"></div>
-            <div className="text">{this.props.input}</div>
+            <div className="text">
+                <div className="inner">{this.props.input}</div>
+            </div>
         </div>;
     }
 }

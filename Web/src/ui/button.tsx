@@ -1,8 +1,9 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 
 export interface ButtonProp {
     input: string;
-    flexGrow: number;
+    style?: CSSProperties;
+    circle?: boolean;
 }
 
 export class Button extends React.Component<ButtonProp> {
@@ -12,8 +13,10 @@ export class Button extends React.Component<ButtonProp> {
     }
 
     render() {
-        return <div className="button" style={{ flexGrow: this.props.flexGrow }}>
-        {this.props.input}
-    </div>;
+        return <div className={this.props.circle ? "button circle" : "button"} style={this.props.style ? this.props.style : {}}>
+            <div className="inner">
+                {this.props.input}
+            </div>
+        </div>;
     }
 }

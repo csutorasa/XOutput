@@ -14,24 +14,32 @@ html, body, body > div, .root {
     overflow: hidden;
 }
 .root {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: stretch;
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
     background-color: white;
 }
-table {
-    height: 100%;
-    width: 100%;
-    border-collapse: collapse;
+
+@mixin center-text {
+    display: flex;
+    align-items: center;
+    > .inner {
+        margin: 0 auto;
+    }
 }
-table td {
-    width: 33%;
-    text-align: center;
+.square {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    > * > * {
+        height: 100%;
+    }
 }
 .button {
     background-color: lightgray; 
     text-align: center;
     align-content: middle;
+    @include center-text;
 }
 .circle {
     border-radius: 1000px;
@@ -45,20 +53,19 @@ table td {
     position: absolute;
 }
 .text {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     text-align: center;
     position: absolute;
     color: white;
+    @include center-text;
 }
 .slider .fill {
     top: 0;
     bottom: 0;
     left: 0;
-}
-.slider .text {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
 }
 .twodimensional {
     background-color: gray;

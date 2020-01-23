@@ -1,5 +1,4 @@
 import './index.scss'
-import bodyHtml from './index.html';
 
 import { render } from 'react-dom';
 import { RootElement } from './ui/main';
@@ -11,7 +10,6 @@ import { AxisFlow } from './events/axis';
 import { SliderFlow } from './events/slider';
 import { DPadFlow } from './events/dpad';
 import { Http } from './communication/http'; 
-import { Rest } from './communication/rest';
 
 const host = window.location.hostname;
 const port = window.location.port;
@@ -23,22 +21,20 @@ window.onerror = function(msg, url, line, col) {
         Websocket.sendDebug("Error in " + url + " at " + line + ":" + col + " " + msg);
     }
 };
+
 const eventHolder = new EventHolder();
 
 const element = document.createElement('div');
 document.body.appendChild(element);
 render(RootElement, element);
-/*
-const element = document.createElement('div');
-element.innerHTML = bodyHtml;
-//document.body.appendChild(element);
+
 
 function openFullscreen() {
     document.querySelector(".root").requestFullscreen().catch((err) => {
-        communication.sendDebug(err);
+        Websocket.sendDebug(err);
     });
 }
-
+/*
 function handleTouchEvent(event: TouchEvent, action: (t: Touch) => void) {
     Array.from(event.changedTouches).forEach(t => {
         action(t);
