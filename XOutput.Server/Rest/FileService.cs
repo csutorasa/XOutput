@@ -11,6 +11,7 @@ namespace XOutput.Server.Rest
         {
             { ".html", "text/html" },
             { ".js", "text/javascript" },
+            { ".css", "text/css" },
         };
 
         [ResolverMethod]

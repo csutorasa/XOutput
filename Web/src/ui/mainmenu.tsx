@@ -2,27 +2,34 @@ import React from "react";
 import { Switch, Route, Redirect, RouteChildrenProps } from "react-router";
 import { AdminPage } from "./admin/admin";
 import { DeviceSelector } from "./deviceselector";
+import { TranslatedText as TT } from "./translatedtext";
 import { Emulation, EmulationProps } from "./emulation/emulation";
 import { Link } from "react-router-dom";
+import { Translation } from "../translation/translation";
 
 export class MainMenu extends React.Component<any, any, any> {
 
     render() {
         return <>
-            <div>
-                <Link to="/">
-                    <button>Home</button>
-                </Link>
-                <Link to="/devices">
-                    <button>Devices</button>
-                </Link>
-                <Link to="/admin">
-                    <button>Admin</button>
-                </Link>
-            </div>
+            <Switch>
+                <Route path="/emulation" />
+                <Route>
+                <div>
+                    <Link to="/">
+                        <button><TT text="Home"/></button>
+                    </Link>
+                    <Link to="/devices">
+                        <button><TT text="Devices"/></button>
+                    </Link>
+                    <Link to="/admin">
+                        <button><TT text="Admin"/></button>
+                    </Link>
+                </div>
+                </Route>
+            </Switch>
             <Switch>
                 <Route path="/" exact>
-                    EMPTY
+                    XOutput home page
                 </Route>
                 <Route path="/devices">
                     <DeviceSelector></DeviceSelector>

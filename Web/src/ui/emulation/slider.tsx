@@ -12,7 +12,7 @@ export class Slider extends React.Component<SliderProp> {
     }
 
     render() {
-        return <div className="slider" style={this.props.style}>
+        return <div className={`slider ${this.props.input}`} style={this.props.style}>
             <div className="fill"></div>
             <div className="text">
                 <div className="inner">{this.props.input}</div>

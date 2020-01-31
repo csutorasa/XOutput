@@ -1,14 +1,21 @@
+
+
+
 export class WebSocketService {
     private websocket: WebSocket;
+    private static globalHost: string;
+    private static globalPort: string | number;
     private host: string;
     private port: string | number;
 
-    initialize(host: string, port: string | number): void {
-        this.host = host;
-        this.port = port;
+    static initialize(host: string, port: string | number): void {
+        this.globalHost = host;
+        this.globalPort = port;
     }
 
     connect(path: string): Promise<void> {
+        this.host = WebSocketService.globalHost;
+        this.port = WebSocketService.globalPort;
         return new Promise((resolve, reject) => {
             this.websocket = new WebSocket(`ws://${this.host}:${this.port}/${path}`);
             this.websocket.onopen = (event) => {
@@ -44,15 +51,16 @@ export class WebSocketService {
     }
     private sendInputData(...data: { InputType: string, Value: number|boolean }[]): void {
         this.sendMessage({
-            Type: "InputData",
-            Data: data
+            Type: "XboxInput",
+            ...data
         });
     }
-    sendInput(input: string, value: number): void {
-        this.sendInputData({
-            InputType: input,
-            Value: value,
-        });
+    sendInput(input: string, value: number|boolean): void {
+        const data: any = {
+            Type: "XboxInput"
+        };
+        data[input] = value;
+        this.sendMessage(data);
     }
     sendInputs(input1: string, value1: number, input2: string, value2: number): void {
         this.sendInputData({
@@ -85,5 +93,3 @@ export class WebSocketService {
         });
     }
 }
-
-export const websocket = new WebSocketService();

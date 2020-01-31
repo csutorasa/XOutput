@@ -1,4 +1,4 @@
-import React, { MouseEvent, ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { ListEmulatorsResponse, rest, EmulatorResponse } from "../communication/rest";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
@@ -27,11 +27,11 @@ export class DeviceSelector extends React.Component<any, DeviceSelectorState, an
     }
 
     private renderButton(emulator: string, device: string, installed: boolean): ReactElement {
-        const element = <button key={device} disabled={!installed}>
+        const element = <button key={`${device}/${emulator}`} disabled={!installed}>
             {device}
         </button>;
         if (installed) {
-            return <Link to={`/emulation/${device}/${emulator}`}>
+            return <Link key={`${device}/${emulator}`} to={`/emulation/${device}/${emulator}`}>
                 {element}
             </Link>
         }

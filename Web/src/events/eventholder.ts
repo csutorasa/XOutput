@@ -1,4 +1,5 @@
 import { UIInputEvent, UIInputFlow } from "./base";
+import { MouseEvent, Touch } from "react";
 
 export class EventHolder {
     private mouseFlow: UIInputFlow;
@@ -55,3 +56,5 @@ export class EventHolder {
         }
     }
 }
+
+
