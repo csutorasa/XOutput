@@ -6,11 +6,9 @@ import { CommonProps } from "./common";
 type DPadValue = { up: number, down: number, left: number, right: number };
 
 export class DPadFlow extends AbstractInputFlow<DPadValue> {
-    private key: string;
 
-    constructor(communication: WebSocketService, element: HTMLElement, input: string) {
+    constructor(communication: WebSocketService, element: HTMLElement) {
         super(communication, element);
-        this.key = input;
     }
     protected onStart(event: UIInputEvent): DPadValue {
         const xValue = this.getXRatio(event);
@@ -81,7 +79,7 @@ export class Dpad extends React.Component<DpadProp> {
     }
 
     private mouseDown(event: MouseEvent) {
-        this.props.eventHolder.mouseAdd(new DPadFlow(this.props.websocket, this.element.current, this.props.input), event);
+        this.props.eventHolder.mouseAdd(new DPadFlow(this.props.websocket, this.element.current), event);
     }
 
     private handleTouchEvent(event: TouchEvent, action: (t: Touch) => void) {
@@ -93,7 +91,7 @@ export class Dpad extends React.Component<DpadProp> {
 
     private touchStart(event: TouchEvent) {
         this.handleTouchEvent(event, (touch) => {
-            this.props.eventHolder.touchAdd(new DPadFlow(this.props.websocket, this.element.current, this.props.input), touch);
+            this.props.eventHolder.touchAdd(new DPadFlow(this.props.websocket, this.element.current), touch);
         });
     }
 
