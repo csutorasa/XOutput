@@ -27,4 +27,4 @@ export class HttpService {
     }
 }
 
-export const Http = new HttpService();
+export const http = new HttpService();

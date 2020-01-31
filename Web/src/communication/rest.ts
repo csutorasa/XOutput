@@ -1,4 +1,4 @@
-import { Http, HttpService } from "./http";
+import { http, HttpService } from "./http";
 
 export interface EmulatorResponse {
     Installed: boolean;
@@ -21,4 +21,4 @@ class RestService {
     }
 }
 
-export const Rest = new RestService(Http);
+export const rest = new RestService(http);

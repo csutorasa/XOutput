@@ -2,23 +2,23 @@ import './index.scss'
 
 import { render } from 'react-dom';
 import { RootElement } from './ui/main';
-import { Websocket } from './communication/websocket';
+import { websocket } from './communication/websocket';
 import { UIInputFlow } from './events/base';
 import { EventHolder } from './events/eventholder';
 import { ButtonFlow } from './events/button';
 import { AxisFlow } from './events/axis';
 import { SliderFlow } from './events/slider';
 import { DPadFlow } from './events/dpad';
-import { Http } from './communication/http'; 
+import { http } from './communication/http'; 
 
 const host = window.location.hostname;
 const port = window.location.port;
-Http.initialize(host, port);
-Websocket.initialize(host, port);
+http.initialize(host, port);
+websocket.initialize(host, port);
 
 window.onerror = function(msg, url, line, col) {
-    if (Websocket.isReady()) {
-        Websocket.sendDebug("Error in " + url + " at " + line + ":" + col + " " + msg);
+    if (websocket.isReady()) {
+        websocket.sendDebug("Error in " + url + " at " + line + ":" + col + " " + msg);
     }
 };
 
@@ -31,7 +31,7 @@ render(RootElement, element);
 
 function openFullscreen() {
     document.querySelector(".root").requestFullscreen().catch((err) => {
-        Websocket.sendDebug(err);
+        websocket.sendDebug(err);
     });
 }
 /*
