@@ -14,7 +14,7 @@ export abstract class AbstractInputFlow<T> implements UIInputFlow {
     protected fillElement: HTMLElement;
 
     protected constructor(protected communication: WebSocketService, protected element: HTMLElement) {
-        this.fillElement = null;//element.querySelector('.fill');
+        this.fillElement = element.querySelector('.fill');
     }
 
     public start(event: UIInputEvent): void {

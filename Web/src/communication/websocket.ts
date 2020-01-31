@@ -49,12 +49,6 @@ export class WebSocketService {
     private sendMessage(obj: object): void {
         this.websocket.send(JSON.stringify(obj));
     }
-    private sendInputData(...data: { InputType: string, Value: number|boolean }[]): void {
-        this.sendMessage({
-            Type: "XboxInput",
-            ...data
-        });
-    }
     sendInput(input: string, value: number|boolean): void {
         const data: any = {
             Type: "XboxInput"
@@ -63,28 +57,22 @@ export class WebSocketService {
         this.sendMessage(data);
     }
     sendInputs(input1: string, value1: number, input2: string, value2: number): void {
-        this.sendInputData({
-            InputType: input1,
-            Value: value1,
-        }, {
-            InputType: input2,
-            Value: value2,
-        });
+        const data: any = {
+            Type: "XboxInput"
+        };
+        data[input1] = value1;
+        data[input2] = value2;
+        this.sendMessage(data);
     }
     sendDPad(up: number, down: number, left: number, right: number): void {
-        this.sendInputData({
-            InputType: "UP",
-            Value: up,
-        }, {
-            InputType: "DOWN",
-            Value: down,
-        }, {
-            InputType: "LEFT",
-            Value: left,
-        }, {
-            InputType: "RIGHT",
-            Value: right,
-        });
+        const data: any = {
+            Type: "XboxInput"
+        };
+        data.UP = up;
+        data.DOWN = down;
+        data.LEFT = left;
+        data.RIGHT = right;
+        this.sendMessage(data);
     }
     sendDebug(text: string): void {
         this.sendMessage({

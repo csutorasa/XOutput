@@ -3,7 +3,9 @@ import { WebSocketService } from "../../communication/websocket";
 import { CommonProps } from "./common";
 import { AbstractInputFlow, UIInputEvent } from "../../events/base";
 
-export class ButtonFlow extends AbstractInputFlow<boolean> {
+type ButtonValue = boolean | number;
+
+export class ButtonFlow extends AbstractInputFlow<ButtonValue> {
     private key: string;
     private fillContainer: HTMLElement;
 
@@ -11,29 +13,34 @@ export class ButtonFlow extends AbstractInputFlow<boolean> {
         super(communication, element);
         this.key = input;
         if (this.key == 'L2' || this.key == 'R2') {
-            this.fillContainer = document.querySelector(`.root .slider .${this.key}`);
+            this.fillContainer = document.querySelector(`.root .slider.${this.key}`);
             this.fillElement = this.fillContainer.querySelector(".fill");
         }
     }
-    protected onStart(event: UIInputEvent): boolean {
+    protected onStart(event: UIInputEvent): ButtonValue {
+        if (this.key == 'L2' || this.key == 'R2') {
+            return 1;
+        }
         return true;
     }
     protected onMove(event: UIInputEvent): boolean {
         return null;
     }
-    protected onEnd(): boolean {
+    protected onEnd(): ButtonValue {
+        if (this.key == 'L2' || this.key == 'R2') {
+            return 0;
+        }
         return false;
     }
-    protected fill(value: boolean): void {
+    protected fill(value: number): void {
         if (this.fillElement && this.fillContainer) {
             this.fillElement.style.width = ((value ? 1 : 0) * this.fillContainer.offsetWidth) + "px";
         }
     }
-    protected sendValue(value: boolean): void {
+    protected sendValue(value: ButtonValue): void {
         this.communication.sendInput(this.key, value);
     }
 }
-
 
 export type ButtonProp = CommonProps & {
     input: string;
@@ -43,12 +50,15 @@ export type ButtonProp = CommonProps & {
 
 export class Button extends React.Component<ButtonProp> {
 
+    private element: RefObject<any>;
+
     constructor(props: Readonly<ButtonProp>) {
         super(props);
+        this.element = React.createRef();
     }
 
     private mouseDown(event: MouseEvent) {
-        this.props.eventHolder.mouseAdd(new ButtonFlow(this.props.websocket, null, this.props.input), event);
+        this.props.eventHolder.mouseAdd(new ButtonFlow(this.props.websocket, this.element.current, this.props.input), event);
     }
     
     private handleTouchEvent(event: TouchEvent, action: (t: Touch) => void) {
@@ -60,12 +70,12 @@ export class Button extends React.Component<ButtonProp> {
 
     private touchStart(event: TouchEvent) {
         this.handleTouchEvent(event, (touch) => {
-            this.props.eventHolder.touchAdd(new ButtonFlow(this.props.websocket, null, this.props.input), touch);
+            this.props.eventHolder.touchAdd(new ButtonFlow(this.props.websocket, this.element.current, this.props.input), touch);
         });
     }
 
     render() {
-        return <div className={this.props.circle ? "button circle" : "button"} style={this.props.style ? this.props.style : {}}
+        return <div ref={this.element} className={this.props.circle ? "button circle" : "button"} style={this.props.style ? this.props.style : {}}
                 onMouseDown={(event) => this.mouseDown(event)} onTouchStart={(event) => this.touchStart(event)}>
             <div className="inner">
                 {this.props.input}

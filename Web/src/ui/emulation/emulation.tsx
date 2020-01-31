@@ -82,11 +82,11 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
         }
         return <div className="root">
             <Button input="L2" style={{ gridColumn: "span 4", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button>
-            <Slider input="L2" style={{ gridColumn: "span 6", gridRow: "span 5" }}></Slider>
-            <Slider input="R2" style={{ gridColumn: "span 6", gridRow: "span 5" }}></Slider>
+            <Slider input="L2" style={{ gridColumn: "span 6", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket}></Slider>
+            <Slider input="R2" style={{ gridColumn: "span 6", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket}></Slider>
             <Button input="R2" style={{ gridColumn: "span 4", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button>
 
-            <Dpad style={{ gridColumn: "span 7", gridRow: "span 8" }}></Dpad>
+            <Dpad style={{ gridColumn: "span 7", gridRow: "span 8" }} eventHolder={this.eventHolder} websocket={this.websocket}></Dpad>
             <Square style={{ gridColumn: "span 7", gridRow: "span 8" }}>
                 <div><Button input="Back" circle={true} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
                 <div className="fullscreen" onClick={() => this.openFullscreen()} onTouchStart={() => this.openFullscreen()}>Fullscreen</div>
@@ -111,8 +111,8 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
             </Square>
 
             <Button input="L1" style={{ gridColumn: "span 4", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button>
-            <Axis input="L" style={{ gridColumn: "span 6", gridRow: "span 7" }}></Axis>
-            <Axis input="R" style={{ gridColumn: "span 6", gridRow: "span 7" }}></Axis>
+            <Axis input="L" style={{ gridColumn: "span 6", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket}></Axis>
+            <Axis input="R" style={{ gridColumn: "span 6", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket}></Axis>
             <Button input="R1" style={{ gridColumn: "span 4", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button>
         </div>;
     }
