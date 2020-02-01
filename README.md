@@ -14,7 +14,9 @@ XOutput is a software that can convert DirectInput into XInput. DirectInput data
 ## General information
 
 If you have any questions or feature requests feel free to create [Github Issue](https://github.com/csutorasa/XOutput/issues).
+
 Any contribution is welcome, open your [Pull request](https://github.com/csutorasa/XOutput/pulls).
+
 To join the discussion or just say hi in the [discord channel](https://discord.gg/Y628tcp).
 
 ## How to install
