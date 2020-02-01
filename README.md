@@ -3,7 +3,7 @@
 [![Download XOutput](https://img.shields.io/sourceforge/dt/xoutput.svg)](https://sourceforge.net/projects/xoutput/files/latest/download)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/csutorasa)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=XOutput&metric=alert_status)](https://sonarcloud.io/dashboard?id=XOutput)
-[![Discord](https://img.shields.io/discord/673150216169455637))](https://discord.gg/Y628tcp)
+[![Discord](https://img.shields.io/discord/673150216169455637?label=Discord&logo=Discord))](https://discord.gg/Y628tcp)
 
 # XOutput
 
