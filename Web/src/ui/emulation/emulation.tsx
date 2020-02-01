@@ -7,6 +7,7 @@ import { ListEmulatorsResponse, rest, EmulatorResponse } from "../../communicati
 import { WebSocketService } from "../../communication/websocket";
 import { Square } from "./square";
 import { EventHolder } from "../../events/eventholder";
+import { TranslatedText as TT } from "../translatedtext";
 
 interface EmulationState {
     emulators: ListEmulatorsResponse;
@@ -77,7 +78,7 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
     }
 
     private onData(data: any) {
-        
+
     }
 
     render() {
@@ -91,7 +92,13 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
             <Dpad style={{ gridColumn: "span 7", gridRow: "span 8" }} eventHolder={this.eventHolder} websocket={this.websocket}></Dpad>
             <Square style={{ gridColumn: "span 7", gridRow: "span 8" }}>
                 <div><Button input="Back" circle={true} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
-                <div className="fullscreen" onClick={() => this.openFullscreen()} onTouchStart={() => this.openFullscreen()}>Fullscreen</div>
+                <div>
+                    <div className="fullscreen button circle" onClick={() => this.openFullscreen()} onTouchStart={() => this.openFullscreen()}>
+                        <div className="inner">
+                            <TT text="Fullscreen" />
+                        </div>
+                    </div>
+                </div>
                 <div><Button input="Start" circle={true} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
                 <div></div>
                 <div><Button input="Home" circle={true} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>

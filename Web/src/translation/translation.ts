@@ -5,7 +5,14 @@ export class TranslationService {
     private data: { [key: string]: string };
 
     constructor() {
-        this.setLanguage('English');
+        switch(navigator.language.slice(0, 2)) {
+            case "hu":
+                this.setLanguage('Hungarian');
+                break;
+            default:
+                this.setLanguage('English');
+                break;
+        }
     }
 
     setLanguage(language: string) {
