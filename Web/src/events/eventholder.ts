@@ -1,4 +1,4 @@
-import { UIInputEvent, UIInputFlow } from "./base";
+import { UIInputFlow } from "./base";
 import { MouseEvent, Touch } from "react";
 
 export class EventHolder {
@@ -29,6 +29,7 @@ export class EventHolder {
     touchAdd(flow: UIInputFlow, event: Touch) {
         const identifier: number = event.identifier;
         this.touchFlows[identifier] = flow;
+        flow.start(event);
     }
 
     touchMove(event: Touch) {
