@@ -11,6 +11,12 @@ If you have an older or not supported game controller (gamepad, wheel, joystick,
 
 XOutput is a software that can convert DirectInput into XInput. DirectInput data is read and sent to a virtual XInput (Xbox 360 Controller) device. XInput is the new standard game controller input on windows, and DirectInput can no longer be used with Universal Windows Platform software, but with this tool you can use DirectInput devices as well.
 
+## General information
+
+If you have any questions or feature requests feel free to create [Github Issue](https://github.com/csutorasa/XOutput/issues).
+Any contribution is welcome, open your [Pull request](https://github.com/csutorasa/XOutput/pulls).
+To join the discussion or just say hi in the [discord channel](https://discord.gg/Y628tcp).
+
 ## How to install
 
 Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, legacy)
