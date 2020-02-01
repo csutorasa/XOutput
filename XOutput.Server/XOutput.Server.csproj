@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <OutputType>exe</OutputType>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <RootNamespace>XOutput.Server</RootNamespace>
     <AssemblyName>XOutput.Server</AssemblyName>
     <Authors>Ármin Csutorás</Authors>
@@ -9,7 +10,7 @@
     <PackageId>XOutput.Server</PackageId>
     <NeutralLanguage>en</NeutralLanguage>
     <Description></Description>
-    <Copyright>Copyright 2019</Copyright>
+    <Copyright>Copyright 2020</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
     <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>

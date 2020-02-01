@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>exe</OutputType>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -12,7 +12,7 @@
     <PackageId>XOutput</PackageId>
     <NeutralLanguage>en</NeutralLanguage>
     <Description></Description>
-    <Copyright>Copyright 2019</Copyright>
+    <Copyright>Copyright 2020</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
     <!--<PackageIconUrl>Icon URL</PackageIconUrl>-->
