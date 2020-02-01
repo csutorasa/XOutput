@@ -46,7 +46,7 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
     componentDidMount() {
         this.eventHolder = new EventHolder();
         this.websocket = new WebSocketService();
-        this.websocket.connect(`${this.props.deviceType}/${this.props.emulator}`).then(() => {
+        this.websocket.connect(`${this.props.deviceType}/${this.props.emulator}`, (data) => this.onData(data)).then(() => {
             document.addEventListener('mousemove', this.mouseMove, false);
             document.addEventListener('mouseup', this.mouseUp, false);
             document.addEventListener('touchmove', this.touchMove, false);
@@ -74,6 +74,10 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
         document.querySelector(".root").requestFullscreen().catch((err) => {
             this.websocket.sendDebug(err);
         });
+    }
+
+    private onData(data: any) {
+        
     }
 
     render() {
