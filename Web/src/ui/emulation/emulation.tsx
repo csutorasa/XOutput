@@ -81,10 +81,8 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
             return <h1>Loading</h1>;
         }
         return <div className="root">
-            <Button input="L2" style={{ gridColumn: "span 4", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button>
-            <Slider input="L2" style={{ gridColumn: "span 6", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket}></Slider>
-            <Slider input="R2" style={{ gridColumn: "span 6", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket}></Slider>
-            <Button input="R2" style={{ gridColumn: "span 4", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button>
+            <Slider input="L2" style={{ gridColumn: "span 10", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket}></Slider>
+            <Slider input="R2" style={{ gridColumn: "span 10", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket} inverted={true}></Slider>
 
             <Dpad style={{ gridColumn: "span 7", gridRow: "span 8" }} eventHolder={this.eventHolder} websocket={this.websocket}></Dpad>
             <Square style={{ gridColumn: "span 7", gridRow: "span 8" }}>

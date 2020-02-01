@@ -1,6 +1,4 @@
 
-
-
 export class WebSocketService {
     private websocket: WebSocket;
     private static globalHost: string;
@@ -13,7 +11,7 @@ export class WebSocketService {
         this.globalPort = port;
     }
 
-    connect(path: string): Promise<void> {
+    connect(path: string, onMessage: (data: any) => void): Promise<void> {
         this.host = WebSocketService.globalHost;
         this.port = WebSocketService.globalPort;
         return new Promise((resolve, reject) => {
@@ -24,6 +22,7 @@ export class WebSocketService {
             };
             this.websocket.onerror = (event) => this.onError(event);
             this.websocket.onclose = (event) => this.onClose(event as CloseEvent);
+            this.websocket.onmessage = (event: MessageEvent) => {this.onMessage(event); onMessage(event.data); };
         });
     }
     private onOpen(event: Event): void {
@@ -39,6 +38,9 @@ export class WebSocketService {
     private onClose(event: CloseEvent): void {
         console.log("Disconnected from " + this.host + ":" + this.port);
         this.websocket = null;
+    }
+    private onMessage(event: MessageEvent): void {
+        
     }
     close(): void {
         this.websocket.close();

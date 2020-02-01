@@ -47,10 +47,16 @@ export abstract class AbstractInputFlow<T> implements UIInputFlow {
     protected abstract fill(value: T): void;
     protected abstract sendValue(value: T): void;
 
-    protected getXRatio(event: UIInputEvent): number {
+    protected getXRatio(event: UIInputEvent, inverted: boolean = false): number {
         const element = this.element;
-        const elementPageX = window.pageXOffset + element.getBoundingClientRect().left;
-        const ratio = (event.pageX - elementPageX) / element.offsetWidth;
+        let ratio;
+        if (inverted) {
+            const elementPageX = window.pageXOffset + element.getBoundingClientRect().right;
+            ratio = -(event.pageX - elementPageX) / element.offsetWidth;
+        } else {
+            const elementPageX = window.pageXOffset + element.getBoundingClientRect().left;
+            ratio = (event.pageX - elementPageX) / element.offsetWidth;
+        }
         return this.normalize(ratio);
     }
 
