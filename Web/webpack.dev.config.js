@@ -13,7 +13,9 @@ function copyFile(file) {
 }
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: {
+        'index': './src/index.ts',
+    },
     module: {
         rules: [
             {
@@ -39,18 +41,18 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
-    }, plugins: [
+        filename: '[name].js',
+    },
+    plugins: [
         new HtmlWebpackPlugin({
-            title: 'XOutput',
-            inlineSource: '.(js|css)$'
+            title: 'XOutput'
         }),
         {
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
                     copyFile('index.html');
-                    copyFile('bundle.js');
+                    copyFile('index.js');
                 });
             }
         }

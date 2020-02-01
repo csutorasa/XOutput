@@ -52,7 +52,7 @@ module.exports = {
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
                     copyFile('index.html');
-                    copyFile('bundle.js');
+                    copyFile('index.js');
                 });
             }
         }
