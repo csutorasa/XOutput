@@ -25,6 +25,8 @@ namespace XOutput.Server
             globalContext.Discover();
             globalContext.AddFromConfiguration(typeof(CoreConfiguration));
             globalContext.AddFromConfiguration(typeof(ApiConfiguration));
+            /*var firewallService = globalContext.Resolve<FirewallService>();
+            firewallService.AddException();*/
             server = globalContext.Resolve<HttpServer>();
             server.Start("http://192.168.1.2:8000/");
         }
@@ -37,7 +39,6 @@ namespace XOutput.Server
 
         private void WaitForExit()
         {
-            //WaitHandle.WaitAny(new[] { cancellationTokenSource.Token.WaitHandle });
             while (!cancellationTokenSource.Token.IsCancellationRequested)
             {
                 Thread.Sleep(100);

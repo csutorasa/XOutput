@@ -8,6 +8,8 @@ import { WebSocketService } from "../../communication/websocket";
 import { Square } from "./square";
 import { EventHolder } from "../../events/eventholder";
 import { TranslatedText as TT } from "../translatedtext";
+import { MessageBase } from "../../communication/message";
+import { XboxFeedback } from "../../communication/response/XboxFeedback";
 
 interface EmulationState {
     emulators: ListEmulatorsResponse;
@@ -77,8 +79,17 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
         });
     }
 
-    private onData(data: any) {
-
+    private onData(data: MessageBase) {
+        if (data.Type === 'XboxFeedback') {
+            const feedback = data as XboxFeedback;
+            if (navigator.vibrate) {
+                if (feedback.Small > 0 || feedback.Large > 0) {
+                    navigator.vibrate(60 * 60 * 1000);
+                } else {
+                    navigator.vibrate(0);
+                }
+            }
+        }
     }
 
     render() {

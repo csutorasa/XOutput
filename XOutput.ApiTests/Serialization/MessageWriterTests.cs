@@ -1,23 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Text;
-
-/* Unmerged change from project 'XOutput.ApiTests (netcoreapp3.1)'
-Before:
-using System;
-After:
-using Moq;
-using System;
-*/
-using 
-/* Unmerged change from project 'XOutput.ApiTests (netcoreapp3.1)'
-Before:
-using Moq;
 using XOutput.Api.Message;
-After:
-using XOutput.Api.Message;
-*/
-XOutput.Api.Message;
+using XOutput.Api.Message.Xbox;
 
 namespace XOutput.Api.Serialization.Tests
 {
@@ -29,13 +14,14 @@ namespace XOutput.Api.Serialization.Tests
         [TestMethod]
         public void ForceFeedbackTest()
         {
-            var input = new ForceFeedbackMessage
+            var input = new XboxFeedbackMessage
             {
                 Small = 0,
                 Large = 1,
+                LedNumber = 1,
             };
             var message = writer.WriteMessage(input);
-            Assert.AreEqual("{\"Small\":0.0,\"Large\":1.0,\"Type\":\"ForceFeedback\"}", message);
+            Assert.AreEqual("{\"Small\":0.0,\"Large\":1.0,\"LedNumber\":1,\"Type\":\"XboxFeedback\"}", message);
         }
 
         [TestMethod]

@@ -1,3 +1,4 @@
+import { MessageBase } from "./message";
 
 export class WebSocketService {
     private websocket: WebSocket;
@@ -11,7 +12,7 @@ export class WebSocketService {
         this.globalPort = port;
     }
 
-    connect(path: string, onMessage: (data: any) => void): Promise<void> {
+    connect(path: string, onMessage: (data: MessageBase) => void): Promise<void> {
         this.host = WebSocketService.globalHost;
         this.port = WebSocketService.globalPort;
         return new Promise((resolve, reject) => {
@@ -22,7 +23,11 @@ export class WebSocketService {
             };
             this.websocket.onerror = (event) => this.onError(event);
             this.websocket.onclose = (event) => this.onClose(event as CloseEvent);
-            this.websocket.onmessage = (event: MessageEvent) => {this.onMessage(event); onMessage(event.data); };
+            this.websocket.onmessage = (event: MessageEvent) => {
+                this.onMessage(event);
+                const data = JSON.parse(event.data);
+                onMessage(data);
+            };
         });
     }
     private onOpen(event: Event): void {

@@ -8,12 +8,15 @@ namespace XOutput.Server.Emulation.ViGEm
     public sealed class ViGEmXboxDevice : XboxDevice
     {
         private readonly IXbox360Controller controller;
+        public bool Connected { get; private set; }
 
         public ViGEmXboxDevice(IXbox360Controller controller)
         {
             this.controller = controller;
             controller.AutoSubmitReport = false;
             controller.Connect();
+            controller.FeedbackReceived += FeedbackReceived;
+            Connected = true;
             SetValueIfNeeded(Xbox360Axis.LeftThumbX, 0.5);
             SetValueIfNeeded(Xbox360Axis.LeftThumbY, 0.5);
             SetValueIfNeeded(Xbox360Axis.RightThumbX, 0.5);
@@ -21,9 +24,24 @@ namespace XOutput.Server.Emulation.ViGEm
             controller.SubmitReport();
         }
 
+        private void FeedbackReceived(object sender, Xbox360FeedbackReceivedEventArgs e)
+        {
+            InvokeFeedbackEvent(new XboxFeedbackEventArgs
+            {
+                Small = e.SmallMotor / byte.MaxValue,
+                Large = e.LargeMotor / byte.MaxValue,
+                LedNumber = e.LedNumber,
+            });
+        }
+
         public override void Close()
         {
-            controller.Disconnect();
+            if (Connected)
+            {
+                Connected = false;
+                controller.FeedbackReceived -= FeedbackReceived;
+                controller.Disconnect();
+            }
         }
 
         public override void SendInput(XboxInputMessage input)

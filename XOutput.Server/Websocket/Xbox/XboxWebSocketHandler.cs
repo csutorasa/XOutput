@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using XOutput.Api.Devices;
 using XOutput.Api.Message;
+using XOutput.Api.Message.Xbox;
 using XOutput.Core.DependencyInjection;
 using XOutput.Server.Emulation;
 
@@ -25,7 +26,7 @@ namespace XOutput.Server.Websocket.Xbox
             return context.Request.Url.LocalPath.StartsWith("/MicrosoftXbox360/");
         }
 
-        public List<IMessageHandler> CreateHandlers(HttpListenerContext context, Func<MessageBase, Task> sendFunction)
+        public List<IMessageHandler> CreateHandlers(HttpListenerContext context, SenderFunction sendFunction)
         {
             string emulatorName = context.Request.Url.LocalPath.Replace("/MicrosoftXbox360/", "");
             var emulator = emulatorService.FindEmulator<IXboxEmulator>(DeviceTypes.MicrosoftXbox360, emulatorName);
@@ -33,6 +34,7 @@ namespace XOutput.Server.Websocket.Xbox
             return new List<IMessageHandler>
             {
                 new DebugMessageHandler(),
+                new XboxFeedbackMessageHandler(device, sendFunction.GetTyped<XboxFeedbackMessage>()),
                 new XboxInputMessageHandler(device),
             };
         }
