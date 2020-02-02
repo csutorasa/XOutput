@@ -14,7 +14,7 @@ namespace XOutput.Core.DependencyInjection
 
         public NoValueFoundException(Type type) : this($"No value found for {type.FullName}") { }
 
-        private NoValueFoundException(SerializationInfo info, StreamingContext context)
+        private NoValueFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
 
         }

@@ -20,7 +20,7 @@ namespace XOutput.Core.DependencyInjection
             this.resolvers = resolvers;
         }
 
-        private MultipleValuesFoundException(SerializationInfo info, StreamingContext context)
+        private MultipleValuesFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
 
         }

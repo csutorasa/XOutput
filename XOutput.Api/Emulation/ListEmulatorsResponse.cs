@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using XOutput.Api.Devices;
 
 namespace XOutput.Api.Emulation
 {

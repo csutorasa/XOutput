@@ -20,7 +20,7 @@ namespace XOutput.Core.External
             Process = process;
         }
 
-        private ProcessErrorException(SerializationInfo info, StreamingContext context)
+        private ProcessErrorException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
 
         }
