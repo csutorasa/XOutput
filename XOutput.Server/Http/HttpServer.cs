@@ -12,7 +12,7 @@ namespace XOutput.Server.Http
 {
     public class HttpServer
     {
-        private static ILogger logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly CommandRunner commandRunner;
         private readonly RestService restService;
@@ -73,9 +73,9 @@ namespace XOutput.Server.Http
                     listener.Stop();
                     listener = null;
                 }
-                catch
+                catch (Exception e)
                 {
-                    logger.Error("Failed to stop http server");
+                    logger.Error(e, "Failed to stop http server");
                 }
             }
         }

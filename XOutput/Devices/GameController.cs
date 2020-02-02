@@ -2,13 +2,13 @@
 using System;
 using System.Linq;
 using System.Threading;
+using XOutput.Api.Message.Xbox;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Threading;
 using XOutput.Devices.Input;
 using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.Mapper;
 using XOutput.Devices.XInput;
-using XOutput.Devices.XInput.Vigem;
 
 namespace XOutput.Devices
 {
@@ -30,18 +30,6 @@ namespace XOutput.Devices
         /// </summary>
         public string DisplayName => mapper.Name;
         /// <summary>
-        /// Gets the number of the controller.
-        /// </summary>
-        public int ControllerCount => controllerCount;
-        /// <summary>
-        /// Gets if any XInput emulation is installed.
-        /// </summary>
-        public bool HasXOutputInstalled => xOutputManager.HasDevice;
-        /// <summary>
-        /// Gets if force feedback is supported.
-        /// </summary>
-        public bool ForceFeedbackSupported => xOutputManager.IsVigem;
-        /// <summary>
         /// Gets the force feedback device.
         /// </summary>
         public IInputDevice ForceFeedbackDevice { get; set; }
@@ -53,8 +41,7 @@ namespace XOutput.Devices
         private readonly XOutputManager xOutputManager;
         private ThreadContext threadContext;
         private bool running;
-        private int controllerCount = 0;
-        private Nefarius.ViGEm.Client.Targets.IXbox360Controller controller;
+        private WebsocketXboxClient client;
 
         public GameController(InputMapper mapper)
         {
@@ -86,51 +73,26 @@ namespace XOutput.Devices
         /// </summary>
         public int Start(Action onStop = null)
         {
-            if (!HasXOutputInstalled)
-            {
-                return 0;
-            }
-            if (controller != null)
-            {
-                controller.FeedbackReceived -= ControllerFeedbackReceived;
-            }
-            if (xOutputManager.Stop(controllerCount))
-            {
-                // Wait for unplugging
-                Thread.Sleep(10);
-            }
-            controllerCount = xOutputManager.Start();
-            if (controllerCount != 0)
-            {
-                threadContext = ThreadCreator.Create($"Emulated controller {controllerCount} output refresher", token => ReadAndReportValues(token, onStop)).Start();
-                running = true;
-                logger.Info($"Emulation started on {ToString()}.");
-                if (ForceFeedbackSupported)
-                {
-                    logger.Info($"Force feedback mapping is connected on {ToString()}.");
-                    controller = ((VigemDevice)xOutputManager.XOutputDevice).GetController(controllerCount);
-                    controller.FeedbackReceived += ControllerFeedbackReceived;
-                }
-            }
-            return controllerCount;
+            Stop();
+            client = xOutputManager.Start();
+            threadContext = ThreadCreator.Create($"Emulated controller output refresher", token => ReadAndReportValues(onStop, token)).Start();
+            running = true;
+            logger.Info($"Emulation started on {ToString()}.");
+            logger.Info($"Force feedback mapping is connected on {ToString()}.");
+            client.Feedback += FeedbackReceived;
+            // TODO
+            return 1;
         }
 
-        /// <summary>
-        /// Stops the emulation of the device
-        /// </summary>
         public void Stop()
         {
             if (running)
             {
                 running = false;
                 XInput.InputChanged -= XInputInputChanged;
-                if (ForceFeedbackSupported)
-                {
-                    controller.FeedbackReceived -= ControllerFeedbackReceived;
-                    logger.Info($"Force feedback mapping is disconnected on {ToString()}.");
-                }
-                xOutputManager.Stop(controllerCount);
-                controllerCount = 0;
+                client.Feedback -= FeedbackReceived;
+                logger.Info($"Force feedback mapping is disconnected on {ToString()}.");
+                xOutputManager.Stop(client);
                 logger.Info($"Emulation stopped on {ToString()}.");
                 if (threadContext != null)
                 {
@@ -144,7 +106,7 @@ namespace XOutput.Devices
             return DisplayName;
         }
 
-        private void ReadAndReportValues(CancellationToken token, Action onStop)
+        private void ReadAndReportValues(Action onStop, CancellationToken token)
         {
             XInput.InputChanged += XInputInputChanged;
             try
@@ -156,7 +118,6 @@ namespace XOutput.Devices
             }
             catch (Exception)
             {
-
                 Stop();
             }
             finally
@@ -167,15 +128,101 @@ namespace XOutput.Devices
 
         private void XInputInputChanged(object sender, DeviceInputChangedEventArgs e)
         {
-            if (!xOutputManager.XOutputDevice.Report(controllerCount, XInput.GetValues()))
+            try
             {
+                client.SendInput(GetMessage(e));
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Failed to write output");
                 Stop();
             }
         }
 
-        private void ControllerFeedbackReceived(object sender, Nefarius.ViGEm.Client.Targets.Xbox360.Xbox360FeedbackReceivedEventArgs e)
+        private void FeedbackReceived(object sender, XboxFeedbackMessage e)
         {
-            ForceFeedbackDevice?.SetForceFeedback((double)e.LargeMotor / byte.MaxValue, (double)e.SmallMotor / byte.MaxValue);
+            ForceFeedbackDevice?.SetForceFeedback((double)e.Large / byte.MaxValue, (double)e.Small / byte.MaxValue);
+        }
+
+        private XboxInputMessage GetMessage(DeviceInputChangedEventArgs e)
+        {
+            XboxInputMessage message = new XboxInputMessage();
+            if(e.ChangedDPads.Any())
+            {
+                message.UP = XInput.GetBool(XInputTypes.UP);
+                message.DOWN = XInput.GetBool(XInputTypes.DOWN);
+                message.LEFT = XInput.GetBool(XInputTypes.LEFT);
+                message.RIGHT = XInput.GetBool(XInputTypes.RIGHT);
+            }
+            foreach (var value in e.ChangedValues)
+            {
+                if (value.IsButton)
+                {
+                    XInputTypes type = (XInputTypes) Enum.Parse(typeof(XInputTypes), value.DisplayName);
+                    switch (type)
+                    {
+                        case XInputTypes.A:
+                            message.A = value.Value > 0.5;
+                            break;
+                        case XInputTypes.B:
+                            message.B = value.Value > 0.5;
+                            break;
+                        case XInputTypes.X:
+                            message.X = value.Value > 0.5;
+                            break;
+                        case XInputTypes.Y:
+                            message.Y = value.Value > 0.5;
+                            break;
+                        case XInputTypes.L1:
+                            message.L1 = value.Value > 0.5;
+                            break;
+                        case XInputTypes.R1:
+                            message.R1 = value.Value > 0.5;
+                            break;
+                        case XInputTypes.L3:
+                            message.L3 = value.Value > 0.5;
+                            break;
+                        case XInputTypes.R3:
+                            message.R3 = value.Value > 0.5;
+                            break;
+                        case XInputTypes.Start:
+                            message.Start = value.Value > 0.5;
+                            break;
+                        case XInputTypes.Back:
+                            message.Back = value.Value > 0.5;
+                            break;
+                        case XInputTypes.Home:
+                            message.Home = value.Value > 0.5;
+                            break;
+                    }
+                } 
+                else
+                {
+                    XInputTypes type = (XInputTypes)Enum.Parse(typeof(XInputTypes), value.DisplayName);
+                    switch (type)
+                    {
+                        case XInputTypes.L2:
+                            message.L2 = value.Value;
+                            break;
+                        case XInputTypes.R2:
+                            message.R2 = value.Value;
+                            break;
+                        case XInputTypes.LX:
+                            message.LX = value.Value;
+                            break;
+                        case XInputTypes.LY:
+                            message.LY = value.Value;
+                            break;
+                        case XInputTypes.RX:
+                            message.RX = value.Value;
+                            break;
+                        case XInputTypes.RY:
+                            message.RY = value.Value;
+                            break;
+                    }
+                }
+            }
+            return message;
         }
     }
 }

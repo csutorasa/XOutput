@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using XOutput.Api.Serialization;
 using XOutput.Core.DependencyInjection;
+using XOutput.Core.Threading;
 
 namespace XOutput.Server.Websocket
 {
@@ -36,7 +37,7 @@ namespace XOutput.Server.Websocket
             {
                 return false;
             }
-            Task.Run(() => HandleWebSocketAsync(httpContext, cancellationToken));
+            ThreadCreator.Create("Websocket listener", (token) => HandleWebSocketAsync(httpContext, cancellationToken)).Start();
             return true;
         }
 

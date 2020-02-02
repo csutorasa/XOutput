@@ -44,7 +44,7 @@ namespace XOutput.Devices.XInput
         private readonly DPadDirection[] dPads = new DPadDirection[DPadCount];
         private readonly XOutputSource[] sources;
         private readonly DeviceState state;
-        private DeviceInputChangedEventArgs deviceInputChangedEventArgs;
+        private readonly DeviceInputChangedEventArgs deviceInputChangedEventArgs;
 
         /// <summary>
         /// Creates a new XDevice.

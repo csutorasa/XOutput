@@ -13,6 +13,7 @@ namespace XOutput.Server.Websocket.Xbox
 {
     class XboxWebSocketHandler : IWebSocketHandler
     {
+        private static readonly string DeviceType = DeviceTypes.MicrosoftXbox360.ToString();
         private readonly EmulatorService emulatorService;
 
         [ResolverMethod]
@@ -23,12 +24,12 @@ namespace XOutput.Server.Websocket.Xbox
 
         public bool CanHandle(HttpListenerContext context)
         {
-            return context.Request.Url.LocalPath.StartsWith("/MicrosoftXbox360/");
+            return context.Request.Url.LocalPath.StartsWith($"/{DeviceType}/");
         }
 
         public List<IMessageHandler> CreateHandlers(HttpListenerContext context, SenderFunction sendFunction)
         {
-            string emulatorName = context.Request.Url.LocalPath.Replace("/MicrosoftXbox360/", "");
+            string emulatorName = context.Request.Url.LocalPath.Replace($"/{DeviceType}/", "");
             var emulator = emulatorService.FindEmulator<IXboxEmulator>(DeviceTypes.MicrosoftXbox360, emulatorName);
             var device = emulator.CreateDevice();
             return new List<IMessageHandler>

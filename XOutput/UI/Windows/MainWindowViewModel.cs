@@ -301,7 +301,6 @@ namespace XOutput.UI.Windows
         {
             IList<IDiagnostics> elements = InputDevices.Instance.GetDevices()
                 .Select(d => new InputDiagnostics(d)).OfType<IDiagnostics>().ToList();
-            elements.Insert(0, new Devices.XInput.XInputDiagnostics());
 
             ApplicationContext context = ApplicationContext.Global.WithSingletons(new DiagnosticsModel(elements));
             DiagnosticsWindow diagnosticsWindow = context.Resolve<DiagnosticsWindow>();

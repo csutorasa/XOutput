@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows.Threading;
 using XOutput.Devices;
 using XOutput.Devices.Input;
-using XOutput.Devices.XInput.Vigem;
 using XOutput.Tools;
 using XOutput.UI.Component;
 
@@ -141,18 +140,19 @@ namespace XOutput.UI.Windows
         {
             if (device.ForceFeedbackCount > 0)
             {
-                if (VigemDevice.IsAvailable())
-                {
+                // TODO
+                /*if (VigemDevice.IsAvailable())
+                {*/
                     Model.ForceFeedbackText = "";
                     Model.ForceFeedbackEnabled = device.InputConfiguration.ForceFeedback;
                     Model.ForceFeedbackAvailable = true;
-                }
+                /*}
                 else
                 {
                     Model.ForceFeedbackEnabled = false;
                     Model.ForceFeedbackAvailable = false;
                     Model.ForceFeedbackText = "ForceFeedbackVigemOnly";
-                }
+                }*/
             }
             else
             {

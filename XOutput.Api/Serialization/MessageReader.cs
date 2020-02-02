@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
+using System.Text;
 using XOutput.Api.Message;
 
 namespace XOutput.Api.Serialization
@@ -16,6 +17,11 @@ namespace XOutput.Api.Serialization
         public MessageBase ReadMessage(string input)
         {
             return JsonConvert.DeserializeObject<MessageBase>(input, converter);
+        }
+
+        public MessageBase ReadMessage(byte[] input, Encoding encoding)
+        {
+            return ReadMessage(encoding.GetString(input));
         }
     }
 }

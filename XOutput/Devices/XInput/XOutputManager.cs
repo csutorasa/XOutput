@@ -1,74 +1,35 @@
 ﻿using XOutput.Core.DependencyInjection;
-using XOutput.Devices.XInput.SCPToolkit;
-using XOutput.Devices.XInput.Vigem;
 
 namespace XOutput.Devices.XInput
 {
     public class XOutputManager
     {
-        private readonly IXOutputInterface xOutputDevice;
 
-        public IXOutputInterface XOutputDevice => xOutputDevice;
+        public bool HasDevice => true;
 
-        public bool HasDevice => xOutputDevice != null;
+        public bool IsVigem => true;
 
-        public bool IsVigem => xOutputDevice is VigemDevice;
+        public bool IsScp => true;
 
-        public bool IsScp => xOutputDevice is ScpDevice;
+        private readonly ApplicationContext applicationContext;
 
 
         [ResolverMethod]
-        public XOutputManager()
+        public XOutputManager(ApplicationContext applicationContext)
         {
-            if (VigemDevice.IsAvailable())
-            {
-                xOutputDevice = new VigemDevice();
-            }
-            else if (ScpDevice.IsAvailable())
-            {
-                xOutputDevice = new ScpDevice();
-            }
-            else
-            {
-                xOutputDevice = null;
-            }
+            this.applicationContext = applicationContext;
         }
 
-
-        public int Start()
+        public WebsocketXboxClient Start()
         {
-            if (!HasDevice)
-            {
-                return 0;
-            }
-            var controllerCount = Controllers.Instance.GetId();
-            if (!xOutputDevice.Plugin(controllerCount))
-            {
-                ResetId(controllerCount);
-            }
-            return controllerCount;
+            var client = applicationContext.Resolve<WebsocketXboxClient>();
+            client.Start();
+            return client;
         }
 
-        private void ResetId(int controllerCount)
+        public void Stop(WebsocketXboxClient client)
         {
-            if (controllerCount != 0)
-            {
-                Controllers.Instance.DisposeId(controllerCount);
-            }
-        }
-
-        public bool Stop(int controllerCount)
-        {
-            if (!HasDevice)
-            {
-                return false;
-            }
-            bool result = xOutputDevice.Unplug(controllerCount);
-            if (result)
-            {
-                Controllers.Instance.DisposeId(controllerCount);
-            }
-            return result;
+            client.Stop();
         }
     }
 }

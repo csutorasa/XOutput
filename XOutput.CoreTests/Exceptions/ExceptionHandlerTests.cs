@@ -6,13 +6,12 @@ namespace XOutput.Core.Exceptions.Tests
     [TestClass()]
     public class ExceptionHandlerTests
     {
-        ExceptionHandler exceptionHandler = new ExceptionHandler();
         int x = 0;
 
         [TestMethod]
         public void SafeCallActionErrorTest()
         {
-            var result = exceptionHandler.SafeCall(() => throw new AccessViolationException());
+            var result = ExceptionHandler.SafeCall(() => throw new AccessViolationException());
             Assert.IsNotNull(result);
             Assert.IsTrue(result.HasError);
             Assert.IsNotNull(result.Error);
@@ -23,13 +22,13 @@ namespace XOutput.Core.Exceptions.Tests
         [ExpectedException(typeof(Exception))]
         public void SafeCallActionErrorListTest()
         {
-            exceptionHandler.SafeCall(() => throw new Exception(), typeof(AccessViolationException));
+            ExceptionHandler.SafeCall(() => throw new Exception(), typeof(AccessViolationException));
         }
 
         [TestMethod]
         public void SafeCallActionErrorListSubClassTest()
         {
-            var result = exceptionHandler.SafeCall(() => throw new AccessViolationException(), typeof(Exception));
+            var result = ExceptionHandler.SafeCall(() => throw new AccessViolationException(), typeof(Exception));
             Assert.IsNotNull(result);
             Assert.IsTrue(result.HasError);
             Assert.IsNotNull(result.Error);
@@ -39,7 +38,7 @@ namespace XOutput.Core.Exceptions.Tests
         [TestMethod]
         public void SafeCallFuncSuccessTest()
         {
-            var result = exceptionHandler.SafeCall(() => {
+            var result = ExceptionHandler.SafeCall(() => {
                 return 1;
             });
             Assert.IsNotNull(result);
@@ -50,7 +49,7 @@ namespace XOutput.Core.Exceptions.Tests
         [TestMethod]
         public void SafeCallFuncErrorTest()
         {
-            var result = exceptionHandler.SafeCall(() => {
+            var result = ExceptionHandler.SafeCall(() => {
                 if (x < 1)
                 {
                     throw new AccessViolationException();

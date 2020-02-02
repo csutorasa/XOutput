@@ -4,6 +4,11 @@
     {
         public const string MessageType = "XboxInput";
 
+        public XboxInputMessage()
+        {
+            Type = MessageType;
+        }
+
         public bool? A { get; set; }
         public bool? B { get; set; }
         public bool? X { get; set; }

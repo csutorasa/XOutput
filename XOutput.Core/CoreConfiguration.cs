@@ -18,11 +18,5 @@ namespace XOutput.Core
         {
             return new CommandRunner();
         }
-
-        [ResolverMethod]
-        public static ExceptionHandler GetExceptionHandler()
-        {
-            return new ExceptionHandler();
-        }
     }
 }
