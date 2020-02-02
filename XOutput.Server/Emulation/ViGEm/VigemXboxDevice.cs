@@ -17,11 +17,13 @@ namespace XOutput.Server.Emulation.ViGEm
             controller.Connect();
             controller.FeedbackReceived += FeedbackReceived;
             Connected = true;
-            SetValueIfNeeded(Xbox360Axis.LeftThumbX, 0.5);
-            SetValueIfNeeded(Xbox360Axis.LeftThumbY, 0.5);
-            SetValueIfNeeded(Xbox360Axis.RightThumbX, 0.5);
-            SetValueIfNeeded(Xbox360Axis.RightThumbY, 0.5);
-            controller.SubmitReport();
+            SendInput(new XboxInputMessage
+            {
+                LX = 0.5,
+                LY = 0.5,
+                RX = 0.5,
+                RY = 0.5,
+            });
         }
 
         private void FeedbackReceived(object sender, Xbox360FeedbackReceivedEventArgs e)
