@@ -1,6 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Net;
-using System.Collections.Generic;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Server.Rest

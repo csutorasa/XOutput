@@ -143,9 +143,9 @@ namespace XOutput.UI.Windows
                 // TODO
                 /*if (VigemDevice.IsAvailable())
                 {*/
-                    Model.ForceFeedbackText = "";
-                    Model.ForceFeedbackEnabled = device.InputConfiguration.ForceFeedback;
-                    Model.ForceFeedbackAvailable = true;
+                Model.ForceFeedbackText = "";
+                Model.ForceFeedbackEnabled = device.InputConfiguration.ForceFeedback;
+                Model.ForceFeedbackAvailable = true;
                 /*}
                 else
                 {

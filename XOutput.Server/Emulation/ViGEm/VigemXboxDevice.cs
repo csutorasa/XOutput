@@ -1,6 +1,5 @@
 ﻿using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.Xbox360;
-using XOutput.Api.Devices;
 using XOutput.Api.Message.Xbox;
 
 namespace XOutput.Server.Emulation.ViGEm
@@ -30,8 +29,8 @@ namespace XOutput.Server.Emulation.ViGEm
         {
             InvokeFeedbackEvent(new XboxFeedbackEventArgs
             {
-                Small = e.SmallMotor / byte.MaxValue,
-                Large = e.LargeMotor / byte.MaxValue,
+                Small = (double)e.SmallMotor / byte.MaxValue,
+                Large = (double)e.LargeMotor / byte.MaxValue,
                 LedNumber = e.LedNumber,
             });
         }

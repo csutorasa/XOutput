@@ -1,9 +1,6 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using XOutput.Api.Devices;
-using XOutput.Api.Message.Xbox;
 
 namespace XOutput.Server.Emulation.SCPToolkit
 {

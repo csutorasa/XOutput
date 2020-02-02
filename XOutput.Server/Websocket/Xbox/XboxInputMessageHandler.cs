@@ -1,10 +1,5 @@
-﻿using NLog;
-using System;
-using System.Net;
-using XOutput.Api.Devices;
-using XOutput.Api.Message;
+﻿using XOutput.Api.Message;
 using XOutput.Api.Message.Xbox;
-using XOutput.Core.DependencyInjection;
 using XOutput.Server.Emulation;
 
 namespace XOutput.Server.Websocket.Xbox

@@ -1,5 +1,4 @@
-﻿using NLog;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using XOutput.Api.Message;
 using XOutput.Api.Message.Xbox;

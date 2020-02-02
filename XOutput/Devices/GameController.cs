@@ -141,13 +141,13 @@ namespace XOutput.Devices
 
         private void FeedbackReceived(object sender, XboxFeedbackMessage e)
         {
-            ForceFeedbackDevice?.SetForceFeedback((double)e.Large / byte.MaxValue, (double)e.Small / byte.MaxValue);
+            ForceFeedbackDevice?.SetForceFeedback(e.Large / byte.MaxValue, e.Small / byte.MaxValue);
         }
 
         private XboxInputMessage GetMessage(DeviceInputChangedEventArgs e)
         {
             XboxInputMessage message = new XboxInputMessage();
-            if(e.ChangedDPads.Any())
+            if (e.ChangedDPads.Any())
             {
                 message.UP = XInput.GetBool(XInputTypes.UP);
                 message.DOWN = XInput.GetBool(XInputTypes.DOWN);
@@ -158,7 +158,7 @@ namespace XOutput.Devices
             {
                 if (value.IsButton)
                 {
-                    XInputTypes type = (XInputTypes) Enum.Parse(typeof(XInputTypes), value.DisplayName);
+                    XInputTypes type = (XInputTypes)Enum.Parse(typeof(XInputTypes), value.DisplayName);
                     switch (type)
                     {
                         case XInputTypes.A:
@@ -195,7 +195,7 @@ namespace XOutput.Devices
                             message.Home = value.Value > 0.5;
                             break;
                     }
-                } 
+                }
                 else
                 {
                     XInputTypes type = (XInputTypes)Enum.Parse(typeof(XInputTypes), value.DisplayName);

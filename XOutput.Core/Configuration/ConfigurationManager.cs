@@ -29,7 +29,8 @@ namespace XOutput.Core.Configuration
             return Watch(Path.GetDirectoryName(filePath), Path.GetFileName(filePath), handler);
         }
 
-        public IDisposable Watch(string directory, string filter, Action<string> handler) {
+        public IDisposable Watch(string directory, string filter, Action<string> handler)
+        {
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = directory;
             watcher.Filter = filter;

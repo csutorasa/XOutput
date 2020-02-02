@@ -31,7 +31,7 @@ namespace XOutput.Api.Serialization.Tests
             using (MemoryStream ms = new MemoryStream(1024))
             {
                 writer.WriteMessage(message, new StreamWriter(ms));
-                int length = (int) ms.Position;
+                int length = (int)ms.Position;
                 ms.Seek(0, SeekOrigin.Begin);
                 byte[] buffer = new byte[length];
                 ms.Read(buffer, 0, length);

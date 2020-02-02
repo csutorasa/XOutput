@@ -99,7 +99,7 @@ namespace XOutput.Devices.XInput
 
         protected Task SendAsync(MessageBase message)
         {
-            if(websocket.CloseStatus == null)
+            if (websocket.CloseStatus == null)
             {
                 var data = Encoding.UTF8.GetBytes(messageWriter.WriteMessage(message));
                 ArraySegment<byte> buffer = new ArraySegment<byte>(data);

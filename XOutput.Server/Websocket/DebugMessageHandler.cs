@@ -1,7 +1,5 @@
 ﻿using NLog;
-using System.Net;
 using XOutput.Api.Message;
-using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Server.Websocket
 {

@@ -1,10 +1,6 @@
-﻿using NLog;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 using XOutput.Api.Devices;
-using XOutput.Api.Message;
 using XOutput.Api.Message.Xbox;
 using XOutput.Core.DependencyInjection;
 using XOutput.Server.Emulation;

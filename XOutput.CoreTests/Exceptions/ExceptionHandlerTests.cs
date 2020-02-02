@@ -38,7 +38,8 @@ namespace XOutput.Core.Exceptions.Tests
         [TestMethod]
         public void SafeCallFuncSuccessTest()
         {
-            var result = ExceptionHandler.SafeCall(() => {
+            var result = ExceptionHandler.SafeCall(() =>
+            {
                 return 1;
             });
             Assert.IsNotNull(result);
@@ -49,7 +50,8 @@ namespace XOutput.Core.Exceptions.Tests
         [TestMethod]
         public void SafeCallFuncErrorTest()
         {
-            var result = ExceptionHandler.SafeCall(() => {
+            var result = ExceptionHandler.SafeCall(() =>
+            {
                 if (x < 1)
                 {
                     throw new AccessViolationException();

@@ -13,7 +13,7 @@ namespace XOutput.Core.Exceptions
 
         public static SafeCallResult SafeCall(Action action, params Type[] exceptions)
         {
-            return SafeCall(action, (IEnumerable<Type>) exceptions);
+            return SafeCall(action, (IEnumerable<Type>)exceptions);
         }
 
         public static SafeCallResult SafeCall(Action action, IEnumerable<Type> exceptions)

@@ -1,7 +1,4 @@
-﻿using Nefarius.ViGEm.Client.Targets;
-using Nefarius.ViGEm.Client.Targets.Xbox360;
-using XOutput.Api.Devices;
-using XOutput.Api.Message.Xbox;
+﻿using XOutput.Api.Message.Xbox;
 
 namespace XOutput.Server.Emulation.SCPToolkit
 {
@@ -28,16 +25,6 @@ namespace XOutput.Server.Emulation.SCPToolkit
                 LY = 0.5,
                 RX = 0.5,
                 RY = 0.5,
-            });
-        }
-
-        private void FeedbackReceived(object sender, Xbox360FeedbackReceivedEventArgs e)
-        {
-            InvokeFeedbackEvent(new XboxFeedbackEventArgs
-            {
-                Small = e.SmallMotor / byte.MaxValue,
-                Large = e.LargeMotor / byte.MaxValue,
-                LedNumber = e.LedNumber,
             });
         }
 

@@ -9,7 +9,7 @@ After:
 using Moq;
 using System;
 */
-using 
+using
 /* Unmerged change from project 'XOutput.ApiTests (netcoreapp3.1)'
 Before:
 using Moq;
