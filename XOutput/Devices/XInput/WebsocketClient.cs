@@ -9,6 +9,7 @@ using XOutput.Api.Devices;
 using XOutput.Api.Message;
 using XOutput.Api.Serialization;
 using XOutput.Core.Threading;
+using XOutput.Core.WebSocket;
 
 namespace XOutput.Devices.XInput
 {
@@ -21,11 +22,13 @@ namespace XOutput.Devices.XInput
 
         private readonly MessageReader messageReader;
         private readonly MessageWriter messageWriter;
+        private readonly WebSocketHelper webSocketHelper;
 
-        public WebsocketClient(MessageReader messageReader, MessageWriter messageWriter)
+        public WebsocketClient(MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper)
         {
             this.messageReader = messageReader;
             this.messageWriter = messageWriter;
+            this.webSocketHelper = webSocketHelper;
         }
 
         public Task Start()
@@ -46,14 +49,14 @@ namespace XOutput.Devices.XInput
         {
             while (websocket.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
             {
-                string requestMessage = await ReadStringAsync(websocket, cancellationToken).ConfigureAwait(false);
+                string requestMessage = await webSocketHelper.ReadStringAsync(websocket, Encoding.UTF8, cancellationToken);
                 if (requestMessage == null)
                 {
                     continue;
                 }
                 try
                 {
-                    var message = messageReader.ReadMessage(requestMessage);
+                    var message = messageReader.ReadString(requestMessage);
                     ProcessMessage(message);
                 }
                 catch (Exception e)
@@ -70,42 +73,9 @@ namespace XOutput.Devices.XInput
 
         protected abstract void ProcessMessage(MessageBase message);
 
-        private async Task<string> ReadStringAsync(WebSocket ws, CancellationToken cancellationToken)
-        {
-            using (var ms = new MemoryStream())
-            {
-                WebSocketReceiveResult result;
-                ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[8192]);
-                do
-                {
-                    result = await ws.ReceiveAsync(buffer, cancellationToken);
-                    ms.Write(buffer.Array, buffer.Offset, result.Count);
-                }
-                while (!result.EndOfMessage);
-
-                if (result.CloseStatus != null)
-                {
-                    return null;
-                }
-
-                ms.Seek(0, SeekOrigin.Begin);
-
-                using (var reader = new StreamReader(ms, Encoding.UTF8))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
-        }
-
         protected Task SendAsync(MessageBase message)
         {
-            if (websocket.CloseStatus == null)
-            {
-                var data = Encoding.UTF8.GetBytes(messageWriter.WriteMessage(message));
-                ArraySegment<byte> buffer = new ArraySegment<byte>(data);
-                return websocket.SendAsync(buffer, WebSocketMessageType.Text, true, cancellationTokenSource.Token);
-            }
-            return Task.FromResult(0);
+            return webSocketHelper.SendStringAsync(websocket, messageWriter.GetString(message), Encoding.UTF8, cancellationTokenSource.Token);
         }
 
         public void Stop()

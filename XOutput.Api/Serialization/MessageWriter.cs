@@ -7,20 +7,21 @@ namespace XOutput.Api.Serialization
 {
     public class MessageWriter
     {
+        private readonly JsonSerializer jsonSerializer = new JsonSerializer();
 
-        public string WriteMessage(MessageBase message)
+        public string GetString(MessageBase message)
         {
             return JsonConvert.SerializeObject(message);
         }
 
-        public byte[] WriteMessage(MessageBase message, Encoding encoding)
+        public byte[] GetBytes(MessageBase message, Encoding encoding)
         {
-            return encoding.GetBytes(WriteMessage(message));
+            return encoding.GetBytes(GetString(message));
         }
 
-        public void WriteMessage(MessageBase message, StreamWriter output)
+        public void Write(MessageBase message, StreamWriter output)
         {
-            output.Write(WriteMessage(message));
+            jsonSerializer.Serialize(output, message);
             output.Flush();
         }
     }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using XOutput.Api.Serialization;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Threading;
+using XOutput.Core.WebSocket;
 
 namespace XOutput.Server.Websocket
 {
@@ -22,13 +23,15 @@ namespace XOutput.Server.Websocket
         private readonly List<IWebSocketHandler> webSocketHandlers;
         private readonly MessageReader messageReader;
         private readonly MessageWriter messageWriter;
+        private readonly WebSocketHelper webSocketHelper;
 
         [ResolverMethod]
-        public WebSocketService(ApplicationContext applicationContext, MessageReader messageReader, MessageWriter messageWriter)
+        public WebSocketService(ApplicationContext applicationContext, MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper)
         {
             webSocketHandlers = applicationContext.ResolveAll<IWebSocketHandler>();
             this.messageReader = messageReader;
             this.messageWriter = messageWriter;
+            this.webSocketHelper = webSocketHelper;
         }
 
         public bool Handle(HttpListenerContext httpContext, CancellationToken cancellationToken)
@@ -68,18 +71,18 @@ namespace XOutput.Server.Websocket
                 }
                 using (ws)
                 {
-                    var messageHandlers = acceptedHandler.CreateHandlers(httpContext, (message) => WriteStringAsync(ws, messageWriter.WriteMessage(message), cancellationToken));
+                    var messageHandlers = acceptedHandler.CreateHandlers(httpContext, (message) => WriteStringAsync(ws, messageWriter.GetString(message), cancellationToken));
 
                     while (ws.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
                     {
-                        string requestMessage = await ReadStringAsync(ws, cancellationToken).ConfigureAwait(false);
+                        string requestMessage = await webSocketHelper.ReadStringAsync(ws, Encoding.UTF8, cancellationToken);
                         if (requestMessage == null)
                         {
                             continue;
                         }
                         try
                         {
-                            var message = messageReader.ReadMessage(requestMessage);
+                            var message = messageReader.ReadString(requestMessage);
                             var acceptedMessageHandlers = messageHandlers.Where(h => h.CanHandle(message)).ToList();
                             if (acceptedMessageHandlers.Count == 0)
                             {
@@ -110,33 +113,6 @@ namespace XOutput.Server.Websocket
             catch (Exception ex)
             {
                 logger.Error(ex, "Error while handling websocket");
-            }
-        }
-
-        private async Task<string> ReadStringAsync(WebSocket ws, CancellationToken cancellationToken)
-        {
-            using (var ms = new MemoryStream())
-            {
-                WebSocketReceiveResult result;
-                ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[8192]);
-                do
-                {
-                    result = await ws.ReceiveAsync(buffer, cancellationToken);
-                    ms.Write(buffer.Array, buffer.Offset, result.Count);
-                }
-                while (!result.EndOfMessage);
-
-                if (result.CloseStatus != null)
-                {
-                    return null;
-                }
-
-                ms.Seek(0, SeekOrigin.Begin);
-
-                using (var reader = new StreamReader(ms, Encoding.UTF8))
-                {
-                    return reader.ReadToEnd();
-                }
             }
         }
 

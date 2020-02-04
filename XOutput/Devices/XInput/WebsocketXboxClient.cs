@@ -4,6 +4,7 @@ using XOutput.Api.Message;
 using XOutput.Api.Message.Xbox;
 using XOutput.Api.Serialization;
 using XOutput.Core.DependencyInjection;
+using XOutput.Core.WebSocket;
 
 namespace XOutput.Devices.XInput
 {
@@ -12,7 +13,7 @@ namespace XOutput.Devices.XInput
         public event Action<object, XboxFeedbackMessage> Feedback;
 
         [ResolverMethod(Scope.Prototype)]
-        public WebsocketXboxClient(MessageReader messageReader, MessageWriter messageWriter) : base(messageReader, messageWriter)
+        public WebsocketXboxClient(MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper) : base(messageReader, messageWriter, webSocketHelper)
         {
 
         }

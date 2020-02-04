@@ -31,7 +31,7 @@ namespace XOutput.Api.Serialization.Tests
         public void InputDataTest()
         {
             string input = "{\"Type\":\"InputData\",\"Data\":[{\"InputType\":\"test\",\"Value\":0.5}]}";
-            var message = reader.ReadMessage(input) as InputDataMessage;
+            var message = reader.ReadString(input) as InputDataMessage;
             Assert.IsNotNull(message);
             Assert.AreEqual("InputData", message.Type);
             Assert.IsNotNull(message.Data);
@@ -44,7 +44,7 @@ namespace XOutput.Api.Serialization.Tests
         public void DebugTest()
         {
             string input = "{\"Type\":\"Debug\",\"Data\":\"test\"}";
-            var message = reader.ReadMessage(input) as DebugMessage;
+            var message = reader.ReadString(input) as DebugMessage;
             Assert.IsNotNull(message);
             Assert.AreEqual("Debug", message.Type);
             Assert.AreEqual("test", message.Data);
@@ -54,7 +54,7 @@ namespace XOutput.Api.Serialization.Tests
         public void XboxInputTest()
         {
             string input = "{\"Type\":\"XboxInput\",\"LX\":0.5}";
-            var message = reader.ReadMessage(input) as XboxInputMessage;
+            var message = reader.ReadString(input) as XboxInputMessage;
             Assert.IsNotNull(message);
             Assert.AreEqual("XboxInput", message.Type);
             Assert.AreEqual(0.5, message.LX.Value, 0.001);
@@ -65,7 +65,7 @@ namespace XOutput.Api.Serialization.Tests
         public void UnknownMessageTest()
         {
             string input = "{\"Type\":\"test\"}";
-            var message = reader.ReadMessage(input) as MessageBase;
+            var message = reader.ReadString(input) as MessageBase;
             Assert.IsNotNull(message);
             Assert.AreEqual("test", message.Type);
         }
@@ -76,7 +76,7 @@ namespace XOutput.Api.Serialization.Tests
             string input = "{\"Type\":\"test\"}";
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(input)))
             {
-                var message = reader.ReadMessage(new StreamReader(ms)) as MessageBase;
+                var message = reader.Read(new StreamReader(ms)) as MessageBase;
                 Assert.IsNotNull(message);
                 Assert.AreEqual("test", message.Type);
             }
