@@ -4,7 +4,7 @@ using System.IO;
 
 namespace XOutput.Server.Emulation.SCPToolkit
 {
-    public sealed class ScpClient
+    public sealed class ScpClient : IDisposable
     {
         /// <summary>
         /// SCP Bus class GUID
@@ -12,6 +12,7 @@ namespace XOutput.Server.Emulation.SCPToolkit
         private const string SCPBusClassGUID = "{F679F562-3164-42CE-A4DB-E7DDBE723909}";
 
         private readonly SafeFileHandle safeFileHandle;
+        private bool disposed = false;
 
         public ScpClient() : this(0) { }
         public ScpClient(int instance)
@@ -33,10 +34,23 @@ namespace XOutput.Server.Emulation.SCPToolkit
 
         public void Dispose()
         {
-            if (safeFileHandle != null && !safeFileHandle.IsInvalid)
-            {
-                safeFileHandle.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposed)
+                return; 
+            
+            if (disposing) {
+                if (safeFileHandle != null && !safeFileHandle.IsInvalid)
+                {
+                    safeFileHandle.Dispose();
+                }
             }
+            
+            disposed = true;
         }
 
         public void Plugin(int controllerCount)
@@ -66,12 +80,12 @@ namespace XOutput.Server.Emulation.SCPToolkit
         {
             if (safeFileHandle.IsInvalid || safeFileHandle.IsClosed)
             {
-                throw new Exception("File handle is closed or invalid");
+                throw new InvalidOperationException("File handle is closed or invalid");
             }
             bool success = NativeMethods.SendToDevice(safeFileHandle, type, controller, input, output);
             if (!success)
             {
-                throw new Exception("Failed to send message to device with type " + type.ToString());
+                throw new InvalidOperationException("Failed to send message to device with type " + type.ToString());
             }
         }
     }
