@@ -13,9 +13,9 @@ namespace XOutput.Server
 
         public static void Main()
         {
-            var server = new Server();
-            server.WaitForExit();
-            server.Close();
+            var main = new Server();
+            main.WaitForExit();
+            main.Close();
         }
 
         public Server()

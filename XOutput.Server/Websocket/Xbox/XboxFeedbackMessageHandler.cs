@@ -7,8 +7,8 @@ namespace XOutput.Server.Websocket.Xbox
 {
     class XboxFeedbackMessageHandler : IMessageHandler
     {
-        private XboxDevice device;
-        private SenderFunction<XboxFeedbackMessage> senderFunction;
+        private readonly XboxDevice device;
+        private readonly SenderFunction<XboxFeedbackMessage> senderFunction;
 
         public XboxFeedbackMessageHandler(XboxDevice device, SenderFunction<XboxFeedbackMessage> senderFunction)
         {
@@ -39,7 +39,7 @@ namespace XOutput.Server.Websocket.Xbox
 
         public void Close()
         {
-
+            device.FeedbackEvent -= FeedbackEvent;
         }
     }
 }

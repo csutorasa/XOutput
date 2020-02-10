@@ -20,7 +20,7 @@ namespace XOutput.Api.Serialization.Tests
                 Large = 1,
                 LedNumber = 1,
             };
-            var message = writer.WriteMessage(input);
+            var message = writer.GetString(input);
             Assert.AreEqual("{\"Small\":0.0,\"Large\":1.0,\"LedNumber\":1,\"Type\":\"XboxFeedback\"}", message);
         }
 
@@ -30,7 +30,7 @@ namespace XOutput.Api.Serialization.Tests
             var message = new MessageBase { Type = "test" };
             using (MemoryStream ms = new MemoryStream(1024))
             {
-                writer.WriteMessage(message, new StreamWriter(ms));
+                writer.Write(message, new StreamWriter(ms));
                 int length = (int)ms.Position;
                 ms.Seek(0, SeekOrigin.Begin);
                 byte[] buffer = new byte[length];

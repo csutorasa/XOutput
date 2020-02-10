@@ -5,7 +5,7 @@ namespace XOutput.Server.Websocket
 {
     public delegate Task SenderFunction(MessageBase message);
 
-    public delegate Task SenderFunction<T>(T message) where T : MessageBase;
+    public delegate Task SenderFunction<in T>(T message) where T : MessageBase;
 
     public static class SenderFunctionHelper
     {
