@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace XOutput.Core.Configuration
 {
@@ -7,15 +8,18 @@ namespace XOutput.Core.Configuration
     {
         public void Save<T>(string filePath, T configuration) where T : IConfiguration
         {
-            File.WriteAllText(filePath, ConfigurationToString(configuration));
+            using (StreamWriter writer = new StreamWriter(new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write), Encoding.UTF8)) {
+                WriteConfiguration(writer, configuration);
+            }
         }
 
         public T Load<T>(string filePath, Func<T> defaultGetter) where T : IConfiguration
         {
             if (File.Exists(filePath))
             {
-                var text = File.ReadAllText(filePath);
-                return StringToConfiguration<T>(text);
+                using (StreamReader reader = new StreamReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), Encoding.UTF8)) {
+                    return ReadConfiguration<T>(reader);
+                }
             }
             if (defaultGetter != null)
             {
@@ -46,7 +50,7 @@ namespace XOutput.Core.Configuration
             return watcher;
         }
 
-        protected abstract string ConfigurationToString<T>(T configuration) where T : IConfiguration;
-        protected abstract T StringToConfiguration<T>(string configuration) where T : IConfiguration;
+        protected abstract void WriteConfiguration<T>(StreamWriter writer, T configuration) where T : IConfiguration;
+        protected abstract T ReadConfiguration<T>(StreamReader reader) where T : IConfiguration;
     }
 }

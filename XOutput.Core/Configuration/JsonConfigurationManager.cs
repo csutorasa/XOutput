@@ -1,17 +1,21 @@
 ﻿using Newtonsoft.Json;
+using System.IO;
 
 namespace XOutput.Core.Configuration
 {
     public class JsonConfigurationManager : ConfigurationManager
     {
-        protected override string ConfigurationToString<T>(T configuration)
+        private readonly JsonSerializer jsonSerializer = new JsonSerializer();
+
+        protected override void WriteConfiguration<T>(StreamWriter writer, T configuration)
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
+            jsonSerializer.Serialize(writer, configuration);
+            writer.Flush();
         }
 
-        protected override T StringToConfiguration<T>(string configuration)
+        protected override T ReadConfiguration<T>(StreamReader reader)
         {
-            return JsonConvert.DeserializeObject<T>(configuration);
+            return (T) jsonSerializer.Deserialize(reader, typeof(T));
         }
     }
 }

@@ -1,23 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Text;
-
-/* Unmerged change from project 'XOutput.ApiTests (netcoreapp3.1)'
-Before:
-using System;
-After:
-using Moq;
-using System;
-*/
-using
-/* Unmerged change from project 'XOutput.ApiTests (netcoreapp3.1)'
-Before:
-using Moq;
 using XOutput.Api.Message;
-After:
-using XOutput.Api.Message;
-*/
-XOutput.Api.Message;
 using XOutput.Api.Message.Xbox;
 
 namespace XOutput.Api.Serialization.Tests

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Api", "XOutput.Api\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Server", "XOutput.Server\XOutput.Server.csproj", "{564AD7EA-1A09-4227-BF8F-7CD4BD8621D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.ServerTests", "XOutput.ServerTests\XOutput.ServerTests.csproj", "{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,18 @@ Global
 		{564AD7EA-1A09-4227-BF8F-7CD4BD8621D5}.Release|x64.Build.0 = Release|Any CPU
 		{564AD7EA-1A09-4227-BF8F-7CD4BD8621D5}.Release|x86.ActiveCfg = Release|Any CPU
 		{564AD7EA-1A09-4227-BF8F-7CD4BD8621D5}.Release|x86.Build.0 = Release|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Debug|x64.Build.0 = Debug|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Debug|x86.Build.0 = Debug|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Release|x64.ActiveCfg = Release|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Release|x64.Build.0 = Release|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6E9D307F-E51B-4B7C-BBEE-7414A2206C6B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
