@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "XOutput web UI",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "dev": "webpack --mode=development --config webpack.dev.config.js --watch",
     "install": "webpack --mode=production",

@@ -21,24 +21,30 @@ namespace XOutput.Core.DependencyInjection
 
         public void Discover()
         {
-            var types = typeFinder.GetAllTypes(a => a.FullName.StartsWith("XOutput"));
-            foreach (var type in types)
+            lock (lockObj)
             {
-                if (!constructorResolvedTypes.Contains(type))
+                var types = typeFinder.GetAllTypes(a => a.FullName.StartsWith("XOutput"));
+                foreach (var type in types)
                 {
-                    Resolvers.AddRange(GetConstructorResolvers(type));
-                    constructorResolvedTypes.Add(type);
+                    if (!constructorResolvedTypes.Contains(type))
+                    {
+                        Resolvers.AddRange(GetConstructorResolvers(type));
+                        constructorResolvedTypes.Add(type);
+                    }
                 }
             }
         }
 
         private readonly object lockObj = new object();
 
-        public T Resolve<T>()
+        public T Resolve<T>(bool required = true)
         {
             lock (lockObj)
             {
-                return (T)Resolve(typeof(T));
+                return (T)Resolve(new DependencyDefinition {
+                    Type = typeof(T),
+                    Required = required,
+                });
             }
         }
 
@@ -62,7 +68,7 @@ namespace XOutput.Core.DependencyInjection
             return resolver.Create(resolver.GetDependencies().Select(d => Resolve(d)).ToArray());
         }
 
-        private object Resolve(Dependency dependency)
+        private object Resolve(DependencyDefinition dependency)
         {
             try
             {

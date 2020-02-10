@@ -127,7 +127,7 @@ namespace XOutput.Core.DependencyInjection.Tests
         }
 
         [TestMethod]
-        public void ConfiguartionTest()
+        public void ConfigurationTest()
         {
             ApplicationContext context = new ApplicationContext();
             context.AddFromConfiguration(typeof(Configuration));
@@ -140,8 +140,32 @@ namespace XOutput.Core.DependencyInjection.Tests
         {
             ApplicationContext context = new ApplicationContext();
             context.Discover();
-            R value = context.Resolve<R>();
+            var value = context.Resolve<DiscoveryTest>();
             Assert.IsNotNull(value);
+        }
+
+        [TestMethod]
+        public void NotRequiredValueDependencyTest()
+        {
+            ApplicationContext context = new ApplicationContext();
+            double value = context.Resolve<double>(false);
+            Assert.AreEqual(0.0, value, 0.001);
+        }
+
+        [TestMethod]
+        public void NotRequiredReferenceDependencyTest()
+        {
+            ApplicationContext context = new ApplicationContext();
+            var value = context.Resolve<ApplicationContextTests>(false);
+            Assert.IsNull(value);
+        }
+
+        [TestMethod]
+        public void NotRequiredAttributeTest()
+        {
+            ApplicationContext context = new ApplicationContext();
+            var value = context.Resolve<NotRequiredTest>();
+            Assert.IsInstanceOfType(value, typeof(NotRequiredTest));
         }
     }
 
@@ -174,9 +198,14 @@ namespace XOutput.Core.DependencyInjection.Tests
 
     }
 
-    class R
+    class DiscoveryTest
     {
         [ResolverMethod]
-        public R() { }
+        public DiscoveryTest() { }
+    }
+
+    class NotRequiredTest {
+        [ResolverMethod]
+        public NotRequiredTest([Dependency(false)] int a) { }
     }
 }
