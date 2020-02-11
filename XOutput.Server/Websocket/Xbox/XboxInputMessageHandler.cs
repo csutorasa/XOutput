@@ -6,7 +6,7 @@ namespace XOutput.Server.Websocket.Xbox
 {
     class XboxInputMessageHandler : IMessageHandler
     {
-        private XboxDevice device;
+        private readonly XboxDevice device;
 
         public XboxInputMessageHandler(XboxDevice device)
         {

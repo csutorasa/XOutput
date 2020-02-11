@@ -25,7 +25,7 @@ namespace XOutput.Server.Websocket
 
         public void Close()
         {
-
+            // There is nothing to clean up
         }
     }
 }
