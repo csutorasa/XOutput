@@ -11,7 +11,7 @@ $ErrorActionPreference = 'Stop';
 
 # Configuration
 $sonarCloudUser='csutorasa'
-# $sonarCloudToken from global scope
+$sonarCloudToken=$env:sonarcloudtoken
 
 cd $PSScriptRoot
 
