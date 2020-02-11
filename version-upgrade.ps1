@@ -15,6 +15,3 @@ $new_content | Out-File -Encoding utf8 -FilePath .\XOutput\UpdateChecker\Version
 $new_content = Get-Content .\appveyor.yml | ForEach-Object {$_ -replace "version: .*-{branch}-{build}","version: $version-{branch}-{build}"}
 $new_content = $new_content | ForEach-Object {$_ -replace "versionnumber: .*","versionnumber: $version"}
 [IO.File]::WriteAllLines("$pwd\appveyor.yml", $new_content)
-
-$new_content = Get-Content .\xoutput.nuspec | ForEach-Object {$_ -replace "<version>.*</version>","<version>$version</version>"}
-[IO.File]::WriteAllLines("$pwd\xoutput.nuspec", $new_content)

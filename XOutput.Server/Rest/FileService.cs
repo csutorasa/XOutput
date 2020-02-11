@@ -42,7 +42,7 @@ namespace XOutput.Server.Rest
             {
                 file = "/index.html";
             }
-            return ".\\web" + file.Replace("/", "\\");
+            return ".\\webapp" + file.Replace("/", "\\");
         }
 
         private string GetContentType(string path)

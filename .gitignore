@@ -6,7 +6,7 @@
 # Output
 */bin
 */obj
-Web/dist
+Web/webapp
 
 # Nuget packages
 packages

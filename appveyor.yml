@@ -16,7 +16,7 @@ skip_tags: true
 
 environment:
   versionnumber: 3.27
-  sonarcloudtoken:
+  sonarCloudToken:
     secure: VMTLc0vSBXvIH5sBuyKY6ri8IL3I5kYpXnCK3xYPkfXK0+tFnIwlotzE3Gn5Yu4u
 
 image: Visual Studio 2019
@@ -36,27 +36,27 @@ configuration: Release
   
 build_script:
   - cmd: cd Web && npm install && cd ..
-  - cmd: dotnet tool install --global dotnet-sonarscanner
-  - cmd: dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=%sonarcloudtoken%" /d:sonar.cs.opencover.reportsPaths="*Tests\coverage.*.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs,**/*Configuration.cs"
-  - cmd: dotnet msbuild -p:Configuration=Release -p:Version=%versionnumber% -p:AssemblyVersion=%versionnumber% -p:FileVersion=%versionnumber%
-#  - cmd: dotnet build -c Release -p:Version=%versionnumber% -p:AssemblyVersion=%versionnumber% -p:FileVersion=%versionnumber%
+  - ps: dotnet tool install --global dotnet-sonarscanner
+  - ps: dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=$sonarCloudToken" /d:sonar.cs.opencover.reportsPaths="*Tests\coverage.*.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs,**/*Configuration.cs"
+  - ps: dotnet msbuild -p:Configuration=Release -p:Version=$versionnumber -p:AssemblyVersion=$versionnumber -p:FileVersion=$versionnumber
+#  - ps: dotnet build -c Release -p:Version=$versionnumber -p:AssemblyVersion=$versionnumber -p:FileVersion=$versionnumber
 
 before_build:
   - ps: Install-Product node lts
-  - cmd: dotnet restore
+  - ps: dotnet restore
   
 after_build:
-  - cmd: 7z a XOutput.zip %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\*.exe %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\*.dll %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\web
+  - cmd: 7z a XOutput.zip %APPVEYOR_BUILD_FOLDER%\XOutput.Core\bin\Release\net452\XOutput.Core.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Core\bin\Release\net452\Newtonsoft.Json.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Core\bin\Release\net452\NLog.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Api\bin\Release\net452\XOutput.Api.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Server\bin\Release\net452\XOutput.Server.* %APPVEYOR_BUILD_FOLDER%\XOutput.Server\bin\Release\net452\Nefarius.ViGEm.Client.dll %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\XOutput.* %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\SharpDX.dll %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\SharpDX.DirectInput.dll %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\Hardcodet.Wpf.TaskbarNotification.dll %APPVEYOR_BUILD_FOLDER%\Web\dist\*
 
 #---------------------------------#
 #       tests configuration       #
 #---------------------------------#
 
 test_script:
-  - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+  - ps: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 
 after_test:
-  - dotnet sonarscanner end /d:"sonar.login=%sonarcloudtoken%"
+  - ps: dotnet sonarscanner end /d:"sonar.login=$sonarCloudToken"
 
 #---------------------------------#
 #      artifacts configuration    #
