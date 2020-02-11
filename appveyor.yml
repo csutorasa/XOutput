@@ -46,7 +46,7 @@ before_build:
   - ps: dotnet restore
   
 after_build:
-  - cmd: 7z a XOutput.zip %APPVEYOR_BUILD_FOLDER%\XOutput.Core\bin\Release\net452\XOutput.Core.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Core\bin\Release\net452\Newtonsoft.Json.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Core\bin\Release\net452\NLog.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Api\bin\Release\net452\XOutput.Api.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Server\bin\Release\net452\XOutput.Server.??? %APPVEYOR_BUILD_FOLDER%\XOutput.Server\bin\Release\net452\Nefarius.ViGEm.Client.dll %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\XOutput.??? %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\SharpDX.dll %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\SharpDX.DirectInput.dll %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\Hardcodet.Wpf.TaskbarNotification.dll %APPVEYOR_BUILD_FOLDER%\Web\webapp\*
+  - cmd: 7z a XOutput.zip %APPVEYOR_BUILD_FOLDER%\XOutput.Core\bin\Release\net452\XOutput.Core.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Core\bin\Release\net452\Newtonsoft.Json.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Core\bin\Release\net452\NLog.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Api\bin\Release\net452\XOutput.Api.dll %APPVEYOR_BUILD_FOLDER%\XOutput.Server\bin\Release\net452\XOutput.Server.exe %APPVEYOR_BUILD_FOLDER%\XOutput.Server\bin\Release\net452\Nefarius.ViGEm.Client.dll %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\XOutput.exe %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\SharpDX.dll %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\SharpDX.DirectInput.dll %APPVEYOR_BUILD_FOLDER%\XOutput\bin\Release\net452\Hardcodet.Wpf.TaskbarNotification.dll %APPVEYOR_BUILD_FOLDER%\Web\webapp
 
 #---------------------------------#
 #       tests configuration       #

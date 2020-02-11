@@ -38,9 +38,9 @@ $PSScriptRoot\XOutput.Core\bin\Release\$target\XOutput.Core.dll `
 $PSScriptRoot\XOutput.Core\bin\Release\$target\Newtonsoft.Json.dll `
 $PSScriptRoot\XOutput.Core\bin\Release\$target\NLog.dll `
 $PSScriptRoot\XOutput.Api\bin\Release\$target\XOutput.Api.dll `
-$PSScriptRoot\XOutput.Server\bin\Release\$target\XOutput.Server.* `
+$PSScriptRoot\XOutput.Server\bin\Release\$target\XOutput.Server.exe `
 $PSScriptRoot\XOutput.Server\bin\Release\$target\Nefarius.ViGEm.Client.dll `
-$PSScriptRoot\XOutput\bin\Release\$target\XOutput.* `
+$PSScriptRoot\XOutput\bin\Release\$target\XOutput.exe `
 $PSScriptRoot\XOutput\bin\Release\$target\SharpDX.dll `
 $PSScriptRoot\XOutput\bin\Release\$target\SharpDX.DirectInput.dll `
 $PSScriptRoot\XOutput\bin\Release\$target\Hardcodet.Wpf.TaskbarNotification.dll `
