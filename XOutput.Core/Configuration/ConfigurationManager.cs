@@ -23,7 +23,9 @@ namespace XOutput.Core.Configuration
             }
             if (defaultGetter != null)
             {
-                return defaultGetter();
+                var defaultValue = defaultGetter();
+                Save(filePath, defaultValue);
+                return defaultValue;
             }
             return default;
         }

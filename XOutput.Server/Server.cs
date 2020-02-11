@@ -1,18 +1,29 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 using XOutput.Core;
+using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
+using XOutput.Server.Configuration;
 using XOutput.Server.Http;
 
 namespace XOutput.Server
 {
     public class Server
     {
+        private static string settingsPath;
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        private readonly HttpServer server;
+        private HttpServer server;
+        private IDisposable fileWatcher;
 
         public static void Main()
         {
+            string exePath = Assembly.GetExecutingAssembly().Location;
+            string cwd = Path.GetDirectoryName(exePath);
+            Directory.SetCurrentDirectory(cwd);
+            settingsPath = Path.Join(cwd, "config", "server.json");
+
             var main = new Server();
             main.WaitForExit();
             main.Close();
@@ -20,15 +31,38 @@ namespace XOutput.Server
 
         public Server()
         {
+
             Console.CancelKeyPress += CancelKeyPress;
             var globalContext = ApplicationContext.Global;
             globalContext.Discover();
             globalContext.AddFromConfiguration(typeof(CoreConfiguration));
             globalContext.AddFromConfiguration(typeof(ApiConfiguration));
+            var configurationManager = globalContext.Resolve<ConfigurationManager>();
             /*var firewallService = globalContext.Resolve<FirewallService>();
             firewallService.AddException();*/
-            server = globalContext.Resolve<HttpServer>();
-            server.Start("http://192.168.1.2:8000/");
+            RestartServer(globalContext, configurationManager);
+            fileWatcher = configurationManager.Watch(settingsPath, (path) => {
+                RestartServer(globalContext, configurationManager);
+            });
+        }
+
+        private void RestartServer(ApplicationContext context, ConfigurationManager configurationManager)
+        {
+            try
+            {
+                var settings = configurationManager.Load(settingsPath, () => new ServerSettings());
+                var newServer = context.Resolve<HttpServer>();
+                newServer.Configure(settings.Urls);
+                if (server != null) {
+                    server.Stop();
+                }
+                server = newServer;
+                server.Start();
+            }
+            catch (Exception e)
+            {
+                // Log
+            }
         }
 
         private void CancelKeyPress(object sender, ConsoleCancelEventArgs e)
@@ -47,7 +81,8 @@ namespace XOutput.Server
 
         private void Close()
         {
-            server.Stop();
+            fileWatcher?.Dispose();
+            server?.Stop();
         }
     }
 }

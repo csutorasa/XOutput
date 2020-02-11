@@ -20,7 +20,14 @@ namespace XOutput.Server.Emulation.ViGEm
         [ResolverMethod]
         public ViGEmEmulator()
         {
-            Installed = Initialize();
+            try
+            {
+                Installed = Initialize();
+            }
+            catch
+            {
+                Installed = false;
+            }
         }
 
         public XboxDevice CreateDevice()

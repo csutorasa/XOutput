@@ -1,5 +1,7 @@
 ﻿using NLog;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +24,7 @@ namespace XOutput.Server.Http
         private CancellationTokenSource cancellationTokenSource;
         private HttpListener listener;
 
-        [ResolverMethod]
+        [ResolverMethod(Scope.Prototype)]
         public HttpServer(CommandRunner commandRunner, RestService restService, WebSocketService webSocketService)
         {
             this.commandRunner = commandRunner;
@@ -30,15 +32,31 @@ namespace XOutput.Server.Http
             this.webSocketService = webSocketService;
         }
 
-        public void Start(string uri)
+        public void Configure(List<string> uris)
+        {
+            if (running)
+            {
+                return;
+            }
+            if (listener == null)
+            {
+                listener = new HttpListener();
+                uris.ForEach(uri => listener.Prefixes.Add(uri));
+            }
+            else
+            {
+                listener.Prefixes.Clear();
+                uris.ForEach(uri => listener.Prefixes.Add(uri));
+            }
+        }
+
+        public void Start()
         {
             if (running)
             {
                 return;
             }
             cancellationTokenSource = new CancellationTokenSource();
-            listener = new HttpListener();
-            listener.Prefixes.Add(uri);
             try
             {
                 listener.Start();
@@ -46,18 +64,20 @@ namespace XOutput.Server.Http
             catch (HttpListenerException ex)
             {
                 logger.Warn(ex);
-                AddPersmissions(uri);
-                listener = new HttpListener();
-                listener.Prefixes.Add(uri);
+                List<string> uris = listener.Prefixes.ToList();
+                listener = null;
+                AddPermissions(uris);
+                Configure(uris);
                 listener.Start();
             }
             running = true;
             Task.Run(() => AcceptClientsAsync(listener));
         }
 
-        public void AddPersmissions(string uri)
+        public void AddPermissions(List<string> uris)
         {
             var domainUser = Environment.UserDomainName + "\\\\" + Environment.UserName;
+            string uri = string.Join(',', uris);
             var process = commandRunner.CreatePowershell($"netsh http add urlacl url={uri} user={domainUser}");
             commandRunner.RunProcess(process);
         }
