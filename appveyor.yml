@@ -37,7 +37,7 @@ configuration: Release
 build_script:
   - cmd: cd Web && npm install && cd ..
   - ps: dotnet tool install --global dotnet-sonarscanner
-  - ps: dotnet sonarscanner begin /k:"XOutput" /d:"sonar.host.url=https://sonarcloud.io" /o:"csutorasa" /d:"sonar.login=$sonarCloudToken" /d:sonar.cs.opencover.reportsPaths="*Tests\coverage.*.opencover.xml" /d:sonar.coverage.exclusions="**Tests*.cs,**/*Configuration.cs"
+  - ps: dotnet sonarscanner begin /k:"XOutput" /d:sonar.host.url=https://sonarcloud.io /o:csutorasa /d:sonar.login=$sonarCloudToken /d:sonar.cs.opencover.reportsPaths=*Tests\coverage.*.opencover.xml /d:sonar.coverage.exclusions=**Tests*.cs,**/*Configuration.cs
   - ps: dotnet msbuild -p:Configuration=Release -p:Version=$versionnumber -p:AssemblyVersion=$versionnumber -p:FileVersion=$versionnumber
 #  - ps: dotnet build -c Release -p:Version=$versionnumber -p:AssemblyVersion=$versionnumber -p:FileVersion=$versionnumber
 
@@ -56,7 +56,7 @@ test_script:
   - ps: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 
 after_test:
-  - ps: dotnet sonarscanner end /d:"sonar.login=$sonarCloudToken"
+  - ps: dotnet sonarscanner end /d:sonar.login=$sonarCloudToken
 
 #---------------------------------#
 #      artifacts configuration    #
