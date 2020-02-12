@@ -77,7 +77,7 @@ namespace XOutput.Server.Http
         public void AddPermissions(List<string> uris)
         {
             var domainUser = Environment.UserDomainName + "\\\\" + Environment.UserName;
-            string uri = string.Join(',', uris);
+            string uri = string.Join(",", uris);
             var process = commandRunner.CreatePowershell($"netsh http add urlacl url={uri} user={domainUser}");
             commandRunner.RunProcess(process);
         }
