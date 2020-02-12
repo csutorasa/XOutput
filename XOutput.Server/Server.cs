@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using NLog;
 using XOutput.Core;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
@@ -12,6 +13,7 @@ namespace XOutput.Server
 {
     public class Server
     {
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private static string settingsPath;
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private HttpServer server;
@@ -61,7 +63,7 @@ namespace XOutput.Server
             }
             catch (Exception e)
             {
-                // Log
+                logger.Error(e, "Invalid server configuration");
             }
         }
 
