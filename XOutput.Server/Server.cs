@@ -24,7 +24,7 @@ namespace XOutput.Server
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
-            settingsPath = Path.Join(cwd, "config", "server.json");
+            settingsPath = Path.Combine(cwd, "config", "server.json");
 
             var main = new Server();
             main.WaitForExit();
