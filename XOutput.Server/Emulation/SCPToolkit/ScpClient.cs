@@ -41,15 +41,13 @@ namespace XOutput.Server.Emulation.SCPToolkit
         private void Dispose(bool disposing)
         {
             if (disposed)
-                return; 
-            
-            if (disposing) {
-                if (safeFileHandle != null && !safeFileHandle.IsInvalid)
-                {
-                    safeFileHandle.Dispose();
-                }
+            {
+                return;
             }
-            
+            if (disposing && safeFileHandle != null && !safeFileHandle.IsInvalid)
+            {
+                safeFileHandle.Dispose();
+            }
             disposed = true;
         }
 

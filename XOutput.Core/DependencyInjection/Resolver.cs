@@ -7,7 +7,7 @@ namespace XOutput.Core.DependencyInjection
     public class Resolver
     {
         private readonly Func<object[], object> creator;
-        private readonly DependencyDefinition[] dependencies;
+        private readonly Dependency[] dependencies;
         private readonly Type type;
         private readonly Scope scope;
         private object singletonValue;
@@ -18,7 +18,7 @@ namespace XOutput.Core.DependencyInjection
         public bool HasDependecies => dependencies.Length > 0;
         public Type CreatedType => type;
 
-        protected Resolver(Func<object[], object> creator, DependencyDefinition[] dependencies, Type type, Scope scope)
+        protected Resolver(Func<object[], object> creator, Dependency[] dependencies, Type type, Scope scope)
         {
             this.creator = creator;
             this.dependencies = dependencies;
@@ -29,7 +29,7 @@ namespace XOutput.Core.DependencyInjection
         public static Resolver Create(Delegate creator, Scope scope = Scope.Singleton)
         {
             Func<object[], object> func = (args) => creator.DynamicInvoke(args);
-            var parameters = creator.Method.GetParameters().Select(p => new DependencyDefinition
+            var parameters = creator.Method.GetParameters().Select(p => new Dependency
             {
                 Type = p.ParameterType,
                 Required = true,
@@ -39,11 +39,11 @@ namespace XOutput.Core.DependencyInjection
 
         public static Resolver Create(Func<object[], object> creator, MethodBase method, Type returnType, Scope scope)
         {
-            var parameters = method.GetParameters().Select(p => new DependencyDefinition
+            var parameters = method.GetParameters().Select(p => new Dependency
             {
                 Type = p.ParameterType,
-                Required = p.GetCustomAttributes(typeof(Dependency))
-                    .OfType<Dependency>()
+                Required = p.GetCustomAttributes(typeof(DependencyAttribute))
+                    .OfType<DependencyAttribute>()
                     .Select(d => (bool?)d.Required)
                     .FirstOrDefault() ?? true,
             }).ToArray();
@@ -52,15 +52,15 @@ namespace XOutput.Core.DependencyInjection
 
         public static Resolver CreateSingleton<T>(T singleton)
         {
-            return new Resolver((args) => singleton, new DependencyDefinition[0], typeof(T), Scope.Singleton);
+            return new Resolver((args) => singleton, new Dependency[0], typeof(T), Scope.Singleton);
         }
 
         internal static Resolver CreateSingleton(object singleton)
         {
-            return new Resolver((args) => singleton, new DependencyDefinition[0], singleton.GetType(), Scope.Singleton);
+            return new Resolver((args) => singleton, new Dependency[0], singleton.GetType(), Scope.Singleton);
         }
 
-        public DependencyDefinition[] GetDependencies()
+        public Dependency[] GetDependencies()
         {
             return dependencies.ToArray();
         }

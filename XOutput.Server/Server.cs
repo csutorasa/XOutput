@@ -18,7 +18,7 @@ namespace XOutput.Server
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private ServerSettings settings;
         private HttpServer server;
-        private IDisposable fileWatcher;
+        private readonly IDisposable fileWatcher;
 
         public static void Main()
         {

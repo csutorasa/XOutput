@@ -4,7 +4,7 @@ using XOutput.Core.Configuration;
 
 namespace XOutput.Server.Configuration
 {
-    public class ServerSettings : IConfiguration, IEquatable<ServerSettings>
+    public sealed class ServerSettings : IConfiguration, IEquatable<ServerSettings>
     {
         public List<string> Urls { get; set; }
 

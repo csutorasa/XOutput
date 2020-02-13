@@ -41,7 +41,7 @@ namespace XOutput.Core.DependencyInjection
         {
             lock (lockObj)
             {
-                return (T)Resolve(new DependencyDefinition {
+                return (T)Resolve(new Dependency {
                     Type = typeof(T),
                     Required = required,
                 });
@@ -68,7 +68,7 @@ namespace XOutput.Core.DependencyInjection
             return resolver.Create(resolver.GetDependencies().Select(d => Resolve(d)).ToArray());
         }
 
-        private object Resolve(DependencyDefinition dependency)
+        private object Resolve(Dependency dependency)
         {
             try
             {
@@ -91,8 +91,8 @@ namespace XOutput.Core.DependencyInjection
         private IEnumerable<Resolver> GetConstructorResolvers(Type type)
         {
             return type.GetConstructors()
-                .Where(m => m.GetCustomAttributes(true).OfType<ResolverMethod>().Any())
-                .ToDictionary(m => m, m => m.GetCustomAttributes(true).OfType<ResolverMethod>().First())
+                .Where(m => m.GetCustomAttributes(true).OfType<ResolverMethodAttribute>().Any())
+                .ToDictionary(m => m, m => m.GetCustomAttributes(true).OfType<ResolverMethodAttribute>().First())
                 .Select(constructor =>
                 {
                     Func<object[], object> creator = ((parameters) => constructor.Key.Invoke(parameters));
@@ -137,8 +137,8 @@ namespace XOutput.Core.DependencyInjection
                 foreach (var method in type.GetMethods()
                     .Where(m => m.ReturnType != typeof(void))
                     .Where(m => m.IsStatic)
-                    .Where(m => m.GetCustomAttributes(true).OfType<ResolverMethod>().Any())
-                    .ToDictionary(m => m, m => m.GetCustomAttributes(true).OfType<ResolverMethod>().First()))
+                    .Where(m => m.GetCustomAttributes(true).OfType<ResolverMethodAttribute>().Any())
+                    .ToDictionary(m => m, m => m.GetCustomAttributes(true).OfType<ResolverMethodAttribute>().First()))
                 {
                     Func<object[], object> creator = ((parameters) => method.Key.Invoke(null, parameters));
                     var createdType = method.Key.ReturnType;
