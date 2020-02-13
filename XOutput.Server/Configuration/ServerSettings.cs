@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using XOutput.Core.Configuration;
 
 namespace XOutput.Server.Configuration
 {
-    public class ServerSettings : IConfiguration
+    public class ServerSettings : IConfiguration, IEquatable<ServerSettings>
     {
         public List<string> Urls { get; set; }
 
@@ -12,9 +13,11 @@ namespace XOutput.Server.Configuration
             Urls = new List<string>();
         }
 
-        public bool Equals(IConfiguration settings)
+        public bool Equals(ServerSettings other)
         {
-            var other = settings as ServerSettings;
+            if (other == null) {
+                return false;
+            }
             return Urls.Equals(other.Urls);
         }
     }

@@ -16,6 +16,7 @@ namespace XOutput.Server
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private static string settingsPath;
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private ServerSettings settings;
         private HttpServer server;
         private IDisposable fileWatcher;
 
@@ -52,10 +53,16 @@ namespace XOutput.Server
         {
             try
             {
-                var settings = configurationManager.Load(settingsPath, () => new ServerSettings());
+                var newSettings = configurationManager.Load(settingsPath, () => new ServerSettings());
+                if (newSettings.AreSame(settings))
+                {
+                    return;
+                }
+                settings = newSettings;
                 var newServer = context.Resolve<HttpServer>();
                 newServer.Configure(settings.Urls);
-                if (server != null) {
+                if (server != null)
+                {
                     server.Stop();
                 }
                 server = newServer;

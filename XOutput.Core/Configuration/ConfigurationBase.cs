@@ -2,14 +2,14 @@
 
 namespace XOutput.Core.Configuration
 {
-    public interface IConfiguration : IEquatable<IConfiguration>
+    public interface IConfiguration
     {
 
     }
 
     public static class ConfigurationHelper
     {
-        public static bool Compare<T>(this T a, T b) where T : IConfiguration
+        public static bool AreSame<T>(this T a, T b) where T : IConfiguration, IEquatable<T>
         {
             if (ReferenceEquals(a, b))
             {
