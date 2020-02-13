@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <RootNamespace>XOutput.Server</RootNamespace>
+    <RootNamespace>XOutput.Devices</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\XOutput.Server\XOutput.Server.csproj" />
+    <ProjectReference Include="..\XOutput.Devices\XOutput.Devices.csproj" />
   </ItemGroup>
 
 </Project>

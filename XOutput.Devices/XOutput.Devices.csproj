@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>library</OutputType>
+    <RootNamespace>XOutput.Devices</RootNamespace>
+    <AssemblyName>XOutput.Devices</AssemblyName>
+    <Authors>Ármin Csutorás</Authors>
+    <Product>XOutput.Devices</Product>
+    <PackageId>XOutput.Devices</PackageId>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description></Description>
+    <Copyright>Copyright 2019</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <TargetFrameworks>net452;netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
+  </ItemGroup>
+
+</Project>
