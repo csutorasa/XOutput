@@ -4,7 +4,7 @@ using System.Threading;
 namespace XOutput.Core.Threading.Tests
 {
     [TestClass()]
-    public class ThreadCreatorTest
+    public class ThreadCreatorTests
     {
         [TestMethod]
         [Timeout(1000)]

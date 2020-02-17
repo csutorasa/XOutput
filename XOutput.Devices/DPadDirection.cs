@@ -17,7 +17,7 @@ namespace XOutput.Devices
     {
         public static DPadDirection[] Values => values;
 
-        private static DPadDirection[] values = ((DPadDirection[])Enum.GetValues(typeof(DPadDirection))).Where(d => d != DPadDirection.None).ToArray();
+        private static DPadDirection[] values = Enum.GetValues(typeof(DPadDirection)).OfType<DPadDirection>().Where(d => d != DPadDirection.None).ToArray();
 
         public static DPadDirection GetDirection(bool up, bool down, bool left, bool right)
         {

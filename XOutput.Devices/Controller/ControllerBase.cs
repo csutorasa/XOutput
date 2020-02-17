@@ -10,7 +10,7 @@ namespace XOutput.Devices.Controller
     {
         private Dictionary<T, Func<double>> inputGetters = new Dictionary<T, Func<double>>();
         private List<Action<double, double>> forceFeedbackSetters = new List<Action<double, double>>();
-        private List<IInputDevice> boundDevices = new List<IInputDevice>();
+        private readonly List<IInputDevice> boundDevices = new List<IInputDevice>();
 
         public void Configure(ControllerConfig<T> config, IEnumerable<IInputDevice> devices)
         {
@@ -23,9 +23,11 @@ namespace XOutput.Devices.Controller
             {
                 device.InputChanged -= InputDeviceChanged;
             }
+            forceFeedbackSetters.Clear();
             boundDevices.Clear();
             var deviceLookup = devices.ToDictionary(d => d.UniqueId, d => d);
             inputGetters = mapping.ToDictionary(m => m.Key, m => CreateGetter(deviceLookup, m.Value, GetDefaultValue(m.Key)));
+            forceFeedbackSetters = config.ForceFeedbackMapping.Select(m => CreateSetter(deviceLookup, m)).ToList();
             foreach (var device in devices)
             {
                 device.InputChanged += InputDeviceChanged;

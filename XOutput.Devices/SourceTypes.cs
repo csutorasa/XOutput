@@ -5,7 +5,7 @@ namespace XOutput.Devices
     [Flags]
     public enum SourceTypes
     {
-        Disabled = 0,
+        None = 0,
         Button = 1,
         Slider = 2,
         Dpad = 4,
@@ -19,7 +19,7 @@ namespace XOutput.Devices
     {
         public static bool IsAxis(this SourceTypes type)
         {
-            return SourceTypes.Axis.HasFlag(type);
+            return SourceTypes.Axis.HasFlag(type) && type != SourceTypes.None;
         }
     }
 }

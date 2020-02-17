@@ -48,7 +48,7 @@
         public static InputSource Instance => instance;
         private static InputSource instance = new DisabledInputSource();
 
-        private DisabledInputSource() : base(null, "", SourceTypes.Disabled, 0)
+        private DisabledInputSource() : base(null, "", SourceTypes.None, 0)
         {
 
         }

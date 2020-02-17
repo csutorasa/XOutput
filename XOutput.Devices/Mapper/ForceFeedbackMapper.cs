@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace XOutput.Devices.Mapper
+﻿namespace XOutput.Devices.Mapper
 {
     public class ForceFeedbackMapper : Mapper
     {

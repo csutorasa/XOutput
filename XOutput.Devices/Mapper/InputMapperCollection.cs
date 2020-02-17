@@ -8,28 +8,13 @@ namespace XOutput.Devices.Mapper
     {
         public List<InputMapper> Mappers { get; set; }
 
-        public double CenterPoint
-        {
-            get => centerPoint;
-            set
-            {
-                if (value != centerPoint)
-                {
-                    centerPoint = value;
-                    lowRange = centerPoint;
-                    highRange = 1 - centerPoint;
-                }
-            }
-        }
-
-        private double centerPoint = -1;
-        private double lowRange;
-        private double highRange;
+        public double CenterPoint { get; set; }
 
         public InputMapperCollection(params InputMapper[] data) : this(new List<InputMapper>(data), 0)
         {
 
         }
+
         public InputMapperCollection(List<InputMapper> mappers, double centerPoint)
         {
             Mappers = mappers;
@@ -38,21 +23,17 @@ namespace XOutput.Devices.Mapper
 
         public double GetValue(IEnumerable<double> values)
         {
-            return values.Aggregate(centerPoint, (acc, v) => acc + DiffFromCenter(v));
+            return values.Aggregate(CenterPoint, (acc, v) => acc + DiffFromCenter(v));
         }
 
         private double DiffFromCenter(double value)
         {
-            double difference = value - centerPoint;
+            double difference = value - CenterPoint;
             if (Math.Abs(difference) < 0.0001)
             {
                 return 0;
             }
-            if (value < centerPoint)
-            {
-                return difference * lowRange;
-            }
-            return difference * highRange;
+            return difference;
         }
     }
 }
