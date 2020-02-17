@@ -8,6 +8,11 @@ namespace XOutput.Core.Configuration
     {
         public void Save<T>(string filePath, T configuration) where T : IConfiguration
         {
+            string directory = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
             using (StreamWriter writer = new StreamWriter(new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write), Encoding.UTF8)) {
                 WriteConfiguration(writer, configuration);
             }

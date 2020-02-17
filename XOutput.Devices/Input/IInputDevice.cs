@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace XOutput.Devices.Input
 {
-    public interface IDevice : IDisposable
+    public interface IInputDevice : IDisposable
     {
         event DeviceInputChangedHandler InputChanged;
         event DeviceDisconnectedHandler Disconnected;
@@ -14,5 +14,7 @@ namespace XOutput.Devices.Input
         string DisplayName { get; }
         string UniqueId { get; }
         string HardwareID { get; }
+        InputSource FindSource(int offset);
+        ForceFeedbackTarget FindTarget(int offset);
     }
 }

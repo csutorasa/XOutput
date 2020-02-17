@@ -3,14 +3,14 @@
     public class ForceFeedbackTarget
     {
         public string DisplayName => name;
-        public IDevice InputDevice => inputDevice;
+        public IInputDevice InputDevice => inputDevice;
         public int Offset => offset;
 
-        protected IDevice inputDevice;
+        protected IInputDevice inputDevice;
         protected string name;
         protected int offset;
 
-        protected ForceFeedbackTarget(IDevice inputDevice, string name, int offset)
+        protected ForceFeedbackTarget(IInputDevice inputDevice, string name, int offset)
         {
             this.inputDevice = inputDevice;
             this.name = name;

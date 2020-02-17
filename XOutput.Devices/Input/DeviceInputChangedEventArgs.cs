@@ -8,15 +8,15 @@ namespace XOutput.Devices.Input
 
     public class DeviceInputChangedEventArgs : EventArgs
     {
-        public IDevice Device => device;
+        public IInputDevice Device => device;
         public IEnumerable<InputSource> ChangedValues => changedValues;
         public IEnumerable<int> ChangedDPads => changedDPads;
 
-        protected IDevice device;
+        protected IInputDevice device;
         protected IEnumerable<InputSource> changedValues;
         protected IEnumerable<int> changedDPads;
 
-        public DeviceInputChangedEventArgs(IDevice device)
+        public DeviceInputChangedEventArgs(IInputDevice device)
         {
             this.device = device;
             changedValues = new InputSource[0];

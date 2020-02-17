@@ -3,19 +3,19 @@
     public abstract class InputSource
     {
         public string DisplayName => name;
-        public InputSourceTypes Type => type;
-        public IDevice InputDevice => inputDevice;
+        public SourceTypes Type => type;
+        public IInputDevice InputDevice => inputDevice;
         public int Offset => offset;
-        public bool IsAxis => InputSourceTypes.Axis.HasFlag(type);
-        public bool IsButton => type == InputSourceTypes.Button;
+        public bool IsAxis => SourceTypes.Axis.HasFlag(type);
+        public bool IsButton => type == SourceTypes.Button;
 
-        protected IDevice inputDevice;
+        protected IInputDevice inputDevice;
         protected string name;
-        protected InputSourceTypes type;
+        protected SourceTypes type;
         protected int offset;
         protected double value;
 
-        protected InputSource(IDevice inputDevice, string name, InputSourceTypes type, int offset)
+        protected InputSource(IInputDevice inputDevice, string name, SourceTypes type, int offset)
         {
             this.inputDevice = inputDevice;
             this.name = name;
@@ -28,10 +28,7 @@
             return name;
         }
 
-        public double GetValue(double defaultValue) {
-            if (inputDevice == null) {
-                return defaultValue;
-            }
+        public double GetValue() {
             return value;
         }
 
@@ -51,7 +48,7 @@
         public static InputSource Instance => instance;
         private static InputSource instance = new DisabledInputSource();
 
-        private DisabledInputSource() : base(null, "", InputSourceTypes.Disabled, 0)
+        private DisabledInputSource() : base(null, "", SourceTypes.Disabled, 0)
         {
 
         }
