@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>exe</OutputType>
+    <OutputType>Winexe</OutputType>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <RootNamespace>XOutput.Server</RootNamespace>
     <AssemblyName>XOutput.Server</AssemblyName>
