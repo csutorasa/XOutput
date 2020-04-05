@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using XOutput.Api.Devices;
 using XOutput.Api.Emulation;
 using XOutput.Core.DependencyInjection;
@@ -49,10 +50,11 @@ namespace XOutput.Server.Emulation {
 
         [HttpDelete]
         [Route("/api/devices/{id}")]
-        public ActionResult DeleteDevice(string id)
+        public Task DeleteDevice(string id)
         {
             deviceInfoService.StopAndRemove(id);
-            return null;
+            Response.StatusCode = 204;
+            return Task.CompletedTask;
         }
     }
 }

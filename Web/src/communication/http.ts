@@ -16,10 +16,20 @@ export class HttpService {
         }).then(r => r.json());
     }
 
-    post<T>(path: string, body: object): Promise<T> {
+    post<T>(path: string, body?: object): Promise<T> {
         return fetch(`http://${this.host}:${this.port}/api${path}`, {
             method: 'POST',
-            body: JSON.stringify(body),
+            body: body != null ? JSON.stringify(body) : null,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        }).then(r => r.json());
+    }
+
+    delete<T>(path: string, body?: object): Promise<T> {
+        return fetch(`http://${this.host}:${this.port}/api${path}`, {
+            method: 'DELETE',
+            body: body != null ? JSON.stringify(body) : null,
             headers: {
               'Content-Type': 'application/json'
             }

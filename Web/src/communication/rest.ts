@@ -39,6 +39,10 @@ class RestService {
     getDevices(): Promise<DeviceInfoResponse> {
         return this.http.get<DeviceInfoResponse>('/devices');
     }
+
+    removeDevice(id: string): Promise<DeviceInfoResponse> {
+        return this.http.delete<DeviceInfoResponse>(`/devices/${id}`, null);
+    }
 }
 
 export const rest = new RestService(http);

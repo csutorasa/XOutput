@@ -32,6 +32,7 @@ $ErrorActionPreference = 'Continue';
 
 # npm build
 npm install --cwd Web --prefix Web
+echo "NPM EXITED"
 
 if (! $LastExitCode) {
     [Environment]::Exit(1)
