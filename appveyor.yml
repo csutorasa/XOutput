@@ -35,7 +35,7 @@ platform: Any CPU
 configuration: Release
   
 build_script:
-  - ps: .\ci.ps1
+  - ps: .\ci.ps1 -version $env:versionnumber
 
 before_build:
   - ps: Install-Product node lts
