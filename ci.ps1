@@ -28,18 +28,6 @@ dotnet msbuild -p:Configuration=Release -p:Version=$version -p:AssemblyVersion=$
 dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 dotnet sonarscanner end /d:"sonar.login=$sonarCloudToken"
 
-$ErrorActionPreference = 'Continue';
-
-# npm build
-npm install --cwd Web --prefix Web
-echo "NPM EXITED"
-
-if (! $LastExitCode) {
-    [Environment]::Exit(1)
-}
-
-$ErrorActionPreference = 'Stop';
-
 # Creating package
 $target='netcoreapp3.1'
 7z a XOutput.zip -- `

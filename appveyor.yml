@@ -35,6 +35,7 @@ platform: Any CPU
 configuration: Release
   
 build_script:
+  - cmd: cd Web && npm install
   - ps: .\ci.ps1 -version $env:versionnumber
 
 before_build:
