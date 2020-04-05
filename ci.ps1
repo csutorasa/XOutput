@@ -7,7 +7,7 @@
 param (
     [Parameter(Mandatory=$true)][string]$version
 )
-$ErrorActionPreference = 'Continue';
+$ErrorActionPreference = 'Stop';
 
 # Configuration
 $sonarCloudUser='csutorasa'
@@ -29,7 +29,7 @@ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 dotnet sonarscanner end /d:"sonar.login=$sonarCloudToken"
 
 # npm build
-npm install --cwd Web --prefix Web
+npm install --cwd Web --prefix Web --no-optional
 
 # Creating package
 $target='netcoreapp3.1'
