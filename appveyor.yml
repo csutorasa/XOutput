@@ -41,16 +41,6 @@ before_build:
   - ps: Install-Product node lts
 
 #---------------------------------#
-#       tests configuration       #
-#---------------------------------#
-
-test_script:
-  - ps: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-
-after_test:
-  - ps: dotnet sonarscanner end /d:"sonar.login=$env:sonarcloudtoken"
-
-#---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
 
