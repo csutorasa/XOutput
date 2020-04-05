@@ -43,6 +43,7 @@ namespace XOutput.Server.Emulation {
                 DeviceType = d.DeviceType.ToString(),
                 Emulator = d.Emulator,
                 Active = true,
+                Local = false,
             }).ToList();
         }
 

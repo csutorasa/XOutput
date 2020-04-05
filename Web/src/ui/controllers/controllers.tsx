@@ -8,6 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import { DeviceInfoResponse, DeviceType, rest, DeviceInfo } from "../../communication/rest";
 import { Translation } from "../../translation/translation";
+import { TranslatedText } from "../translatedtext";
 
 interface ControllersState {
     devices: DeviceInfoResponse;
@@ -56,12 +57,12 @@ export class ControllersPage extends React.Component<any, ControllersState, any>
                 <SportsEsportsIcon style={{ color: this.deviceInfoToColor(d) }} />
               </Tooltip>
             </ListItemIcon>
-            <ListItemText primary={ d.id } secondary={ d.address } />
+            <ListItemText primary={ Translation.translate(d.local ? 'LocalDevice' : 'WebDevice') + ` (${d.id})` } secondary={ d.local ? undefined : d.address } />
           </ListItem>
         </List>));
       }
       return <>
-        <h1>Controllers</h1>
+        <h1>{ Translation.translate("ActiveControllers")}</h1>
         { content }
       </>;
     }

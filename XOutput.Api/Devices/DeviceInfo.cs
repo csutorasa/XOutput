@@ -11,5 +11,6 @@ namespace XOutput.Api.Devices
         public string DeviceType { get; set; }
         public string Emulator { get; set; }
         public bool Active { get; set; }
+        public bool Local { get; set; }
     }
 }

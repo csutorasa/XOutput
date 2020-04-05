@@ -1,8 +1,10 @@
 {
-    "Home": "Home",
+    "ActiveControllers": "Aktív vezérlők",
     "Devices": "Eszközök",
     "Admin": "Admin",
     "Fullscreen": "Teljes képernyő",
     "MicrosoftXbox360": "Microsoft Xbox 360",
-    "SonyDualShock4": "Sony Dualshock 4"
+    "SonyDualShock4": "Sony Dualshock 4",
+    "WebDevice": "Web eszköz",
+    "LocalDevice": "Helyi eszköz"
 }

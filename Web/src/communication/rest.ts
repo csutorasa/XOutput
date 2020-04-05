@@ -22,6 +22,7 @@ export type DeviceInfo = {
     deviceType: DeviceType;
     emulator: string;
     active: boolean;
+    local: boolean;
 };
 
 class RestService {

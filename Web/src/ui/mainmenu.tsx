@@ -17,7 +17,7 @@ export class MainMenu extends React.Component<any, any, any> {
                 <Route>
                 <div>
                     <Link to="/">
-                        <button><TT text="Home"/></button>
+                        <button><TT text="ActiveControllers"/></button>
                     </Link>
                     <Link to="/devices">
                         <button><TT text="Devices"/></button>
