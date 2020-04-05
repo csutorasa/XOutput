@@ -7,7 +7,7 @@
 param (
     [Parameter(Mandatory=$true)][string]$version
 )
-$ErrorActionPreference = 'Stop';
+$ErrorActionPreference = 'Continue';
 
 # Configuration
 $sonarCloudUser='csutorasa'
