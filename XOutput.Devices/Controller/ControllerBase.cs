@@ -35,7 +35,12 @@ namespace XOutput.Devices.Controller
             }
         }
 
-        protected abstract void InputDeviceChanged(object sender, DeviceInputChangedEventArgs e);
+        protected void InputDeviceChanged(object sender, DeviceInputChangedEventArgs e)
+        {
+            InputChanged(e);
+        }
+
+        protected abstract void InputChanged(DeviceInputChangedEventArgs args);
 
         protected abstract double GetDefaultValue(T input);
 

@@ -23,6 +23,10 @@ namespace XOutput.Core.WebSocket
         public async Task<string> ReadStringAsync(System.Net.WebSockets.WebSocket websocket, Encoding encoding, CancellationToken cancellationToken)
         {
             var data = await ReadBytesAsync(websocket, cancellationToken);
+            if (data == null)
+            {
+                return null;
+            }
             return encoding.GetString(data);
         }
 

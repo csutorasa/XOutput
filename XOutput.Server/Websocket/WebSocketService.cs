@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Microsoft.AspNetCore.Http;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,37 +34,25 @@ namespace XOutput.Server.Websocket
             this.webSocketHelper = webSocketHelper;
         }
 
-        public bool Handle(HttpListenerContext httpContext, CancellationToken cancellationToken)
-        {
-            if (!httpContext.Request.IsWebSocketRequest)
-            {
-                return false;
-            }
-            ThreadCreator.Create("Websocket listener", (token) => HandleWebSocketAsync(httpContext, cancellationToken)).Start();
-            return true;
-        }
-
-        private async Task HandleWebSocketAsync(HttpListenerContext httpContext, CancellationToken cancellationToken)
+        public async Task HandleWebSocketAsync(HttpContext httpContext, CancellationToken cancellationToken)
         {
             try
             {
                 List<IWebSocketHandler> acceptedHandlers = webSocketHandlers.Where(h => h.CanHandle(httpContext)).ToList();
                 if (acceptedHandlers.Count == 0)
                 {
+                    logger.Error("No handlers found for {0}", httpContext.Request.Path);
                     httpContext.Response.StatusCode = 404;
-                    httpContext.Response.Close();
                     return;
                 }
-                else if (acceptedHandlers.Count > 1)
+                if (acceptedHandlers.Count > 1)
                 {
-                    logger.Error("Multiple handlers found for {0}", httpContext.Request.Url);
+                    logger.Error("Multiple handlers found for {0}", httpContext.Request.Path);
                     httpContext.Response.StatusCode = 500;
-                    httpContext.Response.Close();
                     return;
                 }
                 var acceptedHandler = acceptedHandlers[0];
-                var websocketContext = await httpContext.AcceptWebSocketAsync(null).ConfigureAwait(false);
-                var ws = websocketContext.WebSocket;
+                var ws = await httpContext.WebSockets.AcceptWebSocketAsync(null).ConfigureAwait(false);
                 if (ws == null)
                 {
                     return;
@@ -86,9 +75,10 @@ namespace XOutput.Server.Websocket
             return ws.SendAsync(buffer, WebSocketMessageType.Text, true, cancellationToken);
         }
 
-        private async Task HandleWebSocketContextAsync(WebSocket ws, HttpListenerContext httpContext, IWebSocketHandler handler, CancellationToken cancellationToken)
+        private async Task HandleWebSocketContextAsync(WebSocket ws, HttpContext httpContext, IWebSocketHandler handler, CancellationToken cancellationToken)
         {
-            var messageHandlers = handler.CreateHandlers(httpContext, (message) => WriteStringAsync(ws, messageWriter.GetString(message), cancellationToken));
+            CloseFunction closeFunction = () => ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Done", CancellationToken.None);
+            var messageHandlers = handler.CreateHandlers(httpContext, closeFunction, (message) => WriteStringAsync(ws, messageWriter.GetString(message), cancellationToken));
 
             while (ws.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
             {
@@ -101,9 +91,9 @@ namespace XOutput.Server.Websocket
             }
             if (ws.State != WebSocketState.Closed)
             {
-                await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Done", CancellationToken.None);
+                await closeFunction();
             }
-            messageHandlers.ForEach(h => h.Close());
+            handler.Close(messageHandlers);
         }
 
         private void ProcessMessage(string requestMessage, List<IMessageHandler> messageHandlers)

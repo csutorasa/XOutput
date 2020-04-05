@@ -34,6 +34,7 @@ namespace XOutput.Server.Emulation.SCPToolkit
             {
                 Connected = false;
                 client.Unplug(controllerCount);
+                InvokeClosedEvent(new DeviceDisconnectedEventArgs());
             }
         }
 

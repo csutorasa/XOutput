@@ -42,6 +42,7 @@ namespace XOutput.Server.Emulation.ViGEm
                 Connected = false;
                 controller.FeedbackReceived -= FeedbackReceived;
                 controller.Disconnect();
+                InvokeClosedEvent(new DeviceDisconnectedEventArgs());
             }
         }
 

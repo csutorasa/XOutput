@@ -6,6 +6,7 @@ import { TranslatedText as TT } from "./translatedtext";
 import { Emulation, EmulationProps } from "./emulation/emulation";
 import { Link } from "react-router-dom";
 import { Translation } from "../translation/translation";
+import { ControllersPage } from "./controllers/controllers";
 
 export class MainMenu extends React.Component<any, any, any> {
 
@@ -29,7 +30,7 @@ export class MainMenu extends React.Component<any, any, any> {
             </Switch>
             <Switch>
                 <Route path="/" exact>
-                    XOutput home page
+                    <ControllersPage></ControllersPage>
                 </Route>
                 <Route path="/devices">
                     <DeviceSelector></DeviceSelector>

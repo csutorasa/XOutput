@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using XOutput.Api.Devices;
 using XOutput.Api.Message.Xbox;
 using XOutput.Core.DependencyInjection;
@@ -11,29 +11,54 @@ namespace XOutput.Server.Websocket.Xbox
     {
         private static readonly string DeviceType = DeviceTypes.MicrosoftXbox360.ToString();
         private readonly EmulatorService emulatorService;
+        private readonly DeviceInfoService deviceInfoService;
 
         [ResolverMethod]
-        public XboxWebSocketHandler(EmulatorService emulatorService)
+        public XboxWebSocketHandler(EmulatorService emulatorService, DeviceInfoService deviceInfoService)
         {
             this.emulatorService = emulatorService;
+            this.deviceInfoService = deviceInfoService;
         }
 
-        public bool CanHandle(HttpListenerContext context)
+        public bool CanHandle(HttpContext context)
         {
-            return context.Request.Url.LocalPath.StartsWith($"/{DeviceType}/");
+            return context.Request.Path.Value.StartsWith($"/{DeviceType}/");
         }
 
-        public List<IMessageHandler> CreateHandlers(HttpListenerContext context, SenderFunction sendFunction)
+        public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
-            string emulatorName = context.Request.Url.LocalPath.Replace($"/{DeviceType}/", "");
+            string emulatorName = context.Request.Path.Value.Replace($"/{DeviceType}/", "");
             var emulator = emulatorService.FindEmulator<IXboxEmulator>(DeviceTypes.MicrosoftXbox360, emulatorName);
             var device = emulator.CreateDevice();
+            DeviceDisconnectedEvent disconnectedEvent = (sender, args) => closeFunction();
+            device.Closed += disconnectedEvent;
+            var ip = context.Request.HttpContext.Connection.RemoteIpAddress?.ToString();
+            deviceInfoService.Add(new NetworkDeviceInfo
+            {
+                Device = device,
+                IPAddress = ip,
+                DeviceType = DeviceTypes.MicrosoftXbox360,
+                Emulator = emulator.Name,
+            });
             return new List<IMessageHandler>
             {
                 new DebugMessageHandler(),
                 new XboxFeedbackMessageHandler(device, sendFunction.GetTyped<XboxFeedbackMessage>()),
-                new XboxInputMessageHandler(device),
+                new XboxInputMessageHandler(device, disconnectedEvent),
             };
+        }
+
+        public void Close(IEnumerable<IMessageHandler> handlers)
+        {
+            foreach (var handler in handlers)
+            {
+                if (handler is XboxInputMessageHandler)
+                {
+                    var device = (handler as XboxInputMessageHandler).device;
+                    deviceInfoService.Remove(device);
+                }
+                handler.Close();
+            }
         }
     }
 }

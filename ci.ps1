@@ -29,19 +29,21 @@ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 dotnet sonarscanner end /d:"sonar.login=$sonarCloudToken"
 
 # npm build
-npm install
+npm install --cwd Web --prefix Web
 
 # Creating package
-$target='net452'
+$target='netcoreapp3.1'
 7z a XOutput.zip -- `
-$PSScriptRoot\XOutput.Core\bin\Release\$target\XOutput.Core.dll `
-$PSScriptRoot\XOutput.Core\bin\Release\$target\Newtonsoft.Json.dll `
-$PSScriptRoot\XOutput.Core\bin\Release\$target\NLog.dll `
-$PSScriptRoot\XOutput.Api\bin\Release\$target\XOutput.Api.dll `
-$PSScriptRoot\XOutput.Server\bin\Release\$target\XOutput.Server.exe `
-$PSScriptRoot\XOutput.Server\bin\Release\$target\Nefarius.ViGEm.Client.dll `
-$PSScriptRoot\XOutput\bin\Release\$target\XOutput.exe `
-$PSScriptRoot\XOutput\bin\Release\$target\SharpDX.dll `
-$PSScriptRoot\XOutput\bin\Release\$target\SharpDX.DirectInput.dll `
-$PSScriptRoot\XOutput\bin\Release\$target\Hardcodet.Wpf.TaskbarNotification.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.Core.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.Api.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.Server.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.Devices.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.App.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.App.exe `
+$PSScriptRoot\XOutput.App\bin\Release\$target\Newtonsoft.Json.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\NLog.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\Nefarius.ViGEm.Client.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\SharpDX.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\SharpDX.DirectInput.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\Hardcodet.Wpf.TaskbarNotification.dll `
 $PSScriptRoot\Web\webapp

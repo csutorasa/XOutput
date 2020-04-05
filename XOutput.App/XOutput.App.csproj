@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <RootNamespace>XOutput.App</RootNamespace>
+    <AssemblyName>XOutput.App</AssemblyName>
+    <Authors>Ármin Csutorás</Authors>
+    <Product>XOutput</Product>
+    <PackageId>XOutput</PackageId>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description></Description>
+    <Copyright>Copyright 2020</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <!--<TargetFrameworks>net452;netcoreapp3.1</TargetFrameworks>-->
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
+    <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
+    <ProjectReference Include="..\XOutput.Server\XOutput.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Resources\icon.ico" />
+  </ItemGroup>
+
+</Project>

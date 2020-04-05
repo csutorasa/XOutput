@@ -62,6 +62,7 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
                 };
             });
         });
+        document.querySelector('html').classList.add('fullscreen');
     }
 
     componentWillUnmount() {
@@ -71,6 +72,7 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
         document.removeEventListener('touchend', this.touchEnd, false);
         document.removeEventListener('touchcancel', this.touchCancel, false);
         this.websocket.close();
+        document.querySelector('html').classList.remove('fullscreen');
     }
 
     openFullscreen() {

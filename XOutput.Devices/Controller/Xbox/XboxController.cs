@@ -1,7 +1,4 @@
-﻿
-using XOutput.Devices.Input;
-
-namespace XOutput.Devices.Controller.Xbox
+﻿namespace XOutput.Devices.Controller.Xbox
 {
     public abstract class XboxController : ControllerBase<XboxInputTypes>
     {

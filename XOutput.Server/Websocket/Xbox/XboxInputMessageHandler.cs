@@ -6,11 +6,13 @@ namespace XOutput.Server.Websocket.Xbox
 {
     class XboxInputMessageHandler : IMessageHandler
     {
-        private readonly XboxDevice device;
+        internal readonly XboxDevice device;
+        private readonly DeviceDisconnectedEvent disconnectedEventHandler;
 
-        public XboxInputMessageHandler(XboxDevice device)
+        public XboxInputMessageHandler(XboxDevice device, DeviceDisconnectedEvent disconnectedEventHandler)
         {
             this.device = device;
+            this.disconnectedEventHandler = disconnectedEventHandler;
         }
 
         public bool CanHandle(MessageBase message)
@@ -25,6 +27,7 @@ namespace XOutput.Server.Websocket.Xbox
 
         public void Close()
         {
+            device.Closed -= disconnectedEventHandler;
             device.Close();
         }
     }

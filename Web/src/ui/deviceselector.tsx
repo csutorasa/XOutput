@@ -42,7 +42,7 @@ export class DeviceSelector extends React.Component<any, DeviceSelectorState, an
         return <div key={key}>
             <h3>{key}</h3>
             <p>
-                {value.SupportedDeviceTypes.map(t => (this.renderButton(key, t, value.Installed)))}
+                {value.supportedDeviceTypes.map(t => (this.renderButton(key, t, value.installed)))}
             </p>
         </div>;
     }

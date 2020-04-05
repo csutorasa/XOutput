@@ -8,7 +8,7 @@ export class HttpService {
     }
 
     get<T>(path: string): Promise<T> {
-        return fetch(`http://${this.host}:${this.port}/api/${path}`, {
+        return fetch(`http://${this.host}:${this.port}/api${path}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ export class HttpService {
     }
 
     post<T>(path: string, body: object): Promise<T> {
-        return fetch(`http://${this.host}:${this.port}/api/${path}`, {
+        return fetch(`http://${this.host}:${this.port}/api${path}`, {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {

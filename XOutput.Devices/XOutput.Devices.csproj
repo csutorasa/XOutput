@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <OutputType>library</OutputType>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <RootNamespace>XOutput.Devices</RootNamespace>
     <AssemblyName>XOutput.Devices</AssemblyName>
     <Authors>Ármin Csutorás</Authors>
@@ -14,14 +15,6 @@
     <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
     <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
-    <TargetFrameworks>net452;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

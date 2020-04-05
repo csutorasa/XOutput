@@ -10,7 +10,7 @@
         protected string name;
         protected int offset;
 
-        protected ForceFeedbackTarget(IInputDevice inputDevice, string name, int offset)
+        public ForceFeedbackTarget(IInputDevice inputDevice, string name, int offset)
         {
             this.inputDevice = inputDevice;
             this.name = name;
@@ -22,8 +22,9 @@
             return name;
         }
 
-        public void SetValue(double value) {
-            // TODO force feedback
+        public void SetValue(double value)
+        {
+
         }
     }
 }

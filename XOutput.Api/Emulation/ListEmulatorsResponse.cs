@@ -2,11 +2,6 @@
 
 namespace XOutput.Api.Emulation
 {
-    public class ListEmulatorsResponse
-    {
-        public Dictionary<string, EmulatorResponse> Emulators { get; set; }
-    }
-
     public class EmulatorResponse
     {
         public bool Installed { get; set; }

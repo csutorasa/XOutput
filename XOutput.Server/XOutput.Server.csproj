@@ -1,33 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <OutputType>Winexe</OutputType>
-    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
-    <RootNamespace>XOutput.Server</RootNamespace>
-    <AssemblyName>XOutput.Server</AssemblyName>
-    <Authors>Ármin Csutorás</Authors>
-    <Product>XOutput.Server</Product>
-    <PackageId>XOutput.Server</PackageId>
-    <NeutralLanguage>en</NeutralLanguage>
-    <Description></Description>
-    <Copyright>Copyright 2020</Copyright>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
     <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
-    <TargetFrameworks>net452;netcoreapp3.1</TargetFrameworks>
+    <OutputType>library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
+    <ProjectReference Include="..\XOutput.Devices\XOutput.Devices.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Nefarius.ViGEm.Client" Version="1.16.148" />

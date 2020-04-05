@@ -6,6 +6,11 @@ namespace XOutput.Devices.Input
 
     public class DeviceDisconnectedEventArgs : EventArgs
     {
+        public IInputDevice Device { get; private set; }
 
+        public DeviceDisconnectedEventArgs(IInputDevice device)
+        {
+            Device = device;
+        }
     }
 }

@@ -2,14 +2,12 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const fs = require('fs');
 
-const net452dir = path.resolve(__dirname, '../XOutput.Server/bin/Debug/net452/webapp');
-const nercoreapp31dir = path.resolve(__dirname, '../XOutput.Server/bin/Debug/netcoreapp3.1/webapp');
+const nercoreapp31dir = path.resolve(__dirname, '../XOutput.App/bin/Debug/netcoreapp3.1/webapp');
 
-fs.mkdirSync(net452dir, { recursive: true });
 fs.mkdirSync(nercoreapp31dir, { recursive: true });
 
 function copyFile(file) {
-    fs.createReadStream(path.join('webapp', file)).pipe(fs.createWriteStream(path.join(net452dir, file)));
+    fs.createReadStream(path.join('webapp', file)).pipe(fs.createWriteStream(path.join(nercoreapp31dir, file)));
 }
 
 module.exports = {

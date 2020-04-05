@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace XOutput.Core.DependencyInjection
 {
@@ -24,6 +25,22 @@ namespace XOutput.Core.DependencyInjection
             lock (lockObj)
             {
                 var types = typeFinder.GetAllTypes(a => a.FullName.StartsWith("XOutput"));
+                foreach (var type in types)
+                {
+                    if (!constructorResolvedTypes.Contains(type))
+                    {
+                        Resolvers.AddRange(GetConstructorResolvers(type));
+                        constructorResolvedTypes.Add(type);
+                    }
+                }
+            }
+        }
+
+        public void Discover(IEnumerable<Assembly> assemblies)
+        {
+            lock (lockObj)
+            {
+                var types = typeFinder.GetAllTypes(a => assemblies.Contains(a));
                 foreach (var type in types)
                 {
                     if (!constructorResolvedTypes.Contains(type))

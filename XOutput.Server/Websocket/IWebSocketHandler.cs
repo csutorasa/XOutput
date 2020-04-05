@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Net;
 
 namespace XOutput.Server.Websocket
 {
     interface IWebSocketHandler
     {
-        bool CanHandle(HttpListenerContext context);
-        List<IMessageHandler> CreateHandlers(HttpListenerContext context, SenderFunction sendFunction);
+        bool CanHandle(HttpContext context);
+        List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction);
+        void Close(IEnumerable<IMessageHandler> handlers);
     }
 }
