@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace XOutput.Core.DependencyInjection
 {
@@ -8,7 +9,7 @@ namespace XOutput.Core.DependencyInjection
         public bool Required { get; private set; }
         public DependencyAttribute(bool required = true)
         {
-            this.Required = required;
+            Required = required;
         }
     }
 
@@ -16,5 +17,6 @@ namespace XOutput.Core.DependencyInjection
     {
         public Type Type { get; set; }
         public bool Required { get; set; }
+        public bool IsEnumerable => typeof(IEnumerable).IsAssignableFrom(Type) && Type.GenericTypeArguments.Length == 1;
     }
 }

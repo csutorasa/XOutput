@@ -1,14 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const fs = require('fs');
-
-const nercoreapp31dir = path.resolve(__dirname, '../XOutput.App/bin/Debug/netcoreapp3.1/webapp');
-
-fs.mkdirSync(nercoreapp31dir, { recursive: true });
-
-function copyFile(file) {
-    fs.createReadStream(path.join('webapp', file)).pipe(fs.createWriteStream(path.join(nercoreapp31dir, file)));
-}
 
 module.exports = {
     entry: {
@@ -45,17 +36,20 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 'XOutput'
-        }),
-        {
-            apply: (compiler) => {
-                compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
-                    copyFile('index.html');
-                    copyFile('index.js');
-                });
-            }
-        }
+        })
     ],
     optimization: {
         minimize: false
+    },
+    devServer: {
+        port: 8080,
+        contentBase: path.join(__dirname, 'webapp'),
+        proxy: {
+            '/api': 'http://localhost:8000',
+            '/ws': {
+                target: 'ws://localhost:8000',
+                ws: true
+            }
+        }
     },
 };

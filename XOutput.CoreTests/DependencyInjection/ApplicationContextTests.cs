@@ -75,6 +75,17 @@ namespace XOutput.Core.DependencyInjection.Tests
         }
 
         [TestMethod]
+        public void ResolveAllWithListTypeTest()
+        {
+            ApplicationContext context = new ApplicationContext();
+            context.Resolvers.Add(Resolver.Create(new Func<int>(() => 10)));
+            context.Resolvers.Add(Resolver.Create(new Func<int>(() => 5)));
+            List<int> values = context.Resolve<List<int>>();
+            Assert.IsTrue(values.Contains(10));
+            Assert.IsTrue(values.Contains(5));
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(NoValueFoundException))]
         public void NoValueFoundTest()
         {

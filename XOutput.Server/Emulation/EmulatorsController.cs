@@ -33,8 +33,8 @@ namespace XOutput.Server.Emulation {
         }
 
         [HttpGet]
-        [Route("/api/devices")]
-        public ActionResult<IEnumerable<Api.Devices.DeviceInfo>> ListActiveDevices()
+        [Route("/api/controllers")]
+        public ActionResult<IEnumerable<Api.Devices.DeviceInfo>> ListActiveControllers()
         {
             var devices = deviceInfoService.GetConnectedDevices();
             return devices.Select(d => new DeviceInfo
@@ -49,7 +49,7 @@ namespace XOutput.Server.Emulation {
         }
 
         [HttpDelete]
-        [Route("/api/devices/{id}")]
+        [Route("/api/controllers/{id}")]
         public Task DeleteDevice(string id)
         {
             deviceInfoService.StopAndRemove(id);

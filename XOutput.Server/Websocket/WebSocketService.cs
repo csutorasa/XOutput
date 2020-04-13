@@ -89,7 +89,7 @@ namespace XOutput.Server.Websocket
                 }
                 ProcessMessage(requestMessage, messageHandlers);
             }
-            if (ws.State != WebSocketState.Closed)
+            if (ws.State == WebSocketState.Open)
             {
                 await closeFunction();
             }

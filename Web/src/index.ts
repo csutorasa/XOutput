@@ -10,7 +10,6 @@ const port = window.location.port;
 http.initialize(host, port);
 WebSocketService.initialize(host, port);
 const websocket = new WebSocketService();
-//websocket.connect("");
 
 window.onerror = function(msg, url, line, col) {
     if (websocket.isReady()) {

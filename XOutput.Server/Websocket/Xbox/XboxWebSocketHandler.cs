@@ -22,12 +22,12 @@ namespace XOutput.Server.Websocket.Xbox
 
         public bool CanHandle(HttpContext context)
         {
-            return context.Request.Path.Value.StartsWith($"/{DeviceType}/");
+            return context.Request.Path.Value.StartsWith($"/ws/{DeviceType}/");
         }
 
         public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
-            string emulatorName = context.Request.Path.Value.Replace($"/{DeviceType}/", "");
+            string emulatorName = context.Request.Path.Value.Replace($"/ws/{DeviceType}/", "");
             var emulator = emulatorService.FindEmulator<IXboxEmulator>(DeviceTypes.MicrosoftXbox360, emulatorName);
             var device = emulator.CreateDevice();
             DeviceDisconnectedEvent disconnectedEvent = (sender, args) => closeFunction();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -93,6 +94,17 @@ namespace XOutput.Core.DependencyInjection
             }
             catch (NoValueFoundException)
             {
+                if (dependency.IsEnumerable)
+                {
+                    Type itemType = dependency.Type.GenericTypeArguments[0];
+                    var ResolveEnumerableType = GetType().GetMethod("ResolveEnumerableType", BindingFlags.NonPublic | BindingFlags.Instance, null,
+                        new Type[] { typeof(Type) }, new ParameterModifier[] { }).MakeGenericMethod(itemType);
+                    var result = (IEnumerable) ResolveEnumerableType.Invoke(this, new object[] { dependency.Type });
+                    if (result.GetEnumerator().MoveNext())
+                    {
+                        return result;
+                    }
+                }
                 if (dependency.Required)
                 {
                     throw;
@@ -103,6 +115,13 @@ namespace XOutput.Core.DependencyInjection
                 }
                 return null;
             }
+        }
+
+        private IEnumerable<T> ResolveEnumerableType<T>(Type enumerableType)
+        {
+            var result = ResolveAll<T>();
+            Type iEnumerableT = typeof(IEnumerable<>).MakeGenericType(typeof(T));
+            return (IEnumerable<T>) enumerableType.GetConstructor(new Type[] { iEnumerableT }).Invoke(new object[] { result });
         }
 
         private IEnumerable<Resolver> GetConstructorResolvers(Type type)
@@ -118,12 +137,17 @@ namespace XOutput.Core.DependencyInjection
                 .ToList();
         }
 
-        public List<T> ResolveAll<T>()
+        public List<T> ResolveAll<T>(bool allowEmpty = true)
         {
             lock (lockObj)
             {
                 List<Resolver> currentResolvers = resolvers.Where(r => typeof(T).IsAssignableFrom(r.CreatedType)).ToList();
-                return currentResolvers.Select(r => r.Create(r.GetDependencies().Select(d => Resolve(d)).ToArray())).OfType<T>().ToList();
+                var results = currentResolvers.Select(r => r.Create(r.GetDependencies().Select(d => Resolve(d)).ToArray())).OfType<T>().ToList();
+                if (!allowEmpty && !results.Any())
+                {
+                    throw new NoValueFoundException(typeof(T));
+                }
+                return results;
             }
         }
 

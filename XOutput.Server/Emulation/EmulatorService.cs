@@ -11,9 +11,9 @@ namespace XOutput.Server.Emulation
         private readonly List<IEmulator> emulators;
 
         [ResolverMethod]
-        public EmulatorService(ApplicationContext applicationContext)
+        public EmulatorService(List<IEmulator> emulators)
         {
-            emulators = applicationContext.ResolveAll<IEmulator>();
+            this.emulators = emulators;
         }
 
         public T FindEmulator<T>(DeviceTypes deviceType, string emulator) where T : IEmulator

@@ -1,69 +1,109 @@
 import React from "react";
-import List from '@material-ui/core/List';
 import { green, blue, grey, red } from '@material-ui/core/colors';
-import ListItem from '@material-ui/core/ListItem';
+import Grid from '@material-ui/core/Grid';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import Paper from '@material-ui/core/Paper';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { DeviceInfoResponse, DeviceType, rest, DeviceInfo } from "../../communication/rest";
 import { Translation } from "../../translation/translation";
-import { TranslatedText } from "../translatedtext";
+import { withStyles, Theme } from "@material-ui/core";
+import { Styles } from "@material-ui/core/styles/withStyles";
 
 interface ControllersState {
-    devices: DeviceInfoResponse;
+  devices: DeviceInfoResponse;
 }
 
-export class ControllersPage extends React.Component<any, ControllersState, any> {
-
-    constructor(props: Readonly<any>) {
-        super(props);
-        this.state = {
-          devices: null
-        };
+const styles: Styles<Theme, any, any> = () => ({
+    container: {
+      margin: '10px 0',
+    },
+    paper: {
+      height: '100%',
+      width: '100%',
+    },
+    iconWrapper: {
+      margin: 'auto',
+      textAlign: 'center',
     }
+});
 
-    componentDidMount() {
-      rest.getDevices().then(devices => {
-        this.setState({
-          devices: devices
-        })
+export class ControllersComponent extends React.Component<any, ControllersState, any> {
+
+  constructor(props: Readonly<any>) {
+    super(props);
+    this.state = {
+      devices: null
+    };
+  }
+
+
+  componentDidMount() {
+    this.refreshDevices();
+  }
+
+  refreshDevices() {
+    return rest.getControllers().then(devices => {
+      this.setState({
+        devices: devices
       })
-    }
+    })
+  }
 
-    deviceInfoToColor(deviceInfo: DeviceInfo): string {
-      if (!deviceInfo.active) {
-        return grey[500];
-      }
-      switch (deviceInfo.deviceType) {
-        case DeviceType.MicrosoftXbox360:
-          return green[500];
-        case DeviceType.SonyDualShock4:
-          return blue[500];
-        default:
-          return red[500];
-      }
+  deviceInfoToColor(deviceInfo: DeviceInfo): string {
+    if (!deviceInfo.active) {
+      return grey[500];
     }
+    switch (deviceInfo.deviceType) {
+      case DeviceType.MicrosoftXbox360:
+        return green[500];
+      case DeviceType.SonyDualShock4:
+        return blue[500];
+      default:
+        return red[500];
+    }
+  }
 
-    render() {
-      let content;
-      if (!this.state.devices) {
-        content = <h1>Loading</h1>
-      } else {
-        content = (this.state.devices.map(d => <List>
-          <ListItem>
-            <ListItemIcon>
-              <Tooltip title={ Translation.translate(d.deviceType) + ' - ' + d.emulator }>
-                <SportsEsportsIcon style={{ color: this.deviceInfoToColor(d) }} />
-              </Tooltip>
-            </ListItemIcon>
-            <ListItemText primary={ Translation.translate(d.local ? 'LocalDevice' : 'WebDevice') + ` (${d.id})` } secondary={ d.local ? undefined : d.address } />
-          </ListItem>
-        </List>));
-      }
-      return <>
-        <h1>{ Translation.translate("ActiveControllers")}</h1>
-        { content }
-      </>;
+  deleteDevice(id: string) {
+    rest.removeControllers(id).then(() => this.refreshDevices());
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    let content;
+    if (!this.state.devices) {
+      content = <h1>Loading</h1>
+    } else {
+      content = (<Grid container className={classes.container} spacing={2}>
+          {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
+          <Paper className={classes.paper}>
+            <Grid container>
+              <Grid item xs={1} className={classes.iconWrapper}>
+                <Tooltip title={Translation.translate(d.deviceType) + ' - ' + d.emulator}>
+                  <SportsEsportsIcon style={{ color: this.deviceInfoToColor(d) }}/>
+                </Tooltip>
+              </Grid>
+              <Grid item xs={10}>
+                <ListItemText primary={Translation.translate(d.local ? 'LocalDevice' : 'WebDevice') + ` (${d.id})`} secondary={d.local ? undefined : d.address} />
+              </Grid>
+              <Grid item xs={1} className={classes.iconWrapper}>
+                <IconButton onClick={() => this.deleteDevice(d.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>)}
+      </Grid>);
     }
+    return <>
+      <h1>{Translation.translate("ActiveControllers")}</h1>
+      {content}
+    </>;
+  }
 }
+ 
+export const ControllersPage = withStyles(styles)(ControllersComponent);

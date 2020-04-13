@@ -16,7 +16,7 @@ export class WebSocketService {
         this.host = WebSocketService.globalHost;
         this.port = WebSocketService.globalPort;
         return new Promise((resolve, reject) => {
-            this.websocket = new WebSocket(`ws://${this.host}:${this.port}/${path}`);
+            this.websocket = new WebSocket(`ws://${this.host}:${this.port}/ws/${path}`);
             this.websocket.onopen = (event) => {
                 resolve();
                 this.onOpen(event);

@@ -36,12 +36,12 @@ class RestService {
         return this.http.get<ListEmulatorsResponse>('/emulators');
     }
 
-    getDevices(): Promise<DeviceInfoResponse> {
-        return this.http.get<DeviceInfoResponse>('/devices');
+    getControllers(): Promise<DeviceInfoResponse> {
+        return this.http.get<DeviceInfoResponse>('/controllers');
     }
 
-    removeDevice(id: string): Promise<DeviceInfoResponse> {
-        return this.http.delete<DeviceInfoResponse>(`/devices/${id}`, null);
+    removeControllers(id: string): Promise<DeviceInfoResponse> {
+        return this.http.delete<DeviceInfoResponse>(`/controllers/${id}`, null);
     }
 }
 
