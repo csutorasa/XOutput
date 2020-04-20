@@ -3,6 +3,7 @@ using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -19,6 +20,12 @@ namespace XOutput.Devices.Input.DirectInput
         private readonly object lockObject = new object();
         private bool disposed = false;
         bool allDevices = false;
+
+        [ResolverMethod]
+        public DirectInputDeviceProvider()
+        {
+
+        }
 
         public void SearchDevices()
         {
@@ -84,6 +91,7 @@ namespace XOutput.Devices.Input.DirectInput
 
         public IEnumerable<IInputDevice> GetActiveDevices()
         {
+            SearchDevices();
             lock (lockObject)
             {
                 return currentDevices;

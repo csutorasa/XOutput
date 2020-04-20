@@ -10,6 +10,7 @@
         <tb:TaskbarIcon Visibility="Visible" ToolTipText="XOutput" IconSource="/Resources/icon.ico" MenuActivation="RightClick" PopupActivation="LeftClick">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="Open" Click="OpenClick"/>
                     <MenuItem Header="Exit" Click="ExitClick"/>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>

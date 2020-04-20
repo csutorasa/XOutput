@@ -1,16 +1,15 @@
 import React from "react";
 import { Switch, Route, Redirect, RouteChildrenProps } from "react-router";
-import { AdminPage } from "./admin/admin";
 import { DeviceSelector } from "./deviceselector";
 import { TranslatedText as TT } from "./translatedtext";
 import { Emulation, EmulationProps } from "./emulation/emulation";
 import { Link } from "react-router-dom";
-import { Translation } from "../translation/translation";
 import { ControllersPage } from "./controllers/controllers";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import withStyles, { Styles } from "@material-ui/core/styles/withStyles";
+import { InputsPage } from "./input/inputs";
 
 const styles: Styles<any, any, any> = () => ({
     menubarButton: {
@@ -36,8 +35,8 @@ export class MainMenuComponent extends React.Component<any, any, any> {
                             <Link to="/devices">
                                 <Button className={classes.menubarButton}><TT text="Devices" /></Button>
                             </Link>
-                            <Link to="/admin">
-                                <Button className={classes.menubarButton}><TT text="Admin" /></Button>
+                            <Link to="/inputs">
+                                <Button className={classes.menubarButton}><TT text="InputDevices" /></Button>
                             </Link>
                         </Toolbar>
                     </AppBar>
@@ -55,8 +54,8 @@ export class MainMenuComponent extends React.Component<any, any, any> {
                         <Emulation deviceType={props.match.params.deviceType} emulator={props.match.params.emulator}></Emulation>
                     )}>
                     </Route>
-                    <Route path="/admin">
-                        <AdminPage></AdminPage>
+                    <Route path="/inputs">
+                        <InputsPage></InputsPage>
                     </Route>
                     <Route>
                         <Redirect to="/" />

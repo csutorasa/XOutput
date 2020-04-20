@@ -12,6 +12,7 @@ using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 using System.Collections.Generic;
 using Microsoft.Extensions.Hosting;
+using System.Threading;
 
 namespace XOutput.App
 {
@@ -39,7 +40,7 @@ namespace XOutput.App
             globalContext.AddFromConfiguration(typeof(CoreConfiguration));
             globalContext.AddFromConfiguration(typeof(ApiConfiguration));
             globalContext.AddFromConfiguration(typeof(AppConfiguration));
-            globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Core", "XOutput.Devices", "XOutput.Server"));
+            globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Api", "XOutput.Devices", "XOutput.Server"));
             var configurationManager = globalContext.Resolve<ConfigurationManager>();
             
             var mainWindow = ApplicationContext.Global.Resolve<MainWindow>();

@@ -1,19 +1,20 @@
 import React from "react";
 import { green, blue, grey, red } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
-import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Tooltip from '@material-ui/core/Tooltip';
 import Paper from '@material-ui/core/Paper';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { DeviceInfoResponse, DeviceType, rest, DeviceInfo } from "../../communication/rest";
+import { ControllerInfoResponse, DeviceType, rest, ControllerInfo } from "../../communication/rest";
 import { Translation } from "../../translation/translation";
 import { withStyles, Theme } from "@material-ui/core";
 import { Styles } from "@material-ui/core/styles/withStyles";
 
 interface ControllersState {
-  devices: DeviceInfoResponse;
+  devices: ControllerInfoResponse;
 }
 
 const styles: Styles<Theme, any, any> = () => ({
@@ -52,7 +53,7 @@ export class ControllersComponent extends React.Component<any, ControllersState,
     })
   }
 
-  deviceInfoToColor(deviceInfo: DeviceInfo): string {
+  deviceInfoToColor(deviceInfo: ControllerInfo): string {
     if (!deviceInfo.active) {
       return grey[500];
     }
@@ -75,7 +76,7 @@ export class ControllersComponent extends React.Component<any, ControllersState,
 
     let content;
     if (!this.state.devices) {
-      content = <h1>Loading</h1>
+      content = <CircularProgress />;
     } else {
       content = (<Grid container className={classes.container} spacing={2}>
           {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
@@ -87,7 +88,8 @@ export class ControllersComponent extends React.Component<any, ControllersState,
                 </Tooltip>
               </Grid>
               <Grid item xs={10}>
-                <ListItemText primary={Translation.translate(d.local ? 'LocalDevice' : 'WebDevice') + ` (${d.id})`} secondary={d.local ? undefined : d.address} />
+                <Typography variant='body1'>{Translation.translate(d.local ? 'LocalDevice' : 'WebDevice') + ` (${d.id})`}</Typography>
+                <Typography variant='body2'>{d.local ? undefined : d.address}</Typography>
               </Grid>
               <Grid item xs={1} className={classes.iconWrapper}>
                 <IconButton onClick={() => this.deleteDevice(d.id)}>

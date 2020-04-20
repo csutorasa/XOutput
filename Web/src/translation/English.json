@@ -1,10 +1,14 @@
 {
     "ActiveControllers": "Active controllers",
     "Devices": "Devices",
-    "Admin": "Admin",
     "Fullscreen": "Fullscreen",
     "MicrosoftXbox360": "Microsoft Xbox 360",
     "SonyDualShock4": "Sony Dualshock 4",
     "WebDevice": "Web device",
-    "LocalDevice": "Local device"
+    "LocalDevice": "Local device",
+    "InputDevices": "Input devices",
+    "DPads": "DPads",
+    "Axes": "Axes",
+    "Buttons": "Buttons",
+    "Sliders": "Sliders"
 }

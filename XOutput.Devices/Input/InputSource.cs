@@ -8,6 +8,8 @@
         public int Offset => offset;
         public bool IsAxis => SourceTypes.Axis.HasFlag(type);
         public bool IsButton => type == SourceTypes.Button;
+        public bool IsSlider => type == SourceTypes.Slider;
+        public bool IsDPad => type == SourceTypes.Dpad;
 
         protected IInputDevice inputDevice;
         protected string name;

@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { ListEmulatorsResponse, rest, EmulatorResponse } from "../communication/rest";
-import { useHistory } from "react-router";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Link } from "react-router-dom";
 
 interface DeviceSelectorState {
@@ -49,7 +49,7 @@ export class DeviceSelector extends React.Component<any, DeviceSelectorState, an
 
     render() {
         if (this.state.loading) {
-            return <h1>Loading</h1>;
+            return <CircularProgress />;
         }
         return <>
             {Object.keys(this.state.emulators).map(key => this.renderListElement(key, this.state.emulators[key]))}

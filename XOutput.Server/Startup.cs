@@ -13,6 +13,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using XOutput.Core.DependencyInjection;
 using XOutput.Server.Emulation;
+using XOutput.Server.Input;
 using XOutput.Server.Websocket;
 
 namespace XOutput.Server
@@ -31,6 +32,7 @@ namespace XOutput.Server
         public void ConfigureServices(IServiceCollection services)
         {
             RegisterSingleton<EmulatorsController>(services);
+            RegisterSingleton<InputsController>(services);
 
             services.AddMvc().AddControllersAsServices();
         }

@@ -14,15 +14,26 @@ export interface ListEmulatorsResponse {
     [emulator: string]: EmulatorResponse;
 }
 
-export type DeviceInfoResponse = DeviceInfo[];
+export type ControllerInfoResponse = ControllerInfo[];
 
-export type DeviceInfo = {
+export type ControllerInfo = {
     id: string;
     address: string;
     deviceType: DeviceType;
     emulator: string;
     active: boolean;
     local: boolean;
+};
+
+export type InputDeviceInfoResponse = InputDeviceInformation[];
+
+export type InputDeviceInformation = {
+    id: string;
+    name: string;
+    dPads: number;
+    axes: number;
+    buttons: number;
+    sliders: number;
 };
 
 class RestService {
@@ -36,12 +47,16 @@ class RestService {
         return this.http.get<ListEmulatorsResponse>('/emulators');
     }
 
-    getControllers(): Promise<DeviceInfoResponse> {
-        return this.http.get<DeviceInfoResponse>('/controllers');
+    getControllers(): Promise<ControllerInfoResponse> {
+        return this.http.get<ControllerInfoResponse>('/controllers');
     }
 
-    removeControllers(id: string): Promise<DeviceInfoResponse> {
-        return this.http.delete<DeviceInfoResponse>(`/controllers/${id}`, null);
+    getInputDevices(): Promise<InputDeviceInfoResponse> {
+        return this.http.get<InputDeviceInfoResponse>('/inputs');
+    }
+
+    removeControllers(id: string): Promise<ControllerInfoResponse> {
+        return this.http.delete<ControllerInfoResponse>(`/controllers/${id}`, null);
     }
 }
 

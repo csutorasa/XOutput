@@ -23,6 +23,14 @@ module.exports = {
             {
                 test: /\.html$/,
                 use: 'raw-loader'
+            },
+            {
+                test: /\.css$/,
+                use: 'css-loader'
+            },
+            {
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'raw-loader',
             }
         ],
     },

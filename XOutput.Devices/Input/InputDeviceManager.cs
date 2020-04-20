@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input
 {
@@ -12,10 +13,17 @@ namespace XOutput.Devices.Input
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        public InputDeviceManager()
-        {
+        private readonly List<IInputDeviceProvider> inputDeviceProviders;
 
+        [ResolverMethod]
+        public InputDeviceManager(List<IInputDeviceProvider> inputDeviceProviders)
+        {
+            this.inputDeviceProviders = inputDeviceProviders;
         }
 
+        public List<IInputDevice> GetInputDevices()
+        {
+            return inputDeviceProviders.SelectMany(p => p.GetActiveDevices()).ToList();
+        }
     }
 }

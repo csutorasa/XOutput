@@ -3,6 +3,7 @@ import { Dpad } from "./dpad";
 import { Slider } from "./slider";
 import { Button } from "./button";
 import { Axis } from "./axis";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { ListEmulatorsResponse, rest, EmulatorResponse } from "../../communication/rest";
 import { WebSocketService } from "../../communication/websocket";
 import { Square } from "./square";
@@ -96,7 +97,7 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
 
     render() {
         if (this.state.loading) {
-            return <h1>Loading</h1>;
+            return <CircularProgress />;
         }
         return <div className="root">
             <Slider input="L2" style={{ gridColumn: "span 10", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket}></Slider>

@@ -43,4 +43,5 @@ $PSScriptRoot\XOutput.App\bin\Release\$target\Nefarius.ViGEm.Client.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\SharpDX.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\SharpDX.DirectInput.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\Hardcodet.Wpf.TaskbarNotification.dll `
-$PSScriptRoot\Web\webapp
+$PSScriptRoot\Web\webapp `
+$PSScriptRoot\bin\*

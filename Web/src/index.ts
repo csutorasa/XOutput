@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import { RootElement } from './ui/main';
 import { WebSocketService } from './communication/websocket';
 import { http } from './communication/http'; 
+import 'typeface-roboto';
 
 const host = window.location.hostname;
 const port = window.location.port;
