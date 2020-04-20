@@ -36,6 +36,20 @@ export type InputDeviceInformation = {
     sliders: number;
 };
 
+export type InputDeviceDetails = {
+    id: string;
+    name: string;
+    hardwareId: string;
+    sources: {
+        offset: number;
+        name: string;
+        type: 'button' | 'slider' | 'dpad' | 'axis';
+    }[];
+    forceFeedbacks: {
+        offset: number;
+    }[];
+};
+
 class RestService {
     private http: HttpService;
 
@@ -53,6 +67,10 @@ class RestService {
 
     getInputDevices(): Promise<InputDeviceInfoResponse> {
         return this.http.get<InputDeviceInfoResponse>('/inputs');
+    }
+
+    getInputDeviceDetails(id: string): Promise<InputDeviceDetails> {
+        return this.http.get<InputDeviceDetails>(`/inputs/${id}`);
     }
 
     removeControllers(id: string): Promise<ControllerInfoResponse> {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XOutput.Api.Input;
 using XOutput.Core.DependencyInjection;
+using XOutput.Devices;
 using XOutput.Devices.Input;
 
 namespace XOutput.Server.Input 
@@ -32,6 +33,46 @@ namespace XOutput.Server.Input
                 Buttons = d.Sources.Where(s => s.IsButton).Count(),
                 Sliders = d.Sources.Where(s => s.IsSlider).Count(),
             }).ToList();
+        }
+
+        [HttpGet]
+        [Route("/api/inputs/{id}")]
+        public ActionResult<InputDeviceDetails> InputDeviceDetails(string id)
+        {
+            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            if (inputDevice == null)
+            {
+                return NotFound();
+            }
+            return new InputDeviceDetails
+            {
+                Id = inputDevice.UniqueId,
+                Name = inputDevice.DisplayName,
+                HardwareId = inputDevice.HardwareID,
+                Sources = inputDevice.Sources.Select(s => new InputDeviceSource { Offset = s.Offset, Name = s.DisplayName, Type = fromType(s.Type), }).ToList(),
+                ForceFeedbacks = inputDevice.ForceFeedbacks.Select(s => new InputForceFeedback { Offset = s.Offset }).ToList(),
+            };
+        }
+
+        private string fromType(SourceTypes sourceTypes)
+        {
+            if (sourceTypes.IsAxis())
+            {
+                return "axis";
+            }
+            if (sourceTypes == SourceTypes.Button)
+            {
+                return "button";
+            }
+            if (sourceTypes == SourceTypes.Dpad)
+            {
+                return "dpad";
+            }
+            if (sourceTypes == SourceTypes.Slider)
+            {
+                return "slider";
+            }
+            return null;
         }
     }
 }

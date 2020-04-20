@@ -20,10 +20,10 @@ namespace XOutput.Devices.Input.DirectInput
         public static DirectInputSource[] FromDPad(IInputDevice device, int index)
         {
             return new DirectInputSource[] {
-                new DirectInputSource(device, "DPad" + (index + 1) + " Up", SourceTypes.Dpad, 1000 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Up) ? 1 : 0),
-                new DirectInputSource(device, "DPad" + (index + 1) + " Down", SourceTypes.Dpad, 1001 + index * 4, state => GetDirection(state,index).HasFlag(DPadDirection.Down) ? 1 : 0),
-                new DirectInputSource(device, "DPad" + (index + 1) + " Left", SourceTypes.Dpad, 1002 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Left) ? 1 : 0),
-                new DirectInputSource(device, "DPad" + (index + 1) + " Right", SourceTypes.Dpad, 1003 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Right) ? 1 : 0),
+                new DirectInputSource(device, "DPad" + (index + 1) + " Up", SourceTypes.Dpad, 10000 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Up) ? 1 : 0),
+                new DirectInputSource(device, "DPad" + (index + 1) + " Down", SourceTypes.Dpad, 10001 + index * 4, state => GetDirection(state,index).HasFlag(DPadDirection.Down) ? 1 : 0),
+                new DirectInputSource(device, "DPad" + (index + 1) + " Left", SourceTypes.Dpad, 10002 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Left) ? 1 : 0),
+                new DirectInputSource(device, "DPad" + (index + 1) + " Right", SourceTypes.Dpad, 10003 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Right) ? 1 : 0),
             };
         }
 

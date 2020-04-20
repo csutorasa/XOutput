@@ -10,6 +10,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import withStyles, { Styles } from "@material-ui/core/styles/withStyles";
 import { InputsPage } from "./input/inputs";
+import { InputDetailsPage, InputDetailsProps } from "./input/details";
 
 const styles: Styles<any, any, any> = () => ({
     menubarButton: {
@@ -54,8 +55,12 @@ export class MainMenuComponent extends React.Component<any, any, any> {
                         <Emulation deviceType={props.match.params.deviceType} emulator={props.match.params.emulator}></Emulation>
                     )}>
                     </Route>
-                    <Route path="/inputs">
+                    <Route path="/inputs" exact>
                         <InputsPage></InputsPage>
+                    </Route>
+                    <Route path="/inputs/:id"component={(props: RouteChildrenProps<InputDetailsProps>) => (
+                        <InputDetailsPage id={props.match.params.id}></InputDetailsPage>
+                    )}>
                     </Route>
                     <Route>
                         <Redirect to="/" />

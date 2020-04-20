@@ -4,6 +4,8 @@ using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using XOutput.Core.Threading;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -24,7 +26,9 @@ namespace XOutput.Devices.Input.DirectInput
         public string HardwareID { get; private set; }
 
         public event DeviceInputChangedHandler InputChanged;
+        private readonly DeviceInputChangedEventArgs inputChangedEventArgs;
 
+        private readonly ThreadContext readThreadContext;
         private readonly DirectInputSource[] sources;
         private readonly ForceFeedbackTarget[] targets;
         private readonly Joystick joystick;
@@ -50,6 +54,24 @@ namespace XOutput.Devices.Input.DirectInput
             sources = buttons.Concat(axes).Concat(sliders).Concat(dpads).ToArray();
             var actuatorAxes = joystick.GetObjects().Where(doi => doi.ObjectId.Flags.HasFlag(DeviceObjectTypeFlags.ForceFeedbackActuator)).ToArray();
             targets = actuatorAxes.Select(i => new ForceFeedbackTarget(this, i.Name, i.Offset)).ToArray();
+            joystick.Acquire();
+            inputChangedEventArgs = new DeviceInputChangedEventArgs(this);
+            readThreadContext = ThreadCreator.Create($"{DisplayName} input reader", ReadLoop).Start();
+        }
+
+        private void ReadLoop(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                JoystickState state = joystick.GetCurrentState();
+                var changedSources = sources.Where(s => s.Refresh(state)).ToArray();
+                inputChangedEventArgs.Refresh(changedSources);
+                if (inputChangedEventArgs.ChangedValues.Any())
+                {
+                    InputChanged?.Invoke(this, inputChangedEventArgs);
+                }
+                Thread.Sleep(1);
+            }
         }
 
         public InputSource FindSource(int offset)
@@ -115,6 +137,7 @@ namespace XOutput.Devices.Input.DirectInput
             }
             if (disposing)
             {
+                readThreadContext.Cancel().Wait();
                 joystick.Dispose();
             }
             disposed = true;

@@ -25,5 +25,10 @@ namespace XOutput.Devices.Input
         {
             return inputDeviceProviders.SelectMany(p => p.GetActiveDevices()).ToList();
         }
+
+        public IInputDevice FindInputDevice(string id)
+        {
+            return inputDeviceProviders.SelectMany(p => p.GetActiveDevices()).FirstOrDefault(d => d.UniqueId == id);
+        }
     }
 }

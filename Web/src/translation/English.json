@@ -10,5 +10,6 @@
     "DPads": "DPads",
     "Axes": "Axes",
     "Buttons": "Buttons",
-    "Sliders": "Sliders"
+    "Sliders": "Sliders",
+    "ForceFeedbacks": "Force feedbacks"
 }

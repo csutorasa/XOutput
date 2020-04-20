@@ -72,7 +72,11 @@ namespace XOutput.Server.Websocket
         {
             var data = Encoding.UTF8.GetBytes(message);
             ArraySegment<byte> buffer = new ArraySegment<byte>(data);
-            return ws.SendAsync(buffer, WebSocketMessageType.Text, true, cancellationToken);
+            if (ws.State == WebSocketState.Open)
+            {
+                return ws.SendAsync(buffer, WebSocketMessageType.Text, true, cancellationToken);
+            }
+            return ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Done", CancellationToken.None);
         }
 
         private async Task HandleWebSocketContextAsync(WebSocket ws, HttpContext httpContext, IWebSocketHandler handler, CancellationToken cancellationToken)
