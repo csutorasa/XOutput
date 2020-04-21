@@ -91,7 +91,6 @@ namespace XOutput.Devices.Input.DirectInput
 
         public IEnumerable<IInputDevice> GetActiveDevices()
         {
-            SearchDevices();
             lock (lockObject)
             {
                 return currentDevices;

@@ -80,11 +80,11 @@ namespace XOutput.Devices.Controller
                 {
                     if (mapper.Big)
                     {
-                        return (big, small) => { target.SetValue(big); };
+                        return (big, small) => { target.Value = big; };
                     }
                     else
                     {
-                        return (big, small) => { target.SetValue(small); };
+                        return (big, small) => { target.Value = small; };
                     }
                 }
             }

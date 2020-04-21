@@ -5,6 +5,7 @@
         public string DisplayName => name;
         public IInputDevice InputDevice => inputDevice;
         public int Offset => offset;
+        public double Value { get; set; }
 
         protected IInputDevice inputDevice;
         protected string name;
@@ -20,11 +21,6 @@
         public override string ToString()
         {
             return name;
-        }
-
-        public void SetValue(double value)
-        {
-
         }
     }
 }

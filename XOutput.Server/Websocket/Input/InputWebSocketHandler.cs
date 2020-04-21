@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using XOutput.Api.Message.Input;
 using XOutput.Core.DependencyInjection;
@@ -25,6 +26,10 @@ namespace XOutput.Server.Websocket.Input
         {
             string deviceId = context.Request.Path.Value.Replace($"/ws/input/", "");
             var device = inputDeviceManager.FindInputDevice(deviceId);
+            if (device == null)
+            {
+                throw new ArgumentException();
+            }
             return new List<IMessageHandler>
             {
                 new DebugMessageHandler(),

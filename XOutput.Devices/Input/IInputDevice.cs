@@ -6,7 +6,6 @@ namespace XOutput.Devices.Input
     public interface IInputDevice : IDisposable
     {
         event DeviceInputChangedHandler InputChanged;
-        IEnumerable<DPadDirection> DPads { get; }
         IEnumerable<InputSource> Sources { get; }
         IEnumerable<ForceFeedbackTarget> ForceFeedbacks { get; }
         InputConfig InputConfiguration { get; }

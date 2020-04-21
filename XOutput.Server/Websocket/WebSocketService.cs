@@ -82,7 +82,17 @@ namespace XOutput.Server.Websocket
         private async Task HandleWebSocketContextAsync(WebSocket ws, HttpContext httpContext, IWebSocketHandler handler, CancellationToken cancellationToken)
         {
             CloseFunction closeFunction = () => ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Done", CancellationToken.None);
-            var messageHandlers = handler.CreateHandlers(httpContext, closeFunction, (message) => WriteStringAsync(ws, messageWriter.GetString(message), cancellationToken));
+            List<IMessageHandler> messageHandlers;
+            try
+            {
+                messageHandlers = handler.CreateHandlers(httpContext, closeFunction, (message) => WriteStringAsync(ws, messageWriter.GetString(message), cancellationToken));
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Error occured while creating handlers for {0}", httpContext.Request.Path);
+                httpContext.Response.StatusCode = 500;
+                return;
+            }
 
             while (ws.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
             {

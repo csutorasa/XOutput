@@ -13,27 +13,22 @@ import GamepadIcon from '@material-ui/icons/Gamepad';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { rest, InputDeviceInfoResponse, InputDeviceInformation } from "../../communication/rest";
-import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Translation } from "../../translation/translation";
 import { withStyles, Theme } from "@material-ui/core";
 import { Styles } from "@material-ui/core/styles/withStyles";
 
 interface InputsState {
   devices: InputDeviceInfoResponse;
-  redirectId: string;
 }
 
 const styles: Styles<Theme, any, any> = () => ({
-  container: {
-    margin: '10px 0',
-  },
   paper: {
     height: '100%',
     width: '100%',
-    padding: '5px',
   },
   chip: {
-    margin: '0 5px',
+    margin: '5px 5px',
   },
   iconWrapper: {
     margin: 'auto',
@@ -47,7 +42,6 @@ export class InputsComponent extends React.Component<any, InputsState, any> {
     super(props);
     this.state = {
       devices: null,
-      redirectId: null,
     };
   }
 
@@ -73,30 +67,22 @@ export class InputsComponent extends React.Component<any, InputsState, any> {
     return <SportsEsportsIcon />;
   }
 
-  private setRedirect(id: string) {
-    this.setState({
-      redirectId: id,
-    })
-  }
-
   render() {
     const { classes } = this.props;
 
     let content;
-    if (this.state.redirectId) {
-      content = <Redirect to={'/inputs/' + this.state.redirectId} />
-    } else if (!this.state.devices) {
+    if (!this.state.devices) {
       content = <CircularProgress />;
     } else {
-      content = (<Grid container className={classes.container} spacing={2}>
+      content = (<Grid container spacing={4}>
         {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
-          <Paper className={classes.paper} onClick={() => this.setRedirect(d.id)}>
+          <Paper className={classes.paper}>
             <Grid container>
               <Grid item xs={1} className={classes.iconWrapper}>
                 {this.deviceToIcon(d)}
               </Grid>
               <Grid item xs={11}>
-                <Typography variant='body1'>{d.name}</Typography>
+                <Typography variant='body1'><Link to={`/inputs/${d.id}`}>{d.name}</Link></Typography>
                 <Typography variant='body2'>{d.id}</Typography>
               </Grid>
             </Grid>

@@ -11,10 +11,12 @@ import { Styles } from "@material-ui/core/styles/withStyles";
 import { WebSocketService } from '../../communication/websocket';
 import { InputValues } from "../../communication/input";
 import { MessageBase } from "../../communication/message";
+import { DpadComponent } from "./dpad";
 
 interface InputDetailsState {
   device: InputDeviceDetails;
   values: { [offset: string]: number };
+  forceFeedbacks: number[];
 }
 
 export interface InputDetailsProps {
@@ -23,13 +25,12 @@ export interface InputDetailsProps {
 }
 
 const styles: Styles<Theme, any, any> = () => ({
-  container: {
-    margin: '10px 0',
-  },
   paper: {
     height: '100%',
     width: '100%',
-    padding: '5px',
+  },
+  header: {
+    margin: '10px 0',
   },
   bar: {
     transition: 'none',
@@ -49,6 +50,7 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
     this.state = {
       device: null,
       values: {},
+      forceFeedbacks: [],
     };
   }
 
@@ -79,6 +81,48 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
     })
   }
 
+  switchForceFeedback(offset: number) {
+    const enabled = this.state.forceFeedbacks.indexOf(offset) >= 0;
+    let values: number[];
+    if (enabled) {
+      values = this.state.forceFeedbacks.filter(f => f != offset);
+      rest.stopForceFeedback(this.props.id, offset);
+    } else {
+      values = this.state.forceFeedbacks.slice();
+      values.push(offset);
+      rest.startForceFeedback(this.props.id, offset);
+    }
+    this.setState({
+      forceFeedbacks: values,
+    })
+  }
+
+  dpadGroups(): { up?: number; down?: number; left?: number; right?: number }[] {
+    const dpads: { up?: number; down?: number; left?: number; right?: number }[] = [];
+    this.state.device.sources.filter(s => s.type == 'dpad').forEach(s =>{
+      const index = Math.floor((s.offset - 10000) / 4);
+      if (!dpads[index]) {
+        dpads[index] = {};
+      }
+      const value = dpads[index];
+      switch (s.offset % 4) {
+        case 0:
+          value.up = this.state.values[s.offset] || 0;
+          break;
+        case 1:
+          value.down = this.state.values[s.offset] || 0;
+          break;
+        case 2:
+          value.left = this.state.values[s.offset] || 0;
+          break;
+        case 3:
+          value.right = this.state.values[s.offset] || 0;
+          break;
+      }
+    });
+    return dpads;
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -87,47 +131,48 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
       content = <CircularProgress />;
     } else {
       content = (<>
-        <Typography variant='h5'>{Translation.translate("DPads")}</Typography>
-        <Grid container className={classes.container} spacing={2}>
-          {this.state.device.sources.filter(s => s.type == 'dpad').map(s => <Grid item xs={12} md={6} lg={4} key={s.offset}>
+        <Typography className={classes.header} variant='h5'>{Translation.translate("DPads")}</Typography>
+        <Grid container spacing={3}>
+          {this.dpadGroups().map((d, i) => <Grid item xs={6} md={4} lg={3} key={i}>
             <Paper className={classes.paper}>
-              <Typography variant='body1'>{s.name}</Typography>
-              <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0} classes={{ bar: classes.bar }} />
+              <Typography align='center' variant='body1'>{Translation.translate('DPad') + " " + (i + 1)}</Typography>
+              <DpadComponent up={d.up} down={d.down} left={d.left} right={d.right} />
             </Paper>
           </Grid>)}
         </Grid>
-        <Typography variant='h5'>{Translation.translate("Axes")}</Typography>
-        <Grid container className={classes.container} spacing={2}>
-          {this.state.device.sources.filter(s => s.type == 'axis').map(s => <Grid item xs={12} md={6} lg={4} key={s.offset}>
+        <Typography className={classes.header} variant='h5'>{Translation.translate("Axes")}</Typography>
+        <Grid container spacing={3}>
+          {this.state.device.sources.filter(s => s.type == 'axis').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
             <Paper className={classes.paper}>
-              <Typography variant='body1'>{s.name}</Typography>
+              <Typography align='center' variant='body1'>{s.name}</Typography>
               <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0.5} classes={{ bar: classes.bar }} />
             </Paper>
           </Grid>)}
         </Grid>
-        <Typography variant='h5'>{Translation.translate("Buttons")}</Typography>
-        <Grid container className={classes.container} spacing={2}>
-          {this.state.device.sources.filter(s => s.type == 'button').map(s => <Grid item xs={12} md={6} lg={4} key={s.offset}>
+        <Typography className={classes.header} variant='h5'>{Translation.translate("Buttons")}</Typography>
+        <Grid container spacing={3}>
+          {this.state.device.sources.filter(s => s.type == 'button').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
             <Paper className={classes.paper}>
-              <Typography variant='body1'>{s.name}</Typography>
+              <Typography align='center' variant='body1'>{s.name}</Typography>
               <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0} classes={{ bar: classes.bar }} />
             </Paper>
           </Grid>)}
         </Grid>
-        <Typography variant='h5'>{Translation.translate("Sliders")}</Typography>
-        <Grid container className={classes.container} spacing={2}>
-          {this.state.device.sources.filter(s => s.type == 'slider').map(s => <Grid item xs={12} md={6} lg={4} key={s.offset}>
+        <Typography className={classes.header} variant='h5'>{Translation.translate("Sliders")}</Typography>
+        <Grid container spacing={3}>
+          {this.state.device.sources.filter(s => s.type == 'slider').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
             <Paper className={classes.paper}>
-              <Typography variant='body1'>{s.name}</Typography>
+              <Typography align='center' variant='body1'>{s.name}</Typography>
               <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0} classes={{ bar: classes.bar }} />
             </Paper>
           </Grid>)}
         </Grid>
-        <Typography variant='h5'>{Translation.translate("ForceFeedbacks")}</Typography>
-        <Grid container className={classes.container} spacing={2}>
-          {this.state.device.forceFeedbacks.map(s => <Grid item xs={12} md={6} lg={4} key={s.offset}>
-            <Paper className={classes.paper}>
-              <Typography variant='body1'>{s.offset}</Typography>
+        <Typography className={classes.header} variant='h5'>{Translation.translate("ForceFeedbacks")}</Typography>
+        <Grid container spacing={3}>
+          {this.state.device.forceFeedbacks.map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
+            <Paper className={classes.paper} onClick={() => this.switchForceFeedback(s.offset)}>
+              <Typography align='center' variant='body1'>{s.offset}</Typography>
+              <LinearProgress variant={this.state.forceFeedbacks.indexOf(s.offset) >= 0 ? "indeterminate" : "determinate"} />
             </Paper>
           </Grid>)}
         </Grid>

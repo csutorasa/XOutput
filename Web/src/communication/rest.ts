@@ -76,6 +76,14 @@ class RestService {
     removeControllers(id: string): Promise<ControllerInfoResponse> {
         return this.http.delete<ControllerInfoResponse>(`/controllers/${id}`, null);
     }
+
+    startForceFeedback(id: string, offset: number): Promise<void> {
+        return this.http.post<void>(`/inputs/${id}/forcefeedback/${offset}`, null);
+    }
+
+    stopForceFeedback(id: string, offset: number): Promise<void> {
+        return this.http.delete<void>(`/inputs/${id}/forcefeedback/${offset}`, null);
+    }
 }
 
 export const rest = new RestService(http);

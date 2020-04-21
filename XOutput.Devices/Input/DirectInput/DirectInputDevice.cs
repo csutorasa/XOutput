@@ -13,8 +13,6 @@ namespace XOutput.Devices.Input.DirectInput
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        public IEnumerable<DPadDirection> DPads => throw new NotImplementedException();
-
         public IEnumerable<InputSource> Sources => sources;
 
         public IEnumerable<ForceFeedbackTarget> ForceFeedbacks => targets;
@@ -29,8 +27,10 @@ namespace XOutput.Devices.Input.DirectInput
         private readonly DeviceInputChangedEventArgs inputChangedEventArgs;
 
         private readonly ThreadContext readThreadContext;
-        private readonly DirectInputSource[] sources;
+        private readonly ThreadContext forceFeedbackThreadContext;
+        private readonly MouseSource[] sources;
         private readonly ForceFeedbackTarget[] targets;
+        private readonly Dictionary<ForceFeedbackTarget, DirectDeviceForceFeedback> forceFeedbacks;
         private readonly Joystick joystick;
         private bool disposed = false;
 
@@ -42,35 +42,68 @@ namespace XOutput.Devices.Input.DirectInput
             HardwareID = GetHid(joystick, isHumanInterfaceDevice);
 
             var buttonObjectInstances = joystick.GetObjects(DeviceObjectTypeFlags.Button).Where(b => b.Usage > 0).OrderBy(b => b.ObjectId.InstanceNumber).Take(128).ToArray();
-            var buttons = buttonObjectInstances.Select((b, i) => DirectInputSource.FromButton(this, b, i)).ToArray();
-            var axes = GetAxes().OrderBy(a => a.Usage).Take(24).Select(a => DirectInputSource.FromAxis(this, a));
-            var sliders = joystick.GetObjects().Where(o => o.ObjectType == ObjectGuid.Slider).OrderBy(a => a.Usage).Select((s, i) => DirectInputSource.FromSlider(this, s, i));
-            IEnumerable<DirectInputSource> dpads = new DirectInputSource[0];
+            var buttons = buttonObjectInstances.Select((b, i) => MouseSource.FromButton(this, b, i)).ToArray();
+            var axes = GetAxes().OrderBy(a => a.Usage).Take(24).Select(a => MouseSource.FromAxis(this, a));
+            var sliders = joystick.GetObjects().Where(o => o.ObjectType == ObjectGuid.Slider).OrderBy(a => a.Usage).Select((s, i) => MouseSource.FromSlider(this, s, i));
+            IEnumerable<MouseSource> dpads = new MouseSource[0];
             if (joystick.Capabilities.PovCount > 0)
             {
                 dpads = Enumerable.Range(0, joystick.Capabilities.PovCount)
-                    .SelectMany(i => DirectInputSource.FromDPad(this, i));
+                    .SelectMany(i => MouseSource.FromDPad(this, i));
             }
             sources = buttons.Concat(axes).Concat(sliders).Concat(dpads).ToArray();
-            var actuatorAxes = joystick.GetObjects().Where(doi => doi.ObjectId.Flags.HasFlag(DeviceObjectTypeFlags.ForceFeedbackActuator)).ToArray();
-            targets = actuatorAxes.Select(i => new ForceFeedbackTarget(this, i.Name, i.Offset)).ToArray();
+
+            EffectInfo force = null;
+            if (hasForceFeedbackDevice)
+            {
+                try
+                {
+                    joystick.SetCooperativeLevel(WindowHandleStore.Handle, CooperativeLevel.Background | CooperativeLevel.Exclusive);
+                }
+                catch (Exception)
+                {
+                    logger.Warn($"Failed to set cooperative level to exclusive for {ToString()}");
+                }
+                var constantForce = joystick.GetEffects().FirstOrDefault(x => x.Guid == EffectGuid.ConstantForce);
+                if (constantForce == null)
+                {
+                    force = joystick.GetEffects().FirstOrDefault();
+                }
+                else
+                {
+                    force = constantForce;
+                }
+                var actuatorAxes = joystick.GetObjects().Where(doi => doi.ObjectId.Flags.HasFlag(DeviceObjectTypeFlags.ForceFeedbackActuator)).ToArray();
+                targets = actuatorAxes.Select(i => new ForceFeedbackTarget(this, i.Name, i.Offset)).ToArray();
+                forceFeedbacks = targets.ToDictionary(t => t, t => new DirectDeviceForceFeedback(joystick, force,actuatorAxes.First(a => a.Offset == t.Offset)));
+            } else
+            {
+                targets = new ForceFeedbackTarget[0];
+                forceFeedbacks = new Dictionary<ForceFeedbackTarget, DirectDeviceForceFeedback>();
+            }
             joystick.Acquire();
             inputChangedEventArgs = new DeviceInputChangedEventArgs(this);
-            readThreadContext = ThreadCreator.Create($"{DisplayName} input reader", ReadLoop).Start();
+            readThreadContext = ThreadCreator.CreateLoop($"{DisplayName} input reader", ReadLoop, 1).Start();
+            forceFeedbackThreadContext = ThreadCreator.CreateLoop($"{DisplayName} force feedback", ForceFeedbackLoop, 10).Start();
         }
 
-        private void ReadLoop(CancellationToken token)
+        private void ReadLoop()
         {
-            while (!token.IsCancellationRequested)
+            JoystickState state = joystick.GetCurrentState();
+            var changedSources = sources.Where(s => s.Refresh(state)).ToArray();
+            inputChangedEventArgs.Refresh(changedSources);
+            if (inputChangedEventArgs.ChangedValues.Any())
             {
-                JoystickState state = joystick.GetCurrentState();
-                var changedSources = sources.Where(s => s.Refresh(state)).ToArray();
-                inputChangedEventArgs.Refresh(changedSources);
-                if (inputChangedEventArgs.ChangedValues.Any())
-                {
-                    InputChanged?.Invoke(this, inputChangedEventArgs);
-                }
-                Thread.Sleep(1);
+                InputChanged?.Invoke(this, inputChangedEventArgs);
+            }
+        }
+
+        private void ForceFeedbackLoop()
+        {
+            foreach (var forceFeedback in forceFeedbacks)
+            {
+                double targetValue = forceFeedback.Key.Value;
+                forceFeedback.Value.Value = targetValue;
             }
         }
 
@@ -137,6 +170,7 @@ namespace XOutput.Devices.Input.DirectInput
             }
             if (disposing)
             {
+                forceFeedbackThreadContext.Cancel().Wait();
                 readThreadContext.Cancel().Wait();
                 joystick.Dispose();
             }

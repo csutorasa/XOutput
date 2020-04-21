@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Interop;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.External;
+using XOutput.Core.Threading;
 
 namespace XOutput.App
 {
@@ -18,7 +19,8 @@ namespace XOutput.App
         {
             this.commandRunner = commandRunner;
             InitializeComponent();
-            new WindowInteropHelper(this).EnsureHandle();
+            var helper = new WindowInteropHelper(this);
+            WindowHandleStore.Handle = helper.EnsureHandle();
         }
 
         private void OpenClick(object sender, RoutedEventArgs e)

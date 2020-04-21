@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using XOutput.Api.Message;
 using XOutput.Api.Message.Input;
+using XOutput.Core.Threading;
 using XOutput.Devices.Input;
 
 namespace XOutput.Server.Websocket.Input
@@ -10,20 +13,42 @@ namespace XOutput.Server.Websocket.Input
     {
         private readonly IInputDevice device;
         private readonly SenderFunction<InputValuesMessage> senderFunction;
+        private readonly ThreadContext threadContext;
+        private readonly object lockObject = new object();
+        private readonly ISet<InputSource> changedValues = new HashSet<InputSource>();
 
         public InputValuesMessageHandler(IInputDevice device, SenderFunction<InputValuesMessage> senderFunction)
         {
             this.device = device;
             this.senderFunction = senderFunction;
             device.InputChanged += InputChanged;
+            threadContext = ThreadCreator.CreateLoop($"Websocket input value writer {device.DisplayName}", ResponseLoop, 33).Start();
+        }
+
+        private void ResponseLoop()
+        {
+            lock (lockObject)
+            {
+                if (changedValues.Count > 0)
+                {
+                    senderFunction?.Invoke(new InputValuesMessage
+                    {
+                        Values = changedValues.ToDictionary(v => v.Offset, v => v.GetValue())
+                    });
+                    changedValues.Clear();
+                }
+            }
         }
 
         private void InputChanged(object sender, DeviceInputChangedEventArgs e)
         {
-            senderFunction?.Invoke(new InputValuesMessage
+            lock (lockObject)
             {
-                Values = e.ChangedValues.ToDictionary(v => v.Offset, v => v.GetValue())
-            });
+                foreach (var source in e.ChangedValues)
+                {
+                    changedValues.Add(source);
+                }
+            }
         }
 
         public bool CanHandle(MessageBase message)
@@ -39,6 +64,7 @@ namespace XOutput.Server.Websocket.Input
         public void Close()
         {
             device.InputChanged -= InputChanged;
+            threadContext.Cancel().Wait();
         }
     }
 }

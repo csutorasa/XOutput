@@ -54,6 +54,42 @@ namespace XOutput.Server.Input
             };
         }
 
+        [HttpPost]
+        [Route("/api/inputs/{id}/forcefeedback/{offset}")]
+        public ActionResult<InputDeviceDetails> StartForceFeedback(string id, int offset)
+        {
+            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            if (inputDevice == null)
+            {
+                return NotFound("Device not found");
+            }
+            var target = inputDevice.FindTarget(offset);
+            if (target == null)
+            {
+                return NotFound("ForceFeedback target not found");
+            }
+            target.Value = 1;
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("/api/inputs/{id}/forcefeedback/{offset}")]
+        public ActionResult<InputDeviceDetails> StopForceFeedback(string id, int offset)
+        {
+            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            if (inputDevice == null)
+            {
+                return NotFound("Device not found");
+            }
+            var target = inputDevice.FindTarget(offset);
+            if (target == null)
+            {
+                return NotFound("ForceFeedback target not found");
+            }
+            target.Value = 0;
+            return NoContent();
+        }
+
         private string fromType(SourceTypes sourceTypes)
         {
             if (sourceTypes.IsAxis())

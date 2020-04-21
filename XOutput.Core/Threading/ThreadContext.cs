@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace XOutput.Core.Threading
 {
@@ -50,6 +51,13 @@ namespace XOutput.Core.Threading
                 thread.Join();
             }
             return result;
+        }
+
+        public Task<ThreadResult> WaitAsync()
+        {
+            var task = new Task<ThreadResult>(() => Wait());
+            task.Start();
+            return task;
         }
     }
 }
