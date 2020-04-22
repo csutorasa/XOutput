@@ -3,13 +3,15 @@ using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.Mouse
 {
-    public sealed class MouseDeviceProvider : IInputDeviceProvider
+    public sealed class MouseDeviceProvider : InputConfigManager, IInputDeviceProvider
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
+        internal const string DeviceId = "mouse";
 
         public event DeviceConnectedHandler Connected;
         public event DeviceDisconnectedHandler Disconnected;
@@ -19,7 +21,7 @@ namespace XOutput.Devices.Input.Mouse
         private MouseDevice device;
 
         [ResolverMethod]
-        public MouseDeviceProvider(MouseHook hook)
+        public MouseDeviceProvider(ConfigurationManager configurationManager, MouseHook hook) : base(configurationManager)
         {
             this.hook = hook;
 #if !DEBUG
@@ -31,7 +33,12 @@ namespace XOutput.Devices.Input.Mouse
         {
             if(device == null)
             {
-                device = new MouseDevice(hook);
+                var config = LoadConfig(DeviceId);
+                device = new MouseDevice(hook)
+                {
+                    InputConfiguration = config,
+                };
+                Connected?.Invoke(this, new DeviceConnectedEventArgs(device));
             }
         }
 
@@ -42,6 +49,17 @@ namespace XOutput.Devices.Input.Mouse
                 return new IInputDevice[] { };
             }
             return new IInputDevice[] { device };
+        }
+
+        public bool SaveInputConfig(string id, InputConfig config)
+        {
+            if (DeviceId != id || device == null)
+            {
+                return false;
+            }
+            SaveConfig(DeviceId, config);
+            device.InputConfiguration = config;
+            return true;
         }
 
         public void Dispose()

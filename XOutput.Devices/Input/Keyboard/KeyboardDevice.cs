@@ -17,7 +17,7 @@ namespace XOutput.Devices.Input.Keyboard
 
         public IEnumerable<ForceFeedbackTarget> ForceFeedbacks => targets;
 
-        public InputConfig InputConfiguration => throw new NotImplementedException();
+        public InputConfig InputConfiguration { get; set; }
 
         public string DisplayName { get; private set; }
         public string UniqueId { get; private set; }
@@ -35,8 +35,8 @@ namespace XOutput.Devices.Input.Keyboard
         public KeyboardDevice(KeyboardHook hook)
         {
             this.hook = hook;
-            UniqueId = "Keyboard";
-            DisplayName = "Keyboard";
+            UniqueId = KeyboardDeviceProvider.DeviceId;
+            DisplayName = KeyboardDeviceProvider.DeviceId;
             sources = Enum.GetValues(typeof(KeyboardButton)).OfType<KeyboardButton>().Select((b) => new KeyboardSource(this, b.ToString(), (int)b)).ToArray();
             targets = new ForceFeedbackTarget[0];
             inputChangedEventArgs = new DeviceInputChangedEventArgs(this);
@@ -60,7 +60,12 @@ namespace XOutput.Devices.Input.Keyboard
 
         public ForceFeedbackTarget FindTarget(int offset)
         {
-            return targets.FirstOrDefault(d => d.Offset == offset);
+            return null;
+        }
+
+        public void SetForceFeedback(double big, double small)
+        {
+
         }
 
         public void Dispose()

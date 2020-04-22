@@ -7,6 +7,8 @@
     "WebDevice": "Web eszköz",
     "LocalDevice": "Helyi eszköz",
     "InputDevices": "Bemeneti eszközök",
+    "Mouse": "Egér",
+    "Keyboard": "Bilentyűzet",
     "DPads": "DPadok",
     "DPad": "DPad",
     "Axes": "Tengelyek",

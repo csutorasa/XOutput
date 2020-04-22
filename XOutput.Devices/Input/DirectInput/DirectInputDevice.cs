@@ -17,7 +17,7 @@ namespace XOutput.Devices.Input.DirectInput
 
         public IEnumerable<ForceFeedbackTarget> ForceFeedbacks => targets;
 
-        public InputConfig InputConfiguration => throw new NotImplementedException();
+        public InputConfig InputConfiguration { get; set; }
 
         public string DisplayName { get; private set; }
         public string UniqueId { get; private set; }
@@ -115,6 +115,21 @@ namespace XOutput.Devices.Input.DirectInput
         public ForceFeedbackTarget FindTarget(int offset)
         {
             return targets.FirstOrDefault(d => d.Offset == offset);
+        }
+
+        public void SetForceFeedback(double big, double small)
+        {
+            if (InputConfiguration != null)
+            {
+                foreach (var target in InputConfiguration.BigMotors.Select(o => FindTarget(o)).Where(t => t != null))
+                {
+                    target.Value = big;
+                }
+                foreach (var target in InputConfiguration.SmallMotors.Select(o => FindTarget(o)).Where(t => t != null))
+                {
+                    target.Value = small;
+                }
+            }
         }
 
         private string GetHid(Joystick joystick, bool isHumanInterfaceDevice)

@@ -130,7 +130,7 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
     if (!this.state.device) {
       content = <CircularProgress />;
     } else {
-      content = (<>
+      const dpads = this.dpadGroups().length == 0 ? <></> : (<>
         <Typography className={classes.header} variant='h5'>{Translation.translate("DPads")}</Typography>
         <Grid container spacing={3}>
           {this.dpadGroups().map((d, i) => <Grid item xs={6} md={4} lg={3} key={i}>
@@ -140,15 +140,19 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
             </Paper>
           </Grid>)}
         </Grid>
-        <Typography className={classes.header} variant='h5'>{Translation.translate("Axes")}</Typography>
-        <Grid container spacing={3}>
-          {this.state.device.sources.filter(s => s.type == 'axis').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
-            <Paper className={classes.paper}>
-              <Typography align='center' variant='body1'>{s.name}</Typography>
-              <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0.5} classes={{ bar: classes.bar }} />
-            </Paper>
-          </Grid>)}
-        </Grid>
+        </>);
+      const axes = this.state.device.sources.filter(s => s.type == 'axis').length == 0 ? <></> : (<>
+      <Typography className={classes.header} variant='h5'>{Translation.translate("Axes")}</Typography>
+      <Grid container spacing={3}>
+        {this.state.device.sources.filter(s => s.type == 'axis').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
+          <Paper className={classes.paper}>
+            <Typography align='center' variant='body1'>{s.name}</Typography>
+            <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0.5} classes={{ bar: classes.bar }} />
+          </Paper>
+        </Grid>)}
+      </Grid>
+      </>);
+      const buttons = this.state.device.sources.filter(s => s.type == 'button').length == 0 ? <></> : (<>
         <Typography className={classes.header} variant='h5'>{Translation.translate("Buttons")}</Typography>
         <Grid container spacing={3}>
           {this.state.device.sources.filter(s => s.type == 'button').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
@@ -158,6 +162,8 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
             </Paper>
           </Grid>)}
         </Grid>
+        </>);
+      const sliders = this.state.device.sources.filter(s => s.type == 'slider').length == 0 ? <></> : (<>
         <Typography className={classes.header} variant='h5'>{Translation.translate("Sliders")}</Typography>
         <Grid container spacing={3}>
           {this.state.device.sources.filter(s => s.type == 'slider').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
@@ -167,6 +173,8 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
             </Paper>
           </Grid>)}
         </Grid>
+        </>);
+      const forceFeedbacks = this.state.device.forceFeedbacks.length == 0 ? <></> : (<>
         <Typography className={classes.header} variant='h5'>{Translation.translate("ForceFeedbacks")}</Typography>
         <Grid container spacing={3}>
           {this.state.device.forceFeedbacks.map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
@@ -177,6 +185,13 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
           </Grid>)}
         </Grid>
       </>);
+      content = (<>
+        {dpads}
+        {axes}
+        {buttons}
+        {sliders}
+        {forceFeedbacks}
+        </>);
     }
     return <>
       <Typography variant='h3'>{Translation.translate("InputDevices")}</Typography>

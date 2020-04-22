@@ -67,6 +67,16 @@ export class InputsComponent extends React.Component<any, InputsState, any> {
     return <SportsEsportsIcon />;
   }
 
+  private translateName(name: string): string {
+    if (name == 'mouse') {
+      return Translation.translate('Mouse');
+    }
+    if (name == 'keyboard') {
+      return Translation.translate('Keyboard');
+    }
+    return name;
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -82,7 +92,7 @@ export class InputsComponent extends React.Component<any, InputsState, any> {
                 {this.deviceToIcon(d)}
               </Grid>
               <Grid item xs={11}>
-                <Typography variant='body1'><Link to={`/inputs/${d.id}`}>{d.name}</Link></Typography>
+                <Typography variant='body1'><Link to={`/inputs/${d.id}`}>{this.translateName(d.name)}</Link></Typography>
                 <Typography variant='body2'>{d.id}</Typography>
               </Grid>
             </Grid>

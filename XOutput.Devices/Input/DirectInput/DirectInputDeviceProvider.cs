@@ -3,11 +3,12 @@ using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.DirectInput
 {
-    public sealed class DirectInputDeviceProvider : IInputDeviceProvider
+    public sealed class DirectInputDeviceProvider : InputConfigManager, IInputDeviceProvider
     {
         private const string EmulatedSCPID = "028e045e-0000-0000-0000-504944564944";
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
@@ -22,7 +23,7 @@ namespace XOutput.Devices.Input.DirectInput
         bool allDevices = false;
 
         [ResolverMethod]
-        public DirectInputDeviceProvider()
+        public DirectInputDeviceProvider(ConfigurationManager configurationManager) : base(configurationManager)
         {
 
         }
@@ -50,6 +51,7 @@ namespace XOutput.Devices.Input.DirectInput
                         {
                             continue;
                         }
+                        var config = LoadConfig(device.UniqueId);
                         currentDevices.Add(device);
                         Connected?.Invoke(this, new DeviceConnectedEventArgs(device));
                     }
@@ -114,6 +116,18 @@ namespace XOutput.Devices.Input.DirectInput
                 directInput.Dispose();
             }
             disposed = true;
+        }
+
+        public bool SaveInputConfig(string id, InputConfig config)
+        {
+            var device = GetActiveDevices().FirstOrDefault(d => d.UniqueId == id);
+            if (device == null)
+            {
+                return false;
+            }
+            SaveConfig($"conf/input/{device.UniqueId}.json", config);
+            device.InputConfiguration = config;
+            return true;
         }
     }
 }

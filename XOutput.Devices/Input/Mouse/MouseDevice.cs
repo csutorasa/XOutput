@@ -17,7 +17,7 @@ namespace XOutput.Devices.Input.Mouse
 
         public IEnumerable<ForceFeedbackTarget> ForceFeedbacks => targets;
 
-        public InputConfig InputConfiguration => throw new NotImplementedException();
+        public InputConfig InputConfiguration { get; set; }
 
         public string DisplayName { get; private set; }
         public string UniqueId { get; private set; }
@@ -35,8 +35,8 @@ namespace XOutput.Devices.Input.Mouse
         public MouseDevice(MouseHook hook)
         {
             this.hook = hook;
-            UniqueId = "Mouse";
-            DisplayName = "Mouse";
+            UniqueId = MouseDeviceProvider.DeviceId;
+            DisplayName = MouseDeviceProvider.DeviceId;
             sources = Enum.GetValues(typeof(MouseButton)).OfType<MouseButton>().Select((b) => new MouseSource(this, b.ToString(), (int)b)).ToArray();
             targets = new ForceFeedbackTarget[0];
             inputChangedEventArgs = new DeviceInputChangedEventArgs(this);
@@ -60,7 +60,12 @@ namespace XOutput.Devices.Input.Mouse
 
         public ForceFeedbackTarget FindTarget(int offset)
         {
-            return targets.FirstOrDefault(d => d.Offset == offset);
+            return null;
+        }
+
+        public void SetForceFeedback(double big, double small)
+        {
+
         }
 
         public void Dispose()

@@ -3,13 +3,15 @@ using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.Keyboard
 {
-    public sealed class KeyboardDeviceProvider : IInputDeviceProvider
+    public sealed class KeyboardDeviceProvider : InputConfigManager, IInputDeviceProvider
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
+        internal const string DeviceId = "keyboard";
 
         public event DeviceConnectedHandler Connected;
         public event DeviceDisconnectedHandler Disconnected;
@@ -19,7 +21,7 @@ namespace XOutput.Devices.Input.Keyboard
         private KeyboardDevice device;
 
         [ResolverMethod]
-        public KeyboardDeviceProvider(KeyboardHook hook)
+        public KeyboardDeviceProvider(ConfigurationManager configurationManager, KeyboardHook hook) : base(configurationManager)
         {
             this.hook = hook;
 #if !DEBUG
@@ -32,6 +34,12 @@ namespace XOutput.Devices.Input.Keyboard
             if(device == null)
             {
                 device = new KeyboardDevice(hook);
+                var config = LoadConfig(DeviceId);
+                device = new KeyboardDevice(hook)
+                {
+                    InputConfiguration = config,
+                };
+                Connected?.Invoke(this, new DeviceConnectedEventArgs(device));
             }
         }
 
@@ -42,6 +50,17 @@ namespace XOutput.Devices.Input.Keyboard
                 return new IInputDevice[] { };
             }
             return new IInputDevice[] { device };
+        }
+
+        public bool SaveInputConfig(string id, InputConfig config)
+        {
+            if (DeviceId != id || device == null)
+            {
+                return false;
+            }
+            SaveConfig(DeviceId, config);
+            device.InputConfiguration = config;
+            return true;
         }
 
         public void Dispose()

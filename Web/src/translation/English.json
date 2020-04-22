@@ -7,6 +7,8 @@
     "WebDevice": "Web device",
     "LocalDevice": "Local device",
     "InputDevices": "Input devices",
+    "Mouse": "Mouse",
+    "Keyboard": "Keyboard",
     "DPads": "DPads",
     "DPad": "DPad",
     "Axes": "Axes",
