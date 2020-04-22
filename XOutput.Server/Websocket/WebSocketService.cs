@@ -26,9 +26,9 @@ namespace XOutput.Server.Websocket
         private readonly WebSocketHelper webSocketHelper;
 
         [ResolverMethod]
-        public WebSocketService(ApplicationContext applicationContext, MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper)
+        public WebSocketService(List<IWebSocketHandler> webSocketHandlers, MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper)
         {
-            webSocketHandlers = applicationContext.ResolveAll<IWebSocketHandler>();
+            this.webSocketHandlers = webSocketHandlers;
             this.messageReader = messageReader;
             this.messageWriter = messageWriter;
             this.webSocketHelper = webSocketHelper;

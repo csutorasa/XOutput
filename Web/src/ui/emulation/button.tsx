@@ -9,7 +9,7 @@ export class ButtonFlow extends AbstractInputFlow<ButtonValue> {
     private key: string;
     private fillContainer: HTMLElement;
 
-    constructor(communication: WebSocketService, element: HTMLElement, input: string) {
+    constructor(communication: WebSocketService, element: HTMLElement, input: string, private emulator: string) {
         super(communication, element);
         this.key = input;
         if (this.key == 'L2' || this.key == 'R2') {
@@ -38,12 +38,17 @@ export class ButtonFlow extends AbstractInputFlow<ButtonValue> {
         }
     }
     protected sendValue(value: ButtonValue): void {
-        this.communication.sendInput(this.key, value);
+        const data: any = {
+            Type: this.emulator
+        };
+        data[this.key] = value;
+        this.communication.sendMessage(data);
     }
 }
 
 export type ButtonProp = CommonProps & {
     input: string;
+    emulator: string;
     style?: CSSProperties;
     circle?: boolean;
 }
@@ -58,7 +63,7 @@ export class Button extends React.Component<ButtonProp> {
     }
 
     private mouseDown(event: MouseEvent) {
-        this.props.eventHolder.mouseAdd(new ButtonFlow(this.props.websocket, this.element.current, this.props.input), event);
+        this.props.eventHolder.mouseAdd(new ButtonFlow(this.props.websocket, this.element.current, this.props.input, this.props.emulator), event);
     }
     
     private handleTouchEvent(event: TouchEvent, action: (t: Touch) => void) {
@@ -70,7 +75,7 @@ export class Button extends React.Component<ButtonProp> {
 
     private touchStart(event: TouchEvent) {
         this.handleTouchEvent(event, (touch) => {
-            this.props.eventHolder.touchAdd(new ButtonFlow(this.props.websocket, this.element.current, this.props.input), touch);
+            this.props.eventHolder.touchAdd(new ButtonFlow(this.props.websocket, this.element.current, this.props.input, this.props.emulator), touch);
         });
     }
 

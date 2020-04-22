@@ -23,7 +23,7 @@ namespace XOutput.Server.Emulation.SCPToolkit
             Installed = Initialize();
         }
 
-        public XboxDevice CreateDevice()
+        public XboxDevice CreateXboxDevice()
         {
             int controllerIndex = Interlocked.Increment(ref counter);
             return new ScpDevice(controllerIndex, client);

@@ -53,33 +53,8 @@ export class WebSocketService {
     isReady(): boolean {
         return this.websocket && this.websocket.readyState == WebSocket.OPEN;
     }
-    private sendMessage(obj: object): void {
+    sendMessage(obj: { Type: string; [key: string]: any }): void {
         this.websocket.send(JSON.stringify(obj));
-    }
-    sendInput(input: string, value: number|boolean): void {
-        const data: any = {
-            Type: "XboxInput"
-        };
-        data[input] = value;
-        this.sendMessage(data);
-    }
-    sendInputs(input1: string, value1: number, input2: string, value2: number): void {
-        const data: any = {
-            Type: "XboxInput"
-        };
-        data[input1] = value1;
-        data[input2] = value2;
-        this.sendMessage(data);
-    }
-    sendDPad(up: number, down: number, left: number, right: number): void {
-        const data: any = {
-            Type: "XboxInput"
-        };
-        data.UP = up;
-        data.DOWN = down;
-        data.LEFT = left;
-        data.RIGHT = right;
-        this.sendMessage(data);
     }
     sendDebug(text: string): void {
         this.sendMessage({

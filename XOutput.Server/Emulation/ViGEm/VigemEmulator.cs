@@ -7,13 +7,13 @@ using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Server.Emulation.ViGEm
 {
-    public class ViGEmEmulator : IXboxEmulator
+    public class ViGEmEmulator : IXboxEmulator, IDs4Emulator
     {
         public bool Installed { get; private set; }
 
         public string Name => "ViGEm";
 
-        public IEnumerable<DeviceTypes> SupportedDeviceTypes { get; } = new DeviceTypes[] { DeviceTypes.MicrosoftXbox360 };
+        public IEnumerable<DeviceTypes> SupportedDeviceTypes { get; } = new DeviceTypes[] { DeviceTypes.MicrosoftXbox360, DeviceTypes.SonyDualShock4 };
 
         private ViGEmClient client;
 
@@ -30,10 +30,16 @@ namespace XOutput.Server.Emulation.ViGEm
             }
         }
 
-        public XboxDevice CreateDevice()
+        public XboxDevice CreateXboxDevice()
         {
             var controller = client.CreateXbox360Controller();
             return new ViGEmXboxDevice(controller);
+        }
+
+        public Ds4Device CreateDs4Device()
+        {
+            var controller = client.CreateDualShock4Controller();
+            return new ViGEmDs4Device(controller);
         }
 
         public void Close()

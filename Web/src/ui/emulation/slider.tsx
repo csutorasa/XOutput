@@ -7,7 +7,7 @@ import { ButtonFlow } from "./button";
 export class SliderFlow extends AbstractInputFlow<number> {
     private key: string;
 
-    constructor(communication: WebSocketService, element: HTMLElement, input: string, private inverted: boolean) {
+    constructor(communication: WebSocketService, element: HTMLElement, input: string, private inverted: boolean, private emulator: string) {
         super(communication, element);
         this.key = input;
     }
@@ -24,12 +24,17 @@ export class SliderFlow extends AbstractInputFlow<number> {
         this.fillElement.style.width = (value * this.element.offsetWidth) + "px";
     }
     protected sendValue(value: number): void {
-        this.communication.sendInput(this.key, value);
+        const data: any = {
+            Type: this.emulator
+        };
+        data[this.key] = value;
+        this.communication.sendMessage(data);
     }
 }
 
 export type SliderProp = CommonProps & {
     input: string;
+    emulator: string;
     style: CSSProperties;
     inverted?: boolean;
 }
@@ -44,11 +49,11 @@ export class Slider extends React.Component<SliderProp> {
     }
 
     private mouseDown(event: MouseEvent) {
-        this.props.eventHolder.mouseAdd(new SliderFlow(this.props.websocket, this.element.current, this.props.input, this.props.inverted), event);
+        this.props.eventHolder.mouseAdd(new SliderFlow(this.props.websocket, this.element.current, this.props.input, this.props.inverted, this.props.emulator), event);
     }
 
     private mouseButtonDown(event: MouseEvent) {
-        this.props.eventHolder.mouseAdd(new ButtonFlow(this.props.websocket, this.element.current, this.props.input), event);
+        this.props.eventHolder.mouseAdd(new ButtonFlow(this.props.websocket, this.element.current, this.props.input, this.props.emulator), event);
     }
 
     private handleTouchEvent(event: TouchEvent, action: (t: Touch) => void) {
@@ -60,13 +65,13 @@ export class Slider extends React.Component<SliderProp> {
 
     private touchStart(event: TouchEvent) {
         this.handleTouchEvent(event, (touch) => {
-            this.props.eventHolder.touchAdd(new SliderFlow(this.props.websocket, this.element.current, this.props.input, this.props.inverted), touch);
+            this.props.eventHolder.touchAdd(new SliderFlow(this.props.websocket, this.element.current, this.props.input, this.props.inverted, this.props.emulator), touch);
         });
     }
 
     private touchButtonStart(event: TouchEvent) {
         this.handleTouchEvent(event, (touch) => {
-            this.props.eventHolder.touchAdd(new ButtonFlow(this.props.websocket, this.element.current, this.props.input), touch);
+            this.props.eventHolder.touchAdd(new ButtonFlow(this.props.websocket, this.element.current, this.props.input, this.props.emulator), touch);
         });
     }
 

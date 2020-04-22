@@ -7,7 +7,7 @@ type DPadValue = { up: number, down: number, left: number, right: number };
 
 export class DPadFlow extends AbstractInputFlow<DPadValue> {
 
-    constructor(communication: WebSocketService, element: HTMLElement) {
+    constructor(communication: WebSocketService, element: HTMLElement, private emulator: string) {
         super(communication, element);
     }
     protected onStart(event: UIInputEvent): DPadValue {
@@ -61,11 +61,19 @@ export class DPadFlow extends AbstractInputFlow<DPadValue> {
         }
     }
     protected sendValue(value: DPadValue): void {
-        this.communication.sendDPad(value.up, value.down, value.left, value.right);
+        const data: any = {
+            Type: this.emulator
+        };
+        data.UP = value.up;
+        data.DOWN = value.down;
+        data.LEFT = value.left;
+        data.RIGHT = value.right;
+        this.communication.sendMessage(data);
     }
 }
 
 export type DpadProp = CommonProps & {
+    emulator: string;
     style: CSSProperties;
 }
 
@@ -79,7 +87,7 @@ export class Dpad extends React.Component<DpadProp> {
     }
 
     private mouseDown(event: MouseEvent) {
-        this.props.eventHolder.mouseAdd(new DPadFlow(this.props.websocket, this.element.current), event);
+        this.props.eventHolder.mouseAdd(new DPadFlow(this.props.websocket, this.element.current, this.props.emulator), event);
     }
 
     private handleTouchEvent(event: TouchEvent, action: (t: Touch) => void) {
@@ -91,7 +99,7 @@ export class Dpad extends React.Component<DpadProp> {
 
     private touchStart(event: TouchEvent) {
         this.handleTouchEvent(event, (touch) => {
-            this.props.eventHolder.touchAdd(new DPadFlow(this.props.websocket, this.element.current), touch);
+            this.props.eventHolder.touchAdd(new DPadFlow(this.props.websocket, this.element.current, this.props.emulator), touch);
         });
     }
 

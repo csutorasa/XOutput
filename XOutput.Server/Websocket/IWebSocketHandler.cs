@@ -4,7 +4,7 @@ using System.Net;
 
 namespace XOutput.Server.Websocket
 {
-    interface IWebSocketHandler
+    public interface IWebSocketHandler
     {
         bool CanHandle(HttpContext context);
         List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction);

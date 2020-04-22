@@ -2,6 +2,6 @@
 {
     public interface IXboxEmulator : IEmulator
     {
-        XboxDevice CreateDevice();
+        XboxDevice CreateXboxDevice();
     }
 }

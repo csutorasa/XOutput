@@ -2,7 +2,7 @@
 
 namespace XOutput.Server.Websocket
 {
-    interface IMessageHandler
+    public interface IMessageHandler
     {
         bool CanHandle(MessageBase message);
         void Handle(MessageBase message);

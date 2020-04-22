@@ -9,7 +9,7 @@ type AxisValue = { x: number, y: number };
 export class AxisFlow extends AbstractInputFlow<AxisValue> {
     private key: string;
 
-    constructor(communication: WebSocketService, element: HTMLElement, input: string) {
+    constructor(communication: WebSocketService, element: HTMLElement, input: string, private emulator: string) {
         super(communication, element);
         this.key = input;
     }
@@ -39,13 +39,19 @@ export class AxisFlow extends AbstractInputFlow<AxisValue> {
         this.fillElement.style.top = (Math.min(y, 0.5) * this.element.offsetHeight) + "px";
     }
     protected sendValue(value: AxisValue): void {
-        this.communication.sendInputs(this.key + 'X', value.x, this.key + "Y", 1 - value.y);
+        const data: any = {
+            Type: this.emulator
+        };
+        data[this.key + 'X'] = value.x;
+        data[this.key + 'Y'] = -value.y;
+        this.communication.sendMessage(data);
     }
 }
 
 
 export type AxisProp = CommonProps & {
     input: string;
+    emulator: string;
     style: CSSProperties;
 }
 
@@ -59,7 +65,7 @@ export class Axis extends React.Component<AxisProp> {
     }
 
     private mouseDown(event: MouseEvent) {
-        this.props.eventHolder.mouseAdd(new AxisFlow(this.props.websocket, this.element.current, this.props.input), event);
+        this.props.eventHolder.mouseAdd(new AxisFlow(this.props.websocket, this.element.current, this.props.input, this.props.emulator), event);
     }
 
     private handleTouchEvent(event: TouchEvent, action: (t: Touch) => void) {
@@ -71,7 +77,7 @@ export class Axis extends React.Component<AxisProp> {
 
     private touchStart(event: TouchEvent) {
         this.handleTouchEvent(event, (touch) => {
-            this.props.eventHolder.touchAdd(new AxisFlow(this.props.websocket, this.element.current, this.props.input), touch);
+            this.props.eventHolder.touchAdd(new AxisFlow(this.props.websocket, this.element.current, this.props.input, this.props.emulator), touch);
         });
     }
 

@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using XOutput.Api.Message;
+using XOutput.Api.Message.Ds4;
 using XOutput.Api.Message.Xbox;
 
 namespace XOutput.Api.Serialization
@@ -16,6 +17,7 @@ namespace XOutput.Api.Serialization
             messageTypeMapping.Add(InputDataMessage.MessageType, () => new InputDataMessage());
             messageTypeMapping.Add(DebugMessage.MessageType, () => new DebugMessage());
             messageTypeMapping.Add(XboxInputMessage.MessageType, () => new XboxInputMessage());
+            messageTypeMapping.Add(Ds4InputMessage.MessageType, () => new Ds4InputMessage());
         }
 
         public override bool CanConvert(Type objectType)

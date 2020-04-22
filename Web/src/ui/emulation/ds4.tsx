@@ -10,7 +10,7 @@ import { Square } from "./square";
 import { EventHolder } from "../../events/eventholder";
 import { TranslatedText as TT } from "../translatedtext";
 import { MessageBase } from "../../communication/message";
-import { XboxFeedback } from "../../communication/response/XboxFeedback";
+import { Ds4Feedback } from "../../communication/response/Ds4Feedback";
 
 interface EmulationState {
     emulators: ListEmulatorsResponse;
@@ -22,7 +22,7 @@ export interface EmulationProps {
     emulator: string;
 }
 
-export class Emulation extends React.Component<EmulationProps, EmulationState, any> {
+export class Ds4Emulation extends React.Component<EmulationProps, EmulationState, any> {
 
     private eventHolder: EventHolder;
     private websocket: WebSocketService;
@@ -83,8 +83,8 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
     }
 
     private onData(data: MessageBase) {
-        if (data.Type === 'XboxFeedback') {
-            const feedback = data as XboxFeedback;
+        if (data.Type === 'Ds4Feedback') {
+            const feedback = data as Ds4Feedback;
             if (navigator.vibrate) {
                 if (feedback.Small > 0 || feedback.Large > 0) {
                     navigator.vibrate(60 * 60 * 1000);
@@ -99,13 +99,14 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
         if (this.state.loading) {
             return <CircularProgress />;
         }
+        const emulator = 'Ds4Input';
         return <div className="root">
-            <Slider input="L2" style={{ gridColumn: "span 10", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket}></Slider>
-            <Slider input="R2" style={{ gridColumn: "span 10", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket} inverted={true}></Slider>
+            <Slider input="L2" style={{ gridColumn: "span 10", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Slider>
+            <Slider input="R2" style={{ gridColumn: "span 10", gridRow: "span 5" }} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator} inverted={true}></Slider>
 
-            <Dpad style={{ gridColumn: "span 7", gridRow: "span 8" }} eventHolder={this.eventHolder} websocket={this.websocket}></Dpad>
+            <Dpad style={{ gridColumn: "span 7", gridRow: "span 8" }} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Dpad>
             <Square style={{ gridColumn: "span 7", gridRow: "span 8" }}>
-                <div><Button input="Back" circle={true} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
+                <div><Button input="Share" circle={true} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Button></div>
                 <div>
                     <div className="fullscreen button circle" onClick={() => this.openFullscreen()} onTouchStart={() => this.openFullscreen()}>
                         <div className="inner">
@@ -113,30 +114,30 @@ export class Emulation extends React.Component<EmulationProps, EmulationState, a
                         </div>
                     </div>
                 </div>
-                <div><Button input="Start" circle={true} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
+                <div><Button input="Options" circle={true} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Button></div>
                 <div></div>
-                <div><Button input="Home" circle={true} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
+                <div><Button input="Ps" circle={true} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Button></div>
                 <div></div>
-                <div><Button input="L3" circle={true} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
+                <div><Button input="L3" circle={true} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Button></div>
                 <div></div>
-                <div><Button input="R3" circle={true} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
+                <div><Button input="R3" circle={true} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Button></div>
             </Square>
             <Square style={{ gridColumn: "span 6", gridRow: "span 8" }}>
                 <div></div>
-                <div><Button input="Y" circle={true} style={{ backgroundColor: "yellow", color: "orangered" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
+                <div><Button input="Triangle" circle={true} style={{ backgroundColor: "yellow", color: "orangered" }} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Button></div>
                 <div></div>
-                <div><Button input="X" circle={true} style={{ backgroundColor: "blue", color: "lightblue" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
+                <div><Button input="Cross" circle={true} style={{ backgroundColor: "blue", color: "lightblue" }} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Button></div>
                 <div></div>
-                <div><Button input="B" circle={true} style={{ backgroundColor: "red", color: "darkred" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
+                <div><Button input="Circle" circle={true} style={{ backgroundColor: "red", color: "darkred" }} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Button></div>
                 <div></div>
-                <div><Button input="A" circle={true} style={{ backgroundColor: "green", color: "lightgreen" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button></div>
+                <div><Button input="Square" circle={true} style={{ backgroundColor: "green", color: "lightgreen" }} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Button></div>
                 <div></div>
             </Square>
 
-            <Button input="L1" style={{ gridColumn: "span 4", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button>
-            <Axis input="L" style={{ gridColumn: "span 6", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket}></Axis>
-            <Axis input="R" style={{ gridColumn: "span 6", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket}></Axis>
-            <Button input="R1" style={{ gridColumn: "span 4", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket}></Button>
+            <Button input="L1" style={{ gridColumn: "span 4", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Button>
+            <Axis input="L" style={{ gridColumn: "span 6", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Axis>
+            <Axis input="R" style={{ gridColumn: "span 6", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Axis>
+            <Button input="R1" style={{ gridColumn: "span 4", gridRow: "span 7" }} eventHolder={this.eventHolder} websocket={this.websocket} emulator={emulator}></Button>
         </div>;
     }
 }

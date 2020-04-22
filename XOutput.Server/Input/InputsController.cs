@@ -54,7 +54,7 @@ namespace XOutput.Server.Input
             };
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("/api/inputs/{id}/forcefeedback/{offset}")]
         public ActionResult<InputDeviceDetails> StartForceFeedback(string id, int offset)
         {

@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route, Redirect, RouteChildrenProps } from "react-router";
 import { DeviceSelector } from "./deviceselector";
 import { TranslatedText as TT } from "./translatedtext";
-import { Emulation, EmulationProps } from "./emulation/emulation";
+import { XboxEmulation, EmulationProps } from "./emulation/xbox";
 import { Link } from "react-router-dom";
 import { ControllersPage } from "./controllers/controllers";
 import AppBar from "@material-ui/core/AppBar";
@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import withStyles, { Styles } from "@material-ui/core/styles/withStyles";
 import { InputsPage } from "./input/inputs";
 import { InputDetailsPage, InputDetailsProps } from "./input/details";
+import { Ds4Emulation } from "./emulation/ds4";
 
 const styles: Styles<any, any, any> = () => ({
     menubarButton: {
@@ -51,10 +52,12 @@ export class MainMenuComponent extends React.Component<any, any, any> {
                     <Route path="/devices">
                         <DeviceSelector></DeviceSelector>
                     </Route>
-                    <Route path="/emulation/:deviceType/:emulator" component={(props: RouteChildrenProps<EmulationProps>) => (
-                        <Emulation deviceType={props.match.params.deviceType} emulator={props.match.params.emulator}></Emulation>
-                    )}>
-                    </Route>
+                    <Route path="/emulation/MicrosoftXbox360/:emulator" component={(props: RouteChildrenProps<EmulationProps>) => (
+                        <XboxEmulation deviceType='MicrosoftXbox360' emulator={props.match.params.emulator}></XboxEmulation>
+                    )} />
+                    <Route path="/emulation/SonyDualShock4/:emulator" component={(props: RouteChildrenProps<EmulationProps>) => (
+                        <Ds4Emulation deviceType='SonyDualShock4' emulator={props.match.params.emulator}></Ds4Emulation>
+                    )} />
                     <Route path="/inputs" exact>
                         <InputsPage></InputsPage>
                     </Route>

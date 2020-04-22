@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using XOutput.Api.Devices;
-using XOutput.Api.Message.Xbox;
+using XOutput.Api.Message.Ds4;
 using XOutput.Core.DependencyInjection;
 using XOutput.Server.Emulation;
 
-namespace XOutput.Server.Websocket.Xbox
+namespace XOutput.Server.Websocket.Ds4
 {
-    class XboxWebSocketHandler : IWebSocketHandler
+    class Ds4WebSocketHandler : IWebSocketHandler
     {
-        private static readonly string DeviceType = DeviceTypes.MicrosoftXbox360.ToString();
+        private static readonly string DeviceType = DeviceTypes.SonyDualShock4.ToString();
         private readonly EmulatorService emulatorService;
         private readonly DeviceInfoService deviceInfoService;
 
         [ResolverMethod]
-        public XboxWebSocketHandler(EmulatorService emulatorService, DeviceInfoService deviceInfoService)
+        public Ds4WebSocketHandler(EmulatorService emulatorService, DeviceInfoService deviceInfoService)
         {
             this.emulatorService = emulatorService;
             this.deviceInfoService = deviceInfoService;
@@ -28,8 +28,8 @@ namespace XOutput.Server.Websocket.Xbox
         public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
             string emulatorName = context.Request.Path.Value.Replace($"/ws/{DeviceType}/", "");
-            var emulator = emulatorService.FindEmulator<IXboxEmulator>(DeviceTypes.MicrosoftXbox360, emulatorName);
-            var device = emulator.CreateXboxDevice();
+            var emulator = emulatorService.FindEmulator<IDs4Emulator>(DeviceTypes.SonyDualShock4, emulatorName);
+            var device = emulator.CreateDs4Device();
             DeviceDisconnectedEvent disconnectedEvent = (sender, args) => closeFunction();
             device.Closed += disconnectedEvent;
             var ip = context.Request.HttpContext.Connection.RemoteIpAddress?.ToString();
@@ -43,8 +43,8 @@ namespace XOutput.Server.Websocket.Xbox
             return new List<IMessageHandler>
             {
                 new DebugMessageHandler(),
-                new XboxFeedbackMessageHandler(device, sendFunction.GetTyped<XboxFeedbackMessage>()),
-                new XboxInputMessageHandler(device, disconnectedEvent),
+                new Ds4FeedbackMessageHandler(device, sendFunction.GetTyped<Ds4FeedbackMessage>()),
+                new Ds4InputMessageHandler(device, disconnectedEvent),
             };
         }
 
@@ -52,9 +52,9 @@ namespace XOutput.Server.Websocket.Xbox
         {
             foreach (var handler in handlers)
             {
-                if (handler is XboxInputMessageHandler)
+                if (handler is Ds4InputMessageHandler)
                 {
-                    var device = (handler as XboxInputMessageHandler).device;
+                    var device = (handler as Ds4InputMessageHandler).device;
                     deviceInfoService.Remove(device);
                 }
                 handler.Close();
