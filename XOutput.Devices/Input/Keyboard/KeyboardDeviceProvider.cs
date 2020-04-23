@@ -6,7 +6,7 @@ using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.Keyboard
 {
-    public sealed class KeyboardDeviceProvider : InputConfigManager, IInputDeviceProvider
+    public sealed class KeyboardDeviceProvider : IInputDeviceProvider
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         internal const string DeviceId = "keyboard";
@@ -14,14 +14,16 @@ namespace XOutput.Devices.Input.Keyboard
         public event DeviceConnectedHandler Connected;
         public event DeviceDisconnectedHandler Disconnected;
 
+        private readonly InputConfigManager inputConfigManager;
         private readonly KeyboardHook hook;
         private bool disposed = false;
         private KeyboardDevice device;
 
         [ResolverMethod]
-        public KeyboardDeviceProvider(ConfigurationManager configurationManager, KeyboardHook hook) : base(configurationManager)
+        public KeyboardDeviceProvider(InputConfigManager inputConfigManager, KeyboardHook hook)
         {
             this.hook = hook;
+            this.inputConfigManager = inputConfigManager;
 #if !DEBUG
             hook.StartHook();
 #endif
@@ -32,7 +34,7 @@ namespace XOutput.Devices.Input.Keyboard
             if (device == null)
             {
                 device = new KeyboardDevice(hook);
-                var config = LoadConfig(DeviceId);
+                var config = inputConfigManager.LoadConfig(DeviceId);
                 device = new KeyboardDevice(hook)
                 {
                     InputConfiguration = config,
@@ -48,17 +50,6 @@ namespace XOutput.Devices.Input.Keyboard
                 return new IInputDevice[] { };
             }
             return new IInputDevice[] { device };
-        }
-
-        public bool SaveInputConfig(string id, InputConfig config)
-        {
-            if (DeviceId != id || device == null)
-            {
-                return false;
-            }
-            SaveConfig(DeviceId, config);
-            device.InputConfiguration = config;
-            return true;
         }
 
         public void Dispose()

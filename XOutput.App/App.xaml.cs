@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Hosting;
 using NLog;
+using NLog.Config;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,9 +11,12 @@ using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using System.Xml;
 using XOutput.Core;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
+using XOutput.Core.Resources;
+using XOutput.Server.Emulation.HidGuardian;
 
 namespace XOutput.App
 {
@@ -19,23 +24,23 @@ namespace XOutput.App
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private IHost server;
-        private static string settingsPath;
 
         public App()
         {
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
-            settingsPath = Path.Combine(cwd, "config", "server.json");
-
-            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
-            AppDomain.CurrentDomain.FirstChanceException += (object sender, FirstChanceExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Info);
-            AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) => UnhandledException(e.ExceptionObject as Exception, LogLevel.Error);
-            TaskScheduler.UnobservedTaskException += (object sender, UnobservedTaskExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            SetLoggerConfiguration();
+
+            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
+            // AppDomain.CurrentDomain.FirstChanceException += (object sender, FirstChanceExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Info);
+            AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) => UnhandledException(e.ExceptionObject as Exception, LogLevel.Error);
+            TaskScheduler.UnobservedTaskException += (object sender, UnobservedTaskExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
+
             var globalContext = ApplicationContext.Global;
             globalContext.AddFromConfiguration(typeof(CoreConfiguration));
             globalContext.AddFromConfiguration(typeof(ApiConfiguration));
@@ -46,8 +51,31 @@ namespace XOutput.App
             var mainWindow = ApplicationContext.Global.Resolve<MainWindow>();
             MainWindow = mainWindow;
 
+            var hidGuardianManager = globalContext.Resolve<HidGuardianManager>();
+            hidGuardianManager.ClearPid(Process.GetCurrentProcess().Id);
+
+            string settingsPath = Path.Combine(Directory.GetCurrentDirectory(), "config", "server.json");
+            if (true)
+            {
+                hidGuardianManager.SetPid(Process.GetCurrentProcess().Id);
+            }
             server = globalContext.Resolve<IHost>();
             server.StartAsync();
+        }
+
+        private void SetLoggerConfiguration()
+        {
+            try
+            {
+                if (File.Exists("nlog.config"))
+                {
+                    LogManager.Configuration = new XmlLoggingConfiguration(XmlReader.Create(File.OpenRead("nlog.config")));
+                }
+            }
+            catch
+            {
+                LogManager.Configuration = new XmlLoggingConfiguration(XmlReader.Create(AssemblyResourceManager.GetResourceStream("nlog.config")));
+            }
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
@@ -55,7 +83,7 @@ namespace XOutput.App
             ApplicationContext.Global.Close();
         }
 
-        public void UnhandledException(Exception exceptionObject, LogLevel level)
+        public static void UnhandledException(Exception exceptionObject, LogLevel level)
         {
             logger.Log(level, exceptionObject);
         }

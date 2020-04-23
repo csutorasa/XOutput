@@ -102,7 +102,7 @@ export class ControllersComponent extends React.Component<any, ControllersState,
       </Grid>);
     }
     return <>
-      <h1>{Translation.translate("ActiveControllers")}</h1>
+      <Typography variant='h3'>{Translation.translate("ActiveControllers")}</Typography>
       {content}
     </>;
   }

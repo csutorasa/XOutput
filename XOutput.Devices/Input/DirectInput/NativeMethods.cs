@@ -125,9 +125,9 @@ namespace XOutput.Devices.Input.DirectInput
 
             internal string ToHidString()
             {
-                string vendor = VendorId.ToString("X4");
-                string product = ProductId.ToString("X4");
-                string version = VersionNumber.ToString("X4");
+                string vendor = VendorId.ToString("X4").ToUpper();
+                string product = ProductId.ToString("X4").ToUpper();
+                string version = VersionNumber.ToString("X4").ToUpper();
                 return $"HID\\VID_{vendor}&PID_{product}&REV_{version}";
             }
         }

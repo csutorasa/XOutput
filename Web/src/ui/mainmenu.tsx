@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect, RouteChildrenProps } from "react-router";
-import { DeviceSelector } from "./deviceselector";
+import { DeviceSelector } from "./emulation/deviceselector";
 import { TranslatedText as TT } from "./translatedtext";
 import { XboxEmulation, EmulationProps } from "./emulation/xbox";
 import { Link } from "react-router-dom";
@@ -34,11 +34,11 @@ export class MainMenuComponent extends React.Component<any, any, any> {
                             <Link to="/">
                                 <Button className={classes.menubarButton}><TT text="ActiveControllers" /></Button>
                             </Link>
-                            <Link to="/devices">
-                                <Button className={classes.menubarButton}><TT text="Devices" /></Button>
-                            </Link>
                             <Link to="/inputs">
                                 <Button className={classes.menubarButton}><TT text="InputDevices" /></Button>
+                            </Link>
+                            <Link to="/devices">
+                                <Button className={classes.menubarButton}><TT text="OnlineDevices" /></Button>
                             </Link>
                         </Toolbar>
                     </AppBar>

@@ -1,14 +1,25 @@
 import React, { ReactElement } from "react";
-import { ListEmulatorsResponse, rest, EmulatorResponse } from "../communication/rest";
+import { ListEmulatorsResponse, rest, EmulatorResponse } from "../../communication/rest";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import { Translation } from "../../translation/translation";
 import { Link } from "react-router-dom";
+import { Styles } from "@material-ui/core/styles/withStyles";
+import { Theme, withStyles } from "@material-ui/core";
 
 interface DeviceSelectorState {
     emulators: ListEmulatorsResponse;
     loading: boolean;
 }
 
-export class DeviceSelector extends React.Component<any, DeviceSelectorState, any> {
+const styles: Styles<Theme, any, any> = () => ({
+    deviceSeparator: {
+      height: '15px',
+    },
+});
+
+export class DeviceSelectorPage extends React.Component<any, DeviceSelectorState, any> {
 
     constructor(props: Readonly<any>) {
         super(props);
@@ -27,9 +38,14 @@ export class DeviceSelector extends React.Component<any, DeviceSelectorState, an
     }
 
     private renderButton(emulator: string, device: string, installed: boolean): ReactElement {
-        const element = <button key={`${device}/${emulator}`} disabled={!installed}>
-            {device}
-        </button>;
+        const { classes } = this.props;
+        const element = <>
+            <div className={classes.deviceSeparator}></div>
+            <Button variant="contained" color='primary' key={`${device}/${emulator}`} disabled={!installed}>
+                {Translation.translate(device)}
+            </Button>
+            <div className={classes.deviceSeparator}></div>
+        </>;
         if (installed) {
             return <Link key={`${device}/${emulator}`} to={`/emulation/${device}/${emulator}`}>
                 {element}
@@ -40,19 +56,21 @@ export class DeviceSelector extends React.Component<any, DeviceSelectorState, an
 
     private renderListElement(key: string, value: EmulatorResponse): ReactElement {
         return <div key={key}>
-            <h3>{key}</h3>
-            <p>
-                {value.supportedDeviceTypes.map(t => (this.renderButton(key, t, value.installed)))}
-            </p>
+            <Typography variant='h5'>{key}</Typography>
+            {value.supportedDeviceTypes.map(t => (this.renderButton(key, t, value.installed)))}
         </div>;
     }
 
     render() {
+
         if (this.state.loading) {
             return <CircularProgress />;
         }
         return <>
+            <Typography variant='h3'>{Translation.translate("OnlineDevices")}</Typography>
             {Object.keys(this.state.emulators).map(key => this.renderListElement(key, this.state.emulators[key]))}
         </>;
     }
 }
+
+export const DeviceSelector = withStyles(styles)(DeviceSelectorPage);

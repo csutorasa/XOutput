@@ -6,7 +6,7 @@ using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.Mouse
 {
-    public sealed class MouseDeviceProvider : InputConfigManager, IInputDeviceProvider
+    public sealed class MouseDeviceProvider : IInputDeviceProvider
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         internal const string DeviceId = "mouse";
@@ -14,14 +14,16 @@ namespace XOutput.Devices.Input.Mouse
         public event DeviceConnectedHandler Connected;
         public event DeviceDisconnectedHandler Disconnected;
 
+        private readonly InputConfigManager inputConfigManager;
         private readonly MouseHook hook;
         private bool disposed = false;
         private MouseDevice device;
 
         [ResolverMethod]
-        public MouseDeviceProvider(ConfigurationManager configurationManager, MouseHook hook) : base(configurationManager)
+        public MouseDeviceProvider(InputConfigManager inputConfigManager, MouseHook hook)
         {
             this.hook = hook;
+            this.inputConfigManager = inputConfigManager;
 #if !DEBUG
             hook.StartHook();
 #endif
@@ -31,7 +33,7 @@ namespace XOutput.Devices.Input.Mouse
         {
             if (device == null)
             {
-                var config = LoadConfig(DeviceId);
+                var config = inputConfigManager.LoadConfig(DeviceId);
                 device = new MouseDevice(hook)
                 {
                     InputConfiguration = config,
@@ -47,17 +49,6 @@ namespace XOutput.Devices.Input.Mouse
                 return new IInputDevice[] { };
             }
             return new IInputDevice[] { device };
-        }
-
-        public bool SaveInputConfig(string id, InputConfig config)
-        {
-            if (DeviceId != id || device == null)
-            {
-                return false;
-            }
-            SaveConfig(DeviceId, config);
-            device.InputConfiguration = config;
-            return true;
         }
 
         public void Dispose()

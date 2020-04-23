@@ -1,6 +1,6 @@
 {
     "ActiveControllers": "Aktív vezérlők",
-    "Devices": "Eszközök",
+    "OnlineDevices": "Online eszközök",
     "Fullscreen": "Teljes képernyő",
     "MicrosoftXbox360": "Microsoft Xbox 360",
     "SonyDualShock4": "Sony Dualshock 4",
@@ -14,5 +14,8 @@
     "Axes": "Tengelyek",
     "Buttons": "Gombok",
     "Sliders": "Csúszkák",
-    "ForceFeedbacks": "Rezgő motorok"
+    "ForceFeedbacks": "Rezgő motorok",
+    "Test": "Teszt",
+    "BigMotor": "Nagy motor",
+    "SmallMotor": "Kis motor"
 }

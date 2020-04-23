@@ -1,21 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using XOutput.Api.Devices;
 using XOutput.Api.Input;
 using XOutput.Core.DependencyInjection;
 using XOutput.Devices;
 using XOutput.Devices.Input;
+using XOutput.Server.Emulation.HidGuardian;
 
 namespace XOutput.Server.Input
 {
     public class InputsController : Controller
     {
         private readonly InputDeviceManager inputDeviceManager;
+        private readonly HidGuardianManager hidGuardianManager;
 
         [ResolverMethod]
-        public InputsController(InputDeviceManager inputDeviceManager)
+        public InputsController(InputDeviceManager inputDeviceManager, HidGuardianManager hidGuardianManager)
         {
             this.inputDeviceManager = inputDeviceManager;
+            this.hidGuardianManager = hidGuardianManager;
         }
 
         [HttpGet]
@@ -56,7 +60,7 @@ namespace XOutput.Server.Input
 
         [HttpGet]
         [Route("/api/inputs/{id}/configuration")]
-        public ActionResult<InputConfiguration> InputConfiguration(string id)
+        public ActionResult<InputConfiguration> GetInputConfiguration(string id)
         {
             var inputDevice = inputDeviceManager.FindInputDevice(id);
             if (inputDevice == null)
@@ -70,14 +74,13 @@ namespace XOutput.Server.Input
             };
         }
 
-        [HttpPost]
-        [Route("/api/inputs/{id}/configuration")]
-        public ActionResult<InputDeviceDetails> StartForceFeedback(string id, InputConfiguration config)
+        [HttpPut]
+        [Route("/api/inputs/{id}/configuration/big/{offset}")]
+        public ActionResult AddBigMotor(string id, int offset)
         {
-            var found = inputDeviceManager.SaveInputConfiguration(id, new InputConfig
+            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
             {
-                BigMotors = config.BigMotors,
-                SmallMotors = config.SmallMotors,
+                config.BigMotors.Add(offset);
             });
             if (!found)
             {
@@ -87,8 +90,120 @@ namespace XOutput.Server.Input
         }
 
         [HttpDelete]
+        [Route("/api/inputs/{id}/configuration/big/{offset}")]
+        public ActionResult RemoveBigMotor(string id, int offset)
+        {
+            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
+            {
+                config.SmallMotors = config.BigMotors.Where(o => o != offset).ToList();
+            });
+            if (!found)
+            {
+                return NotFound("Device not found");
+            }
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("/api/inputs/{id}/configuration/small/{offset}")]
+        public ActionResult AddSmallMotor(string id, int offset)
+        {
+            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
+            {
+                config.SmallMotors.Add(offset);
+            });
+            if (!found)
+            {
+                return NotFound("Device not found");
+            }
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("/api/inputs/{id}/configuration/small/{offset}")]
+        public ActionResult RemoveSmallMotor(string id, int offset)
+        {
+            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
+            {
+                config.SmallMotors = config.SmallMotors.Where(o => o != offset).ToList();
+            });
+            if (!found)
+            {
+                return NotFound("Device not found");
+            }
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Route("/api/inputs/{id}/hidguardian")]
+        public ActionResult<HidGuardianInfo> GetHidGuardian(string id)
+        {
+            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            if (inputDevice == null)
+            {
+                return NotFound("Device not found");
+            }
+            return new HidGuardianInfo {
+                Available = inputDevice.HardwareID != null && hidGuardianManager.Installed,
+                Active = inputDevice.HardwareID != null && hidGuardianManager.IsAffected(inputDevice.HardwareID),
+            };
+        }
+
+        [HttpPut]
+        [Route("/api/inputs/{id}/hidguardian")]
+        public ActionResult EnableHidGuardian(string id, InputConfiguration config)
+        {
+            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            if (inputDevice == null)
+            {
+                return NotFound("Device not found");
+            }
+            if (inputDevice.HardwareID == null)
+            {
+                return NotFound("Hardware ID not found");
+            }
+            hidGuardianManager.AddAffectedDevice(inputDevice.HardwareID);
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("/api/inputs/{id}/hidguardian")]
+        public ActionResult DisableHidGuardian(string id, InputConfiguration config)
+        {
+            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            if (inputDevice == null)
+            {
+                return NotFound("Device not found");
+            }
+            if (inputDevice.HardwareID == null)
+            {
+                return NotFound("Hardware ID not found");
+            }
+            hidGuardianManager.RemoveAffectedDevice(inputDevice.HardwareID);
+            return NoContent();
+        }
+
+        [HttpPut]
         [Route("/api/inputs/{id}/forcefeedback/{offset}")]
-        public ActionResult<InputDeviceDetails> StopForceFeedback(string id, int offset)
+        public ActionResult StartForceFeedback(string id, int offset)
+        {
+            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            if (inputDevice == null)
+            {
+                return NotFound("Device not found");
+            }
+            var target = inputDevice.FindTarget(offset);
+            if (target == null)
+            {
+                return NotFound("ForceFeedback target not found");
+            }
+            target.Value = 1;
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("/api/inputs/{id}/forcefeedback/{offset}")]
+        public ActionResult StopForceFeedback(string id, int offset)
         {
             var inputDevice = inputDeviceManager.FindInputDevice(id);
             if (inputDevice == null)

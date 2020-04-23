@@ -8,13 +8,15 @@ namespace XOutput.Devices.Input
 {
     public class InputDeviceManager : IDisposable
     {
+        private readonly InputConfigManager inputConfigManager;
         private readonly List<IInputDeviceProvider> inputDeviceProviders;
         private readonly ThreadContext readThreadContext;
         private bool disposed;
 
         [ResolverMethod]
-        public InputDeviceManager(List<IInputDeviceProvider> inputDeviceProviders)
+        public InputDeviceManager(InputConfigManager inputConfigManager, List<IInputDeviceProvider> inputDeviceProviders)
         {
+            this.inputConfigManager = inputConfigManager;
             this.inputDeviceProviders = inputDeviceProviders;
             readThreadContext = ThreadCreator.CreateLoop($"Input device manager refresh", RefreshLoop, 5000).Start();
         }
@@ -38,9 +40,16 @@ namespace XOutput.Devices.Input
             return inputDeviceProviders.SelectMany(p => p.GetActiveDevices()).FirstOrDefault(d => d.UniqueId == id);
         }
 
-        public bool SaveInputConfiguration(string id, InputConfig inputConfig)
+        public bool ChangeInputConfiguration(string id, Action<InputConfig> configuration)
         {
-            return inputDeviceProviders.Any(p => p.SaveInputConfig(id, inputConfig));
+            var device = FindInputDevice(id);
+            if (device == null)
+            {
+                return false;
+            }
+            configuration(device.InputConfiguration);
+            inputConfigManager.SaveConfig(id, device.InputConfiguration);
+            return true;
         }
 
         public void Dispose()

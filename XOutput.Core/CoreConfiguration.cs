@@ -24,5 +24,11 @@ namespace XOutput.Core
         {
             return new WebSocketHelper();
         }
+
+        [ResolverMethod]
+        public static RegistryModifierService GetRegistryModifierService()
+        {
+            return new RegistryModifierService();
+        }
     }
 }

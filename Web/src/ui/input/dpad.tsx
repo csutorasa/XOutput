@@ -16,8 +16,11 @@ export interface InputDpadProps {
 
 const styles: Styles<Theme, any, any> = (theme) => ({
   container: {
-    width: '75px',
+    width: '83.75px',
     margin: 'auto',
+  },
+  iconWrapper: {
+    textAlign: 'center',
   },
   active: {
     backgroundColor: theme.palette.primary.main,
@@ -68,15 +71,15 @@ export class InputDpadComponent extends React.Component<InputDpadProps, any, any
     const { classes } = this.props;
 
     return (<Grid container className={classes.container}>
-      <Grid item xs={4}><ArrowUpwardIcon className={this.getColor(classes.active, 1)} style={{ rotate: '-45deg'}}/></Grid>
-      <Grid item xs={4}><ArrowUpwardIcon className={this.getColor(classes.active, 2)}/></Grid>
-      <Grid item xs={4}><ArrowUpwardIcon className={this.getColor(classes.active, 3)} style={{ rotate: '45deg'}}/></Grid>
-      <Grid item xs={4}><ArrowUpwardIcon className={this.getColor(classes.active, 4)} style={{ rotate: '-90deg'}}/></Grid>
-      <Grid item xs={4}><StopIcon className={this.getColor(classes.active, 5)}/></Grid>
-      <Grid item xs={4}><ArrowUpwardIcon className={this.getColor(classes.active, 6)} style={{ rotate: '90deg'}}/></Grid>
-      <Grid item xs={4}><ArrowUpwardIcon className={this.getColor(classes.active, 7)} style={{ rotate: '-135deg'}}/></Grid>
-      <Grid item xs={4}><ArrowUpwardIcon className={this.getColor(classes.active, 8)} style={{ rotate: '180deg'}}/></Grid>
-      <Grid item xs={4}><ArrowUpwardIcon className={this.getColor(classes.active, 9)} style={{ rotate: '135deg'}}/></Grid>
+      <Grid item xs={4} className={classes.iconWrapper}><ArrowUpwardIcon className={this.getColor(classes.active, 1)} style={{ rotate: '-45deg'}}/></Grid>
+      <Grid item xs={4} className={classes.iconWrapper}><ArrowUpwardIcon className={this.getColor(classes.active, 2)}/></Grid>
+      <Grid item xs={4} className={classes.iconWrapper}><ArrowUpwardIcon className={this.getColor(classes.active, 3)} style={{ rotate: '45deg'}}/></Grid>
+      <Grid item xs={4} className={classes.iconWrapper}><ArrowUpwardIcon className={this.getColor(classes.active, 4)} style={{ rotate: '-90deg'}}/></Grid>
+      <Grid item xs={4} className={classes.iconWrapper}><StopIcon className={this.getColor(classes.active, 5)}/></Grid>
+      <Grid item xs={4} className={classes.iconWrapper}><ArrowUpwardIcon className={this.getColor(classes.active, 6)} style={{ rotate: '90deg'}}/></Grid>
+      <Grid item xs={4} className={classes.iconWrapper}><ArrowUpwardIcon className={this.getColor(classes.active, 7)} style={{ rotate: '-135deg'}}/></Grid>
+      <Grid item xs={4} className={classes.iconWrapper}><ArrowUpwardIcon className={this.getColor(classes.active, 8)} style={{ rotate: '180deg'}}/></Grid>
+      <Grid item xs={4} className={classes.iconWrapper}><ArrowUpwardIcon className={this.getColor(classes.active, 9)} style={{ rotate: '135deg'}}/></Grid>
     </Grid>);
   }
 }

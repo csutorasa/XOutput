@@ -20,6 +20,9 @@ namespace XOutput.App
             InitializeComponent();
             var helper = new WindowInteropHelper(this);
             WindowHandleStore.Handle = helper.EnsureHandle();
+#if !DEBUG
+            ExitButton.Visibility = Visibility.Collapsed;
+#endif
         }
 
         private void OpenClick(object sender, RoutedEventArgs e)

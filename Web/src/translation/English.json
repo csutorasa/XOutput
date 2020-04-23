@@ -1,6 +1,6 @@
 {
     "ActiveControllers": "Active controllers",
-    "Devices": "Devices",
+    "OnlineDevices": "Online devices",
     "Fullscreen": "Fullscreen",
     "MicrosoftXbox360": "Microsoft Xbox 360",
     "SonyDualShock4": "Sony Dualshock 4",
@@ -14,5 +14,8 @@
     "Axes": "Axes",
     "Buttons": "Buttons",
     "Sliders": "Sliders",
-    "ForceFeedbacks": "Force feedbacks"
+    "ForceFeedbacks": "Force feedbacks",
+    "Test": "Test",
+    "BigMotor": "Big motor",
+    "SmallMotor": "Small motor"
 }

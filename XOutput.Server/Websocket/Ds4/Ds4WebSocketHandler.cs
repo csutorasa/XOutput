@@ -37,7 +37,7 @@ namespace XOutput.Server.Websocket.Ds4
             {
                 Device = device,
                 IPAddress = ip,
-                DeviceType = DeviceTypes.MicrosoftXbox360,
+                DeviceType = DeviceTypes.SonyDualShock4,
                 Emulator = emulator.Name,
             });
             return new List<IMessageHandler>

@@ -1,18 +1,14 @@
 ﻿using XOutput.Core.Configuration;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input
 {
-    public interface IInputConfigManager
-    {
-        InputConfig LoadConfig(string id);
-        void SaveConfig(string id, InputConfig config);
-    }
-
-    public abstract class InputConfigManager : IInputConfigManager
+    public class InputConfigManager
     {
         private readonly ConfigurationManager configurationManager;
 
-        protected InputConfigManager(ConfigurationManager configurationManager)
+        [ResolverMethod]
+        public InputConfigManager(ConfigurationManager configurationManager)
         {
             this.configurationManager = configurationManager;
         }

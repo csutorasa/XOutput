@@ -8,7 +8,7 @@ using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.DirectInput
 {
-    public sealed class DirectInputDeviceProvider : InputConfigManager, IInputDeviceProvider
+    public sealed class DirectInputDeviceProvider : IInputDeviceProvider
     {
         private const string EmulatedSCPID = "028e045e-0000-0000-0000-504944564944";
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
@@ -16,6 +16,7 @@ namespace XOutput.Devices.Input.DirectInput
         public event DeviceConnectedHandler Connected;
         public event DeviceDisconnectedHandler Disconnected;
 
+        private readonly InputConfigManager inputConfigManager;
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
         private readonly List<IInputDevice> currentDevices = new List<IInputDevice>();
         private readonly object lockObject = new object();
@@ -23,9 +24,9 @@ namespace XOutput.Devices.Input.DirectInput
         bool allDevices = false;
 
         [ResolverMethod]
-        public DirectInputDeviceProvider(ConfigurationManager configurationManager) : base(configurationManager)
+        public DirectInputDeviceProvider(InputConfigManager inputConfigManager)
         {
-
+            this.inputConfigManager = inputConfigManager;
         }
 
         public void SearchDevices()
@@ -51,7 +52,8 @@ namespace XOutput.Devices.Input.DirectInput
                         {
                             continue;
                         }
-                        var config = LoadConfig(device.UniqueId);
+                        var config = inputConfigManager.LoadConfig(device.UniqueId);
+                        device.InputConfiguration = config;
                         currentDevices.Add(device);
                         Connected?.Invoke(this, new DeviceConnectedEventArgs(device));
                     }
@@ -116,18 +118,6 @@ namespace XOutput.Devices.Input.DirectInput
                 directInput.Dispose();
             }
             disposed = true;
-        }
-
-        public bool SaveInputConfig(string id, InputConfig config)
-        {
-            var device = GetActiveDevices().FirstOrDefault(d => d.UniqueId == id);
-            if (device == null)
-            {
-                return false;
-            }
-            SaveConfig($"conf/input/{device.UniqueId}.json", config);
-            device.InputConfiguration = config;
-            return true;
         }
     }
 }

@@ -115,7 +115,7 @@ export class InputsComponent extends React.Component<any, InputsState, any> {
       </Grid>);
     }
     return <>
-      <h1>{Translation.translate("InputDevices")}</h1>
+      <Typography variant='h3'>{Translation.translate("InputDevices")}</Typography>
       {content}
     </>;
   }

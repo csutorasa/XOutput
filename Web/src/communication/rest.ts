@@ -50,6 +50,16 @@ export type InputDeviceDetails = {
     }[];
 };
 
+export type InputDeviceConfig = {
+    bigMotors: number[];
+    smallMotors: number[];
+};
+
+export type HidGuardianInfo = {
+    available: boolean;
+    active: boolean;
+}
+
 class RestService {
     private http: HttpService;
 
@@ -73,16 +83,40 @@ class RestService {
         return this.http.get<InputDeviceDetails>(`/inputs/${id}`);
     }
 
+    getInputDeviceConfig(id: string): Promise<InputDeviceConfig> {
+        return this.http.get<InputDeviceConfig>(`/inputs/${id}/configuration`);
+    }
+
+    addInputDeviceConfig(id: string, config: string, offset: number): Promise<void> {
+        return this.http.put<void>(`/inputs/${id}/configuration/${config}/${offset}`);
+    }
+
+    removeInputDeviceConfig(id: string, config: string, offset: number): Promise<void> {
+        return this.http.delete<void>(`/inputs/${id}/configuration/${config}/${offset}`);
+    }
+
     removeControllers(id: string): Promise<ControllerInfoResponse> {
         return this.http.delete<ControllerInfoResponse>(`/controllers/${id}`, null);
     }
 
     startForceFeedback(id: string, offset: number): Promise<void> {
-        return this.http.post<void>(`/inputs/${id}/forcefeedback/${offset}`, null);
+        return this.http.put<void>(`/inputs/${id}/forcefeedback/${offset}`, null);
     }
 
     stopForceFeedback(id: string, offset: number): Promise<void> {
         return this.http.delete<void>(`/inputs/${id}/forcefeedback/${offset}`, null);
+    }
+
+    getHidGuardianInfo(id: string): Promise<HidGuardianInfo> {
+        return this.http.get<HidGuardianInfo>(`/inputs/${id}/hidguardian`);
+    }
+
+    enableHidGuardian(id: string): Promise<void> {
+        return this.http.put<void>(`/inputs/${id}/hidguardian`, null);
+    }
+
+    disableHidGuardian(id: string): Promise<void> {
+        return this.http.delete<void>(`/inputs/${id}/hidguardian`, null);
     }
 }
 

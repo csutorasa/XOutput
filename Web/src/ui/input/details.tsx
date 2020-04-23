@@ -3,8 +3,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
+import Switch from '@material-ui/core/Switch';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { rest, InputDeviceDetails } from "../../communication/rest";
+import { rest, InputDeviceDetails, InputDeviceConfig } from "../../communication/rest";
 import { Translation } from "../../translation/translation";
 import { withStyles, Theme } from "@material-ui/core";
 import { Styles } from "@material-ui/core/styles/withStyles";
@@ -15,8 +16,11 @@ import { DpadComponent } from "./dpad";
 
 interface InputDetailsState {
   device: InputDeviceDetails;
+  config: InputDeviceConfig;
   values: { [offset: string]: number };
   forceFeedbacks: number[];
+  hidGuardianEnabled: boolean;
+  hidGuardianAvailable: boolean;
 }
 
 export interface InputDetailsProps {
@@ -25,10 +29,6 @@ export interface InputDetailsProps {
 }
 
 const styles: Styles<Theme, any, any> = () => ({
-  paper: {
-    height: '100%',
-    width: '100%',
-  },
   header: {
     margin: '10px 0',
   },
@@ -49,13 +49,23 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
     super(props);
     this.state = {
       device: null,
+      config: null,
       values: {},
       forceFeedbacks: [],
+      hidGuardianAvailable: false,
+      hidGuardianEnabled: false,
     };
   }
 
   componentDidMount() {
-    this.refreshDevices();
+    this.getDetails();
+    this.getConfig();
+    rest.getHidGuardianInfo(this.props.id).then(info => {
+      this.setState({
+        hidGuardianAvailable: info.available,
+        hidGuardianEnabled: info.active,
+      })
+    })
     this.websocket.connect(`input/${this.props.id}`, (data: MessageBase) => {
       if (data.Type === 'InputValues') {
         const inputValues = data as InputValues;
@@ -73,10 +83,28 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
     });
   }
 
-  refreshDevices() {
+  changeConfig(add: boolean, config: string, offset: number) {
+    let promise;
+    if (add) {
+      promise = rest.addInputDeviceConfig(this.props.id, config, offset);
+    } else {
+      promise = rest.removeInputDeviceConfig(this.props.id, config, offset);
+    }
+    return promise.then(() => this.getConfig());
+  }
+
+  getDetails() {
     return rest.getInputDeviceDetails(this.props.id).then(device => {
       this.setState({
         device: device
+      })
+    })
+  }
+
+  getConfig() {
+    return rest.getInputDeviceConfig(this.props.id).then(config => {
+      this.setState({
+        config: config
       })
     })
   }
@@ -99,7 +127,7 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
 
   dpadGroups(): { up?: number; down?: number; left?: number; right?: number }[] {
     const dpads: { up?: number; down?: number; left?: number; right?: number }[] = [];
-    this.state.device.sources.filter(s => s.type == 'dpad').forEach(s =>{
+    this.state.device.sources.filter(s => s.type == 'dpad').forEach(s => {
       const index = Math.floor((s.offset - 10000) / 4);
       if (!dpads[index]) {
         dpads[index] = {};
@@ -123,6 +151,38 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
     return dpads;
   }
 
+  hidGuardianChange(checked: boolean) {
+    const promise = checked ? rest.enableHidGuardian(this.props.id) : rest.disableHidGuardian(this.props.id);
+    promise.then(() => {
+      return rest.getHidGuardianInfo(this.props.id).then(info => {
+        this.setState({
+          hidGuardianAvailable: info.available,
+          hidGuardianEnabled: info.active,
+        })
+      })
+    });
+  }
+
+  createForceFeedback(offset: number) {
+    const active = this.state.forceFeedbacks.indexOf(offset) >= 0;
+    const big = this.state.config ? this.state.config.bigMotors.indexOf(offset) >= 0 : false;
+    const small = this.state.config ? this.state.config.smallMotors.indexOf(offset) >= 0 : false;
+    return (<>
+      <div>
+        <Switch color='primary' checked={active} onChange={() => this.switchForceFeedback(offset)} />
+        {Translation.translate("Test")}
+      </div>
+      <div>
+        <Switch color='primary' checked={big} onChange={() => this.changeConfig((event.target as any).checked, "big", offset)} />
+        {Translation.translate("BigMotor")}
+      </div>
+      <div>
+        <Switch color='primary' checked={small} onChange={() => this.changeConfig((event.target as any).checked, "small", offset)} />
+        {Translation.translate("SmallMotor")}
+      </div>
+    </>);
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -140,17 +200,17 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
             </Paper>
           </Grid>)}
         </Grid>
-        </>);
+      </>);
       const axes = this.state.device.sources.filter(s => s.type == 'axis').length == 0 ? <></> : (<>
-      <Typography className={classes.header} variant='h5'>{Translation.translate("Axes")}</Typography>
-      <Grid container spacing={3}>
-        {this.state.device.sources.filter(s => s.type == 'axis').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
-          <Paper className={classes.paper}>
-            <Typography align='center' variant='body1'>{s.name}</Typography>
-            <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0.5} classes={{ bar: classes.bar }} />
-          </Paper>
-        </Grid>)}
-      </Grid>
+        <Typography className={classes.header} variant='h5'>{Translation.translate("Axes")}</Typography>
+        <Grid container spacing={3}>
+          {this.state.device.sources.filter(s => s.type == 'axis').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
+            <Paper className={classes.paper}>
+              <Typography align='center' variant='body1'>{s.name}</Typography>
+              <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0.5} classes={{ bar: classes.bar }} />
+            </Paper>
+          </Grid>)}
+        </Grid>
       </>);
       const buttons = this.state.device.sources.filter(s => s.type == 'button').length == 0 ? <></> : (<>
         <Typography className={classes.header} variant='h5'>{Translation.translate("Buttons")}</Typography>
@@ -162,7 +222,7 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
             </Paper>
           </Grid>)}
         </Grid>
-        </>);
+      </>);
       const sliders = this.state.device.sources.filter(s => s.type == 'slider').length == 0 ? <></> : (<>
         <Typography className={classes.header} variant='h5'>{Translation.translate("Sliders")}</Typography>
         <Grid container spacing={3}>
@@ -173,25 +233,37 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
             </Paper>
           </Grid>)}
         </Grid>
-        </>);
+      </>);
       const forceFeedbacks = this.state.device.forceFeedbacks.length == 0 ? <></> : (<>
         <Typography className={classes.header} variant='h5'>{Translation.translate("ForceFeedbacks")}</Typography>
         <Grid container spacing={3}>
           {this.state.device.forceFeedbacks.map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
-            <Paper className={classes.paper} onClick={() => this.switchForceFeedback(s.offset)}>
+            <Paper className={classes.paper}>
               <Typography align='center' variant='body1'>{s.offset}</Typography>
-              <LinearProgress variant={this.state.forceFeedbacks.indexOf(s.offset) >= 0 ? "indeterminate" : "determinate"} />
+              {this.createForceFeedback(s.offset)}
             </Paper>
           </Grid>)}
         </Grid>
       </>);
+      let hidguardian;
+      if (this.state.hidGuardianAvailable) {
+        hidguardian = (<>
+          <Typography className={classes.header} variant='h5'>{Translation.translate("HidGuardian")}</Typography>
+          <Paper>
+            <Switch color='primary' checked={this.state.hidGuardianEnabled} onChange={() => this.hidGuardianChange((event.target as any).checked)} />
+          </Paper>
+        </>);
+      } else {
+        hidguardian = <></>
+      }
       content = (<>
         {dpads}
         {axes}
         {buttons}
         {sliders}
         {forceFeedbacks}
-        </>);
+        {hidguardian}
+      </>);
     }
     return <>
       <Typography variant='h3'>{Translation.translate("InputDevices")}</Typography>

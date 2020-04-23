@@ -11,7 +11,7 @@
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Open" Click="OpenClick"/>
-                    <MenuItem Header="Exit" Click="ExitClick"/>
+                    <MenuItem Header="Exit" Click="ExitClick" Name="ExitButton"/>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>

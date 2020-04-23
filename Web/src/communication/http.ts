@@ -13,7 +13,7 @@ export class HttpService {
             headers: {
               'Content-Type': 'application/json'
             }
-        }).then(r => r.json());
+        }).then(r => this.readBody(r));
     }
 
     post<T>(path: string, body?: object): Promise<T> {
@@ -23,7 +23,17 @@ export class HttpService {
             headers: {
               'Content-Type': 'application/json'
             }
-        }).then(r => r.json());
+        }).then(r => this.readBody(r));
+    }
+
+    put<T>(path: string, body?: object): Promise<T> {
+        return fetch(`http://${this.host}:${this.port}/api${path}`, {
+            method: 'PUT',
+            body: body != null ? JSON.stringify(body) : null,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        }).then(r => this.readBody(r));
     }
 
     delete<T>(path: string, body?: object): Promise<T> {
@@ -33,7 +43,16 @@ export class HttpService {
             headers: {
               'Content-Type': 'application/json'
             }
-        }).then(r => r.json());
+        }).then(r => this.readBody(r));
+    }
+
+    private readBody<T>(r: Response): Promise<T> {
+        return r.text().then((body) => {
+            if (body) {
+                return JSON.parse(body);
+            }
+            return null;
+        });
     }
 }
 
