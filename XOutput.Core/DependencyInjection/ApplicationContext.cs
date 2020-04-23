@@ -59,7 +59,8 @@ namespace XOutput.Core.DependencyInjection
         {
             lock (lockObj)
             {
-                return (T)Resolve(new Dependency {
+                return (T)Resolve(new Dependency
+                {
                     Type = typeof(T),
                     Required = required,
                 });
@@ -99,7 +100,7 @@ namespace XOutput.Core.DependencyInjection
                     Type itemType = dependency.Type.GenericTypeArguments[0];
                     var ResolveEnumerableType = GetType().GetMethod("ResolveEnumerableType", BindingFlags.NonPublic | BindingFlags.Instance, null,
                         new Type[] { typeof(Type) }, new ParameterModifier[] { }).MakeGenericMethod(itemType);
-                    var result = (IEnumerable) ResolveEnumerableType.Invoke(this, new object[] { dependency.Type });
+                    var result = (IEnumerable)ResolveEnumerableType.Invoke(this, new object[] { dependency.Type });
                     if (result.GetEnumerator().MoveNext())
                     {
                         return result;
@@ -121,7 +122,7 @@ namespace XOutput.Core.DependencyInjection
         {
             var result = ResolveAll<T>();
             Type iEnumerableT = typeof(IEnumerable<>).MakeGenericType(typeof(T));
-            return (IEnumerable<T>) enumerableType.GetConstructor(new Type[] { iEnumerableT }).Invoke(new object[] { result });
+            return (IEnumerable<T>)enumerableType.GetConstructor(new Type[] { iEnumerableT }).Invoke(new object[] { result });
         }
 
         private IEnumerable<Resolver> GetConstructorResolvers(Type type)

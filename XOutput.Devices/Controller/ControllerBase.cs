@@ -73,7 +73,7 @@ namespace XOutput.Devices.Controller
 
         private Action<double, double> CreateSetter(Dictionary<string, IInputDevice> deviceLookup, ForceFeedbackMapper mapper)
         {
-            if(deviceLookup.ContainsKey(mapper.Device))
+            if (deviceLookup.ContainsKey(mapper.Device))
             {
                 var target = deviceLookup[mapper.Device].FindTarget(mapper.InputId);
                 if (target != null)

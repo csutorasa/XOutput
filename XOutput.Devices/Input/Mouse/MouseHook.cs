@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.Mouse
@@ -15,11 +14,12 @@ namespace XOutput.Devices.Input.Mouse
         private IntPtr hookPtr = IntPtr.Zero;
         private HookProc hook;
         private Dictionary<MouseButton, bool> state = new Dictionary<MouseButton, bool>();
+        private bool disposed;
 
         [ResolverMethod]
         public MouseHook()
         {
-            foreach(var button in Enum.GetValues(typeof(MouseButton)).OfType<MouseButton>())
+            foreach (var button in Enum.GetValues(typeof(MouseButton)).OfType<MouseButton>())
             {
                 state[button] = false;
             }
@@ -54,14 +54,28 @@ namespace XOutput.Devices.Input.Mouse
 
         public void Dispose()
         {
-            if (hookPtr != IntPtr.Zero)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
             {
-                if (!NativeMethods.UnhookWindowsHookEx(hookPtr))
-                {
-                    throw new Win32Exception("Unable to clear MouseHook");
-                }
-                hookPtr = IntPtr.Zero;
+                return;
             }
+            if (disposing)
+            {
+                if (hookPtr != IntPtr.Zero)
+                {
+                    if (!NativeMethods.UnhookWindowsHookEx(hookPtr))
+                    {
+                        throw new Win32Exception("Unable to clear MouseHook");
+                    }
+                    hookPtr = IntPtr.Zero;
+                }
+            }
+            disposed = true;
         }
     }
 

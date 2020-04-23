@@ -22,7 +22,7 @@ namespace XOutput.Core.External
 
         private ProcessErrorException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
-            
+
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)

@@ -41,7 +41,7 @@ namespace XOutput.Devices.Input.DirectInput
                 {
                     instances = instances.Where(di => di.Type == DeviceType.Joystick || di.Type == DeviceType.Gamepad || di.Type == DeviceType.FirstPerson).ToList();
                 }
-                foreach(var instance in instances)
+                foreach (var instance in instances)
                 {
                     string guid = instance.InstanceGuid.ToString();
                     if (!currentDevices.Any(d => d.UniqueId == guid))

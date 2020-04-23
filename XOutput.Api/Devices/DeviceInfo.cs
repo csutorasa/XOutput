@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace XOutput.Api.Devices
+﻿namespace XOutput.Api.Devices
 {
     public class DeviceInfo
     {

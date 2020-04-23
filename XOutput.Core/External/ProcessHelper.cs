@@ -1,10 +1,11 @@
-using System;
 using System.Diagnostics;
 
 namespace XOutput.Core.External
 {
-    public static class ProcessHelper {
-        public static Process Parent(this Process process) {
+    public static class ProcessHelper
+    {
+        public static Process Parent(this Process process)
+        {
             /*var pid = process.Id;
             var processName = Process.GetProcessById(pid).ProcessName;
             var processesByName = Process.GetProcessesByName(processName);

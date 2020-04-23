@@ -3,14 +3,12 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using XOutput.Api.Serialization;
 using XOutput.Core.DependencyInjection;
-using XOutput.Core.Threading;
 using XOutput.Core.WebSocket;
 
 namespace XOutput.Server.Websocket

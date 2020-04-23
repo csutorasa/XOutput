@@ -14,24 +14,27 @@ namespace XOutput.Devices.Input.DirectInput
             get => value;
             set
             {
-                effect = DoForceFeedback(effect, axes, directions, value);
+                if (value != this.value)
+                {
+                    effect = DoForceFeedback(effect, axes, directions, value);
+                    this.value = value;
+                }
             }
         }
 
         private readonly Joystick joystick;
         private readonly EffectInfo force;
-        private readonly DeviceObjectInstance actuator;
 
         private readonly int[] axes;
         private readonly int[] directions;
         private Effect effect;
         private readonly int gain;
         private readonly int samplePeriod;
+        private bool disposed;
 
 
         public DirectDeviceForceFeedback(Joystick joystick, EffectInfo force, DeviceObjectInstance actuator)
         {
-            this.actuator = actuator;
             this.force = force;
             this.joystick = joystick;
             gain = joystick.Properties.ForceFeedbackGain;
@@ -42,7 +45,21 @@ namespace XOutput.Devices.Input.DirectInput
 
         public void Dispose()
         {
-            effect?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+            {
+                return;
+            }
+            if (disposing)
+            {
+                effect?.Dispose();
+            }
+            disposed = true;
         }
 
         private Effect DoForceFeedback(Effect oldEffect, int[] axes, int[] directions, double value)
@@ -70,9 +87,9 @@ namespace XOutput.Devices.Input.DirectInput
                 newEffect.Start();
                 return newEffect;
             }
-            catch (SharpDXException)
+            catch (SharpDXException e)
             {
-                logger.Warn($"Failed to create and start effect for {ToString()}");
+                logger.Warn(e, $"Failed to create and start effect for {ToString()}");
                 return null;
             }
         }

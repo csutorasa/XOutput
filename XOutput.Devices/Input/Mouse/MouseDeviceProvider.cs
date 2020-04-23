@@ -1,8 +1,6 @@
 ﻿using NLog;
-using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 
@@ -31,7 +29,7 @@ namespace XOutput.Devices.Input.Mouse
 
         public void SearchDevices()
         {
-            if(device == null)
+            if (device == null)
             {
                 var config = LoadConfig(DeviceId);
                 device = new MouseDevice(hook)
@@ -76,7 +74,7 @@ namespace XOutput.Devices.Input.Mouse
             }
             if (disposing)
             {
-                if(device != null)
+                if (device != null)
                 {
                     device.Dispose();
                 }

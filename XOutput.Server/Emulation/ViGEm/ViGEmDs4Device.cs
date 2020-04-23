@@ -1,9 +1,6 @@
 ﻿using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.DualShock4;
-using Nefarius.ViGEm.Client.Targets.Xbox360;
-using System;
 using XOutput.Api.Message.Ds4;
-using XOutput.Api.Message.Xbox;
 
 namespace XOutput.Server.Emulation.ViGEm
 {

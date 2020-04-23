@@ -13,7 +13,8 @@ namespace XOutput.Core.Configuration
             {
                 Directory.CreateDirectory(directory);
             }
-            using (StreamWriter writer = new StreamWriter(new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write), Encoding.UTF8)) {
+            using (StreamWriter writer = new StreamWriter(new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write), Encoding.UTF8))
+            {
                 WriteConfiguration(writer, configuration);
             }
         }
@@ -22,7 +23,8 @@ namespace XOutput.Core.Configuration
         {
             if (File.Exists(filePath))
             {
-                using (StreamReader reader = new StreamReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), Encoding.UTF8)) {
+                using (StreamReader reader = new StreamReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), Encoding.UTF8))
+                {
                     return ReadConfiguration<T>(reader);
                 }
             }
@@ -35,18 +37,19 @@ namespace XOutput.Core.Configuration
             return default;
         }
 
-        public IDisposable Watch(string filePath, Action<string> handler)
+        public static IDisposable Watch(string filePath, Action<string> handler)
         {
             return Watch(Path.GetDirectoryName(filePath), Path.GetFileName(filePath), handler);
         }
 
-        public IDisposable Watch(string directory, string filter, Action<string> handler)
+        public static IDisposable Watch(string directory, string filter, Action<string> handler)
         {
-            FileSystemWatcher watcher = new FileSystemWatcher();
-            watcher.Path = directory;
-            watcher.Filter = filter;
-
-            watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            FileSystemWatcher watcher = new FileSystemWatcher
+            {
+                Path = directory,
+                Filter = filter,
+                NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+            };
 
             watcher.Changed += (sender, args) => handler.Invoke(args.FullPath);
             watcher.Created += (sender, args) => handler.Invoke(args.FullPath);

@@ -1,5 +1,7 @@
-﻿using NLog;
+﻿using Microsoft.Extensions.Hosting;
+using NLog;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,9 +12,6 @@ using System.Windows.Threading;
 using XOutput.Core;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
-using System.Collections.Generic;
-using Microsoft.Extensions.Hosting;
-using System.Threading;
 
 namespace XOutput.App
 {
@@ -22,12 +21,13 @@ namespace XOutput.App
         private IHost server;
         private static string settingsPath;
 
-        public App() {
+        public App()
+        {
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
             settingsPath = Path.Combine(cwd, "config", "server.json");
-            
+
             Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
             AppDomain.CurrentDomain.FirstChanceException += (object sender, FirstChanceExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Info);
             AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) => UnhandledException(e.ExceptionObject as Exception, LogLevel.Error);
@@ -42,7 +42,7 @@ namespace XOutput.App
             globalContext.AddFromConfiguration(typeof(AppConfiguration));
             globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Api", "XOutput.Devices", "XOutput.Server"));
             var configurationManager = globalContext.Resolve<ConfigurationManager>();
-            
+
             var mainWindow = ApplicationContext.Global.Resolve<MainWindow>();
             MainWindow = mainWindow;
 

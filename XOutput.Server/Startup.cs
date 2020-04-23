@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.IO;
+using System.Threading;
 using XOutput.Core.DependencyInjection;
 using XOutput.Server.Emulation;
 using XOutput.Server.Input;
@@ -50,7 +45,7 @@ namespace XOutput.Server
 
             var contentRoot = Directory.GetCurrentDirectory();
             var webRoot = Path.Join(contentRoot, "webapp");
-            if(!Directory.Exists(webRoot))
+            if (!Directory.Exists(webRoot))
             {
                 Directory.CreateDirectory(webRoot);
             }

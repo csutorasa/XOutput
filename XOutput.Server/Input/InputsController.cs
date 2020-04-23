@@ -6,7 +6,7 @@ using XOutput.Core.DependencyInjection;
 using XOutput.Devices;
 using XOutput.Devices.Input;
 
-namespace XOutput.Server.Input 
+namespace XOutput.Server.Input
 {
     public class InputsController : Controller
     {

@@ -30,7 +30,8 @@
             return name;
         }
 
-        public double GetValue() {
+        public double GetValue()
+        {
             return value;
         }
 

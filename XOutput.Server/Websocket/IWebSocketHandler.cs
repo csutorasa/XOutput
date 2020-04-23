@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
-using System.Net;
 
 namespace XOutput.Server.Websocket
 {

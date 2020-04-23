@@ -6,7 +6,8 @@ using XOutput.Api.Devices;
 using XOutput.Api.Emulation;
 using XOutput.Core.DependencyInjection;
 
-namespace XOutput.Server.Emulation {
+namespace XOutput.Server.Emulation
+{
     public class EmulatorsController : Controller
     {
         private readonly EmulatorService emulatorService;

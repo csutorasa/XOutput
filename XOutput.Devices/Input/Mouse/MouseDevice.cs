@@ -1,18 +1,12 @@
-﻿using NLog;
-using SharpDX;
-using SharpDX.DirectInput;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using XOutput.Core.Threading;
 
 namespace XOutput.Devices.Input.Mouse
 {
     public class MouseDevice : IInputDevice
     {
-        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
-
         public IEnumerable<InputSource> Sources => sources;
 
         public IEnumerable<ForceFeedbackTarget> ForceFeedbacks => targets;
@@ -74,7 +68,7 @@ namespace XOutput.Devices.Input.Mouse
             GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (disposed)
             {

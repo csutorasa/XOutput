@@ -1,7 +1,4 @@
-﻿using SharpDX.DirectInput;
-using System;
-
-namespace XOutput.Devices.Input.Keyboard
+﻿namespace XOutput.Devices.Input.Keyboard
 {
     public class KeyboardSource : InputSource
     {

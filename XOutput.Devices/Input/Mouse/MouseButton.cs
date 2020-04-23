@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace XOutput.Devices.Input.Mouse
+﻿namespace XOutput.Devices.Input.Mouse
 {
     public enum MouseButton
     {

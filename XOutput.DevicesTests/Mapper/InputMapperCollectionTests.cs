@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading;
 
 namespace XOutput.Devices.Mapper.Tests
 {

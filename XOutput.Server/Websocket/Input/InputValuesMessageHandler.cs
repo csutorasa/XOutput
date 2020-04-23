@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using XOutput.Api.Message;
 using XOutput.Api.Message.Input;
 using XOutput.Core.Threading;

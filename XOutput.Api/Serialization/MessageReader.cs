@@ -27,7 +27,7 @@ namespace XOutput.Api.Serialization
 
         public MessageBase Read(StreamReader input)
         {
-            return (MessageBase) jsonSerializer.Deserialize(input, typeof(MessageBase));
+            return (MessageBase)jsonSerializer.Deserialize(input, typeof(MessageBase));
         }
     }
 }

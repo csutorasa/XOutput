@@ -1,8 +1,6 @@
 ﻿using NLog;
-using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 
@@ -31,7 +29,7 @@ namespace XOutput.Devices.Input.Keyboard
 
         public void SearchDevices()
         {
-            if(device == null)
+            if (device == null)
             {
                 device = new KeyboardDevice(hook);
                 var config = LoadConfig(DeviceId);
@@ -77,7 +75,7 @@ namespace XOutput.Devices.Input.Keyboard
             }
             if (disposing)
             {
-                if(device != null)
+                if (device != null)
                 {
                     device.Dispose();
                 }

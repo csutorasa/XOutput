@@ -15,7 +15,7 @@ namespace XOutput.Core.Configuration
 
         protected override T ReadConfiguration<T>(StreamReader reader)
         {
-            return (T) jsonSerializer.Deserialize(reader, typeof(T));
+            return (T)jsonSerializer.Deserialize(reader, typeof(T));
         }
     }
 }

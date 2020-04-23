@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.Keyboard
@@ -15,11 +14,12 @@ namespace XOutput.Devices.Input.Keyboard
         private IntPtr hookPtr = IntPtr.Zero;
         private HookProc hook;
         private Dictionary<KeyboardButton, bool> state = new Dictionary<KeyboardButton, bool>();
+        private bool disposed;
 
         [ResolverMethod]
         public KeyboardHook()
         {
-            foreach(var button in Enum.GetValues(typeof(KeyboardButton)).OfType<KeyboardButton>())
+            foreach (var button in Enum.GetValues(typeof(KeyboardButton)).OfType<KeyboardButton>())
             {
                 state[button] = false;
             }
@@ -54,14 +54,28 @@ namespace XOutput.Devices.Input.Keyboard
 
         public void Dispose()
         {
-            if (hookPtr != IntPtr.Zero)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
             {
-                if (!NativeMethods.UnhookWindowsHookEx(hookPtr))
-                {
-                    throw new Win32Exception("Unable to clear MouseHook");
-                }
-                hookPtr = IntPtr.Zero;
+                return;
             }
+            if (disposing)
+            {
+                if (hookPtr != IntPtr.Zero)
+                {
+                    if (!NativeMethods.UnhookWindowsHookEx(hookPtr))
+                    {
+                        throw new Win32Exception("Unable to clear MouseHook");
+                    }
+                    hookPtr = IntPtr.Zero;
+                }
+            }
+            disposed = true;
         }
     }
 

@@ -1,11 +1,6 @@
-﻿using NLog;
-using SharpDX.DirectInput;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Threading;
 
@@ -13,23 +8,20 @@ namespace XOutput.Devices.Input
 {
     public class InputDeviceManager : IDisposable
     {
-        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
-
-        private readonly ConfigurationManager configurationManager;
         private readonly List<IInputDeviceProvider> inputDeviceProviders;
         private readonly ThreadContext readThreadContext;
+        private bool disposed;
 
         [ResolverMethod]
-        public InputDeviceManager(ConfigurationManager configurationManager, List<IInputDeviceProvider> inputDeviceProviders)
+        public InputDeviceManager(List<IInputDeviceProvider> inputDeviceProviders)
         {
-            this.configurationManager = configurationManager;
             this.inputDeviceProviders = inputDeviceProviders;
             readThreadContext = ThreadCreator.CreateLoop($"Input device manager refresh", RefreshLoop, 5000).Start();
         }
 
         private void RefreshLoop()
         {
-            foreach(var provider in inputDeviceProviders)
+            foreach (var provider in inputDeviceProviders)
             {
                 provider.SearchDevices();
             }
@@ -53,7 +45,21 @@ namespace XOutput.Devices.Input
 
         public void Dispose()
         {
-            readThreadContext.Cancel().Wait();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+            {
+                return;
+            }
+            if (disposing)
+            {
+                readThreadContext?.Cancel()?.Wait();
+            }
+            disposed = true;
         }
     }
 }

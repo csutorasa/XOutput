@@ -1,7 +1,4 @@
-﻿using SharpDX.DirectInput;
-using System;
-
-namespace XOutput.Devices.Input.Mouse
+﻿namespace XOutput.Devices.Input.Mouse
 {
     public class MouseSource : InputSource
     {

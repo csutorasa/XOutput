@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using XOutput.Core.Configuration;
+﻿using XOutput.Core.Configuration;
 
 namespace XOutput.Devices.Input
 {

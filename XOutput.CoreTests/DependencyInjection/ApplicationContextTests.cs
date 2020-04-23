@@ -215,7 +215,8 @@ namespace XOutput.Core.DependencyInjection.Tests
         public DiscoveryTest() { }
     }
 
-    class NotRequiredTest {
+    class NotRequiredTest
+    {
         [ResolverMethod]
         public NotRequiredTest([Dependency(false)] int a) { }
     }

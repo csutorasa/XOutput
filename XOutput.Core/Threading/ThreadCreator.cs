@@ -61,7 +61,7 @@ namespace XOutput.Core.Threading
                     {
                         Thread.Sleep(remaining);
                     }
-                    
+
                 }
             };
         }

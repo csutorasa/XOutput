@@ -1,10 +1,7 @@
 ﻿using NLog;
-using SharpDX;
-using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using XOutput.Core.Threading;
 
 namespace XOutput.Devices.Input.Keyboard
@@ -74,7 +71,7 @@ namespace XOutput.Devices.Input.Keyboard
             GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (disposed)
             {

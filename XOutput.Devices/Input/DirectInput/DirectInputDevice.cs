@@ -4,7 +4,6 @@ using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using XOutput.Core.Threading;
 
 namespace XOutput.Devices.Input.DirectInput
@@ -39,7 +38,15 @@ namespace XOutput.Devices.Input.DirectInput
             this.joystick = joystick;
             this.UniqueId = guid;
             this.DisplayName = productName;
-            HardwareID = GetHid(joystick, isHumanInterfaceDevice);
+            try
+            {
+                HardwareID = NativeMethods.GetHid(joystick.Properties.VendorId, joystick.Properties.ProductId);
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Failed to get hid from WinAPI");
+                HardwareID = GetHid(joystick, isHumanInterfaceDevice);
+            }
 
             var buttonObjectInstances = joystick.GetObjects(DeviceObjectTypeFlags.Button).Where(b => b.Usage > 0).OrderBy(b => b.ObjectId.InstanceNumber).Take(128).ToArray();
             var buttons = buttonObjectInstances.Select((b, i) => MouseSource.FromButton(this, b, i)).ToArray();
@@ -75,8 +82,9 @@ namespace XOutput.Devices.Input.DirectInput
                 }
                 var actuatorAxes = joystick.GetObjects().Where(doi => doi.ObjectId.Flags.HasFlag(DeviceObjectTypeFlags.ForceFeedbackActuator)).ToArray();
                 targets = actuatorAxes.Select(i => new ForceFeedbackTarget(this, i.Name, i.Offset)).ToArray();
-                forceFeedbacks = targets.ToDictionary(t => t, t => new DirectDeviceForceFeedback(joystick, force,actuatorAxes.First(a => a.Offset == t.Offset)));
-            } else
+                forceFeedbacks = targets.ToDictionary(t => t, t => new DirectDeviceForceFeedback(joystick, force, actuatorAxes.First(a => a.Offset == t.Offset)));
+            }
+            else
             {
                 targets = new ForceFeedbackTarget[0];
                 forceFeedbacks = new Dictionary<ForceFeedbackTarget, DirectDeviceForceFeedback>();
@@ -177,7 +185,7 @@ namespace XOutput.Devices.Input.DirectInput
             GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (disposed)
             {
