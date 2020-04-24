@@ -1,7 +1,7 @@
 import * as hungarian from './Hungarian.json';
 import * as english from './English.json';
 
-export class TranslationService {
+class TranslationService {
     private data: { [key: string]: string };
 
     constructor() {
@@ -29,3 +29,4 @@ export class TranslationService {
 }
 
 export const Translation = new TranslationService();
+export default Translation;

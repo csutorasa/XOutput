@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -14,15 +14,18 @@ import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { rest, InputDeviceInfoResponse, InputDeviceInformation } from "../../communication/rest";
 import { Link } from "react-router-dom";
-import { Translation } from "../../translation/translation";
+import { Translation } from "../../translation/Translation";
 import { withStyles, Theme } from "@material-ui/core";
 import { Styles } from "@material-ui/core/styles/withStyles";
+import { StyleGenerator, Styled } from "../../utils";
+
+type ClassNames = 'paper' | 'chip' | 'iconWrapper';
 
 interface InputsState {
   devices: InputDeviceInfoResponse;
 }
 
-const styles: Styles<Theme, any, any> = () => ({
+const styles: StyleGenerator<ClassNames> = () => ({
   paper: {
     height: '100%',
     width: '100%',
@@ -36,14 +39,15 @@ const styles: Styles<Theme, any, any> = () => ({
   }
 });
 
-export class InputsComponent extends React.Component<any, InputsState, any> {
+export interface InputsProps extends Styled<ClassNames> {
 
-  constructor(props: Readonly<any>) {
-    super(props);
-    this.state = {
-      devices: null,
-    };
-  }
+}
+
+class InputsComponent extends Component<InputsProps, InputsState> {
+
+  state: InputsState = {
+    devices: null,
+  };
 
   componentDidMount() {
     this.refreshDevices();
@@ -121,4 +125,4 @@ export class InputsComponent extends React.Component<any, InputsState, any> {
   }
 }
 
-export const InputsPage = withStyles(styles)(InputsComponent);
+export const Inputs = withStyles(styles)(InputsComponent);

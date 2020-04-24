@@ -3,7 +3,7 @@ import { ListEmulatorsResponse, rest, EmulatorResponse } from "../../communicati
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { Translation } from "../../translation/translation";
+import { Translation } from "../../translation/Translation";
 import { Link } from "react-router-dom";
 import { Styles } from "@material-ui/core/styles/withStyles";
 import { Theme, withStyles } from "@material-ui/core";

@@ -1,11 +1,11 @@
-import React, { ReactNode } from "react";
-import { Translation } from "../translation/translation";
+import React, { ReactNode, Component } from "react";
+import { Translation } from "../translation/Translation";
 
 export interface TranslatedTextProps {
     text?: string;
 }
 
-export class TranslatedText extends React.Component<TranslatedTextProps, any, any> {
+export class TranslatedText extends Component<TranslatedTextProps, any, any> {
 
     private childText(children: ReactNode): string {
         return children.toString();
@@ -22,3 +22,5 @@ export class TranslatedText extends React.Component<TranslatedTextProps, any, an
         return <>{translatedText}</>;
     }
 }
+
+export const TT = TranslatedText;

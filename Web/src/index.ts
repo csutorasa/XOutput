@@ -1,7 +1,7 @@
 import './index.scss'
 
 import { render } from 'react-dom';
-import { RootElement } from './ui/main';
+import { RootElement } from './ui/RootElement';
 import { WebSocketService } from './communication/websocket';
 import { http } from './communication/http'; 
 import 'typeface-roboto';

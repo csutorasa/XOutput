@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { green, blue, grey, red } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,15 +9,14 @@ import Paper from '@material-ui/core/Paper';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { ControllerInfoResponse, DeviceType, rest, ControllerInfo } from "../../communication/rest";
-import { Translation } from "../../translation/translation";
+import { Translation } from "../../translation/Translation";
 import { withStyles, Theme } from "@material-ui/core";
 import { Styles } from "@material-ui/core/styles/withStyles";
+import { StyleGenerator, Styled } from "../../utils";
 
-interface ControllersState {
-  devices: ControllerInfoResponse;
-}
+type ClassNames = 'container' | 'paper' | 'iconWrapper';
 
-const styles: Styles<Theme, any, any> = () => ({
+const styles: StyleGenerator<ClassNames> = () => ({
     container: {
       margin: '10px 0',
     },
@@ -31,15 +30,18 @@ const styles: Styles<Theme, any, any> = () => ({
     }
 });
 
-export class ControllersComponent extends React.Component<any, ControllersState, any> {
+export interface ControllersProps extends Styled<ClassNames> {
 
-  constructor(props: Readonly<any>) {
-    super(props);
-    this.state = {
-      devices: null
-    };
-  }
+}
 
+interface ControllersState {
+  devices: ControllerInfoResponse;
+}
+
+class ControllersComponent extends Component<ControllersProps, ControllersState> {
+  state: ControllersState = {
+    devices: null
+  };
 
   componentDidMount() {
     this.refreshDevices();
@@ -108,4 +110,4 @@ export class ControllersComponent extends React.Component<any, ControllersState,
   }
 }
  
-export const ControllersPage = withStyles(styles)(ControllersComponent);
+export const Controllers = withStyles(styles)(ControllersComponent);

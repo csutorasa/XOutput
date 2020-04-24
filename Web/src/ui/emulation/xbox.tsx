@@ -8,7 +8,7 @@ import { ListEmulatorsResponse, rest, EmulatorResponse } from "../../communicati
 import { WebSocketService } from "../../communication/websocket";
 import { Square } from "./square";
 import { EventHolder } from "../../events/eventholder";
-import { TranslatedText as TT } from "../translatedtext";
+import { TranslatedText as TT } from "../TranslatedText";
 import { MessageBase } from "../../communication/message";
 import { XboxFeedback } from "../../communication/response/XboxFeedback";
 

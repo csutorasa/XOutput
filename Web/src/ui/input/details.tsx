@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -6,29 +6,18 @@ import Paper from '@material-ui/core/Paper';
 import Switch from '@material-ui/core/Switch';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { rest, InputDeviceDetails, InputDeviceConfig } from "../../communication/rest";
-import { Translation } from "../../translation/translation";
+import { Translation } from "../../translation/Translation";
 import { withStyles, Theme } from "@material-ui/core";
 import { Styles } from "@material-ui/core/styles/withStyles";
 import { WebSocketService } from '../../communication/websocket';
 import { InputValues } from "../../communication/input";
 import { MessageBase } from "../../communication/message";
-import { DpadComponent } from "./dpad";
+import { Dpad } from "./Dpad";
+import { StyleGenerator, Styled } from "../../utils";
 
-interface InputDetailsState {
-  device: InputDeviceDetails;
-  config: InputDeviceConfig;
-  values: { [offset: string]: number };
-  forceFeedbacks: number[];
-  hidGuardianEnabled: boolean;
-  hidGuardianAvailable: boolean;
-}
+type ClassNames = 'header' | 'bar' | 'iconWrapper';
 
-export interface InputDetailsProps {
-  id: string;
-  classes?: any;
-}
-
-const styles: Styles<Theme, any, any> = () => ({
+const styles: StyleGenerator<ClassNames> = () => ({
   header: {
     margin: '10px 0',
   },
@@ -41,21 +30,30 @@ const styles: Styles<Theme, any, any> = () => ({
   }
 });
 
-export class InputDetailsComponent extends React.Component<InputDetailsProps, InputDetailsState, any> {
+export interface InputDetailsProps extends Styled<ClassNames> {
+  id: string;
+}
+
+interface InputDetailsState {
+  device: InputDeviceDetails;
+  config: InputDeviceConfig;
+  values: { [offset: string]: number };
+  forceFeedbacks: number[];
+  hidGuardianEnabled: boolean;
+  hidGuardianAvailable: boolean;
+}
+
+class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsState> {
 
   private websocket: WebSocketService = new WebSocketService();
-
-  constructor(props: Readonly<any>) {
-    super(props);
-    this.state = {
-      device: null,
-      config: null,
-      values: {},
-      forceFeedbacks: [],
-      hidGuardianAvailable: false,
-      hidGuardianEnabled: false,
-    };
-  }
+  state: InputDetailsState = {
+    device: null,
+    config: null,
+    values: {},
+    forceFeedbacks: [],
+    hidGuardianAvailable: false,
+    hidGuardianEnabled: false,
+  };
 
   componentDidMount() {
     this.getDetails();
@@ -194,9 +192,9 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
         <Typography className={classes.header} variant='h5'>{Translation.translate("DPads")}</Typography>
         <Grid container spacing={3}>
           {this.dpadGroups().map((d, i) => <Grid item xs={6} md={4} lg={3} key={i}>
-            <Paper className={classes.paper}>
+            <Paper>
               <Typography align='center' variant='body1'>{Translation.translate('DPad') + " " + (i + 1)}</Typography>
-              <DpadComponent up={d.up} down={d.down} left={d.left} right={d.right} />
+              <Dpad up={d.up} down={d.down} left={d.left} right={d.right} />
             </Paper>
           </Grid>)}
         </Grid>
@@ -205,7 +203,7 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
         <Typography className={classes.header} variant='h5'>{Translation.translate("Axes")}</Typography>
         <Grid container spacing={3}>
           {this.state.device.sources.filter(s => s.type == 'axis').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
-            <Paper className={classes.paper}>
+            <Paper>
               <Typography align='center' variant='body1'>{s.name}</Typography>
               <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0.5} classes={{ bar: classes.bar }} />
             </Paper>
@@ -216,7 +214,7 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
         <Typography className={classes.header} variant='h5'>{Translation.translate("Buttons")}</Typography>
         <Grid container spacing={3}>
           {this.state.device.sources.filter(s => s.type == 'button').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
-            <Paper className={classes.paper}>
+            <Paper>
               <Typography align='center' variant='body1'>{s.name}</Typography>
               <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0} classes={{ bar: classes.bar }} />
             </Paper>
@@ -227,7 +225,7 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
         <Typography className={classes.header} variant='h5'>{Translation.translate("Sliders")}</Typography>
         <Grid container spacing={3}>
           {this.state.device.sources.filter(s => s.type == 'slider').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
-            <Paper className={classes.paper}>
+            <Paper>
               <Typography align='center' variant='body1'>{s.name}</Typography>
               <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0} classes={{ bar: classes.bar }} />
             </Paper>
@@ -238,7 +236,7 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
         <Typography className={classes.header} variant='h5'>{Translation.translate("ForceFeedbacks")}</Typography>
         <Grid container spacing={3}>
           {this.state.device.forceFeedbacks.map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
-            <Paper className={classes.paper}>
+            <Paper>
               <Typography align='center' variant='body1'>{s.offset}</Typography>
               {this.createForceFeedback(s.offset)}
             </Paper>
@@ -272,4 +270,4 @@ export class InputDetailsComponent extends React.Component<InputDetailsProps, In
   }
 }
 
-export const InputDetailsPage = withStyles(styles)(InputDetailsComponent);
+export const InputDetails = withStyles(styles)(InputDetailsComponent);

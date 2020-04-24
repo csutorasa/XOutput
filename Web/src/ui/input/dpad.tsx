@@ -1,20 +1,14 @@
-import React from "react";
+import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import StopIcon from '@material-ui/icons/Stop';
 import { withStyles, Theme } from "@material-ui/core";
 import { grey } from '@material-ui/core/colors';
-import { Styles } from "@material-ui/core/styles/withStyles";
+import { StyleGenerator, Styled } from "../../utils";
 
-export interface InputDpadProps {
-  up: number;
-  down: number;
-  left: number;
-  right: number;
-  classes?: any;
-}
+type ClassNames = 'container' | 'iconWrapper' | 'active';
 
-const styles: Styles<Theme, any, any> = (theme) => ({
+const styles: StyleGenerator<ClassNames> = (theme) => ({
   container: {
     width: '83.75px',
     margin: 'auto',
@@ -29,11 +23,14 @@ const styles: Styles<Theme, any, any> = (theme) => ({
   }
 });
 
-export class InputDpadComponent extends React.Component<InputDpadProps, any, any> {
+export interface DpadProps extends Styled<ClassNames> {
+  up: number;
+  down: number;
+  left: number;
+  right: number;
+}
 
-  constructor(props: Readonly<any>) {
-    super(props);
-  }
+class DpadComponent extends Component<DpadProps> {
 
   private getActiveIndex(): number {
     if (this.props.up) {
@@ -84,4 +81,4 @@ export class InputDpadComponent extends React.Component<InputDpadProps, any, any
   }
 }
 
-export const DpadComponent = withStyles(styles)(InputDpadComponent);
+export const Dpad = withStyles(styles)(DpadComponent);
