@@ -1,4 +1,4 @@
-import { http, HttpService } from "./http";
+import { http, HttpService } from "./Http";
 
 export enum DeviceType {
     MicrosoftXbox360 = 'MicrosoftXbox360',

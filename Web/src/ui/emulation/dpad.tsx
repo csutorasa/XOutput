@@ -1,6 +1,6 @@
 import React, { CSSProperties, RefObject, TouchEvent, Touch, MouseEvent } from "react";
 import { UIInputEvent, AbstractInputFlow } from "../../events/base";
-import { WebSocketService } from "../../communication/websocket";
+import { WebSocketService } from "../../communication/Websocket";
 import { CommonProps } from "./common";
 
 type DPadValue = { up: number, down: number, left: number, right: number };

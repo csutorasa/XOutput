@@ -49,7 +49,11 @@ export class HttpService {
     private readBody<T>(r: Response): Promise<T> {
         return r.text().then((body) => {
             if (body) {
-                return JSON.parse(body);
+                try {
+                    return JSON.parse(body);
+                } catch {
+                    throw new Error('Failed to parse JSON from response body');
+                }
             }
             return null;
         });
@@ -57,3 +61,4 @@ export class HttpService {
 }
 
 export const http = new HttpService();
+export default http;

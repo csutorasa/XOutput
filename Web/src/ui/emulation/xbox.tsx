@@ -5,7 +5,7 @@ import { Button } from "./button";
 import { Axis } from "./axis";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { ListEmulatorsResponse, rest, EmulatorResponse } from "../../communication/rest";
-import { WebSocketService } from "../../communication/websocket";
+import { WebSocketService } from "../../communication/Websocket";
 import { Square } from "./square";
 import { EventHolder } from "../../events/eventholder";
 import { TranslatedText as TT } from "../TranslatedText";

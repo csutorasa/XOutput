@@ -1,17 +1,14 @@
 import React, { ReactElement } from "react";
 import { ListEmulatorsResponse, rest, EmulatorResponse } from "../../communication/rest";
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Translation } from "../../translation/Translation";
 import { Link } from "react-router-dom";
 import { Styles } from "@material-ui/core/styles/withStyles";
 import { Theme, withStyles } from "@material-ui/core";
+import { Async, AsyncErrorHandler } from "../components/Asnyc";
 
-interface DeviceSelectorState {
-    emulators: ListEmulatorsResponse;
-    loading: boolean;
-}
+type ClassNames = 'deviceSeparator';
 
 const styles: Styles<Theme, any, any> = () => ({
     deviceSeparator: {
@@ -19,22 +16,24 @@ const styles: Styles<Theme, any, any> = () => ({
     },
 });
 
-export class DeviceSelectorPage extends React.Component<any, DeviceSelectorState, any> {
+interface DeviceSelectorState {
+    emulators: ListEmulatorsResponse;
+}
 
-    constructor(props: Readonly<any>) {
-        super(props);
-        this.state = {
-            emulators: null,
-            loading: true,
-        }
-        rest.getEmulators().then(r => {
-            this.setState((state, props) => {
-                return {
-                    emulators: r,
-                    loading: false,
-                };
+export class DeviceSelectorPage extends React.Component<any, DeviceSelectorState> {
+    
+    state: DeviceSelectorState = {
+        emulators: null,
+    };
+
+    private loading: Promise<void>;
+
+    componentDidMount() {
+        this.loading = rest.getEmulators().then(r => {
+            this.setState({
+                emulators: r,
             });
-        });
+        }, AsyncErrorHandler(this));
     }
 
     private renderButton(emulator: string, device: string, installed: boolean): ReactElement {
@@ -62,14 +61,11 @@ export class DeviceSelectorPage extends React.Component<any, DeviceSelectorState
     }
 
     render() {
-
-        if (this.state.loading) {
-            return <CircularProgress />;
-        }
-        return <>
+        return (<Async task={this.loading} render={() => <>
             <Typography variant='h3'>{Translation.translate("OnlineDevices")}</Typography>
-            {Object.keys(this.state.emulators).map(key => this.renderListElement(key, this.state.emulators[key]))}
-        </>;
+            { Object.keys(this.state.emulators).map(key => this.renderListElement(key, this.state.emulators[key]))}
+            </>}
+        />);
     }
 }
 

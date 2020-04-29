@@ -9,7 +9,7 @@ import { rest, InputDeviceDetails, InputDeviceConfig } from "../../communication
 import { Translation } from "../../translation/Translation";
 import { withStyles, Theme } from "@material-ui/core";
 import { Styles } from "@material-ui/core/styles/withStyles";
-import { WebSocketService } from '../../communication/websocket';
+import { WebSocketService } from '../../communication/Websocket';
 import { InputValues } from "../../communication/input";
 import { MessageBase } from "../../communication/message";
 import { Dpad } from "./Dpad";

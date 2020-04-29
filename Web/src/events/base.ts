@@ -1,4 +1,4 @@
-import { WebSocketService } from "../communication/websocket";
+import { WebSocketService } from "../communication/Websocket";
 import { MouseEvent, Touch } from "react";
 
 export type UIInputEvent = Touch | MouseEvent;

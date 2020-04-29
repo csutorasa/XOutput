@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using XOutput.Api.Devices;
 using XOutput.Core.DependencyInjection;
+using XOutput.Devices.Input;
 
 namespace XOutput.Server.Emulation.ViGEm
 {

@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import MouseIcon from '@material-ui/icons/Mouse';
 import KeyboardIcon from '@material-ui/icons/Keyboard';
@@ -16,8 +15,8 @@ import { rest, InputDeviceInfoResponse, InputDeviceInformation } from "../../com
 import { Link } from "react-router-dom";
 import { Translation } from "../../translation/Translation";
 import { withStyles, Theme } from "@material-ui/core";
-import { Styles } from "@material-ui/core/styles/withStyles";
 import { StyleGenerator, Styled } from "../../utils";
+import { Async, AsyncErrorHandler } from "../components/Asnyc";
 
 type ClassNames = 'paper' | 'chip' | 'iconWrapper';
 
@@ -49,8 +48,10 @@ class InputsComponent extends Component<InputsProps, InputsState> {
     devices: null,
   };
 
+  private loading: Promise<void>;
+
   componentDidMount() {
-    this.refreshDevices();
+    this.loading = this.refreshDevices();
   }
 
   refreshDevices() {
@@ -58,7 +59,7 @@ class InputsComponent extends Component<InputsProps, InputsState> {
       this.setState({
         devices: devices,
       })
-    })
+    }, AsyncErrorHandler(this))
   }
 
   private deviceToIcon(device: InputDeviceInformation) {
@@ -83,12 +84,10 @@ class InputsComponent extends Component<InputsProps, InputsState> {
 
   render() {
     const { classes } = this.props;
-
-    let content;
-    if (!this.state.devices) {
-      content = <CircularProgress />;
-    } else {
-      content = (<Grid container spacing={4}>
+    console.log("inputs", this.loading)
+    return (<>
+      <Typography variant='h3'>{Translation.translate("InputDevices")}</Typography>
+      <Async task={this.loading} render={() => <Grid container spacing={4}>
         {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
           <Paper className={classes.paper}>
             <Grid container>
@@ -116,12 +115,9 @@ class InputsComponent extends Component<InputsProps, InputsState> {
             </div>
           </Paper>
         </Grid>)}
-      </Grid>);
-    }
-    return <>
-      <Typography variant='h3'>{Translation.translate("InputDevices")}</Typography>
-      {content}
-    </>;
+      </Grid>}
+    />
+    </>);
   }
 }
 

@@ -10,12 +10,12 @@ namespace XOutput.Devices.Input.DirectInput
 {
     public sealed class DirectInputDeviceProvider : IInputDeviceProvider
     {
-        private const string EmulatedSCPID = "028e045e-0000-0000-0000-504944564944";
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         public event DeviceConnectedHandler Connected;
         public event DeviceDisconnectedHandler Disconnected;
 
+        private readonly IgnoredDeviceService ignoredDeviceService;
         private readonly InputConfigManager inputConfigManager;
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
         private readonly List<IInputDevice> currentDevices = new List<IInputDevice>();
@@ -24,8 +24,9 @@ namespace XOutput.Devices.Input.DirectInput
         bool allDevices = false;
 
         [ResolverMethod]
-        public DirectInputDeviceProvider(InputConfigManager inputConfigManager)
+        public DirectInputDeviceProvider(IgnoredDeviceService ignoredDeviceService, InputConfigManager inputConfigManager)
         {
+            this.ignoredDeviceService = ignoredDeviceService;
             this.inputConfigManager = inputConfigManager;
         }
 
@@ -44,8 +45,9 @@ namespace XOutput.Devices.Input.DirectInput
                 }
                 foreach (var instance in instances)
                 {
-                    string guid = instance.InstanceGuid.ToString();
-                    if (!currentDevices.Any(d => d.UniqueId == guid))
+                    string instanceGuid = instance.InstanceGuid.ToString();
+                    string productGuid = instance.ProductGuid.ToString();
+                    if (ignoredDeviceService.IsIgnored(productGuid, instanceGuid) && !currentDevices.Any(d => d.UniqueId == instanceGuid))
                     {
                         var device = CreateDevice(instance);
                         if (device == null)
@@ -76,7 +78,7 @@ namespace XOutput.Devices.Input.DirectInput
             try
             {
                 var joystick = new Joystick(directInput, deviceInstance.InstanceGuid);
-                if (joystick.Information.ProductGuid.ToString() == EmulatedSCPID || (joystick.Capabilities.AxeCount < 1 && joystick.Capabilities.ButtonCount < 1))
+                if (joystick.Capabilities.AxeCount < 1 && joystick.Capabilities.ButtonCount < 1)
                 {
                     joystick.Dispose();
                     return null;
