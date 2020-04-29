@@ -84,7 +84,6 @@ class InputsComponent extends Component<InputsProps, InputsState> {
 
   render() {
     const { classes } = this.props;
-    console.log("inputs", this.loading)
     return (<>
       <Typography variant='h3'>{Translation.translate("InputDevices")}</Typography>
       <Async task={this.loading} render={() => <Grid container spacing={4}>

@@ -1,10 +1,22 @@
 import React from "react";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
+import { StyleGenerator, Styled } from "../../utils";
+import { withStyles } from "@material-ui/core";
 
-export interface AsyncComponentProps<T> {
+
+type ClassNames = 'centered';
+
+const styles: StyleGenerator<ClassNames> = () => ({
+  centered: {
+      textAlign: 'center',
+  },
+});
+
+export interface AsyncComponentProps<T> extends Styled<ClassNames> {
     task: Promise<T>;
     render: (data?: T) => any;
+    size?: number | string;
 }
 
 interface AsyncComponentState<T> {
@@ -15,9 +27,7 @@ interface AsyncComponentState<T> {
 }
 
 export function AsyncErrorHandler(component: React.Component): (err: any) => void {
-    console.log('use')
     return (err: any) => {
-        console.error('Error happened', err);
         component.forceUpdate();
         throw err;
     }
@@ -63,8 +73,9 @@ class AsyncComponent<T> extends React.Component<AsyncComponentProps<T>, AsyncCom
     }
 
     render() {
+        const { classes } = this.props;
         if (this.state.loaded === false) {
-            return <div><CircularProgress /></div>
+            return <div className={classes.centered}><CircularProgress size={this.props.size || '10rem'} /></div>
         }
         if (this.state.success === false) {
             return <Typography color='error'>{this.state.error}</Typography>
@@ -75,5 +86,5 @@ class AsyncComponent<T> extends React.Component<AsyncComponentProps<T>, AsyncCom
     }
 }
 
-export const Async = AsyncComponent;
+export const Async = withStyles(styles)(AsyncComponent);
 export default Async;

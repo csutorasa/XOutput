@@ -4,23 +4,27 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Translation } from "../../translation/Translation";
 import { Link } from "react-router-dom";
-import { Styles } from "@material-ui/core/styles/withStyles";
-import { Theme, withStyles } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 import { Async, AsyncErrorHandler } from "../components/Asnyc";
+import { Styled, StyleGenerator } from "../../utils";
 
 type ClassNames = 'deviceSeparator';
 
-const styles: Styles<Theme, any, any> = () => ({
+const styles: StyleGenerator<ClassNames> = () => ({
     deviceSeparator: {
       height: '15px',
     },
 });
 
+export interface DeviceSelectorProps extends Styled<ClassNames> {
+    
+}
+
 interface DeviceSelectorState {
     emulators: ListEmulatorsResponse;
 }
 
-export class DeviceSelectorPage extends React.Component<any, DeviceSelectorState> {
+export class DeviceSelectorPage extends React.Component<DeviceSelectorProps, DeviceSelectorState> {
     
     state: DeviceSelectorState = {
         emulators: null,
@@ -61,12 +65,15 @@ export class DeviceSelectorPage extends React.Component<any, DeviceSelectorState
     }
 
     render() {
-        return (<Async task={this.loading} render={() => <>
+        return (<>
             <Typography variant='h3'>{Translation.translate("OnlineDevices")}</Typography>
+            <Async task={this.loading} render={() => <>
             { Object.keys(this.state.emulators).map(key => this.renderListElement(key, this.state.emulators[key]))}
-            </>}
-        />);
+            </>
+            } />
+        </>);
     }
 }
 
 export const DeviceSelector = withStyles(styles)(DeviceSelectorPage);
+export default DeviceSelector;

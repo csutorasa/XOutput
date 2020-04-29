@@ -13,6 +13,7 @@ import { Translation } from "../../translation/Translation";
 import { withStyles, Theme } from "@material-ui/core";
 import { Styles } from "@material-ui/core/styles/withStyles";
 import { StyleGenerator, Styled } from "../../utils";
+import Async, { AsyncErrorHandler } from "../components/Asnyc";
 
 type ClassNames = 'container' | 'paper' | 'iconWrapper';
 
@@ -43,8 +44,10 @@ class ControllersComponent extends Component<ControllersProps, ControllersState>
     devices: null
   };
 
+  private loading: Promise<void>;
+
   componentDidMount() {
-    this.refreshDevices();
+    this.loading = this.refreshDevices();
   }
 
   refreshDevices() {
@@ -52,7 +55,7 @@ class ControllersComponent extends Component<ControllersProps, ControllersState>
       this.setState({
         devices: devices
       })
-    })
+    }, AsyncErrorHandler(this));
   }
 
   deviceInfoToColor(deviceInfo: ControllerInfo): string {
@@ -75,12 +78,9 @@ class ControllersComponent extends Component<ControllersProps, ControllersState>
 
   render() {
     const { classes } = this.props;
-
-    let content;
-    if (!this.state.devices) {
-      content = <CircularProgress />;
-    } else {
-      content = (<Grid container className={classes.container} spacing={2}>
+    return <>
+      <Typography variant='h3'>{Translation.translate("ActiveControllers")}</Typography>
+      <Async task={this.loading} render={() => <Grid container className={classes.container} spacing={2}>
           {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
           <Paper className={classes.paper}>
             <Grid container>
@@ -101,11 +101,8 @@ class ControllersComponent extends Component<ControllersProps, ControllersState>
             </Grid>
           </Paper>
         </Grid>)}
-      </Grid>);
-    }
-    return <>
-      <Typography variant='h3'>{Translation.translate("ActiveControllers")}</Typography>
-      {content}
+      </Grid>}
+      />
     </>;
   }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, Redirect, RouteChildrenProps } from "react-router";
+import { Switch, Route, Redirect, RouteChildrenProps, withRouter, RouteComponentProps } from "react-router";
 import { DeviceSelector } from "./emulation/DeviceSelector";
 import { XboxEmulation } from "./emulation/xbox";
 import { Link } from "react-router-dom";
@@ -11,7 +11,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
 import Badge from "@material-ui/core/Badge";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import Divider from '@material-ui/core/Divider';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
@@ -26,10 +26,11 @@ import { Ds4Emulation } from "./emulation/ds4";
 import { Styled, StyleGenerator } from '../utils'
 import Translation from "../translation/Translation";
 import { Notifications } from "./Notifications";
+import { MainMenuListItem } from "./MainMenuListItem";
 
-type ClassNames = 'menubarButton' | 'mainContent' | 'title' | 'drawerRoot' | 'placeholder';
+type ClassNames = 'menubarButton' | 'mainContent' | 'title' | 'drawerRoot' | 'drawerHeader' | 'placeholder';
 
-const styles: StyleGenerator<ClassNames> = () => ({
+const styles: StyleGenerator<ClassNames> = (theme) => ({
     menubarButton: {
         color: 'white',
     },
@@ -43,12 +44,17 @@ const styles: StyleGenerator<ClassNames> = () => ({
         width: '360px',
         maxWidth: '360px',
     },
+    drawerHeader: {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
+        padding: '10px',
+    },
     placeholder: {
         flexGrow: 1,
     },
 });
 
-export interface MainMenuProps extends Styled<ClassNames> {
+export interface MainMenuProps extends Styled<ClassNames>, RouteComponentProps {
 
 }
 
@@ -69,7 +75,7 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, location } = this.props;
         return <>
             <Switch>
                 <Route path="/emulation" />
@@ -94,25 +100,37 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
                     </AppBar>
                     <Drawer anchor='left' open={this.state.menuOpen} onClose={() => this.changeMenu(false)}>
                         <div className={classes.drawerRoot}>
-                            <List component="nav" aria-label="secondary mailbox folders">
-                                <ListItem button component={Link} to="/" onClick={() => this.changeMenu(false)}>
+                            <div className={classes.drawerHeader}>
+                                <Typography variant='h4'>XOutput</Typography>
+                            </div>
+                            <List component="nav">
+                                <MainMenuListItem path='/' onClick={() => this.changeMenu(false)} >
                                     <ListItemIcon>
                                         <SportsEsportsIcon />
                                     </ListItemIcon>
                                     <ListItemText primary={Translation.translate('ActiveControllers')} />
-                                </ListItem>
-                                <ListItem button component={Link} to="/inputs" onClick={() => this.changeMenu(false)}>
+                                </MainMenuListItem>
+                                <MainMenuListItem path='/inputs' onClick={() => this.changeMenu(false)} >
                                     <ListItemIcon>
                                         <InputIcon />
                                     </ListItemIcon>
                                     <ListItemText primary={Translation.translate('InputDevices')} />
-                                </ListItem>
-                                <ListItem button component={Link} to="/devices" onClick={() => this.changeMenu(false)}>
+                                </MainMenuListItem>
+                                <MainMenuListItem path='/devices' onClick={() => this.changeMenu(false)} >
                                     <ListItemIcon>
                                         <LanguageIcon />
                                     </ListItemIcon>
                                     <ListItemText primary={Translation.translate('OnlineDevices')} />
-                                </ListItem>
+                                </MainMenuListItem>
+                            </List>
+                            <Divider />
+                            <List component="nav">
+                                <MainMenuListItem path='/notifications' onClick={() => this.changeMenu(false)} >
+                                    <ListItemIcon>
+                                        <NotificationsIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={Translation.translate('Notifications')} />
+                                </MainMenuListItem>
                             </List>
                         </div>
                     </Drawer>
@@ -150,4 +168,4 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
     }
 }
 
-export const MainMenu = withStyles(styles)(MainMenuComponent);
+export const MainMenu = withRouter(withStyles(styles)(MainMenuComponent));
