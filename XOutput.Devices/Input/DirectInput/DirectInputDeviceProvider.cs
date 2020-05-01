@@ -47,7 +47,7 @@ namespace XOutput.Devices.Input.DirectInput
                 {
                     string instanceGuid = instance.InstanceGuid.ToString();
                     string productGuid = instance.ProductGuid.ToString();
-                    if (ignoredDeviceService.IsIgnored(productGuid, instanceGuid) && !currentDevices.Any(d => d.UniqueId == instanceGuid))
+                    if (!ignoredDeviceService.IsIgnored(productGuid, instanceGuid) && !currentDevices.Any(d => d.UniqueId == instanceGuid))
                     {
                         var device = CreateDevice(instance);
                         if (device == null)
@@ -76,7 +76,11 @@ namespace XOutput.Devices.Input.DirectInput
         private IInputDevice CreateDevice(DeviceInstance deviceInstance)
         {
             try
-            {
+            { 
+                if (!directInput.IsDeviceAttached(deviceInstance.InstanceGuid))
+                {
+                    return null;
+                }
                 var joystick = new Joystick(directInput, deviceInstance.InstanceGuid);
                 if (joystick.Capabilities.AxeCount < 1 && joystick.Capabilities.ButtonCount < 1)
                 {

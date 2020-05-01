@@ -13,7 +13,7 @@ export class HttpService {
             headers: {
               'Content-Type': 'application/json'
             }
-        }).then(r => this.readBody(r));
+        }).then(r => this.readBody(r, `/api${path}`));
     }
 
     post<T>(path: string, body?: object): Promise<T> {
@@ -23,7 +23,7 @@ export class HttpService {
             headers: {
               'Content-Type': 'application/json'
             }
-        }).then(r => this.readBody(r));
+        }).then(r => this.readBody(r, `/api${path}`));
     }
 
     put<T>(path: string, body?: object): Promise<T> {
@@ -33,7 +33,7 @@ export class HttpService {
             headers: {
               'Content-Type': 'application/json'
             }
-        }).then(r => this.readBody(r));
+        }).then(r => this.readBody(r, `/api${path}`));
     }
 
     delete<T>(path: string, body?: object): Promise<T> {
@@ -43,16 +43,16 @@ export class HttpService {
             headers: {
               'Content-Type': 'application/json'
             }
-        }).then(r => this.readBody(r));
+        }).then(r => this.readBody(r, `/api${path}`));
     }
 
-    private readBody<T>(r: Response): Promise<T> {
+    private readBody<T>(r: Response, path: string): Promise<T> {
         return r.text().then((body) => {
             if (body) {
                 try {
                     return JSON.parse(body);
                 } catch {
-                    throw new Error('Failed to parse JSON from response body');
+                    throw new Error(`Failed to parse JSON from response body from ${path}. Response body: ` + (body.length > 1000 ? body.substring(0, 1000) + '...' : body));
                 }
             }
             return null;

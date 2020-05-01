@@ -37,11 +37,13 @@ $PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.Server.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.Devices.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.App.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.App.exe `
+$PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.App.runtimeconfig.json `
 $PSScriptRoot\XOutput.App\bin\Release\$target\Newtonsoft.Json.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\NLog.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\Nefarius.ViGEm.Client.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\SharpDX.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\SharpDX.DirectInput.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\Hardcodet.Wpf.TaskbarNotification.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\HIDSharp.dll `
 $PSScriptRoot\Web\webapp `
 $PSScriptRoot\bin\*

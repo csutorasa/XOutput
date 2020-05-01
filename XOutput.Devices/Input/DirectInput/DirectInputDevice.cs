@@ -40,7 +40,7 @@ namespace XOutput.Devices.Input.DirectInput
             this.DisplayName = productName;
             try
             {
-                HardwareID = NativeMethods.GetHid(joystick.Properties.VendorId, joystick.Properties.ProductId);
+                HardwareID = RawInput.RawDevices.GetHid(joystick.Properties.VendorId, joystick.Properties.ProductId);
             }
             catch (Exception e)
             {
