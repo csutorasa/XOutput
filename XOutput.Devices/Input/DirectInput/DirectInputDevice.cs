@@ -82,7 +82,7 @@ namespace XOutput.Devices.Input.DirectInput
                 }
                 var actuatorAxes = joystick.GetObjects().Where(doi => doi.ObjectId.Flags.HasFlag(DeviceObjectTypeFlags.ForceFeedbackActuator)).ToArray();
                 targets = actuatorAxes.Select(i => new ForceFeedbackTarget(this, i.Name, i.Offset)).ToArray();
-                forceFeedbacks = targets.ToDictionary(t => t, t => new DirectDeviceForceFeedback(joystick, force, actuatorAxes.First(a => a.Offset == t.Offset)));
+                forceFeedbacks = targets.ToDictionary(t => t, t => new DirectDeviceForceFeedback(joystick, UniqueId, force, actuatorAxes.First(a => a.Offset == t.Offset)));
             }
             else
             {

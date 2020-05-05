@@ -25,7 +25,7 @@ import { InputDetails } from "./input/Details";
 import { Ds4Emulation } from "./emulation/ds4";
 import { Styled, StyleGenerator } from '../utils'
 import Translation from "../translation/Translation";
-import { Notifications } from "./Notifications";
+import { Notifications } from "./notifications/Notifications";
 import { MainMenuListItem } from "./MainMenuListItem";
 
 type ClassNames = 'menubarButton' | 'mainContent' | 'title' | 'drawerRoot' | 'drawerHeader' | 'placeholder';

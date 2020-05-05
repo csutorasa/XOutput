@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children, ReactNode, ReactFragment } from "react";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import { StyleGenerator, Styled } from "../../utils";
@@ -15,15 +15,22 @@ const styles: StyleGenerator<ClassNames> = () => ({
 
 export interface AsyncComponentProps<T> extends Styled<ClassNames> {
     task: Promise<T>;
-    render: (data?: T) => any;
     size?: number | string;
 }
 
 interface AsyncComponentState<T> {
     loaded: boolean;
+    promise?: Promise<T>;
     success?: boolean;
     result?: T;
     error?: string;
+}
+
+export function AsyncResolveHandler<T>(component: React.Component): (resolve: T) => T {
+    return (result: any) => {
+        component.forceUpdate();
+        return result;
+    }
 }
 
 export function AsyncErrorHandler(component: React.Component): (err: any) => void {
@@ -38,7 +45,6 @@ class AsyncComponent<T> extends React.Component<AsyncComponentProps<T>, AsyncCom
     state: AsyncComponentState<T> = {
         loaded: false,
     }
-    private subscribed: boolean = false;
 
     componentDidMount() {
         if (this.props.task) {
@@ -47,12 +53,19 @@ class AsyncComponent<T> extends React.Component<AsyncComponentProps<T>, AsyncCom
     }
 
     componentDidUpdate() {
-        if (!this.subscribed && this.props.task) {
+        if (this.props.task && (!this.state.promise || this.state.promise != this.props.task)) {
             this.subscribe();
         }
     }
 
     private subscribe(): void {
+        this.setState({
+            loaded: false,
+            promise: this.props.task,
+            success: null,
+            result: null,
+            error: null,
+        })
         this.props.task.then((data) => {
             this.setState({
                 loaded: true,
@@ -69,7 +82,17 @@ class AsyncComponent<T> extends React.Component<AsyncComponentProps<T>, AsyncCom
             })
             console.log('' + err)
         });
-        this.subscribed = true;
+    }
+
+    private handleChildren(node: React.ReactNode): ReactNode {
+        if (node instanceof Array) {
+            return node.map(c => this.handleChildren(c));
+        } else 
+        if (node instanceof Function) {
+            return node(this.state.result);
+        } else {
+            return node;
+        }
     }
 
     render() {
@@ -81,7 +104,7 @@ class AsyncComponent<T> extends React.Component<AsyncComponentProps<T>, AsyncCom
             return <Typography color='error'>{this.state.error}</Typography>
         }
         return <>
-            {this.props.render(this.state.result)}
+            {this.handleChildren(this.props.children)}
         </>;
     }
 }

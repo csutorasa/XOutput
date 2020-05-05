@@ -67,10 +67,9 @@ export class DeviceSelectorPage extends React.Component<DeviceSelectorProps, Dev
     render() {
         return (<>
             <Typography variant='h3'>{Translation.translate("OnlineDevices")}</Typography>
-            <Async task={this.loading} render={() => <>
-            { Object.keys(this.state.emulators).map(key => this.renderListElement(key, this.state.emulators[key]))}
-            </>
-            } />
+            <Async task={this.loading}>
+            { () => Object.keys(this.state.emulators).map(key => this.renderListElement(key, this.state.emulators[key])) } 
+            </Async>
         </>);
     }
 }

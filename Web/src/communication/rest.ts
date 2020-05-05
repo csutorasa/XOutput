@@ -58,7 +58,12 @@ export type InputDeviceConfig = {
 export type HidGuardianInfo = {
     available: boolean;
     active: boolean;
-}
+};
+
+export type Notification = {
+    key: string;
+    level: string;
+};
 
 class RestService {
     private http: HttpService;
@@ -117,6 +122,10 @@ class RestService {
 
     disableHidGuardian(id: string): Promise<void> {
         return this.http.delete<void>(`/inputs/${id}/hidguardian`, null);
+    }
+
+    getNotifiations(): Promise<Notification[]> {
+        return this.http.get<Notification[]>(`/notifications`);
     }
 }
 

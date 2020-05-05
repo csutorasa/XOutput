@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "XOutput.App": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

@@ -86,36 +86,39 @@ class InputsComponent extends Component<InputsProps, InputsState> {
     const { classes } = this.props;
     return (<>
       <Typography variant='h3'>{Translation.translate("InputDevices")}</Typography>
-      <Async task={this.loading} render={() => <Grid container spacing={4}>
-        {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
-          <Paper className={classes.paper}>
-            <Grid container>
-              <Grid item xs={1} className={classes.iconWrapper}>
-                {this.deviceToIcon(d)}
+      <Async task={this.loading}>
+        { () =>
+        <Grid container spacing={4}>
+          {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
+            <Paper className={classes.paper}>
+              <Grid container>
+                <Grid item xs={1} className={classes.iconWrapper}>
+                  {this.deviceToIcon(d)}
+                </Grid>
+                <Grid item xs={11}>
+                  <Typography variant='body1'><Link to={`/inputs/${d.id}`}>{this.translateName(d.name)}</Link></Typography>
+                  <Typography variant='body2'>{d.id}</Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={11}>
-                <Typography variant='body1'><Link to={`/inputs/${d.id}`}>{this.translateName(d.name)}</Link></Typography>
-                <Typography variant='body2'>{d.id}</Typography>
-              </Grid>
-            </Grid>
-            <div>
-              <Tooltip title={Translation.translate('DPads')}>
-                <Chip variant='outlined' className={classes.chip} icon={<GamepadIcon />} label={d.dPads} />
-              </Tooltip>
-              <Tooltip title={Translation.translate('Axes')}>
-                <Chip variant='outlined' className={classes.chip} icon={<ZoomOutMapIcon />} label={d.axes} />
-              </Tooltip>
-              <Tooltip title={Translation.translate('Buttons')}>
-                <Chip variant='outlined' className={classes.chip} icon={<RadioButtonUncheckedIcon />} label={d.buttons} />
-              </Tooltip>
-              <Tooltip title={Translation.translate('Sliders')}>
-                <Chip variant='outlined' className={classes.chip} icon={<RadioButtonCheckedIcon />} label={d.sliders} />
-              </Tooltip>
-            </div>
-          </Paper>
-        </Grid>)}
-      </Grid>}
-    />
+              <div>
+                <Tooltip title={Translation.translate('DPads')}>
+                  <Chip variant='outlined' className={classes.chip} icon={<GamepadIcon />} label={d.dPads} />
+                </Tooltip>
+                <Tooltip title={Translation.translate('Axes')}>
+                  <Chip variant='outlined' className={classes.chip} icon={<ZoomOutMapIcon />} label={d.axes} />
+                </Tooltip>
+                <Tooltip title={Translation.translate('Buttons')}>
+                  <Chip variant='outlined' className={classes.chip} icon={<RadioButtonUncheckedIcon />} label={d.buttons} />
+                </Tooltip>
+                <Tooltip title={Translation.translate('Sliders')}>
+                  <Chip variant='outlined' className={classes.chip} icon={<RadioButtonCheckedIcon />} label={d.sliders} />
+                </Tooltip>
+              </div>
+            </Paper>
+          </Grid>)}
+        </Grid>
+        }
+      </Async>
     </>);
   }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +10,7 @@ using System.Threading;
 using XOutput.Core.DependencyInjection;
 using XOutput.Server.Emulation;
 using XOutput.Server.Input;
+using XOutput.Server.Notifications;
 using XOutput.Server.Websocket;
 
 namespace XOutput.Server
@@ -26,8 +28,7 @@ namespace XOutput.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            RegisterSingleton<EmulatorsController>(services);
-            RegisterSingleton<InputsController>(services);
+            applicationContext.ResolveAll<Controller>().ForEach(c => services.AddSingleton(c.GetType(), c));
 
             services.AddMvc().AddControllersAsServices();
         }
@@ -80,12 +81,6 @@ namespace XOutput.Server
                 }
 
             });
-        }
-
-        private void RegisterSingleton<T>(IServiceCollection services) where T : class
-        {
-            T singleton = applicationContext.Resolve<T>();
-            services.AddSingleton<T>(singleton);
         }
     }
 }

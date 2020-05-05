@@ -2,6 +2,8 @@
 using SharpDX;
 using SharpDX.DirectInput;
 using System;
+using XOutput.Core.DependencyInjection;
+using XOutput.Core.Notifications;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -16,14 +18,20 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 if (value != this.value)
                 {
-                    effect = DoForceFeedback(effect, axes, directions, value);
+                    if (!Error)
+                    {
+                        effect = DoForceFeedback(effect, axes, directions, value);
+                    }
                     this.value = value;
                 }
             }
         }
+        public bool Error { get; private set; }
 
         private readonly Joystick joystick;
         private readonly EffectInfo force;
+        private readonly string uniqueId;
+        private readonly NotificationService notificationService;
 
         private readonly int[] axes;
         private readonly int[] directions;
@@ -32,11 +40,13 @@ namespace XOutput.Devices.Input.DirectInput
         private readonly int samplePeriod;
         private bool disposed;
 
-
-        public DirectDeviceForceFeedback(Joystick joystick, EffectInfo force, DeviceObjectInstance actuator)
+        public DirectDeviceForceFeedback(Joystick joystick, string uniqueId, EffectInfo force, DeviceObjectInstance actuator)
         {
-            this.force = force;
+            notificationService = ApplicationContext.Global.Resolve<NotificationService>();
             this.joystick = joystick;
+            this.force = force;
+            this.uniqueId = uniqueId;
+            Error = false;
             gain = joystick.Properties.ForceFeedbackGain;
             samplePeriod = joystick.Capabilities.ForceFeedbackSamplePeriod;
             axes = new int[] { (int)actuator.ObjectId };
@@ -89,6 +99,13 @@ namespace XOutput.Devices.Input.DirectInput
             }
             catch (SharpDXException e)
             {
+                if (e.Message.Contains("E_NOTIMPL"))
+                {
+                    logger.Error(e, "Force feedback is not implmented");
+                    notificationService.Add(Notifications.ForceFeedbackNotImplemented, new[] { uniqueId }, NotificationTypes.Error);
+                    Error = true;
+                    throw e;
+                }
                 logger.Warn(e, $"Failed to create and start effect for {ToString()}");
                 return null;
             }

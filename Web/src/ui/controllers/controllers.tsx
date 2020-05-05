@@ -18,17 +18,17 @@ import Async, { AsyncErrorHandler } from "../components/Asnyc";
 type ClassNames = 'container' | 'paper' | 'iconWrapper';
 
 const styles: StyleGenerator<ClassNames> = () => ({
-    container: {
-      margin: '10px 0',
-    },
-    paper: {
-      height: '100%',
-      width: '100%',
-    },
-    iconWrapper: {
-      margin: 'auto',
-      textAlign: 'center',
-    }
+  container: {
+    margin: '10px 0',
+  },
+  paper: {
+    height: '100%',
+    width: '100%',
+  },
+  iconWrapper: {
+    margin: 'auto',
+    textAlign: 'center',
+  }
 });
 
 export interface ControllersProps extends Styled<ClassNames> {
@@ -80,31 +80,33 @@ class ControllersComponent extends Component<ControllersProps, ControllersState>
     const { classes } = this.props;
     return <>
       <Typography variant='h3'>{Translation.translate("ActiveControllers")}</Typography>
-      <Async task={this.loading} render={() => <Grid container className={classes.container} spacing={2}>
-          {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
-          <Paper className={classes.paper}>
-            <Grid container>
-              <Grid item xs={1} className={classes.iconWrapper}>
-                <Tooltip title={Translation.translate(d.deviceType) + ' - ' + d.emulator}>
-                  <SportsEsportsIcon style={{ color: this.deviceInfoToColor(d) }}/>
-                </Tooltip>
-              </Grid>
-              <Grid item xs={10}>
-                <Typography variant='body1'>{Translation.translate(d.local ? 'LocalDevice' : 'WebDevice') + ` (${d.id})`}</Typography>
-                <Typography variant='body2'>{d.local ? undefined : d.address}</Typography>
-              </Grid>
-              <Grid item xs={1} className={classes.iconWrapper}>
-                <IconButton onClick={() => this.deleteDevice(d.id)}>
-                  <DeleteIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>)}
-      </Grid>}
-      />
+      <Async task={this.loading}>
+        {() =>
+          <Grid container className={classes.container} spacing={2}>
+            {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
+              <Paper className={classes.paper}>
+                <Grid container>
+                  <Grid item xs={1} className={classes.iconWrapper}>
+                    <Tooltip title={Translation.translate(d.deviceType) + ' - ' + d.emulator}>
+                      <SportsEsportsIcon style={{ color: this.deviceInfoToColor(d) }} />
+                    </Tooltip>
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Typography variant='body1'>{Translation.translate(d.local ? 'LocalDevice' : 'WebDevice') + ` (${d.id})`}</Typography>
+                    <Typography variant='body2'>{d.local ? undefined : d.address}</Typography>
+                  </Grid>
+                  <Grid item xs={1} className={classes.iconWrapper}>
+                    <IconButton onClick={() => this.deleteDevice(d.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>)}
+          </Grid>}
+      </Async>
     </>;
   }
 }
- 
+
 export const Controllers = withStyles(styles)(ControllersComponent);

@@ -12,7 +12,7 @@ import { Styles } from "@material-ui/core/styles/withStyles";
 import { WebSocketService } from '../../communication/Websocket';
 import { InputValues } from "../../communication/input";
 import { MessageBase } from "../../communication/message";
-import { Dpad } from "./Dpad";
+import { Dpad } from "./dpad";
 import { StyleGenerator, Styled } from "../../utils";
 
 type ClassNames = 'header' | 'bar' | 'iconWrapper';
