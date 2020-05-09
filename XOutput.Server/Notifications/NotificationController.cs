@@ -25,16 +25,29 @@ namespace XOutput.Server.Notifications
 
         [HttpGet]
         [Route("/api/notifications")]
-        public ActionResult<IEnumerable<Notification>> ListInputDevices()
+        public ActionResult<IEnumerable<Notification>> ListNotifications()
         {
             return notificationService.GetAll().Select(Create).ToList();
         }
 
+        [HttpPut]
+        [Route("/api/notifications/{id}/acknowledge")]
+        public ActionResult AcknowledgeNotification(string id)
+        {
+            if (notificationService.Acknowledge(id))
+            {
+                return NoContent();
+            }
+            return NotFound();
+        }
 
         public static Notification Create(NotificationItem item)
         {
             return new Notification
             {
+                Id = item.Id,
+                Acknowledged = item.Acknowledged,
+                CreatedAt = item.CreatedAt.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz"),
                 Key = item.Key,
                 Level = GetLevel(item.NotificationType),
                 Parameters = item.Parameters.ToList(),

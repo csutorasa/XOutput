@@ -61,8 +61,12 @@ export type HidGuardianInfo = {
 };
 
 export type Notification = {
+    id: string;
     key: string;
+    acknowledged: boolean;
     level: string;
+    parameters: string[];
+    createdAt: string;
 };
 
 class RestService {
@@ -126,6 +130,10 @@ class RestService {
 
     getNotifiations(): Promise<Notification[]> {
         return this.http.get<Notification[]>(`/notifications`);
+    }
+
+    acknowledgeNotification(id: string): Promise<void> {
+        return this.http.put<void>(`/notifications/${id}/acknowledge`);
     }
 }
 

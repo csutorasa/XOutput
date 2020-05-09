@@ -26,20 +26,6 @@ interface AsyncComponentState<T> {
     error?: string;
 }
 
-export function AsyncResolveHandler<T>(component: React.Component): (resolve: T) => T {
-    return (result: any) => {
-        component.forceUpdate();
-        return result;
-    }
-}
-
-export function AsyncErrorHandler(component: React.Component): (err: any) => void {
-    return (err: any) => {
-        component.forceUpdate();
-        throw err;
-    }
-}
-
 class AsyncComponent<T> extends React.Component<AsyncComponentProps<T>, AsyncComponentState<T>> {
 
     state: AsyncComponentState<T> = {
@@ -86,12 +72,15 @@ class AsyncComponent<T> extends React.Component<AsyncComponentProps<T>, AsyncCom
 
     private handleChildren(node: React.ReactNode): ReactNode {
         if (node instanceof Array) {
-            return node.map(c => this.handleChildren(c));
+            if (node.length === 1) {
+                return this.handleChildren(node);
+            }
+            throw new Error('Only 1 function children is expected');
         } else 
         if (node instanceof Function) {
             return node(this.state.result);
         } else {
-            return node;
+            throw new Error('Only 1 function children is expected');
         }
     }
 

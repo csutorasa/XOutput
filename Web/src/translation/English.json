@@ -2,6 +2,7 @@
     "ActiveControllers": "Active controllers",
     "OnlineDevices": "Online devices",
     "Notifications": "Notifications",
+    "Share": "Share",
     "Fullscreen": "Fullscreen",
     "MicrosoftXbox360": "Microsoft Xbox 360",
     "SonyDualShock4": "Sony Dualshock 4",
@@ -18,5 +19,6 @@
     "ForceFeedbacks": "Force feedbacks",
     "Test": "Test",
     "BigMotor": "Big motor",
-    "SmallMotor": "Small motor"
+    "SmallMotor": "Small motor",
+    "input.forcefeedback.notimplemented": "Force feedback driver is missing or corrupt for {0}"
 }

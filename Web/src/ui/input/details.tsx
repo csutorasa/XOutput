@@ -248,6 +248,7 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
         hidguardian = (<>
           <Typography className={classes.header} variant='h5'>{Translation.translate("HidGuardian")}</Typography>
           <Paper>
+            <Typography className={classes.header} variant='body1'>{this.state.device.hardwareId}</Typography>
             <Switch color='primary' checked={this.state.hidGuardianEnabled} onChange={() => this.hidGuardianChange((event.target as any).checked)} />
           </Paper>
         </>);

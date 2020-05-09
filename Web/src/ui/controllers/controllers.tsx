@@ -3,7 +3,6 @@ import { green, blue, grey, red } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Tooltip from '@material-ui/core/Tooltip';
 import Paper from '@material-ui/core/Paper';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
@@ -11,9 +10,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { ControllerInfoResponse, DeviceType, rest, ControllerInfo } from "../../communication/rest";
 import { Translation } from "../../translation/Translation";
 import { withStyles, Theme } from "@material-ui/core";
-import { Styles } from "@material-ui/core/styles/withStyles";
+import Async from "../components/Asnyc";
 import { StyleGenerator, Styled } from "../../utils";
-import Async, { AsyncErrorHandler } from "../components/Asnyc";
 
 type ClassNames = 'container' | 'paper' | 'iconWrapper';
 
@@ -48,6 +46,7 @@ class ControllersComponent extends Component<ControllersProps, ControllersState>
 
   componentDidMount() {
     this.loading = this.refreshDevices();
+    this.forceUpdate();
   }
 
   refreshDevices() {
@@ -55,7 +54,7 @@ class ControllersComponent extends Component<ControllersProps, ControllersState>
       this.setState({
         devices: devices
       })
-    }, AsyncErrorHandler(this));
+    });
   }
 
   deviceInfoToColor(deviceInfo: ControllerInfo): string {

@@ -2,6 +2,7 @@
     "ActiveControllers": "Aktív vezérlők",
     "OnlineDevices": "Online eszközök",
     "Notifications": "Értesítések",
+    "Share": "Megosztás",
     "Fullscreen": "Teljes képernyő",
     "MicrosoftXbox360": "Microsoft Xbox 360",
     "SonyDualShock4": "Sony Dualshock 4",
@@ -18,5 +19,6 @@
     "ForceFeedbacks": "Rezgő motorok",
     "Test": "Teszt",
     "BigMotor": "Nagy motor",
-    "SmallMotor": "Kis motor"
+    "SmallMotor": "Kis motor",
+    "input.forcefeedback.notimplemented": "A rezgő funkció drivere hiányzik vagy korrupt a {0} eszköznél."
 }

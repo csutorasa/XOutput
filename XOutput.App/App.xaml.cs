@@ -45,7 +45,7 @@ namespace XOutput.App
             globalContext.AddFromConfiguration(typeof(CoreConfiguration));
             globalContext.AddFromConfiguration(typeof(ApiConfiguration));
             globalContext.AddFromConfiguration(typeof(AppConfiguration));
-            globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Api", "XOutput.Devices", "XOutput.Server"));
+            globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Api", "XOutput.Devices", "XOutput.Emulation", "XOutput.Server"));
             var configurationManager = globalContext.Resolve<ConfigurationManager>();
 
             var mainWindow = ApplicationContext.Global.Resolve<MainWindow>();

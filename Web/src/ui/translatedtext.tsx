@@ -24,3 +24,4 @@ export class TranslatedText extends Component<TranslatedTextProps, any, any> {
 }
 
 export const TT = TranslatedText;
+export default TT;

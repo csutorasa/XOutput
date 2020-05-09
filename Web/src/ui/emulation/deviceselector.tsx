@@ -1,12 +1,13 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, Fragment } from "react";
 import { ListEmulatorsResponse, rest, EmulatorResponse } from "../../communication/rest";
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Translation } from "../../translation/Translation";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
-import { Async, AsyncErrorHandler } from "../components/Asnyc";
+import Async from "../components/Asnyc";
 import { Styled, StyleGenerator } from "../../utils";
+import QRCode from 'qrcode';
 
 type ClassNames = 'deviceSeparator';
 
@@ -31,24 +32,28 @@ export class DeviceSelectorPage extends React.Component<DeviceSelectorProps, Dev
     };
 
     private loading: Promise<void>;
+    private qrGeneration: Promise<string | void>;
+    private path = window.location.toString();
 
     componentDidMount() {
         this.loading = rest.getEmulators().then(r => {
             this.setState({
                 emulators: r,
             });
-        }, AsyncErrorHandler(this));
+        });
+        this.qrGeneration = QRCode.toDataURL(this.path, { type: 'image/jpeg' });
+        this.forceUpdate();
     }
 
     private renderButton(emulator: string, device: string, installed: boolean): ReactElement {
         const { classes } = this.props;
-        const element = <>
+        const element = <Fragment key={`${device}/${emulator}`}>
             <div className={classes.deviceSeparator}></div>
-            <Button variant="contained" color='primary' key={`${device}/${emulator}`} disabled={!installed}>
+            <Button variant="contained" color='primary' disabled={!installed}>
                 {Translation.translate(device)}
             </Button>
             <div className={classes.deviceSeparator}></div>
-        </>;
+        </Fragment>;
         if (installed) {
             return <Link key={`${device}/${emulator}`} to={`/emulation/${device}/${emulator}`}>
                 {element}
@@ -69,6 +74,14 @@ export class DeviceSelectorPage extends React.Component<DeviceSelectorProps, Dev
             <Typography variant='h3'>{Translation.translate("OnlineDevices")}</Typography>
             <Async task={this.loading}>
             { () => Object.keys(this.state.emulators).map(key => this.renderListElement(key, this.state.emulators[key])) } 
+            </Async>
+            <Typography variant='h5'>{Translation.translate("Share")}</Typography>
+            <Async task={this.qrGeneration}>
+                { (dataUrl: string) => <>
+                    <Typography variant='body1'>{this.path}</Typography>
+                    <img src={dataUrl} />
+                    </> 
+                }
             </Async>
         </>);
     }

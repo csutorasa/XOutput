@@ -27,16 +27,27 @@ namespace XOutput.Core.Notifications
             {
                 notifications.Add(new NotificationItem
                 {
+                    Id = new Guid().ToString(),
                     Key = key,
+                    Acknowledged = false,
                     NotificationType = notificationType,
                     Parameters = parameters.ToList(),
+                    CreatedAt = DateTime.Now,
                     Timeout = timeout,
                 });
                 Cleanup();
             }
         }
 
-
+        public bool Acknowledge(string id)
+        {
+            foreach (var notification in notifications.Where(n => n.Id == id))
+            {
+                notification.Acknowledged = true;
+                return true;
+            }
+            return false;
+        }
 
         public IEnumerable<NotificationItem> GetAll()
         {

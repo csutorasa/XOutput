@@ -27,6 +27,7 @@ import { Styled, StyleGenerator } from '../utils'
 import Translation from "../translation/Translation";
 import { Notifications } from "./notifications/Notifications";
 import { MainMenuListItem } from "./MainMenuListItem";
+import { rest, Notification } from "../communication/rest";
 
 type ClassNames = 'menubarButton' | 'mainContent' | 'title' | 'drawerRoot' | 'drawerHeader' | 'placeholder';
 
@@ -38,7 +39,7 @@ const styles: StyleGenerator<ClassNames> = (theme) => ({
         margin: '8px',
     },
     title: {
-      flexGrow: 1,
+        flexGrow: 1,
     },
     drawerRoot: {
         width: '360px',
@@ -60,18 +61,36 @@ export interface MainMenuProps extends Styled<ClassNames>, RouteComponentProps {
 
 export interface MainMenuState {
     menuOpen: boolean;
+    notificationCount: number;
 }
 
 class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
 
     state: MainMenuState = {
         menuOpen: false,
+        notificationCount: 0,
+    }
+
+    componentDidMount() {
+        this.props.history.listen(() => {
+            this.refreshDevices();
+        });
+        this.refreshDevices();
     }
 
     changeMenu(open: boolean): void {
         this.setState({
             menuOpen: open,
         });
+    }
+
+    refreshDevices(): Promise<Notification[]> {
+        return rest.getNotifiations().then(notifications => {
+            this.setState({
+                notificationCount: notifications.filter(n => !n.acknowledged).length,
+            })
+            return notifications;
+        })
     }
 
     render() {
@@ -89,13 +108,13 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
                                 XOutput
                             </Typography>
                             <div className={classes.placeholder}></div>
-                            <Badge badgeContent={0} color="secondary">
-                                <Link to='/notifications' color='textPrimary'>
-                                    <IconButton edge="start" className={classes.menubarButton} color="inherit" aria-label="menu">
+                            <Link to='/notifications' color='textPrimary'>
+                                <IconButton edge="start" className={classes.menubarButton} color="inherit" aria-label="menu">
+                                    <Badge badgeContent={this.state.notificationCount} color="secondary">
                                         <NotificationsIcon />
-                                    </IconButton>
-                                </Link>
-                            </Badge>
+                                    </Badge>
+                                </IconButton>
+                            </Link>
                         </Toolbar>
                     </AppBar>
                     <Drawer anchor='left' open={this.state.menuOpen} onClose={() => this.changeMenu(false)}>
@@ -144,16 +163,16 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
                     <Route path="/devices">
                         <DeviceSelector></DeviceSelector>
                     </Route>
-                    <Route path="/emulation/MicrosoftXbox360/:emulator" component={(props: RouteChildrenProps<{emulator: string}>) => (
+                    <Route path="/emulation/MicrosoftXbox360/:emulator" component={(props: RouteChildrenProps<{ emulator: string }>) => (
                         <XboxEmulation deviceType='MicrosoftXbox360' emulator={props.match.params.emulator}></XboxEmulation>
                     )} />
-                    <Route path="/emulation/SonyDualShock4/:emulator" component={(props: RouteChildrenProps<{emulator: string}>) => (
+                    <Route path="/emulation/SonyDualShock4/:emulator" component={(props: RouteChildrenProps<{ emulator: string }>) => (
                         <Ds4Emulation deviceType='SonyDualShock4' emulator={props.match.params.emulator}></Ds4Emulation>
                     )} />
                     <Route path="/inputs" exact>
                         <Inputs></Inputs>
                     </Route>
-                    <Route path="/inputs/:id" component={(props: RouteChildrenProps<{id: string}>) => (
+                    <Route path="/inputs/:id" component={(props: RouteChildrenProps<{ id: string }>) => (
                         <InputDetails id={props.match.params.id}></InputDetails>
                     )} />
                     <Route path="/notifications" exact>
@@ -169,3 +188,4 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
 }
 
 export const MainMenu = withRouter(withStyles(styles)(MainMenuComponent));
+export default MainMenu;

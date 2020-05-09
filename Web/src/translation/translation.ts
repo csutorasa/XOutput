@@ -23,8 +23,11 @@ class TranslationService {
         }
     }
 
-    translate(key: string): string {
-        return this.data[key] || key;
+    translate(key: string, parameters: string[] = []): string {
+        const text = this.data[key] || key;
+        return parameters.reduce((previous, current, i: number) => {
+            return previous.replace(`{${i}}`, current);
+        }, text);
     }
 }
 

@@ -8,9 +8,9 @@ import { ListEmulatorsResponse, rest, EmulatorResponse } from "../../communicati
 import { WebSocketService } from "../../communication/Websocket";
 import { Square } from "./square";
 import { EventHolder } from "../../events/eventholder";
-import { TranslatedText as TT } from "../TranslatedText";
 import { MessageBase } from "../../communication/message";
 import { XboxFeedback } from "../../communication/response/XboxFeedback";
+import { TranslatedText } from "../TranslatedText";
 
 interface EmulationState {
     emulators: ListEmulatorsResponse;
@@ -110,7 +110,7 @@ export class XboxEmulation extends React.Component<EmulationProps, EmulationStat
                 <div>
                     <div className="fullscreen button circle" onClick={() => this.openFullscreen()} onTouchStart={() => this.openFullscreen()}>
                         <div className="inner">
-                            <TT text="Fullscreen" />
+                            <TranslatedText text="Fullscreen" />
                         </div>
                     </div>
                 </div>

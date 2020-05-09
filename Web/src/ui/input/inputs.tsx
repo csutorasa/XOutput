@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { Translation } from "../../translation/Translation";
 import { withStyles, Theme } from "@material-ui/core";
 import { StyleGenerator, Styled } from "../../utils";
-import { Async, AsyncErrorHandler } from "../components/Asnyc";
+import { Async } from "../components/Asnyc";
 
 type ClassNames = 'paper' | 'chip' | 'iconWrapper';
 
@@ -52,6 +52,7 @@ class InputsComponent extends Component<InputsProps, InputsState> {
 
   componentDidMount() {
     this.loading = this.refreshDevices();
+    this.forceUpdate();
   }
 
   refreshDevices() {
@@ -59,7 +60,7 @@ class InputsComponent extends Component<InputsProps, InputsState> {
       this.setState({
         devices: devices,
       })
-    }, AsyncErrorHandler(this))
+    })
   }
 
   private deviceToIcon(device: InputDeviceInformation) {

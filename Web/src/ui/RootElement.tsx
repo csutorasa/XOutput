@@ -5,3 +5,4 @@ import { MainMenu } from "./MainMenu";
 export const RootElement = <HashRouter>
     <MainMenu></MainMenu>
 </HashRouter>;
+export default RootElement;

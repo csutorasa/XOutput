@@ -18,3 +18,4 @@ class MainMenuListItemComponent extends React.Component<MainMenuListItemProps> {
 }
 
 export const MainMenuListItem = withRouter(MainMenuListItemComponent);
+export default MainMenuListItem;

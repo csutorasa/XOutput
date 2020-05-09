@@ -95,7 +95,7 @@ namespace XOutput.Server.Input
         {
             var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
             {
-                config.SmallMotors = config.BigMotors.Where(o => o != offset).ToList();
+                config.BigMotors = config.BigMotors.Where(o => o != offset).ToList();
             });
             if (!found)
             {
