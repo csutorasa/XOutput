@@ -1,4 +1,4 @@
-﻿namespace XOutput.Server.Emulation
+﻿namespace XOutput.Emulation.Ds4
 {
     public delegate void Ds4FeedbackEvent(object sender, Ds4FeedbackEventArgs args);
 

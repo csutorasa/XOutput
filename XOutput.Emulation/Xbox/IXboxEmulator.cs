@@ -1,4 +1,4 @@
-﻿namespace XOutput.Server.Emulation
+﻿namespace XOutput.Emulation.Xbox
 {
     public interface IXboxEmulator : IEmulator
     {

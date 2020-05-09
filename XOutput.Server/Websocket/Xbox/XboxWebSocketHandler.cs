@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using XOutput.Api.Devices;
 using XOutput.Api.Message.Xbox;
 using XOutput.Core.DependencyInjection;
+using XOutput.Emulation;
+using XOutput.Emulation.Xbox;
 using XOutput.Server.Emulation;
 
 namespace XOutput.Server.Websocket.Xbox
 {
     class XboxWebSocketHandler : IWebSocketHandler
     {
-        private static readonly string DeviceType = DeviceTypes.MicrosoftXbox360.ToString();
+        private static readonly string DeviceType = Api.Devices.DeviceTypes.MicrosoftXbox360.ToString();
         private readonly EmulatorService emulatorService;
         private readonly DeviceInfoService deviceInfoService;
 
@@ -28,7 +30,7 @@ namespace XOutput.Server.Websocket.Xbox
         public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
             string emulatorName = context.Request.Path.Value.Replace($"/ws/{DeviceType}/", "");
-            var emulator = emulatorService.FindEmulator<IXboxEmulator>(DeviceTypes.MicrosoftXbox360, emulatorName);
+            var emulator = emulatorService.FindEmulator<IXboxEmulator>(XOutput.Emulation.DeviceTypes.MicrosoftXbox360, emulatorName);
             var device = emulator.CreateXboxDevice();
             DeviceDisconnectedEvent disconnectedEvent = (sender, args) => closeFunction();
             device.Closed += disconnectedEvent;
@@ -37,7 +39,7 @@ namespace XOutput.Server.Websocket.Xbox
             {
                 Device = device,
                 IPAddress = ip,
-                DeviceType = DeviceTypes.MicrosoftXbox360,
+                DeviceType = XOutput.Emulation.DeviceTypes.MicrosoftXbox360,
                 Emulator = emulator.Name,
             });
             return new List<IMessageHandler>

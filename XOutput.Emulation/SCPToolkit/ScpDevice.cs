@@ -1,6 +1,6 @@
-﻿using XOutput.Api.Message.Xbox;
+﻿using XOutput.Emulation.Xbox;
 
-namespace XOutput.Server.Emulation.SCPToolkit
+namespace XOutput.Emulation.SCPToolkit
 {
     public sealed class ScpDevice : XboxDevice
     {
@@ -19,7 +19,7 @@ namespace XOutput.Server.Emulation.SCPToolkit
             report[0] = 0; // Input report
             report[1] = 20; // Message length
             client.Plugin(controllerCount);
-            SendInput(new XboxInputMessage
+            SendInput(new XboxInput
             {
                 LX = 0.5,
                 LY = 0.5,
@@ -38,7 +38,7 @@ namespace XOutput.Server.Emulation.SCPToolkit
             }
         }
 
-        public override void SendInput(XboxInputMessage input)
+        public override void SendInput(XboxInput input)
         {
             SetValueIfNeeded(2, 0, input.UP);
             SetValueIfNeeded(2, 1, input.DOWN);

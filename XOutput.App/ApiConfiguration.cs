@@ -1,7 +1,7 @@
 ﻿using XOutput.Api.Serialization;
 using XOutput.Core.DependencyInjection;
 
-namespace XOutput.Core
+namespace XOutput.App
 {
     public static class ApiConfiguration
     {

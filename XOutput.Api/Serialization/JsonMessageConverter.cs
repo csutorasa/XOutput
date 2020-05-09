@@ -10,7 +10,7 @@ namespace XOutput.Api.Serialization
 {
     class JsonMessageConverter : JsonConverter
     {
-        private static Dictionary<string, Func<MessageBase>> messageTypeMapping = new Dictionary<string, Func<MessageBase>>();
+        private static readonly Dictionary<string, Func<MessageBase>> messageTypeMapping = new Dictionary<string, Func<MessageBase>>();
 
         static JsonMessageConverter()
         {

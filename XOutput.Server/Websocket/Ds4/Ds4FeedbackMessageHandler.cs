@@ -1,7 +1,7 @@
 ﻿using System;
 using XOutput.Api.Message;
 using XOutput.Api.Message.Ds4;
-using XOutput.Server.Emulation;
+using XOutput.Emulation.Ds4;
 
 namespace XOutput.Server.Websocket.Ds4
 {

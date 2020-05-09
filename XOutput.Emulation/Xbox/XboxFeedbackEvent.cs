@@ -1,4 +1,4 @@
-﻿namespace XOutput.Server.Emulation
+﻿namespace XOutput.Emulation.Xbox
 {
     public delegate void XboxFeedbackEvent(object sender, XboxFeedbackEventArgs args);
 

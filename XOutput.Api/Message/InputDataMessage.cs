@@ -9,7 +9,7 @@ namespace XOutput.Api.Message
         public List<InputData> Data { get; set; }
     }
 
-    public struct InputData
+    public class InputData
     {
         public string InputType { get; set; }
         public double Value { get; set; }

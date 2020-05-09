@@ -1,8 +1,6 @@
 ﻿using System;
-using XOutput.Api.Devices;
-using XOutput.Api.Message.Ds4;
 
-namespace XOutput.Server.Emulation
+namespace XOutput.Emulation.Ds4
 {
     public abstract class Ds4Device : IDevice
     {
@@ -22,7 +20,7 @@ namespace XOutput.Server.Emulation
         {
             Closed?.Invoke(this, args);
         }
-        public abstract void SendInput(Ds4InputMessage input);
+        public abstract void SendInput(Ds4Input input);
         public abstract void Close();
     }
 }

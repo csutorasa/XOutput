@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using XOutput.Api.Devices;
 using XOutput.Api.Emulation;
 using XOutput.Core.DependencyInjection;
+using XOutput.Emulation;
 
 namespace XOutput.Server.Emulation
 {

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using XOutput.Api.Devices;
@@ -26,7 +27,29 @@ namespace XOutput.Server.Notifications
         [Route("/api/notifications")]
         public ActionResult<IEnumerable<Notification>> ListInputDevices()
         {
-            return notificationService.GetAll().Select(Notification.Create).ToList();
+            return notificationService.GetAll().Select(Create).ToList();
+        }
+
+
+        public static Notification Create(NotificationItem item)
+        {
+            return new Notification
+            {
+                Key = item.Key,
+                Level = GetLevel(item.NotificationType),
+                Parameters = item.Parameters.ToList(),
+            };
+        }
+
+        private static string GetLevel(NotificationTypes type)
+        {
+            return type switch
+            {
+                NotificationTypes.Information => Notification.Information,
+                NotificationTypes.Warning => Notification.Warning,
+                NotificationTypes.Error => Notification.Error,
+                _ => throw new ArgumentException(nameof(type)),
+            };
         }
     }
 }

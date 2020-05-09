@@ -1,7 +1,7 @@
 ﻿using System;
 using XOutput.Api.Message;
 using XOutput.Api.Message.Xbox;
-using XOutput.Server.Emulation;
+using XOutput.Emulation.Xbox;
 
 namespace XOutput.Server.Websocket.Xbox
 {

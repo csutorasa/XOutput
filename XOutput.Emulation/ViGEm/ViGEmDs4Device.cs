@@ -1,8 +1,8 @@
 ﻿using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.DualShock4;
-using XOutput.Api.Message.Ds4;
+using XOutput.Emulation.Ds4;
 
-namespace XOutput.Server.Emulation.ViGEm
+namespace XOutput.Emulation.ViGEm
 {
     public sealed class ViGEmDs4Device : Ds4Device
     {
@@ -16,7 +16,7 @@ namespace XOutput.Server.Emulation.ViGEm
             controller.Connect();
             controller.FeedbackReceived += FeedbackReceived;
             Connected = true;
-            SendInput(new Ds4InputMessage
+            SendInput(new Ds4Input
             {
                 LX = 0.5,
                 LY = 0.5,
@@ -45,7 +45,7 @@ namespace XOutput.Server.Emulation.ViGEm
             }
         }
 
-        public override void SendInput(Ds4InputMessage input)
+        public override void SendInput(Ds4Input input)
         {
             SetValueIfNeeded(DualShock4Button.Circle, input.Circle);
             SetValueIfNeeded(DualShock4Button.Cross, input.Cross);

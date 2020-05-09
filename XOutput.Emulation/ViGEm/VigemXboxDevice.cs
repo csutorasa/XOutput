@@ -1,8 +1,8 @@
 ﻿using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.Xbox360;
-using XOutput.Api.Message.Xbox;
+using XOutput.Emulation.Xbox;
 
-namespace XOutput.Server.Emulation.ViGEm
+namespace XOutput.Emulation.ViGEm
 {
     public sealed class ViGEmXboxDevice : XboxDevice
     {
@@ -16,7 +16,7 @@ namespace XOutput.Server.Emulation.ViGEm
             controller.Connect();
             controller.FeedbackReceived += FeedbackReceived;
             Connected = true;
-            SendInput(new XboxInputMessage
+            SendInput(new XboxInput
             {
                 LX = 0.5,
                 LY = 0.5,
@@ -46,7 +46,7 @@ namespace XOutput.Server.Emulation.ViGEm
             }
         }
 
-        public override void SendInput(XboxInputMessage input)
+        public override void SendInput(XboxInput input)
         {
             SetValueIfNeeded(Xbox360Button.A, input.A);
             SetValueIfNeeded(Xbox360Button.B, input.B);

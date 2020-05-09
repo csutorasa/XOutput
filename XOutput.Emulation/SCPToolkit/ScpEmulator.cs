@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using XOutput.Api.Devices;
 using XOutput.Core.DependencyInjection;
+using XOutput.Emulation.Xbox;
 
-namespace XOutput.Server.Emulation.SCPToolkit
+namespace XOutput.Emulation.SCPToolkit
 {
     public class ScpEmulator : IXboxEmulator
     {

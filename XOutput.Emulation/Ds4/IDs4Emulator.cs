@@ -1,4 +1,4 @@
-﻿namespace XOutput.Server.Emulation
+﻿namespace XOutput.Emulation.Ds4
 {
     public interface IDs4Emulator : IEmulator
     {

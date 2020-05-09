@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using XOutput.Api.Devices;
 
-namespace XOutput.Server.Emulation
+namespace XOutput.Emulation
 {
     public interface IEmulator
     {

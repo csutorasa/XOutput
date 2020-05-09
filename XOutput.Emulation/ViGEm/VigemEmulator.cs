@@ -2,11 +2,11 @@
 using Nefarius.ViGEm.Client.Exceptions;
 using System;
 using System.Collections.Generic;
-using XOutput.Api.Devices;
 using XOutput.Core.DependencyInjection;
-using XOutput.Devices.Input;
+using XOutput.Emulation.Ds4;
+using XOutput.Emulation.Xbox;
 
-namespace XOutput.Server.Emulation.ViGEm
+namespace XOutput.Emulation.ViGEm
 {
     public class ViGEmEmulator : IXboxEmulator, IDs4Emulator
     {

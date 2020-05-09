@@ -1,6 +1,7 @@
 ﻿using XOutput.Api.Message;
 using XOutput.Api.Message.Ds4;
-using XOutput.Server.Emulation;
+using XOutput.Emulation;
+using XOutput.Emulation.Ds4;
 
 namespace XOutput.Server.Websocket.Ds4
 {
@@ -22,7 +23,31 @@ namespace XOutput.Server.Websocket.Ds4
 
         public void Handle(MessageBase message)
         {
-            device.SendInput(message as Ds4InputMessage);
+            var inputMessage = message as Ds4InputMessage;
+            device.SendInput(new Ds4Input
+            {
+                Circle = inputMessage.Circle,
+                Cross = inputMessage.Cross,
+                Triangle = inputMessage.Triangle,
+                Square = inputMessage.Square,
+                L1 = inputMessage.L1,
+                L3 = inputMessage.L3,
+                R1 = inputMessage.R1,
+                R3 = inputMessage.R3,
+                Options = inputMessage.Options,
+                Share = inputMessage.Share,
+                Ps = inputMessage.Ps,
+                UP = inputMessage.UP,
+                DOWN = inputMessage.DOWN,
+                LEFT = inputMessage.LEFT,
+                RIGHT = inputMessage.RIGHT,
+                LX = inputMessage.LX,
+                LY = inputMessage.LY,
+                RX = inputMessage.RX,
+                RY = inputMessage.RY,
+                L2 = inputMessage.L2,
+                R2 = inputMessage.R2,
+            });
         }
 
         public void Close()

@@ -9,8 +9,6 @@
     <Product>XOutput.Devices</Product>
     <PackageId>XOutput.Devices</PackageId>
     <NeutralLanguage>en</NeutralLanguage>
-    <Description></Description>
-    <Copyright>Copyright 2019</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
     <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>

@@ -1,6 +1,4 @@
-﻿using XOutput.Api.Devices;
-
-namespace XOutput.Server.Emulation
+﻿namespace XOutput.Emulation
 {
     public class NetworkDeviceInfo
     {

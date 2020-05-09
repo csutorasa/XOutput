@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace XOutput.Server.Emulation.SCPToolkit
+namespace XOutput.Emulation.SCPToolkit
 {
     /// <summary>
     /// Native methods to call when using SCP Toolkit.
@@ -21,21 +21,13 @@ namespace XOutput.Server.Emulation.SCPToolkit
         private static byte[] GetHeader(MessageType type, int? controller)
         {
             byte[] buffer = new byte[8];
-            switch (type)
+            buffer[0] = type switch
             {
-                case MessageType.Plugin:
-                    buffer[0] = 0x10;
-                    break;
-                case MessageType.Report:
-                    buffer[0] = 0x1C;
-                    break;
-                case MessageType.Unplug:
-                    buffer[0] = 0x10;
-                    break;
-                default:
-                    throw new ArgumentException("Invalid enum value");
-            }
-
+                MessageType.Plugin => 0x10,
+                MessageType.Report => 0x1C,
+                MessageType.Unplug => 0x10,
+                _ => throw new ArgumentException("Invalid enum value"),
+            };
             if (controller.HasValue)
             {
                 buffer[4] = (byte)((controller.Value) & 0xFF);

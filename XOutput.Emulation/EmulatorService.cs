@@ -1,10 +1,9 @@
 ﻿
 using System.Collections.Generic;
 using System.Linq;
-using XOutput.Api.Devices;
 using XOutput.Core.DependencyInjection;
 
-namespace XOutput.Server.Emulation
+namespace XOutput.Emulation
 {
     public class EmulatorService
     {

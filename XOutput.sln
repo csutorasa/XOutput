@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.App", "XOutput.App\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Client", "XOutput.Client\XOutput.Client.csproj", "{50C4CE81-79A6-4DD9-AD5E-A774A3D672F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Emulation", "XOutput.Emulation\XOutput.Emulation.csproj", "{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +153,18 @@ Global
 		{50C4CE81-79A6-4DD9-AD5E-A774A3D672F5}.Release|x64.Build.0 = Release|Any CPU
 		{50C4CE81-79A6-4DD9-AD5E-A774A3D672F5}.Release|x86.ActiveCfg = Release|Any CPU
 		{50C4CE81-79A6-4DD9-AD5E-A774A3D672F5}.Release|x86.Build.0 = Release|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Debug|x64.Build.0 = Debug|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Debug|x86.Build.0 = Debug|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Release|x64.ActiveCfg = Release|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Release|x64.Build.0 = Release|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Release|x86.ActiveCfg = Release|Any CPU
+		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

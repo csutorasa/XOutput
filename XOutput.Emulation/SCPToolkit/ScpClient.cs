@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace XOutput.Server.Emulation.SCPToolkit
+namespace XOutput.Emulation.SCPToolkit
 {
     public sealed class ScpClient : IDisposable
     {

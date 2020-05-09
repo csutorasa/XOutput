@@ -3,22 +3,24 @@
   <PropertyGroup>
     <OutputType>library</OutputType>
     <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-    <RootNamespace>XOutput.Api</RootNamespace>
-    <AssemblyName>XOutput.Api</AssemblyName>
+    <RootNamespace>XOutput.Emulation</RootNamespace>
+    <AssemblyName>XOutput.Emulation</AssemblyName>
     <Authors>Ármin Csutorás</Authors>
-    <Product>XOutput.Api</Product>
-    <PackageId>XOutput.Api</PackageId>
+    <Product>XOutput.Emulation</Product>
+    <PackageId>XOutput.Emulation</PackageId>
     <NeutralLanguage>en</NeutralLanguage>
-    <Description></Description>
-    <Copyright>Copyright 2019</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
     <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Nefarius.ViGEm.Client" Version="1.16.148" />
+  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
   </ItemGroup>
 
 </Project>

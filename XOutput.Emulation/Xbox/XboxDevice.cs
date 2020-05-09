@@ -1,8 +1,6 @@
 ﻿using System;
-using XOutput.Api.Devices;
-using XOutput.Api.Message.Xbox;
 
-namespace XOutput.Server.Emulation
+namespace XOutput.Emulation.Xbox
 {
     public abstract class XboxDevice : IDevice
     {
@@ -22,7 +20,7 @@ namespace XOutput.Server.Emulation
         {
             Closed?.Invoke(this, args);
         }
-        public abstract void SendInput(XboxInputMessage input);
+        public abstract void SendInput(XboxInput input);
         public abstract void Close();
     }
 }

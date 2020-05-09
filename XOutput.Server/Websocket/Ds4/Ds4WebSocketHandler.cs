@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using XOutput.Api.Devices;
 using XOutput.Api.Message.Ds4;
 using XOutput.Core.DependencyInjection;
-using XOutput.Server.Emulation;
+using XOutput.Emulation;
+using XOutput.Emulation.Ds4;
 
 namespace XOutput.Server.Websocket.Ds4
 {
     class Ds4WebSocketHandler : IWebSocketHandler
     {
-        private static readonly string DeviceType = DeviceTypes.SonyDualShock4.ToString();
+        private static readonly string DeviceType = Api.Devices.DeviceTypes.SonyDualShock4.ToString();
         private readonly EmulatorService emulatorService;
         private readonly DeviceInfoService deviceInfoService;
 
@@ -28,7 +29,7 @@ namespace XOutput.Server.Websocket.Ds4
         public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
             string emulatorName = context.Request.Path.Value.Replace($"/ws/{DeviceType}/", "");
-            var emulator = emulatorService.FindEmulator<IDs4Emulator>(DeviceTypes.SonyDualShock4, emulatorName);
+            var emulator = emulatorService.FindEmulator<IDs4Emulator>(XOutput.Emulation.DeviceTypes.SonyDualShock4, emulatorName);
             var device = emulator.CreateDs4Device();
             DeviceDisconnectedEvent disconnectedEvent = (sender, args) => closeFunction();
             device.Closed += disconnectedEvent;
@@ -37,7 +38,7 @@ namespace XOutput.Server.Websocket.Ds4
             {
                 Device = device,
                 IPAddress = ip,
-                DeviceType = DeviceTypes.SonyDualShock4,
+                DeviceType = XOutput.Emulation.DeviceTypes.SonyDualShock4,
                 Emulator = emulator.Name,
             });
             return new List<IMessageHandler>
