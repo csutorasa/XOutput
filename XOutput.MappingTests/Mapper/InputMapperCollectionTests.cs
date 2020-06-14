@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace XOutput.Devices.Mapper.Tests
+namespace XOutput.Mapping.Mapper.Tests
 {
     [TestClass]
     public class InputMapperCollectionTests

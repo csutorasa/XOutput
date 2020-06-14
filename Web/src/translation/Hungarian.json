@@ -20,5 +20,6 @@
     "Test": "Teszt",
     "BigMotor": "Nagy motor",
     "SmallMotor": "Kis motor",
-    "input.forcefeedback.notimplemented": "A rezgő funkció drivere hiányzik vagy korrupt a {0} eszköznél."
+    "input.forcefeedback.notimplemented": "A rezgő funkció drivere hiányzik vagy korrupt a {0} eszköznél.",
+    "hidguardian.registry.noaccess": "Nincs jogosultsága a HidGuardian beállításait a registry-be írni"
 }

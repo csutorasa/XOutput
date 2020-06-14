@@ -15,6 +15,7 @@ using System.Xml;
 using XOutput.Core;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
+using XOutput.Core.Notifications;
 using XOutput.Core.Resources;
 using XOutput.Server.Emulation.HidGuardian;
 
@@ -57,7 +58,14 @@ namespace XOutput.App
             string settingsPath = Path.Combine(Directory.GetCurrentDirectory(), "config", "server.json");
             if (true)
             {
-                hidGuardianManager.SetPid(Process.GetCurrentProcess().Id);
+                try
+                {
+                    hidGuardianManager.SetPid(Process.GetCurrentProcess().Id);
+                }
+                catch(Exception)
+                {
+                    globalContext.Resolve<NotificationService>().Add(Notifications.HidGuardianRegistry, null, NotificationTypes.Warning);
+                }
             }
             server = globalContext.Resolve<IHost>();
             server.StartAsync();

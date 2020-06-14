@@ -64,7 +64,7 @@ namespace XOutput.Emulation.ViGEm
             SetValueIfNeeded(DualShock4Axis.RightThumbY, input.RY);
             SetValueIfNeeded(DualShock4Slider.LeftTrigger, input.L2);
             SetValueIfNeeded(DualShock4Slider.RightTrigger, input.R2);
-            SetDPadIfNeeded(input.UP, input.DOWN, input.LEFT, input.RIGHT);
+            SetDPadIfNeeded(input.Up, input.Down, input.Left, input.Right);
             controller.SubmitReport();
         }
 

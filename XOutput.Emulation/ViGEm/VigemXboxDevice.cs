@@ -59,10 +59,10 @@ namespace XOutput.Emulation.ViGEm
             SetValueIfNeeded(Xbox360Button.Back, input.Back);
             SetValueIfNeeded(Xbox360Button.Start, input.Start);
             SetValueIfNeeded(Xbox360Button.Guide, input.Home);
-            SetValueIfNeeded(Xbox360Button.Up, input.UP);
-            SetValueIfNeeded(Xbox360Button.Down, input.DOWN);
-            SetValueIfNeeded(Xbox360Button.Left, input.LEFT);
-            SetValueIfNeeded(Xbox360Button.Right, input.RIGHT);
+            SetValueIfNeeded(Xbox360Button.Up, input.Up);
+            SetValueIfNeeded(Xbox360Button.Down, input.Down);
+            SetValueIfNeeded(Xbox360Button.Left, input.Left);
+            SetValueIfNeeded(Xbox360Button.Right, input.Right);
             SetValueIfNeeded(Xbox360Axis.LeftThumbX, input.LX);
             SetValueIfNeeded(Xbox360Axis.LeftThumbY, input.LY);
             SetValueIfNeeded(Xbox360Axis.RightThumbX, input.RX);

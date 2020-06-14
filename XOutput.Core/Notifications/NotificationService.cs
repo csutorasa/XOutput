@@ -31,7 +31,7 @@ namespace XOutput.Core.Notifications
                     Key = key,
                     Acknowledged = false,
                     NotificationType = notificationType,
-                    Parameters = parameters.ToList(),
+                    Parameters = parameters == null ? new List<string>() : parameters.ToList(),
                     CreatedAt = DateTime.Now,
                     Timeout = timeout,
                 });

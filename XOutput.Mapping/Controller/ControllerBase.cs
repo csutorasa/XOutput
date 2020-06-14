@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using XOutput.Devices.Input;
-using XOutput.Devices.Mapper;
+using XOutput.Mapping.Mapper;
 
-namespace XOutput.Devices.Controller
+namespace XOutput.Mapping.Controller
 {
     public abstract class ControllerBase<T> where T : struct, IConvertible
     {
@@ -47,6 +47,10 @@ namespace XOutput.Devices.Controller
         protected double GetValue(T input)
         {
             return inputGetters.ContainsKey(input) ? inputGetters[input]() : GetDefaultValue(input);
+        }
+        protected bool GetBoolValue(T input)
+        {
+            return GetValue(input) > 0.5 ? true : false;
         }
 
         protected void SetForceFeedback(double big, double small)

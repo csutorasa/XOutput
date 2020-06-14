@@ -8,5 +8,6 @@ namespace XOutput.Core.Notifications
     {
         public const string ForceFeedbackNotImplemented = "input.forcefeedback.notimplemented";
         public const string DirectInputInstanceIdDuplication = "input.instance.duplication";
+        public const string HidGuardianRegistry = "hidguardian.registry.noaccess";
     }
 }

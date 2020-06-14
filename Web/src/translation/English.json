@@ -20,5 +20,6 @@
     "Test": "Test",
     "BigMotor": "Big motor",
     "SmallMotor": "Small motor",
-    "input.forcefeedback.notimplemented": "Force feedback driver is missing or corrupt for {0}"
+    "input.forcefeedback.notimplemented": "Force feedback driver is missing or corrupt for {0}",
+    "hidguardian.registry.noaccess": "No access to write registry for HidGuardian"
 }

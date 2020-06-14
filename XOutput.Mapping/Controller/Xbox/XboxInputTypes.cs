@@ -1,6 +1,7 @@
 ﻿using System;
+using XOutput.Devices;
 
-namespace XOutput.Devices.Controller.Xbox
+namespace XOutput.Mapping.Controller.Xbox
 {
     public enum XboxInputTypes
     {

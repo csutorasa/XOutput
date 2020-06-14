@@ -10,6 +10,7 @@
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
     <ProjectReference Include="..\XOutput.Devices\XOutput.Devices.csproj" />
     <ProjectReference Include="..\XOutput.Emulation\XOutput.Emulation.csproj" />
+    <ProjectReference Include="..\XOutput.Mapping\XOutput.Mapping.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Nefarius.ViGEm.Client" Version="1.16.148" />

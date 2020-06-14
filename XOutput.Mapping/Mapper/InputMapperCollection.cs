@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace XOutput.Devices.Mapper
+namespace XOutput.Mapping.Mapper
 {
     public class InputMapperCollection
     {

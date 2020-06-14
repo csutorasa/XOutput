@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using XOutput.Devices.Mapper;
+using XOutput.Mapping.Mapper;
 
-namespace XOutput.Devices.Controller
+namespace XOutput.Mapping.Controller
 {
     public class ControllerConfig<T>
     {

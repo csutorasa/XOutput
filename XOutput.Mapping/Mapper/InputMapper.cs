@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace XOutput.Devices.Mapper
+namespace XOutput.Mapping.Mapper
 {
     public class InputMapper : Mapper
     {

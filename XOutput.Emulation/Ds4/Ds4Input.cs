@@ -13,10 +13,10 @@
         public bool? Options { get; set; }
         public bool? Share { get; set; }
         public bool? Ps { get; set; }
-        public bool? UP { get; set; }
-        public bool? DOWN { get; set; }
-        public bool? LEFT { get; set; }
-        public bool? RIGHT { get; set; }
+        public bool? Up { get; set; }
+        public bool? Down { get; set; }
+        public bool? Left { get; set; }
+        public bool? Right { get; set; }
         public double? LX { get; set; }
         public double? LY { get; set; }
         public double? RX { get; set; }
