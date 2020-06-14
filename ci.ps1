@@ -35,6 +35,7 @@ $PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.Core.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.Api.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.Server.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.Devices.dll `
+$PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.Emulation.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.App.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.App.exe `
 $PSScriptRoot\XOutput.App\bin\Release\$target\XOutput.App.runtimeconfig.json `
