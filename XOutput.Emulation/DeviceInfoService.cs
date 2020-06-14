@@ -6,7 +6,7 @@ namespace XOutput.Emulation
 {
     public class DeviceInfoService
     {
-        private List<NetworkDeviceInfo> connectedDevices = new List<NetworkDeviceInfo>();
+        private readonly List<NetworkDeviceInfo> connectedDevices = new List<NetworkDeviceInfo>();
 
         [ResolverMethod]
         public DeviceInfoService()

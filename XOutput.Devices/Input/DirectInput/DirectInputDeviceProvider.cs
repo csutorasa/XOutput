@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.ExceptionServices;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
+using XOutput.Core.Notifications;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -18,6 +19,7 @@ namespace XOutput.Devices.Input.DirectInput
 
         private readonly IgnoredDeviceService ignoredDeviceService;
         private readonly InputConfigManager inputConfigManager;
+        private readonly NotificationService notificationService;
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
         private readonly List<IInputDevice> currentDevices = new List<IInputDevice>();
         private readonly object lockObject = new object();
@@ -25,10 +27,11 @@ namespace XOutput.Devices.Input.DirectInput
         bool allDevices = false;
 
         [ResolverMethod]
-        public DirectInputDeviceProvider(IgnoredDeviceService ignoredDeviceService, InputConfigManager inputConfigManager)
+        public DirectInputDeviceProvider(IgnoredDeviceService ignoredDeviceService, InputConfigManager inputConfigManager, NotificationService notificationService)
         {
             this.ignoredDeviceService = ignoredDeviceService;
             this.inputConfigManager = inputConfigManager;
+            this.notificationService = notificationService;
         }
 
         public void SearchDevices()
@@ -54,6 +57,10 @@ namespace XOutput.Devices.Input.DirectInput
                         if (device == null)
                         {
                             continue;
+                        }
+                        if (currentDevices.Any(d => d.UniqueId == device.UniqueId))
+                        {
+                            notificationService.Add(Notifications.DirectInputInstanceIdDuplication, new[] { device.UniqueId }, NotificationTypes.Warning);
                         }
                         var config = inputConfigManager.LoadConfig(device.UniqueId);
                         device.InputConfiguration = config;

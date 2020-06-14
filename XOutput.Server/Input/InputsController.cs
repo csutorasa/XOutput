@@ -53,7 +53,7 @@ namespace XOutput.Server.Input
                 Id = inputDevice.UniqueId,
                 Name = inputDevice.DisplayName,
                 HardwareId = inputDevice.HardwareID,
-                Sources = inputDevice.Sources.Select(s => new InputDeviceSource { Offset = s.Offset, Name = s.DisplayName, Type = fromType(s.Type), }).ToList(),
+                Sources = inputDevice.Sources.Select(s => new InputDeviceSource { Offset = s.Offset, Name = s.DisplayName, Type = FromType(s.Type), }).ToList(),
                 ForceFeedbacks = inputDevice.ForceFeedbacks.Select(s => new InputForceFeedback { Offset = s.Offset }).ToList(),
             };
         }
@@ -151,7 +151,7 @@ namespace XOutput.Server.Input
 
         [HttpPut]
         [Route("/api/inputs/{id}/hidguardian")]
-        public ActionResult EnableHidGuardian(string id, InputConfiguration config)
+        public ActionResult EnableHidGuardian(string id)
         {
             var inputDevice = inputDeviceManager.FindInputDevice(id);
             if (inputDevice == null)
@@ -168,7 +168,7 @@ namespace XOutput.Server.Input
 
         [HttpDelete]
         [Route("/api/inputs/{id}/hidguardian")]
-        public ActionResult DisableHidGuardian(string id, InputConfiguration config)
+        public ActionResult DisableHidGuardian(string id)
         {
             var inputDevice = inputDeviceManager.FindInputDevice(id);
             if (inputDevice == null)
@@ -219,7 +219,7 @@ namespace XOutput.Server.Input
             return NoContent();
         }
 
-        private string fromType(SourceTypes sourceTypes)
+        private string FromType(SourceTypes sourceTypes)
         {
             if (sourceTypes.IsAxis())
             {
