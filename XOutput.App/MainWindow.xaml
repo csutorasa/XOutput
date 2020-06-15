@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:XOutput.App"
         mc:Ignorable="d">
     <Grid>
-        <tb:TaskbarIcon Visibility="Visible" ToolTipText="XOutput" IconSource="/Resources/icon.ico" MenuActivation="RightClick" PopupActivation="LeftClick">
+        <tb:TaskbarIcon Visibility="Visible" ToolTipText="XOutput" IconSource="/Resources/icon.ico" MenuActivation="RightClick" PopupActivation="LeftClick" Name="TaskbarIcon">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Open" Click="OpenClick"/>
