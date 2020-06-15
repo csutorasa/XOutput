@@ -78,12 +78,14 @@ namespace XOutput.App
                 if (File.Exists("nlog.config"))
                 {
                     LogManager.Configuration = new XmlLoggingConfiguration(XmlReader.Create(File.OpenRead("nlog.config")));
+                    return;
                 }
             }
             catch
             {
-                LogManager.Configuration = new XmlLoggingConfiguration(XmlReader.Create(AssemblyResourceManager.GetResourceStream("nlog.config")));
+                // Cannot create logger
             }
+            LogManager.Configuration = new XmlLoggingConfiguration(XmlReader.Create(AssemblyResourceManager.GetResourceStream("nlog.config")));
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
