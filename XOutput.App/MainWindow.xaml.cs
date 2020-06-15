@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using XOutput.Core.DependencyInjection;
@@ -28,7 +26,7 @@ namespace XOutput.App
 #endif
         }
 
-        private async Task OpenClick(object sender, RoutedEventArgs e)
+        private async void OpenClick(object sender, RoutedEventArgs e)
         {
             string address;
             try
