@@ -85,7 +85,7 @@ namespace XOutput.App
             {
                 // Cannot create logger
             }
-            LogManager.Configuration = new XmlLoggingConfiguration(XmlReader.Create(AssemblyResourceManager.GetResourceStream("nlog.config")));
+            LogManager.Configuration = new XmlLoggingConfiguration(XmlReader.Create(AssemblyResourceManager.GetResourceStream("XOutput.App.nlog.config")));
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
