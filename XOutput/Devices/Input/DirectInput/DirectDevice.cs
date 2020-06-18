@@ -3,6 +3,7 @@ using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
@@ -20,6 +21,8 @@ namespace XOutput.Devices.Input.DirectInput
         /// The delay in milliseconds to sleep between input reads.
         /// </summary>
         public const int ReadDelayMs = 1;
+
+        private static readonly Regex hidRegex = new Regex("(hid)#([^#]+)#([^#]+)");
         #endregion
 
         #region Events
@@ -92,6 +95,11 @@ namespace XOutput.Devices.Input.DirectInput
                 if (deviceInstance.IsHumanInterfaceDevice)
                 {
                     string path = joystick.Properties.InterfacePath;
+                    var match = hidRegex.Match(path);
+                    if (match.Success)
+                    {
+                        return string.Join("\\", new string[] { match.Groups[1].Value, match.Groups[2].Value, match.Groups[3].Value }).ToUpper();
+                    }
                     if (path.Contains("hid#"))
                     {
                         path = path.Substring(path.IndexOf("hid#"));
