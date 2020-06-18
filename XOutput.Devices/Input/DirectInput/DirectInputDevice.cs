@@ -4,6 +4,7 @@ using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using XOutput.Core.Threading;
 
 namespace XOutput.Devices.Input.DirectInput
@@ -11,6 +12,8 @@ namespace XOutput.Devices.Input.DirectInput
     public class DirectInputDevice : IInputDevice
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
+
+        private static readonly Regex hidRegex = new Regex("(hid)#([^#]+)#([^#]+)");
 
         public IEnumerable<InputSource> Sources => sources;
 
@@ -38,16 +41,7 @@ namespace XOutput.Devices.Input.DirectInput
             this.joystick = joystick;
             this.UniqueId = guid;
             this.DisplayName = productName;
-            try
-            {
-                HardwareID = RawInput.RawDevices.GetHid(joystick.Properties.VendorId, joystick.Properties.ProductId);
-            }
-            catch (Exception e)
-            {
-                logger.Error(e, "Failed to get hid from WinAPI");
-                HardwareID = GetHid(joystick, isHumanInterfaceDevice);
-            }
-
+            GetHid(joystick, isHumanInterfaceDevice);
             var buttonObjectInstances = joystick.GetObjects(DeviceObjectTypeFlags.Button).Where(b => b.Usage > 0).OrderBy(b => b.ObjectId.InstanceNumber).Take(128).ToArray();
             var buttons = buttonObjectInstances.Select((b, i) => MouseSource.FromButton(this, b, i)).ToArray();
             var axes = GetAxes().OrderBy(a => a.Usage).Take(24).Select(a => MouseSource.FromAxis(this, a));
@@ -145,6 +139,11 @@ namespace XOutput.Devices.Input.DirectInput
             if (isHumanInterfaceDevice)
             {
                 string path = joystick.Properties.InterfacePath;
+                var match = hidRegex.Match(path);
+                if (match.Success)
+                {
+                    return string.Join('\\', new string[] { match.Groups[1].Value, match.Groups[2].Value, match.Groups[3].Value }).ToUpper();
+                }
                 if (path.Contains("hid#"))
                 {
                     path = path.Substring(path.IndexOf("hid#"));
