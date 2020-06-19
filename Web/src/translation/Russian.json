@@ -2,7 +2,7 @@
     "ActiveControllers": "Активные геймпады",
     "OnlineDevices": "Онлайн устройства",
     "Notifications": "Уведомления",
-    "Share": "Поделится",
+    "Share": "Поделиться",
     "Fullscreen": "Полный экран",
     "MicrosoftXbox360": "Microsoft Xbox 360",
     "SonyDualShock4": "Sony Dualshock 4",
@@ -16,9 +16,11 @@
     "Axes": "Оси",
     "Buttons": "Кнопки",
     "Sliders": "Переключатели",
-    "ForceFeedbacks": "Обратная связь",
+    "ForceFeedbacks": "Обратная связь контроллера",
     "Test": "Тест",
     "BigMotor": "Большой вибромотор",
     "SmallMotor": "Маленький вибромотор",
-    "input.forcefeedback.notimplemented": "Драйвер для устройства {} поврежден или отсутствует"
+    "input.forcefeedback.notimplemented": "Драйвер для устройства {0} поврежден или отсутствует",
+    "hidguardian.registry.noaccess": "Нет доступа к регистру HidGuardian для записи"
+
 }
