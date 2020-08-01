@@ -1,5 +1,5 @@
 import { EventHolder } from "../../events/eventholder";
-import { WebSocketService } from "../../communication/Websocket";
+import { WebSocketService } from "../../communication/websocket";
 
 export interface CommonProps {
     eventHolder: EventHolder;

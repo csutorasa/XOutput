@@ -8,7 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { ControllerInfoResponse, DeviceType, rest, ControllerInfo } from "../../communication/rest";
-import { Translation } from "../../translation/Translation";
+import { Translation } from "../../translation/translation";
 import { withStyles, Theme } from "@material-ui/core";
 import Async from "../components/Asnyc";
 import { StyleGenerator, Styled } from "../../utils";

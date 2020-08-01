@@ -2,7 +2,7 @@ import React, { ReactElement, Fragment } from "react";
 import { ListEmulatorsResponse, rest, EmulatorResponse } from "../../communication/rest";
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { Translation } from "../../translation/Translation";
+import { Translation } from "../../translation/translation";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
 import Async from "../components/Asnyc";

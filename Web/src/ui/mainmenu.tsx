@@ -1,9 +1,9 @@
 import React from "react";
 import { Switch, Route, Redirect, RouteChildrenProps, withRouter, RouteComponentProps } from "react-router";
-import { DeviceSelector } from "./emulation/DeviceSelector";
+import { DeviceSelector } from "./emulation/deviceselector";
 import { XboxEmulation } from "./emulation/xbox";
 import { Link } from "react-router-dom";
-import { Controllers } from "./controllers/Controllers";
+import { Controllers } from "./controllers/controllers";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -20,11 +20,11 @@ import InputIcon from '@material-ui/icons/Input';
 import LanguageIcon from '@material-ui/icons/Language';
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Inputs } from "./input/Inputs";
-import { InputDetails } from "./input/Details";
+import { Inputs } from "./input/inputs";
+import { InputDetails } from "./input/details";
 import { Ds4Emulation } from "./emulation/ds4";
 import { Styled, StyleGenerator } from '../utils'
-import Translation from "../translation/Translation";
+import Translation from "../translation/translation";
 import { Notifications } from "./notifications/Notifications";
 import { MainMenuListItem } from "./MainMenuListItem";
 import { rest, Notification } from "../communication/rest";

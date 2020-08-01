@@ -13,7 +13,7 @@ import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { rest, InputDeviceInfoResponse, InputDeviceInformation } from "../../communication/rest";
 import { Link } from "react-router-dom";
-import { Translation } from "../../translation/Translation";
+import { Translation } from "../../translation/translation";
 import { withStyles, Theme } from "@material-ui/core";
 import { StyleGenerator, Styled } from "../../utils";
 import { Async } from "../components/Asnyc";
