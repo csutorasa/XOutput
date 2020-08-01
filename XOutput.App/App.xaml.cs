@@ -24,7 +24,7 @@ namespace XOutput.App
     public partial class App : Application
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
-        private IHost server;
+        private Server.Server server;
 
         public App()
         {
@@ -67,8 +67,8 @@ namespace XOutput.App
                     globalContext.Resolve<NotificationService>().Add(Notifications.HidGuardianRegistry, null, NotificationTypes.Warning);
                 }
             }
-            server = globalContext.Resolve<IHost>();
-            server.StartAsync();
+            server = globalContext.Resolve<Server.Server>();
+            server.GetHost().StartAsync();
         }
 
         private void SetLoggerConfiguration()

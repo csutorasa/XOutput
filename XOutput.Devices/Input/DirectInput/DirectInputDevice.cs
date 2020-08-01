@@ -21,7 +21,9 @@ namespace XOutput.Devices.Input.DirectInput
 
         public InputConfig InputConfiguration { get; set; }
 
+        public InputDeviceMethod InputMethod => InputDeviceMethod.DIRECT_INPUT;
         public string DisplayName { get; private set; }
+        public string InterfacePath { get; private set; }
         public string UniqueId { get; private set; }
         public string HardwareID { get; private set; }
 
@@ -30,27 +32,28 @@ namespace XOutput.Devices.Input.DirectInput
 
         private readonly ThreadContext readThreadContext;
         private readonly ThreadContext forceFeedbackThreadContext;
-        private readonly MouseSource[] sources;
+        private readonly DirectInputSource[] sources;
         private readonly ForceFeedbackTarget[] targets;
         private readonly Dictionary<ForceFeedbackTarget, DirectDeviceForceFeedback> forceFeedbacks;
         private readonly Joystick joystick;
         private bool disposed = false;
 
-        public DirectInputDevice(Joystick joystick, string guid, string productName, bool hasForceFeedbackDevice, bool isHumanInterfaceDevice)
+        public DirectInputDevice(Joystick joystick, string guid, string productName, bool hasForceFeedbackDevice, string uniqueId, string hardwareId, string interfacePath)
         {
             this.joystick = joystick;
-            this.UniqueId = guid;
-            this.DisplayName = productName;
-            GetHid(joystick, isHumanInterfaceDevice);
+            UniqueId = uniqueId;
+            InterfacePath = interfacePath;
+            HardwareID = hardwareId;
+            DisplayName = productName;
             var buttonObjectInstances = joystick.GetObjects(DeviceObjectTypeFlags.Button).Where(b => b.Usage > 0).OrderBy(b => b.ObjectId.InstanceNumber).Take(128).ToArray();
-            var buttons = buttonObjectInstances.Select((b, i) => MouseSource.FromButton(this, b, i)).ToArray();
-            var axes = GetAxes().OrderBy(a => a.Usage).Take(24).Select(a => MouseSource.FromAxis(this, a));
-            var sliders = joystick.GetObjects().Where(o => o.ObjectType == ObjectGuid.Slider).OrderBy(a => a.Usage).Select((s, i) => MouseSource.FromSlider(this, s, i));
-            IEnumerable<MouseSource> dpads = new MouseSource[0];
+            var buttons = buttonObjectInstances.Select((b, i) => DirectInputSource.FromButton(this, b, i)).ToArray();
+            var axes = GetAxes().OrderBy(a => a.Usage).Take(24).Select(a => DirectInputSource.FromAxis(this, a));
+            var sliders = joystick.GetObjects().Where(o => o.ObjectType == ObjectGuid.Slider).OrderBy(a => a.Usage).Select((s, i) => DirectInputSource.FromSlider(this, s, i));
+            IEnumerable<DirectInputSource> dpads = new DirectInputSource[0];
             if (joystick.Capabilities.PovCount > 0)
             {
                 dpads = Enumerable.Range(0, joystick.Capabilities.PovCount)
-                    .SelectMany(i => MouseSource.FromDPad(this, i));
+                    .SelectMany(i => DirectInputSource.FromDPad(this, i));
             }
             sources = buttons.Concat(axes).Concat(sliders).Concat(dpads).ToArray();
 
@@ -85,8 +88,8 @@ namespace XOutput.Devices.Input.DirectInput
             }
             joystick.Acquire();
             inputChangedEventArgs = new DeviceInputChangedEventArgs(this);
-            readThreadContext = ThreadCreator.CreateLoop($"{DisplayName} input reader", ReadLoop, 1).Start();
-            forceFeedbackThreadContext = ThreadCreator.CreateLoop($"{DisplayName} force feedback", ForceFeedbackLoop, 10).Start();
+            readThreadContext = ThreadCreator.CreateLoop($"{DisplayName} DirectInput reader", ReadLoop, 1).Start();
+            forceFeedbackThreadContext = ThreadCreator.CreateLoop($"{DisplayName} DirectInput force feedback", ForceFeedbackLoop, 10).Start();
         }
 
         private void ReadLoop()
@@ -134,30 +137,6 @@ namespace XOutput.Devices.Input.DirectInput
             }
         }
 
-        private string GetHid(Joystick joystick, bool isHumanInterfaceDevice)
-        {
-            if (isHumanInterfaceDevice)
-            {
-                string path = joystick.Properties.InterfacePath;
-                var match = hidRegex.Match(path);
-                if (match.Success)
-                {
-                    return string.Join('\\', new string[] { match.Groups[1].Value, match.Groups[2].Value, match.Groups[3].Value }).ToUpper();
-                }
-                if (path.Contains("hid#"))
-                {
-                    path = path.Substring(path.IndexOf("hid#"));
-                    path = path.Replace('#', '\\');
-                    int first = path.IndexOf('\\');
-                    int second = path.IndexOf('\\', first + 1);
-                    if (second > 0)
-                    {
-                        return path.Remove(second).ToUpper();
-                    }
-                }
-            }
-            return null;
-        }
         private DeviceObjectInstance[] GetAxes()
         {
             var axes = joystick.GetObjects(DeviceObjectTypeFlags.AbsoluteAxis).Where(o => o.ObjectType != ObjectGuid.Slider).ToArray();

@@ -33,7 +33,6 @@ namespace XOutput.Devices.Input.Keyboard
         {
             if (device == null)
             {
-                device = new KeyboardDevice(hook);
                 var config = inputConfigManager.LoadConfig(DeviceId);
                 device = new KeyboardDevice(hook)
                 {

@@ -16,6 +16,8 @@ namespace XOutput.Devices.Input.Keyboard
 
         public InputConfig InputConfiguration { get; set; }
 
+        public InputDeviceMethod InputMethod => InputDeviceMethod.WINDOWS_API;
+        public string InterfacePath { get; private set; }
         public string DisplayName { get; private set; }
         public string UniqueId { get; private set; }
         public string HardwareID { get; private set; }

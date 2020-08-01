@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using XOutput.Core.DependencyInjection;
@@ -8,6 +9,7 @@ namespace XOutput.Devices.Input
 {
     public class InputDeviceManager : IDisposable
     {
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private readonly InputConfigManager inputConfigManager;
         private readonly List<IInputDeviceProvider> inputDeviceProviders;
         private readonly ThreadContext readThreadContext;
@@ -25,7 +27,14 @@ namespace XOutput.Devices.Input
         {
             foreach (var provider in inputDeviceProviders)
             {
-                provider.SearchDevices();
+                try
+                {
+                    provider.SearchDevices();
+                } 
+                catch(Exception e)
+                {
+                    logger.Error(e, $"Failed to search for devices from provider {provider.GetType().Name}");
+                }
             }
         }
 

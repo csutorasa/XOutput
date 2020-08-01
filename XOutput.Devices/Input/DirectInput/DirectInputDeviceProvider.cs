@@ -12,6 +12,8 @@ namespace XOutput.Devices.Input.DirectInput
 {
     public sealed class DirectInputDeviceProvider : IInputDeviceProvider
     {
+        private const string EmulatedSCPID = "028e045e-0000-0000-0000-504944564944";
+
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         public event DeviceConnectedHandler Connected;
@@ -24,7 +26,7 @@ namespace XOutput.Devices.Input.DirectInput
         private readonly List<IInputDevice> currentDevices = new List<IInputDevice>();
         private readonly object lockObject = new object();
         private bool disposed = false;
-        bool allDevices = false;
+        private bool allDevices = false;
 
         [ResolverMethod]
         public DirectInputDeviceProvider(IgnoredDeviceService ignoredDeviceService, InputConfigManager inputConfigManager, NotificationService notificationService)
@@ -47,18 +49,19 @@ namespace XOutput.Devices.Input.DirectInput
                 {
                     instances = instances.Where(di => di.Type == DeviceType.Joystick || di.Type == DeviceType.Gamepad || di.Type == DeviceType.FirstPerson).ToList();
                 }
+                List<string> uniqueIds = new List<string>();
                 foreach (var instance in instances)
                 {
                     string instanceGuid = instance.InstanceGuid.ToString();
                     string productGuid = instance.ProductGuid.ToString();
-                    if (!ignoredDeviceService.IsIgnored(productGuid, instanceGuid) && !currentDevices.Any(d => d.UniqueId == instanceGuid))
+                    if (productGuid != EmulatedSCPID)
                     {
-                        var device = CreateDevice(instance);
+                        var device = CreateDevice(instance, uniqueIds);
                         if (device == null)
                         {
                             continue;
                         }
-                        if (currentDevices.Any(d => d.UniqueId == device.UniqueId))
+                        if (uniqueIds.Any(uid => uid == device.UniqueId))
                         {
                             notificationService.Add(Notifications.DirectInputInstanceIdDuplication, new[] { device.UniqueId }, NotificationTypes.Warning);
                         }
@@ -70,8 +73,7 @@ namespace XOutput.Devices.Input.DirectInput
                 }
                 foreach (var device in currentDevices.ToArray())
                 {
-                    string guid = device.UniqueId;
-                    if (!instances.Any(i => i.InstanceGuid.ToString() == guid))
+                    if (!uniqueIds.Any(i => i == device.UniqueId))
                     {
                         currentDevices.Remove(device);
                         device.Dispose();
@@ -82,7 +84,7 @@ namespace XOutput.Devices.Input.DirectInput
         }
 
         [HandleProcessCorruptedStateExceptions]
-        private IInputDevice CreateDevice(DeviceInstance deviceInstance)
+        private IInputDevice CreateDevice(DeviceInstance deviceInstance, List<string> uniqueIds)
         {
             try
             {
@@ -96,15 +98,48 @@ namespace XOutput.Devices.Input.DirectInput
                     joystick.Dispose();
                     return null;
                 }
+                bool isHid = deviceInstance.IsHumanInterfaceDevice;
+                string interfacePath = null;
+                string uniqueId;
+                string hardwareId = null;
+                if (isHid)
+                {
+                    if (ignoredDeviceService.IsIgnored(joystick.Properties.InterfacePath))
+                    {
+                        joystick.Dispose();
+                        return null;
+                    }
+                    interfacePath = joystick.Properties.InterfacePath;
+                    uniqueId = IdHelper.GetUniqueId(interfacePath);
+                    hardwareId = IdHelper.GetHardwareId(interfacePath);
+                } else {
+                    uniqueId = IdHelper.GetUniqueId(deviceInstance.ProductGuid.ToString(), deviceInstance.InstanceGuid.ToString());
+                }
+                uniqueIds.Add(uniqueId);
+                if (currentDevices.Any(d => d.UniqueId == uniqueId)) {
+                    joystick.Dispose();
+                    return null;
+                }
                 joystick.Properties.BufferSize = 128;
-                var device = new DirectInputDevice(joystick, deviceInstance.InstanceGuid.ToString(), deviceInstance.ProductName,
-                    deviceInstance.ForceFeedbackDriverGuid != Guid.Empty, deviceInstance.IsHumanInterfaceDevice);
-                return device;
+                return new DirectInputDevice(joystick, deviceInstance.InstanceGuid.ToString(), deviceInstance.ProductName,
+                    deviceInstance.ForceFeedbackDriverGuid != Guid.Empty, uniqueId, hardwareId, interfacePath);
             }
             catch (Exception ex)
             {
                 logger.Error("Failed to create device " + deviceInstance.InstanceGuid + " " + deviceInstance.InstanceName + ex.ToString());
                 return null;
+            }
+        }
+
+        private string GetUniqueId(DeviceInstance deviceInstance, Joystick joystick)
+        {
+            if (deviceInstance.IsHumanInterfaceDevice)
+            {
+                return IdHelper.GetUniqueId(joystick.Properties.InterfacePath);
+            }
+            else
+            {
+                return deviceInstance.InstanceGuid.ToString();
             }
         }
 

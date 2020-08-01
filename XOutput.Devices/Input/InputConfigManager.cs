@@ -15,12 +15,12 @@ namespace XOutput.Devices.Input
 
         public InputConfig LoadConfig(string id)
         {
-            return configurationManager.Load($"conf/input/{id}.json", () => new InputConfig());
+            return configurationManager.Load($"conf/input/{id}", () => new InputConfig());
         }
 
         public void SaveConfig(string id, InputConfig config)
         {
-            configurationManager.Save($"conf/input/{id}.json", config);
+            configurationManager.Save(config);
         }
     }
 }

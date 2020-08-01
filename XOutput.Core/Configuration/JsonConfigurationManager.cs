@@ -17,5 +17,10 @@ namespace XOutput.Core.Configuration
         {
             return (T)jsonSerializer.Deserialize(reader, typeof(T));
         }
+
+        protected override string GetFilePath(string path)
+        {
+            return path + ".json";
+        }
     }
 }

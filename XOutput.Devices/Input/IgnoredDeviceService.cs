@@ -1,44 +1,37 @@
 ﻿using System.Collections.Generic;
+using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input
 {
     public class IgnoredDeviceService
     {
-        private const string EmulatedSCPID = "028e045e-0000-0000-0000-504944564944";
-
-        private readonly List<string> ignoredInstances = new List<string>();
-        private readonly List<string> ignoredProducts = new List<string>();
+        private const string ConfigurationFilepath = "conf/input/ignore";
+        private readonly ConfigurationManager configurationManager;
+        private readonly IgnoredDevicesConfig config;
 
         [ResolverMethod]
-        public IgnoredDeviceService()
+        public IgnoredDeviceService(ConfigurationManager configurationManager)
         {
-            AddIgnoredProduct(EmulatedSCPID);
+            this.configurationManager = configurationManager;
+            config = configurationManager.Load(ConfigurationFilepath, () => new IgnoredDevicesConfig());
         }
 
-        public void AddIgnoredInstance(string deviceId)
+        public void AddIgnoredHardwareId(string hardwareId)
         {
-            ignoredInstances.Add(deviceId);
+            config.IgnoredHardwareIds.Add(hardwareId);
+            configurationManager.Save(config);
         }
 
-        public void RemoveIgnoredInstance(string deviceId)
+        public void RemoveIgnoredHardwareId(string hardwareId)
         {
-            ignoredInstances.Remove(deviceId);
+            config.IgnoredHardwareIds.Remove(hardwareId);
+            configurationManager.Save(config);
         }
 
-        public void AddIgnoredProduct(string deviceId)
+        public bool IsIgnored(string hardwareId)
         {
-            ignoredProducts.Add(deviceId);
-        }
-
-        public void RemoveIgnoredProduct(string deviceId)
-        {
-            ignoredProducts.Remove(deviceId);
-        }
-
-        public bool IsIgnored(string productId, string instnaceId)
-        {
-            return ignoredProducts.Contains(productId) && ignoredInstances.Contains(instnaceId);
+            return hardwareId != null && config.IgnoredHardwareIds.Contains(hardwareId);
         }
     }
 }

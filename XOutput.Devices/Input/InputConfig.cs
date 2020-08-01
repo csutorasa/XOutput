@@ -4,7 +4,7 @@ using XOutput.Core.Configuration;
 
 namespace XOutput.Devices.Input
 {
-    public class InputConfig : IConfiguration, IEquatable<InputConfig>
+    public class InputConfig : ConfigurationBase, IEquatable<InputConfig>
     {
         public List<int> BigMotors { get; set; }
         public List<int> SmallMotors { get; set; }

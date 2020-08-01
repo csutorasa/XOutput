@@ -2,14 +2,14 @@
 
 namespace XOutput.Core.Configuration
 {
-    public interface IConfiguration
+    public class ConfigurationBase
     {
-
+        public string FilePath { get; internal set; }
     }
 
     public static class ConfigurationHelper
     {
-        public static bool AreSame<T>(this T a, T b) where T : IConfiguration, IEquatable<T>
+        public static bool AreSame<T>(this T a, T b) where T : ConfigurationBase, IEquatable<T>
         {
             if (ReferenceEquals(a, b))
             {

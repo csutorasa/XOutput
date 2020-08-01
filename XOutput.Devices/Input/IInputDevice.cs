@@ -9,7 +9,9 @@ namespace XOutput.Devices.Input
         IEnumerable<InputSource> Sources { get; }
         IEnumerable<ForceFeedbackTarget> ForceFeedbacks { get; }
         InputConfig InputConfiguration { get; set; }
+        InputDeviceMethod InputMethod { get; }
         string DisplayName { get; }
+        string InterfacePath { get; }
         string UniqueId { get; }
         string HardwareID { get; }
         InputSource FindSource(int offset);

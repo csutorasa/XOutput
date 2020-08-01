@@ -126,7 +126,7 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
   dpadGroups(): { up?: number; down?: number; left?: number; right?: number }[] {
     const dpads: { up?: number; down?: number; left?: number; right?: number }[] = [];
     this.state.device.sources.filter(s => s.type == 'dpad').forEach(s => {
-      const index = Math.floor((s.offset - 10000) / 4);
+      const index = Math.floor((s.offset - 100000) / 4);
       if (!dpads[index]) {
         dpads[index] = {};
       }

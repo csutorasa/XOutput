@@ -3,27 +3,27 @@ using System;
 
 namespace XOutput.Devices.Input.DirectInput
 {
-    public class MouseSource : InputSource
+    public class DirectInputSource : InputSource
     {
         private readonly Func<JoystickState, double> valueGetter;
 
-        public MouseSource(IInputDevice inputDevice, string name, SourceTypes type, int offset, Func<JoystickState, double> valueGetter) : base(inputDevice, name, type, offset)
+        public DirectInputSource(IInputDevice inputDevice, string name, SourceTypes type, int offset, Func<JoystickState, double> valueGetter) : base(inputDevice, name, type, offset)
         {
             this.valueGetter = valueGetter;
         }
 
-        public static MouseSource FromButton(IInputDevice device, DeviceObjectInstance instance, int index)
+        public static DirectInputSource FromButton(IInputDevice device, DeviceObjectInstance instance, int index)
         {
-            return new MouseSource(device, "Button " + instance.Usage, SourceTypes.Button, instance.Offset, state => state.Buttons[index] ? 1 : 0);
+            return new DirectInputSource(device, "Button " + instance.Usage, SourceTypes.Button, instance.Offset, state => state.Buttons[index] ? 1 : 0);
         }
 
-        public static MouseSource[] FromDPad(IInputDevice device, int index)
+        public static DirectInputSource[] FromDPad(IInputDevice device, int index)
         {
-            return new MouseSource[] {
-                new MouseSource(device, "DPad" + (index + 1) + " Up", SourceTypes.Dpad, 10000 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Up) ? 1 : 0),
-                new MouseSource(device, "DPad" + (index + 1) + " Down", SourceTypes.Dpad, 10001 + index * 4, state => GetDirection(state,index).HasFlag(DPadDirection.Down) ? 1 : 0),
-                new MouseSource(device, "DPad" + (index + 1) + " Left", SourceTypes.Dpad, 10002 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Left) ? 1 : 0),
-                new MouseSource(device, "DPad" + (index + 1) + " Right", SourceTypes.Dpad, 10003 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Right) ? 1 : 0),
+            return new DirectInputSource[] {
+                new DirectInputSource(device, "DPad" + (index + 1) + " Up", SourceTypes.Dpad, 100000 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Up) ? 1 : 0),
+                new DirectInputSource(device, "DPad" + (index + 1) + " Down", SourceTypes.Dpad, 100001 + index * 4, state => GetDirection(state,index).HasFlag(DPadDirection.Down) ? 1 : 0),
+                new DirectInputSource(device, "DPad" + (index + 1) + " Left", SourceTypes.Dpad, 100002 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Left) ? 1 : 0),
+                new DirectInputSource(device, "DPad" + (index + 1) + " Right", SourceTypes.Dpad, 100003 + index * 4, state => GetDirection(state, index).HasFlag(DPadDirection.Right) ? 1 : 0),
             };
         }
 
@@ -45,7 +45,7 @@ namespace XOutput.Devices.Input.DirectInput
             }
         }
 
-        public static MouseSource FromAxis(IInputDevice device, DeviceObjectInstance instance)
+        public static DirectInputSource FromAxis(IInputDevice device, DeviceObjectInstance instance)
         {
             SourceTypes type = SourceTypes.AxisX;
             if (instance.ObjectType == ObjectGuid.XAxis || instance.ObjectType == ObjectGuid.RxAxis)
@@ -70,7 +70,7 @@ namespace XOutput.Devices.Input.DirectInput
                 axisCount = instance.ObjectId.InstanceNumber;
             }
             string name = instance.Name;
-            return new MouseSource(device, name, type, instance.Offset, state => GetAxisValue(state, axisCount) / (double)ushort.MaxValue);
+            return new DirectInputSource(device, name, type, instance.Offset, state => GetAxisValue(state, axisCount) / (double)ushort.MaxValue);
         }
 
         private static int GetAxisValue(JoystickState state, int instanceNumber)
@@ -134,10 +134,10 @@ namespace XOutput.Devices.Input.DirectInput
             }
         }
 
-        public static MouseSource FromSlider(IInputDevice device, DeviceObjectInstance instance, int index)
+        public static DirectInputSource FromSlider(IInputDevice device, DeviceObjectInstance instance, int index)
         {
             string name = instance.Name;
-            return new MouseSource(device, name, SourceTypes.Slider, instance.Offset, state => GetSliderValue(state, index + 1) / (double)ushort.MaxValue);
+            return new DirectInputSource(device, name, SourceTypes.Slider, instance.Offset, state => GetSliderValue(state, index + 1) / (double)ushort.MaxValue);
         }
 
         private static int GetSliderValue(JoystickState state, int slider)
