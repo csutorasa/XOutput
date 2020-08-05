@@ -32,10 +32,7 @@ namespace XOutput.Server.Input
             {
                 Id = d.UniqueId,
                 Name = d.DisplayName,
-                Axes = d.Sources.Where(s => s.IsAxis).Count(),
-                DPads = d.Sources.Where(s => s.IsDPad).Count() / 4,
-                Buttons = d.Sources.Where(s => s.IsButton).Count(),
-                Sliders = d.Sources.Where(s => s.IsSlider).Count(),
+                ActiveFeatures = d.GetActiveFeatures(),
             }).ToList();
         }
 
@@ -53,8 +50,18 @@ namespace XOutput.Server.Input
                 Id = inputDevice.UniqueId,
                 Name = inputDevice.DisplayName,
                 HardwareId = inputDevice.HardwareID,
-                Sources = inputDevice.Sources.Select(s => new InputDeviceSource { Offset = s.Offset, Name = s.DisplayName, Type = FromType(s.Type), }).ToList(),
-                ForceFeedbacks = inputDevice.ForceFeedbacks.Select(s => new InputForceFeedback { Offset = s.Offset }).ToList(),
+                Inputs = inputDevice.GetInputDevices().Select(d => new InputDeviceInputDetails {
+                    Running = d.Running,
+                    Sources = d.Sources.Select(s => new InputDeviceSource { 
+                        Offset = s.Offset,
+                        Name = s.DisplayName,
+                        Type = FromType(s.Type),
+                    }).ToList(),
+                    ForceFeedbacks = d.ForceFeedbacks.Select(s => new InputForceFeedback {
+                        Offset = s.Offset 
+                    }).ToList(),
+                    InputMethod = d.InputMethod.ToString(),
+                }).ToList(),
             };
         }
 
@@ -69,69 +76,8 @@ namespace XOutput.Server.Input
             }
             return new InputConfiguration
             {
-                BigMotors = inputDevice.InputConfiguration?.BigMotors,
-                SmallMotors = inputDevice.InputConfiguration?.SmallMotors,
+                
             };
-        }
-
-        [HttpPut]
-        [Route("/api/inputs/{id}/configuration/big/{offset}")]
-        public ActionResult AddBigMotor(string id, int offset)
-        {
-            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
-            {
-                config.BigMotors.Add(offset);
-            });
-            if (!found)
-            {
-                return NotFound("Device not found");
-            }
-            return NoContent();
-        }
-
-        [HttpDelete]
-        [Route("/api/inputs/{id}/configuration/big/{offset}")]
-        public ActionResult RemoveBigMotor(string id, int offset)
-        {
-            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
-            {
-                config.BigMotors = config.BigMotors.Where(o => o != offset).ToList();
-            });
-            if (!found)
-            {
-                return NotFound("Device not found");
-            }
-            return NoContent();
-        }
-
-        [HttpPut]
-        [Route("/api/inputs/{id}/configuration/small/{offset}")]
-        public ActionResult AddSmallMotor(string id, int offset)
-        {
-            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
-            {
-                config.SmallMotors.Add(offset);
-            });
-            if (!found)
-            {
-                return NotFound("Device not found");
-            }
-            return NoContent();
-        }
-
-        [HttpDelete]
-        [Route("/api/inputs/{id}/configuration/small/{offset}")]
-        public ActionResult RemoveSmallMotor(string id, int offset)
-        {
-            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
-            {
-                config.SmallMotors = config.SmallMotors.Where(o => o != offset).ToList();
-            });
-            if (!found)
-            {
-                return NotFound("Device not found");
-            }
-            return NoContent();
         }
 
         [HttpGet]
@@ -192,7 +138,7 @@ namespace XOutput.Server.Input
             {
                 return NotFound("Device not found");
             }
-            var target = inputDevice.FindTarget(offset);
+            var target = inputDevice.FindInput(InputDeviceMethod.DirectInput)?.FindTarget(offset);
             if (target == null)
             {
                 return NotFound("ForceFeedback target not found");
@@ -210,12 +156,48 @@ namespace XOutput.Server.Input
             {
                 return NotFound("Device not found");
             }
-            var target = inputDevice.FindTarget(offset);
+            var target = inputDevice.FindInput(InputDeviceMethod.DirectInput)?.FindTarget(offset);
             if (target == null)
             {
                 return NotFound("ForceFeedback target not found");
             }
             target.Value = 0;
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("/api/inputs/{id}/{method}/running")]
+        public ActionResult StartInputDevice(string id, InputDeviceMethod method)
+        {
+            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            if (inputDevice == null)
+            {
+                return NotFound("Device not found");
+            }
+            var target = inputDevice.FindInput(method);
+            if (target == null)
+            {
+                return NotFound("Input device not found");
+            }
+            target.Start();
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("/api/inputs/{id}/{method}/running")]
+        public ActionResult StopForceFeedback(string id, InputDeviceMethod method)
+        {
+            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            if (inputDevice == null)
+            {
+                return NotFound("Device not found");
+            }
+            var target = inputDevice.FindInput(method);
+            if (target == null)
+            {
+                return NotFound("Input device not found");
+            }
+            target.Stop();
             return NoContent();
         }
 

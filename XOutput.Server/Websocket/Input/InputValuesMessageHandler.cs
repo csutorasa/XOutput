@@ -10,17 +10,21 @@ namespace XOutput.Server.Websocket.Input
 {
     class InputValuesMessageHandler : IMessageHandler
     {
-        private readonly IInputDevice device;
+        private readonly InputDeviceHolder device;
+        private readonly List<IInputDevice> devices;
         private readonly SenderFunction<InputValuesMessage> senderFunction;
         private readonly ThreadContext threadContext;
         private readonly object lockObject = new object();
-        private readonly ISet<InputSource> changedValues = new HashSet<InputSource>();
+        private readonly ISet<InputValueData> changedValues = new HashSet<InputValueData>();
 
-        public InputValuesMessageHandler(IInputDevice device, SenderFunction<InputValuesMessage> senderFunction)
+        public InputValuesMessageHandler(InputDeviceHolder device, SenderFunction<InputValuesMessage> senderFunction)
         {
             this.device = device;
             this.senderFunction = senderFunction;
-            device.InputChanged += InputChanged;
+            devices = device.GetInputDevices();
+            foreach(var inputDevice in devices) {
+                inputDevice.InputChanged += InputChanged;
+            }
             threadContext = ThreadCreator.CreateLoop($"Websocket input value writer {device.DisplayName}", ResponseLoop, 33).Start();
         }
 
@@ -32,7 +36,7 @@ namespace XOutput.Server.Websocket.Input
                 {
                     senderFunction?.Invoke(new InputValuesMessage
                     {
-                        Values = changedValues.ToDictionary(v => v.Offset, v => v.GetValue())
+                        Values = changedValues.ToList(),
                     });
                     changedValues.Clear();
                 }
@@ -45,7 +49,11 @@ namespace XOutput.Server.Websocket.Input
             {
                 foreach (var source in e.ChangedValues)
                 {
-                    changedValues.Add(source);
+                    changedValues.Add(new InputValueData {
+                        Offset = source.Offset,
+                        Method = e.Device.InputMethod.ToString(),
+                        Value = source.GetValue(),
+                    });
                 }
             }
         }
@@ -62,7 +70,9 @@ namespace XOutput.Server.Websocket.Input
 
         public void Close()
         {
-            device.InputChanged -= InputChanged;
+            foreach(var inputDevice in devices) {
+                inputDevice.InputChanged -= InputChanged;
+            }
             threadContext.Cancel().Wait();
         }
     }

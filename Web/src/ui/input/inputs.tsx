@@ -102,7 +102,7 @@ class InputsComponent extends Component<InputsProps, InputsState> {
                 </Grid>
               </Grid>
               <div>
-                <Tooltip title={Translation.translate('DPads')}>
+                {/* <Tooltip title={Translation.translate('DPads')}>
                   <Chip variant='outlined' className={classes.chip} icon={<GamepadIcon />} label={d.dPads} />
                 </Tooltip>
                 <Tooltip title={Translation.translate('Axes')}>
@@ -113,7 +113,7 @@ class InputsComponent extends Component<InputsProps, InputsState> {
                 </Tooltip>
                 <Tooltip title={Translation.translate('Sliders')}>
                   <Chip variant='outlined' className={classes.chip} icon={<RadioButtonCheckedIcon />} label={d.sliders} />
-                </Tooltip>
+                </Tooltip> */}
               </div>
             </Paper>
           </Grid>)}

@@ -17,6 +17,9 @@ namespace XOutput.Devices.Input
 
         public static string GetHardwareId(string path)
         {
+            if (string.IsNullOrEmpty(path)) {
+                return null;
+            }
             var match = hidRegex.Match(path);
             if (match.Success)
             {
@@ -38,6 +41,9 @@ namespace XOutput.Devices.Input
         
         public static string GetUniqueId(string path)
         {
+            if (string.IsNullOrEmpty(path)) {
+                return null;
+            }
             StringBuilder sb = new StringBuilder();
             byte[] hash = sha.ComputeHash(encoding.GetBytes(path));
             
@@ -46,11 +52,6 @@ namespace XOutput.Devices.Input
                 sb.Append(b.ToString("x2"));
             }
             return sb.ToString();
-        }
-        
-        public static string GetUniqueId(params string[] paths)
-        {
-            return GetUniqueId(string.Join("", paths));
         }
     }
 }

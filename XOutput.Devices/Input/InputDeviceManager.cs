@@ -12,6 +12,8 @@ namespace XOutput.Devices.Input
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private readonly InputConfigManager inputConfigManager;
         private readonly List<IInputDeviceProvider> inputDeviceProviders;
+        private readonly List<InputDeviceHolder> devices = new List<InputDeviceHolder>();
+        private readonly object lockObject = new object();
         private readonly ThreadContext readThreadContext;
         private bool disposed;
 
@@ -20,7 +22,35 @@ namespace XOutput.Devices.Input
         {
             this.inputConfigManager = inputConfigManager;
             this.inputDeviceProviders = inputDeviceProviders;
+            foreach (var inputDeviceProvider in inputDeviceProviders)
+            {
+                inputDeviceProvider.Connected += Connected;
+                inputDeviceProvider.Disconnected += Disconnected;
+            }
             readThreadContext = ThreadCreator.CreateLoop($"Input device manager refresh", RefreshLoop, 5000).Start();
+        }
+
+        private void Connected(object sender, DeviceConnectedEventArgs e)
+        {
+            lock (lockObject) {
+                var device = devices.FirstOrDefault(d => d.UniqueId == e.Device.UniqueId);
+                if (device == null)
+                {
+                    device = new InputDeviceHolder(e.Device.DisplayName, e.Device.InterfacePath, e.Device.UniqueId, e.Device.HardwareID);
+                    devices.Add(device);
+                }
+                device.SetInput(e.Device.InputMethod, e.Device);
+            }
+        }
+
+        private void Disconnected(object sender, DeviceDisconnectedEventArgs e)
+        {
+            lock (lockObject) {
+                var device = devices.FirstOrDefault(d => d.UniqueId == e.Device.UniqueId);
+                if (device?.RemoveInput(e.Device.InputMethod) ?? false) {
+                    devices.Remove(device);
+                }
+            }
         }
 
         private void RefreshLoop()
@@ -30,8 +60,8 @@ namespace XOutput.Devices.Input
                 try
                 {
                     provider.SearchDevices();
-                } 
-                catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     logger.Error(e, $"Failed to search for devices from provider {provider.GetType().Name}");
                 }
@@ -39,25 +69,25 @@ namespace XOutput.Devices.Input
         }
 
 
-        public List<IInputDevice> GetInputDevices()
+        public List<InputDeviceHolder> GetInputDevices()
         {
-            return inputDeviceProviders.SelectMany(p => p.GetActiveDevices()).ToList();
+            return devices.ToList();
         }
 
-        public IInputDevice FindInputDevice(string id)
+        public InputDeviceHolder FindInputDevice(string id)
         {
-            return inputDeviceProviders.SelectMany(p => p.GetActiveDevices()).FirstOrDefault(d => d.UniqueId == id);
+            return devices.FirstOrDefault(d => d.UniqueId == id);
         }
 
-        public bool ChangeInputConfiguration(string id, Action<InputConfig> configuration)
+        public bool ChangeInputConfiguration(string id, InputDeviceMethod method, Action<InputConfig> configuration)
         {
-            var device = FindInputDevice(id);
-            if (device == null)
+            var inputDevice = FindInputDevice(id)?.FindInput(method);
+            if (inputDevice == null)
             {
                 return false;
             }
-            configuration(device.InputConfiguration);
-            inputConfigManager.SaveConfig(id, device.InputConfiguration);
+            configuration(inputDevice.InputConfiguration);
+            inputConfigManager.SaveConfig(inputDevice);
             return true;
         }
 
@@ -75,6 +105,11 @@ namespace XOutput.Devices.Input
             }
             if (disposing)
             {
+                foreach (var inputDeviceProvider in inputDeviceProviders)
+                {
+                    inputDeviceProvider.Connected -= Connected;
+                    inputDeviceProvider.Disconnected -= Disconnected;
+                }
                 readThreadContext?.Cancel()?.Wait();
             }
             disposed = true;

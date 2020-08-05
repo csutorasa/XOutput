@@ -20,6 +20,11 @@
     "Test": "Teszt",
     "BigMotor": "Nagy motor",
     "SmallMotor": "Kis motor",
+    "input.name": "Név",
+    "input.id": "XOutput azonosító",
+    "input.hardwareid": "Hardware azonosító",
+    "input.hidguardian": "HidGuardian engedélyezése",
     "input.forcefeedback.notimplemented": "A rezgő funkció drivere hiányzik vagy korrupt a {0} eszköznél.",
-    "hidguardian.registry.noaccess": "Nincs jogosultsága a HidGuardian beállításait a registry-be írni"
+    "input.instance.duplication": "Több eszköz is használja a {0} azonosítót",
+    "hidguardian.registry.noaccess": "Nincs jogosultsága a HidGuardian beállításait a registry-be írni (próbálja adminisztátorként futtatni az alkalmazást)"
 }

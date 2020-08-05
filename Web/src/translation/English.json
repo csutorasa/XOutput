@@ -20,6 +20,11 @@
     "Test": "Test",
     "BigMotor": "Big motor",
     "SmallMotor": "Small motor",
+    "input.name": "Name",
+    "input.id": "XOutput ID",
+    "input.hardwareid": "Hardware ID",
+    "input.hidguardian": "Enable HidGuardian",
     "input.forcefeedback.notimplemented": "Force feedback driver is missing or corrupt for {0}",
-    "hidguardian.registry.noaccess": "No access to write registry for HidGuardian"
+    "input.instance.duplication": "More devices share that same ID of {0}",
+    "hidguardian.registry.noaccess": "No access to write registry for HidGuardian (try running the application as admin)"
 }

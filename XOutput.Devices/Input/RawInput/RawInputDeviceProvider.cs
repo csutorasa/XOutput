@@ -66,9 +66,12 @@ namespace XOutput.Devices.Input.RawInput
                                 Usage.GenericDesktopGamepad, Usage.GenericDesktopJoystick, Usage.GenericDesktopMultiaxisController));
                             foreach (var deviceItem in deviceItems)
                             {
-                                var inputDevice = new RawInputDevice(device, reportDescriptor, deviceItem, hidStream, uniqueId);
-                                var config = inputConfigManager.LoadConfig(inputDevice.UniqueId);
+                                var inputDevice = new RawInputDevice(inputConfigManager, device, reportDescriptor, deviceItem, hidStream, uniqueId);
+                                var config = inputConfigManager.LoadConfig(inputDevice);
                                 inputDevice.InputConfiguration = config;
+                                if (config.Autostart) {
+                                    inputDevice.Start();
+                                }
                                 currentDevices.Add(inputDevice);
                                 Connected?.Invoke(this, new DeviceConnectedEventArgs(inputDevice));
                                     

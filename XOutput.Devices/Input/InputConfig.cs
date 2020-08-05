@@ -6,19 +6,16 @@ namespace XOutput.Devices.Input
 {
     public class InputConfig : ConfigurationBase, IEquatable<InputConfig>
     {
-        public List<int> BigMotors { get; set; }
-        public List<int> SmallMotors { get; set; }
+        public bool Autostart { get; set; }
 
         public InputConfig()
         {
-            BigMotors = new List<int>();
-            SmallMotors = new List<int>();
+            Autostart = false;
         }
 
         public bool Equals(InputConfig other)
         {
-            return Equals(BigMotors, other.BigMotors)
-                && Equals(SmallMotors, other.SmallMotors);
+            return Equals(Autostart, other.Autostart);
         }
     }
 }

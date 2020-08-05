@@ -14,8 +14,10 @@ namespace XOutput.Devices.Input
         string InterfacePath { get; }
         string UniqueId { get; }
         string HardwareID { get; }
+        bool Running { get; }
+        void Start();
+        void Stop();
         InputSource FindSource(int offset);
         ForceFeedbackTarget FindTarget(int offset);
-        void SetForceFeedback(double big, double small);
     }
 }

@@ -21,25 +21,29 @@ namespace XOutput.Devices.Input.DirectInput
 
         public InputConfig InputConfiguration { get; set; }
 
-        public InputDeviceMethod InputMethod => InputDeviceMethod.DIRECT_INPUT;
+        public InputDeviceMethod InputMethod => InputDeviceMethod.DirectInput;
         public string DisplayName { get; private set; }
         public string InterfacePath { get; private set; }
         public string UniqueId { get; private set; }
         public string HardwareID { get; private set; }
+        public bool Running => readThreadContext?.Running ?? false;
 
         public event DeviceInputChangedHandler InputChanged;
         private readonly DeviceInputChangedEventArgs inputChangedEventArgs;
 
-        private readonly ThreadContext readThreadContext;
-        private readonly ThreadContext forceFeedbackThreadContext;
+        private ThreadContext readThreadContext;
+        private ThreadContext forceFeedbackThreadContext;
         private readonly DirectInputSource[] sources;
         private readonly ForceFeedbackTarget[] targets;
         private readonly Dictionary<ForceFeedbackTarget, DirectDeviceForceFeedback> forceFeedbacks;
         private readonly Joystick joystick;
+        private readonly InputConfigManager inputConfigManager;
         private bool disposed = false;
 
-        public DirectInputDevice(Joystick joystick, string guid, string productName, bool hasForceFeedbackDevice, string uniqueId, string hardwareId, string interfacePath)
+        public DirectInputDevice(InputConfigManager inputConfigManager, Joystick joystick, string guid, string productName, bool hasForceFeedbackDevice,
+            string uniqueId, string hardwareId, string interfacePath)
         {
+            this.inputConfigManager = inputConfigManager;
             this.joystick = joystick;
             UniqueId = uniqueId;
             InterfacePath = interfacePath;
@@ -88,8 +92,32 @@ namespace XOutput.Devices.Input.DirectInput
             }
             joystick.Acquire();
             inputChangedEventArgs = new DeviceInputChangedEventArgs(this);
-            readThreadContext = ThreadCreator.CreateLoop($"{DisplayName} DirectInput reader", ReadLoop, 1).Start();
-            forceFeedbackThreadContext = ThreadCreator.CreateLoop($"{DisplayName} DirectInput force feedback", ForceFeedbackLoop, 10).Start();
+        }
+
+        public void Start()
+        {
+            if (!Running)
+            {
+                readThreadContext = ThreadCreator.CreateLoop($"{DisplayName} DirectInput reader", ReadLoop, 1).Start();
+                forceFeedbackThreadContext = ThreadCreator.CreateLoop($"{DisplayName} DirectInput force feedback", ForceFeedbackLoop, 10).Start();
+                if (!InputConfiguration.Autostart) {
+                    InputConfiguration.Autostart = true;
+                    inputConfigManager.SaveConfig(this);
+                }
+            }
+        }
+        
+        public void Stop()
+        {
+            if (Running)
+            {
+                readThreadContext.Cancel().Wait();
+                forceFeedbackThreadContext.Cancel().Wait();
+                if (InputConfiguration.Autostart) {
+                    InputConfiguration.Autostart = false;
+                    inputConfigManager.SaveConfig(this);
+                }
+            }
         }
 
         private void ReadLoop()
@@ -120,21 +148,6 @@ namespace XOutput.Devices.Input.DirectInput
         public ForceFeedbackTarget FindTarget(int offset)
         {
             return targets.FirstOrDefault(d => d.Offset == offset);
-        }
-
-        public void SetForceFeedback(double big, double small)
-        {
-            if (InputConfiguration != null)
-            {
-                foreach (var target in InputConfiguration.BigMotors.Select(o => FindTarget(o)).Where(t => t != null))
-                {
-                    target.Value = big;
-                }
-                foreach (var target in InputConfiguration.SmallMotors.Select(o => FindTarget(o)).Where(t => t != null))
-                {
-                    target.Value = small;
-                }
-            }
         }
 
         private DeviceObjectInstance[] GetAxes()
@@ -171,8 +184,8 @@ namespace XOutput.Devices.Input.DirectInput
             }
             if (disposing)
             {
-                forceFeedbackThreadContext.Cancel().Wait();
-                readThreadContext.Cancel().Wait();
+                readThreadContext?.Cancel()?.Wait();
+                forceFeedbackThreadContext?.Cancel()?.Wait();
                 joystick.Dispose();
             }
             disposed = true;

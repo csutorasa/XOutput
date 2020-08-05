@@ -19,11 +19,12 @@ namespace XOutput.Devices.Input.RawInput
 
         public InputConfig InputConfiguration { get; set; }
 
-        public InputDeviceMethod InputMethod => InputDeviceMethod.RAW_INPUT;
+        public InputDeviceMethod InputMethod => InputDeviceMethod.RawInput;
         public string DisplayName { get; private set; }
         public string InterfacePath { get; private set; }
         public string UniqueId { get; private set; }
         public string HardwareID { get; private set; }
+        public bool Running => readThreadContext?.Running ?? false;
 
         public event DeviceInputChangedHandler InputChanged;
 
@@ -32,13 +33,16 @@ namespace XOutput.Devices.Input.RawInput
         private readonly HidDevice device;
         private readonly HidDeviceInputReceiver inputReceiver;
         private readonly DeviceItemInputParser inputParser;
+        private readonly InputConfigManager inputConfigManager;
         private byte[] inputReportBuffer;
         private readonly RawInputSource[] sources;
         private bool disposed = false;
-        private readonly ThreadContext readThreadContext;
+        private ThreadContext readThreadContext;
 
-        public RawInputDevice(HidDevice device, ReportDescriptor reportDescriptor, DeviceItem deviceItem, HidStream hidStream, string uniqueId)
+        public RawInputDevice(InputConfigManager inputConfigManager, HidDevice device, ReportDescriptor reportDescriptor, DeviceItem deviceItem,
+            HidStream hidStream, string uniqueId)
         {
+            this.inputConfigManager = inputConfigManager;
             this.device = device;
             inputReportBuffer = new byte[device.GetMaxInputReportLength()];
             inputReceiver = reportDescriptor.CreateHidDeviceInputReceiver();
@@ -54,7 +58,30 @@ namespace XOutput.Devices.Input.RawInput
                 .Select(u => (Usage)u)
                 .SelectMany(u => RawInputSource.FromUsage(this, u))
                 .ToArray();
-            readThreadContext = ThreadCreator.CreateLoop($"{DisplayName} RawInput reader", ReadLoop, 1).Start();
+        }
+
+        public void Start()
+        {
+            if (!Running)
+            {
+                readThreadContext = ThreadCreator.CreateLoop($"{DisplayName} RawInput reader", ReadLoop, 1).Start();
+                if (!InputConfiguration.Autostart) {
+                    InputConfiguration.Autostart = true;
+                    inputConfigManager.SaveConfig(this);
+                }
+            }
+        }
+        
+        public void Stop()
+        {
+            if (Running)
+            {
+                readThreadContext.Cancel().Wait();
+                if (InputConfiguration.Autostart) {
+                    InputConfiguration.Autostart = false;
+                    inputConfigManager.SaveConfig(this);
+                }
+            }
         }
 
         private void ReadLoop()
@@ -75,7 +102,6 @@ namespace XOutput.Devices.Input.RawInput
                         var dataValue = inputParser.GetValue(changedIndex);
                         if (dataValue.Usages.Count() > 0 ) {
                             changedIndexes[(Usage)dataValue.Usages.FirstOrDefault()] = dataValue;
-                            Console.WriteLine(string.Format("{0}: {1}", (Usage)dataValue.Usages.FirstOrDefault(), dataValue.GetScaledValue(0, 1)));
                         }
                     }
                 }
@@ -118,7 +144,7 @@ namespace XOutput.Devices.Input.RawInput
             }
             if (disposing)
             {
-                readThreadContext.Cancel().Wait();
+                readThreadContext?.Cancel()?.Wait();
             }
             disposed = true;
         }

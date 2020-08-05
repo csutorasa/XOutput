@@ -24,16 +24,22 @@ namespace XOutput.Devices.Input.RawInput
             switch (usage)
             {
                 case Usage.GenericDesktopX:
+                    return new RawInputSource[] { new RawInputSource(device, "X axis", SourceTypes.AxisX, usage,
+                    (changes) => GetValueFromChanges(changes, usage)) };
                 case Usage.GenericDesktopRx:
-                    return new RawInputSource[] { new RawInputSource(device, usage.ToString(), SourceTypes.AxisX, usage,
+                    return new RawInputSource[] { new RawInputSource(device, "Rx axis", SourceTypes.AxisX, usage,
                     (changes) => GetValueFromChanges(changes, usage)) };
                 case Usage.GenericDesktopY:
+                    return new RawInputSource[] { new RawInputSource(device, "Y axis", SourceTypes.AxisY, usage,
+                    (changes) => GetValueFromChanges(changes, usage)) };
                 case Usage.GenericDesktopRy:
-                    return new RawInputSource[] { new RawInputSource(device, usage.ToString(), SourceTypes.AxisY, usage,
+                    return new RawInputSource[] { new RawInputSource(device, "Ry axis", SourceTypes.AxisY, usage,
                     (changes) => GetValueFromChanges(changes, usage)) };
                 case Usage.GenericDesktopZ:
+                    return new RawInputSource[] { new RawInputSource(device, "Z axis", SourceTypes.AxisZ, usage,
+                    (changes) => GetValueFromChanges(changes, usage)) };
                 case Usage.GenericDesktopRz:
-                    return new RawInputSource[] { new RawInputSource(device, usage.ToString(), SourceTypes.AxisZ, usage,
+                    return new RawInputSource[] { new RawInputSource(device, "Rz axis", SourceTypes.AxisZ, usage,
                     (changes) => GetValueFromChanges(changes, usage)) };
                 case Usage.Button1:
                 case Usage.Button2:
@@ -66,7 +72,7 @@ namespace XOutput.Devices.Input.RawInput
                 case Usage.Button29:
                 case Usage.Button30:
                 case Usage.Button31:
-                    return new RawInputSource[] { new RawInputSource(device, usage.ToString(), SourceTypes.Button, usage,
+                    return new RawInputSource[] { new RawInputSource(device, "Button " + (usage - Usage.Button1 + 1), SourceTypes.Button, usage,
                      (changes) => GetValueFromChanges(changes, usage)) };
                 case Usage.GenericDesktopHatSwitch:
                     return new RawInputSource[] {
@@ -79,6 +85,11 @@ namespace XOutput.Devices.Input.RawInput
                         new RawInputSource(device, "DPad Right", SourceTypes.Dpad, 100003,
                          (changes) => HasDirection(changes, DPadDirection.Right)),
                     };
+                case Usage.GenericDesktopSlider:
+                case Usage.GenericDesktopDial:
+                case Usage.GenericDesktopWheel:
+                    return new RawInputSource[] { new RawInputSource(device, usage.ToString(), SourceTypes.Slider, usage,
+                     (changes) => GetValueFromChanges(changes, usage)) };
                 default:
                     return new RawInputSource[0];
             }

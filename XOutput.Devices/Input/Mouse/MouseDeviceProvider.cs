@@ -24,20 +24,18 @@ namespace XOutput.Devices.Input.Mouse
         {
             this.hook = hook;
             this.inputConfigManager = inputConfigManager;
-#if !DEBUG
-            hook.StartHook();
-#endif
         }
 
         public void SearchDevices()
         {
             if (device == null)
             {
-                var config = inputConfigManager.LoadConfig(DeviceId);
-                device = new MouseDevice(hook)
-                {
-                    InputConfiguration = config,
-                };
+                device = new MouseDevice(inputConfigManager, hook);
+                var config = inputConfigManager.LoadConfig(device);
+                device.InputConfiguration = config;
+                if (config.Autostart) {
+                    device.Start();
+                }
                 Connected?.Invoke(this, new DeviceConnectedEventArgs(device));
             }
         }

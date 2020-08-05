@@ -16,30 +16,57 @@ namespace XOutput.Devices.Input.Keyboard
 
         public InputConfig InputConfiguration { get; set; }
 
-        public InputDeviceMethod InputMethod => InputDeviceMethod.WINDOWS_API;
+        public InputDeviceMethod InputMethod => InputDeviceMethod.WindowsApi;
         public string InterfacePath { get; private set; }
         public string DisplayName { get; private set; }
         public string UniqueId { get; private set; }
         public string HardwareID { get; private set; }
+        public bool Running => readThreadContext?.Running ?? false;
 
         public event DeviceInputChangedHandler InputChanged;
         private readonly DeviceInputChangedEventArgs inputChangedEventArgs;
 
-        private readonly ThreadContext readThreadContext;
+        private ThreadContext readThreadContext;
         private readonly KeyboardSource[] sources;
         private readonly ForceFeedbackTarget[] targets;
         private readonly KeyboardHook hook;
+        private readonly InputConfigManager inputConfigManager;
         private bool disposed = false;
 
-        public KeyboardDevice(KeyboardHook hook)
+        public KeyboardDevice(InputConfigManager inputConfigManager, KeyboardHook hook)
         {
+            this.inputConfigManager = inputConfigManager;
             this.hook = hook;
             UniqueId = KeyboardDeviceProvider.DeviceId;
             DisplayName = KeyboardDeviceProvider.DeviceId;
             sources = Enum.GetValues(typeof(KeyboardButton)).OfType<KeyboardButton>().Select((b) => new KeyboardSource(this, b.ToString(), (int)b)).ToArray();
             targets = new ForceFeedbackTarget[0];
             inputChangedEventArgs = new DeviceInputChangedEventArgs(this);
-            readThreadContext = ThreadCreator.CreateLoop($"{DisplayName} input reader", ReadLoop, 1).Start();
+        }
+
+        public void Start()
+        {
+            if (!Running)
+            {
+                hook.StartHook();
+                readThreadContext = ThreadCreator.CreateLoop($"{DisplayName} input reader", ReadLoop, 1).Start();
+                if (!InputConfiguration.Autostart) {
+                    InputConfiguration.Autostart = true;
+                    inputConfigManager.SaveConfig(this);
+                }
+            }
+        }
+        
+        public void Stop()
+        {
+            if (Running)
+            {
+                readThreadContext.Cancel().Wait();
+                if (InputConfiguration.Autostart) {
+                    InputConfiguration.Autostart = false;
+                    inputConfigManager.SaveConfig(this);
+                }
+            }
         }
 
         private void ReadLoop()
@@ -81,7 +108,7 @@ namespace XOutput.Devices.Input.Keyboard
             }
             if (disposing)
             {
-                readThreadContext.Cancel().Wait();
+                readThreadContext?.Cancel()?.Wait();
             }
             disposed = true;
         }

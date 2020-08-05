@@ -1,11 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using NLog;
 
 namespace XOutput.Core.Configuration
 {
     public abstract class ConfigurationManager
     {
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
+
         public void Save<T>(string filePath, T configuration) where T : ConfigurationBase
         {
             configuration.FilePath = GetFilePath(filePath);
@@ -19,9 +22,10 @@ namespace XOutput.Core.Configuration
             {
                 Directory.CreateDirectory(directory);
             }
-            using (StreamWriter writer = new StreamWriter(new FileStream(configuration.FilePath, FileMode.OpenOrCreate, FileAccess.Write), Encoding.UTF8))
+            using (StreamWriter writer = new StreamWriter(new FileStream(configuration.FilePath, FileMode.Create, FileAccess.Write), Encoding.UTF8))
             {
                 WriteConfiguration(writer, configuration);
+                logger.Info($"Configuration saved to {configuration.FilePath}");
             }
         }
 
@@ -32,13 +36,15 @@ namespace XOutput.Core.Configuration
             {
                 using (StreamReader reader = new StreamReader(new FileStream(path, FileMode.Open, FileAccess.Read), Encoding.UTF8))
                 {
-                    return ReadConfiguration<T>(reader);
+                    var config = ReadConfiguration<T>(reader);
+                    logger.Info($"Configuration loaded from {path}");
+                    return config;
                 }
             }
             if (defaultGetter != null)
             {
                 var defaultValue = defaultGetter();
-                Save(path, defaultValue);
+                Save(filePath, defaultValue);
                 return defaultValue;
             }
             return default;

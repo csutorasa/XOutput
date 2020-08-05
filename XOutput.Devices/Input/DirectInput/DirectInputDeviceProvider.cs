@@ -61,12 +61,11 @@ namespace XOutput.Devices.Input.DirectInput
                         {
                             continue;
                         }
-                        if (uniqueIds.Any(uid => uid == device.UniqueId))
-                        {
-                            notificationService.Add(Notifications.DirectInputInstanceIdDuplication, new[] { device.UniqueId }, NotificationTypes.Warning);
-                        }
-                        var config = inputConfigManager.LoadConfig(device.UniqueId);
+                        var config = inputConfigManager.LoadConfig(device);
                         device.InputConfiguration = config;
+                        if (config.Autostart) {
+                            device.Start();
+                        }
                         currentDevices.Add(device);
                         Connected?.Invoke(this, new DeviceConnectedEventArgs(device));
                     }
@@ -100,7 +99,7 @@ namespace XOutput.Devices.Input.DirectInput
                 }
                 bool isHid = deviceInstance.IsHumanInterfaceDevice;
                 string interfacePath = null;
-                string uniqueId;
+                string uniqueIdBase;
                 string hardwareId = null;
                 if (isHid)
                 {
@@ -110,10 +109,15 @@ namespace XOutput.Devices.Input.DirectInput
                         return null;
                     }
                     interfacePath = joystick.Properties.InterfacePath;
-                    uniqueId = IdHelper.GetUniqueId(interfacePath);
+                    uniqueIdBase = interfacePath;
                     hardwareId = IdHelper.GetHardwareId(interfacePath);
                 } else {
-                    uniqueId = IdHelper.GetUniqueId(deviceInstance.ProductGuid.ToString(), deviceInstance.InstanceGuid.ToString());
+                    uniqueIdBase = string.Join(":", deviceInstance.ProductGuid.ToString(), deviceInstance.InstanceGuid.ToString());
+                }
+                string uniqueId = IdHelper.GetUniqueId(uniqueIdBase);
+                if (uniqueIds.Any(uid => uid == uniqueId))
+                {
+                    notificationService.Add(Notifications.DirectInputInstanceIdDuplication, new[] { uniqueId }, NotificationTypes.Warning);
                 }
                 uniqueIds.Add(uniqueId);
                 if (currentDevices.Any(d => d.UniqueId == uniqueId)) {
@@ -121,7 +125,7 @@ namespace XOutput.Devices.Input.DirectInput
                     return null;
                 }
                 joystick.Properties.BufferSize = 128;
-                return new DirectInputDevice(joystick, deviceInstance.InstanceGuid.ToString(), deviceInstance.ProductName,
+                return new DirectInputDevice(inputConfigManager, joystick, deviceInstance.InstanceGuid.ToString(), deviceInstance.ProductName,
                     deviceInstance.ForceFeedbackDriverGuid != Guid.Empty, uniqueId, hardwareId, interfacePath);
             }
             catch (Exception ex)

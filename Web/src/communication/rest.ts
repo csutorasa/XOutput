@@ -1,5 +1,12 @@
 import { http, HttpService } from "./http";
 
+export enum InputMethod {
+    WindowsApi = 'WindowsApi',
+    DirectInput = 'DirectInput',
+    RawInput = 'RawInput',
+    Websocket = 'Websocket',
+}
+
 export enum DeviceType {
     MicrosoftXbox360 = 'MicrosoftXbox360',
     SonyDualShock4 = 'SonyDualShock4',
@@ -30,16 +37,18 @@ export type InputDeviceInfoResponse = InputDeviceInformation[];
 export type InputDeviceInformation = {
     id: string;
     name: string;
-    dPads: number;
-    axes: number;
-    buttons: number;
-    sliders: number;
+    activeFeatures: string[];
 };
 
 export type InputDeviceDetails = {
     id: string;
     name: string;
     hardwareId: string;
+    inputs: InputDeviceInputDetails[];
+};
+
+export type InputDeviceInputDetails = {
+    running: boolean;
     sources: {
         offset: number;
         name: string;
@@ -48,6 +57,7 @@ export type InputDeviceDetails = {
     forceFeedbacks: {
         offset: number;
     }[];
+    inputMethod: InputMethod;
 };
 
 export type InputDeviceConfig = {
@@ -114,6 +124,14 @@ class RestService {
 
     stopForceFeedback(id: string, offset: number): Promise<void> {
         return this.http.delete<void>(`/inputs/${id}/forcefeedback/${offset}`, null);
+    }
+
+    startInputDevice(id: string, method: InputMethod): Promise<void> {
+        return this.http.put<void>(`/inputs/${id}/${method}/running`);
+    }
+
+    stopInputDevice(id: string, method: InputMethod): Promise<void> {
+        return this.http.delete<void>(`/inputs/${id}/${method}/running`);
     }
 
     getHidGuardianInfo(id: string): Promise<HidGuardianInfo> {

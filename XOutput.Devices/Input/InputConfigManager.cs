@@ -13,14 +13,14 @@ namespace XOutput.Devices.Input
             this.configurationManager = configurationManager;
         }
 
-        public InputConfig LoadConfig(string id)
+        public InputConfig LoadConfig(IInputDevice device)
         {
-            return configurationManager.Load($"conf/input/{id}", () => new InputConfig());
+            return configurationManager.Load($"conf/{device.UniqueId}/{device.InputMethod}", () => new InputConfig());
         }
 
-        public void SaveConfig(string id, InputConfig config)
+        public void SaveConfig(IInputDevice device)
         {
-            configurationManager.Save(config);
+            configurationManager.Save($"conf/{device.UniqueId}/{device.InputMethod}", device.InputConfiguration);
         }
     }
 }

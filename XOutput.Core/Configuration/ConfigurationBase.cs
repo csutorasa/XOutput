@@ -1,9 +1,11 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace XOutput.Core.Configuration
 {
     public class ConfigurationBase
     {
+        [JsonIgnore]
         public string FilePath { get; internal set; }
     }
 

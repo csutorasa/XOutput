@@ -56,7 +56,7 @@ namespace XOutput.Server.Websocket.Ds4
                 if (handler is Ds4InputMessageHandler)
                 {
                     var device = (handler as Ds4InputMessageHandler).device;
-                    deviceInfoService.Remove(device);
+                    deviceInfoService.StopAndRemove(device.Id);
                 }
                 handler.Close();
             }
