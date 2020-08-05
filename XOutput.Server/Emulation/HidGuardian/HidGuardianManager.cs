@@ -28,7 +28,8 @@ namespace XOutput.Server.Emulation.HidGuardian
         {
             this.registryModifierService = registryModifierService;
             string driverFile = Path.Combine(Environment.SystemDirectory, "drivers", "HidGuardian.sys");
-            if (File.Exists(driverFile)) {
+            if (File.Exists(driverFile))
+            {
                 Installed = true;
                 logger.Info($"HidGuardian is installed with version: {FileVersionInfo.GetVersionInfo(driverFile).FileVersion}");
             }

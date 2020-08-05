@@ -1,6 +1,6 @@
 import React, { CSSProperties, MouseEvent, TouchEvent, Touch, RefObject } from "react";
 import { AbstractInputFlow, UIInputEvent } from "../../events/base";
-import { WebSocketService } from "../../communication/websocket";
+import { WebSocketService, WebSocketSession } from "../../communication/websocket";
 import { CommonProps } from "./common";
 
 
@@ -9,7 +9,7 @@ type AxisValue = { x: number, y: number };
 export class AxisFlow extends AbstractInputFlow<AxisValue> {
     private key: string;
 
-    constructor(communication: WebSocketService, element: HTMLElement, input: string, private emulator: string) {
+    constructor(communication: WebSocketSession, element: HTMLElement, input: string, private emulator: string) {
         super(communication, element);
         this.key = input;
     }

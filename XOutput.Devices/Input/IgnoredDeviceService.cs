@@ -6,9 +6,10 @@ namespace XOutput.Devices.Input
 {
     public class IgnoredDeviceService
     {
-        private const string ConfigurationFilepath = "conf/input/ignore";
+        private const string ConfigurationFilepath = "conf/ignored devices";
         private readonly ConfigurationManager configurationManager;
         private readonly IgnoredDevicesConfig config;
+        private readonly List<string> temporaryIgnore = new List<string>();
 
         [ResolverMethod]
         public IgnoredDeviceService(ConfigurationManager configurationManager)
@@ -17,21 +18,32 @@ namespace XOutput.Devices.Input
             config = configurationManager.Load(ConfigurationFilepath, () => new IgnoredDevicesConfig());
         }
 
-        public void AddIgnoredHardwareId(string hardwareId)
+        public void AddIgnore(string interfacePath)
         {
-            config.IgnoredHardwareIds.Add(hardwareId);
+            config.IgnoredHardwareIds.Add(interfacePath);
             configurationManager.Save(config);
         }
 
-        public void RemoveIgnoredHardwareId(string hardwareId)
+        public void RemoveIgnore(string interfacePath)
         {
-            config.IgnoredHardwareIds.Remove(hardwareId);
+            config.IgnoredHardwareIds.Remove(interfacePath);
             configurationManager.Save(config);
         }
 
-        public bool IsIgnored(string hardwareId)
+
+        public void AddTemporaryIgnore(string interfacePath)
         {
-            return hardwareId != null && config.IgnoredHardwareIds.Contains(hardwareId);
+            temporaryIgnore.Add(interfacePath);
+        }
+
+        public void RemoveTemporaryIgnore(string interfacePath)
+        {
+            temporaryIgnore.Remove(interfacePath);
+        }
+
+        public bool IsIgnored(string interfacePath)
+        {
+            return interfacePath != null && (config.IgnoredHardwareIds.Contains(interfacePath) || temporaryIgnore.Contains(interfacePath));
         }
     }
 }

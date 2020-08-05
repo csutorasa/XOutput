@@ -4,12 +4,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using NLog;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.Keyboard
 {
     public class KeyboardHook : IDisposable
     {
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         public event KeyboardHookEvent MouseEvent;
         private IntPtr hookPtr = IntPtr.Zero;
         private HookProc hook;
@@ -45,6 +47,7 @@ namespace XOutput.Devices.Input.Keyboard
             {
                 throw new Win32Exception("Unable to set MouseHook");
             }
+            logger.Info("Keyboard Windows API hook is set up");
         }
 
         public bool IsPressed(KeyboardButton button)

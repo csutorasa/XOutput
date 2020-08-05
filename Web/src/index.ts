@@ -13,9 +13,9 @@ WebSocketService.initialize(host, port);
 const websocket = new WebSocketService();
 
 window.onerror = function(msg, url, line, col) {
-    if (websocket.isReady()) {
+    /*if (websocket.isReady()) {
         websocket.sendDebug(`Error in ${url} at ${line}:${col} ${msg}`);
-    }
+    }*/
 };
 
 function disableResize() {

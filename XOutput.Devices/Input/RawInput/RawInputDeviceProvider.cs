@@ -1,5 +1,6 @@
 ﻿using HidSharp;
 using HidSharp.Reports;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace XOutput.Devices.Input.RawInput
 {
     public class RawInputDeviceProvider : IInputDeviceProvider
     {
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         public event DeviceConnectedHandler Connected;
         public event DeviceDisconnectedHandler Disconnected;
 
@@ -78,9 +80,10 @@ namespace XOutput.Devices.Input.RawInput
                             }
                         }
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
-
+                        logger.Warn(e, $"Ignoring {device.DevicePath} temporarily due to error");
+                        ignoredDeviceService.AddTemporaryIgnore(device.DevicePath);
                     }
                 }
                 foreach (var device in currentDevices.ToArray())

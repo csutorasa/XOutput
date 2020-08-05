@@ -9,7 +9,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { rest, InputDeviceDetails, InputDeviceConfig, InputDeviceInputDetails, InputMethod } from "../../communication/rest";
 import { Translation } from "../../translation/translation";
 import { withStyles, Theme } from "@material-ui/core";
-import { WebSocketService } from '../../communication/websocket';
+import { WebSocketService, WebSocketSession } from '../../communication/websocket';
 import { InputValues } from "../../communication/input";
 import { MessageBase } from "../../communication/message";
 import { Dpad } from "./dpad";
@@ -49,6 +49,7 @@ interface InputDetailsState {
 class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsState> {
 
   private websocket: WebSocketService = new WebSocketService();
+  private websocketSession: WebSocketSession;
   state: InputDetailsState = {
     device: null,
     config: null,
@@ -83,7 +84,11 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
           values: newValues,
         });
       }
-    });
+    }).then((s) => this.websocketSession = s);
+  }
+
+  componentWillUnmount() {
+    this.websocketSession?.close();
   }
 
   changeConfig(add: boolean, config: string, offset: number) {
@@ -236,7 +241,6 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
     if (inputDetails.sources.filter(s => s.type == 'axis').length == 0) {
       return null;
     }
-    console.log(this.state.values)
     const { classes } = this.props;
     return <>
       <Typography className={classes.header} variant='h5'>{Translation.translate("Axes")}</Typography>

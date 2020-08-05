@@ -37,6 +37,7 @@ export type InputDeviceInfoResponse = InputDeviceInformation[];
 export type InputDeviceInformation = {
     id: string;
     name: string;
+    deviceType: 'mouse' | 'keyboard' | 'joystick';
     activeFeatures: string[];
 };
 

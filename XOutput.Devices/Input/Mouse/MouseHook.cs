@@ -4,12 +4,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using NLog;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Devices.Input.Mouse
 {
     public class MouseHook : IDisposable
     {
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         public event MouseHookEvent MouseEvent;
         private IntPtr hookPtr = IntPtr.Zero;
         private HookProc hook;
@@ -45,6 +47,7 @@ namespace XOutput.Devices.Input.Mouse
             {
                 throw new Win32Exception("Unable to set MouseHook");
             }
+            logger.Info("Mouse Windows API hook is set up");
         }
 
         public bool IsPressed(MouseButton button)

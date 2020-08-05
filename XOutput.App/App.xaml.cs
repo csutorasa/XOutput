@@ -47,19 +47,19 @@ namespace XOutput.App
             globalContext.AddFromConfiguration(typeof(ApiConfiguration));
             globalContext.AddFromConfiguration(typeof(AppConfiguration));
             globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Api", "XOutput.Devices", "XOutput.Emulation", "XOutput.Server"));
+            logger.Info("Configuration classes are loaded");
             var configurationManager = globalContext.Resolve<ConfigurationManager>();
 
             var mainWindow = ApplicationContext.Global.Resolve<MainWindow>();
             MainWindow = mainWindow;
 
             var hidGuardianManager = globalContext.Resolve<HidGuardianManager>();
-            hidGuardianManager.ClearPid(Process.GetCurrentProcess().Id);
 
-            string settingsPath = Path.Combine(Directory.GetCurrentDirectory(), "config", "server.json");
-            if (true)
+            if (hidGuardianManager.Installed)
             {
                 try
                 {
+                    hidGuardianManager.ClearPid(Process.GetCurrentProcess().Id);
                     hidGuardianManager.SetPid(Process.GetCurrentProcess().Id);
                 }
                 catch(Exception)
@@ -68,7 +68,7 @@ namespace XOutput.App
                 }
             }
             server = globalContext.Resolve<Server.Server>();
-            server.GetHost().StartAsync();
+            server.StartAsync();
         }
 
         private void SetLoggerConfiguration()
