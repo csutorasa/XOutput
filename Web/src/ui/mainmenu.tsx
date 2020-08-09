@@ -33,13 +33,14 @@ type ClassNames = 'menubarButton' | 'mainContent' | 'title' | 'drawerRoot' | 'dr
 
 const styles: StyleGenerator<ClassNames> = (theme) => ({
     menubarButton: {
-        color: 'white',
+        color: theme.palette.common.white,
     },
     mainContent: {
         margin: '8px',
     },
     title: {
         flexGrow: 1,
+        color: theme.palette.common.white,
     },
     drawerRoot: {
         width: '360px',

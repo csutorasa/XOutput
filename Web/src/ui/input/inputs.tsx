@@ -106,7 +106,7 @@ class InputsComponent extends Component<InputsProps, InputsState> {
       <Typography variant='h3'>{Translation.translate("InputDevices")}</Typography>
       <Async task={this.loading}>
         { () =>
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
           {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
             <Paper className={classes.paper}>
               <Grid container>
