@@ -5,8 +5,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --config webpack.dev.config.js --watch",
-    "install": "webpack --mode=production",
+    "dev": "webpack-dev-server --open --config webpack.dev.js --watch",
+    "install": "webpack --config webpack.prod.js",
     "test": "echo \"No test specified\""
   },
   "author": "Ármin Csutorás",
