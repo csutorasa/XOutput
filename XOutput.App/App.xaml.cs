@@ -24,6 +24,10 @@ namespace XOutput.App
 {
     public partial class App : Application
     {
+        /// <summary>
+        /// Current application version.
+        /// </summary>
+        public const string AppVersion = "4.0.0";
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private Server.Server server;
 
@@ -43,7 +47,7 @@ namespace XOutput.App
             AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) => UnhandledException(e.ExceptionObject as Exception, LogLevel.Error);
             TaskScheduler.UnobservedTaskException += (object sender, UnobservedTaskExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
 
-            logger.Info($"Starting XOutput version: {Core.Versioning.Version.AppVersion}");
+            logger.Info($"Starting XOutput version: {AppVersion}");
 
             var globalContext = ApplicationContext.Global;
             globalContext.AddFromConfiguration(typeof(CoreConfiguration));
@@ -96,7 +100,7 @@ namespace XOutput.App
 
         private Task CheckUpdate(UpdateChecker updateChecker, NotificationService notificationService)
         {
-            return updateChecker.CompareRelease().ContinueWith(t => {
+            return updateChecker.CompareRelease(AppVersion).ContinueWith(t => {
                 switch (t.Result.Result) {
                     case VersionCompareValues.NeedsUpgrade:
                         notificationService.Add(Notifications.NeedsVersionUpgrade, new List<string>() { t.Result.LatestVersion });

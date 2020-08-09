@@ -9,11 +9,6 @@ namespace XOutput.Core.Versioning
     /// </summary>
     public static class Version
     {
-        /// <summary>
-        /// Current application version.
-        /// </summary>
-        public const string AppVersion = "3.27";
-
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -21,13 +16,12 @@ namespace XOutput.Core.Versioning
         /// </summary>
         /// <param name="version">reference version</param>
         /// <returns></returns>
-        public static VersionCompare Compare(string version)
+        public static VersionCompare Compare(string appVersion, string version)
         {
-            string current = Version.AppVersion;
             return new VersionCompare
             {
-                Result = DoCompare(current, version),
-                CurrentVersion = current,
+                Result = DoCompare(appVersion, version),
+                CurrentVersion = appVersion,
                 LatestVersion = version,
             };
         }

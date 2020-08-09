@@ -11,7 +11,6 @@ namespace XOutput.Core.Versioning
     {
         private readonly IVersionGetter versionGetter;
 
-        [ResolverMethod]
         public UpdateChecker(IVersionGetter versionGetter)
         {
             this.versionGetter = versionGetter;
@@ -21,19 +20,19 @@ namespace XOutput.Core.Versioning
         /// Compares the current version with the latest release.
         /// </summary>
         /// <returns></returns>
-        public async Task<VersionCompare> CompareRelease()
+        public async Task<VersionCompare> CompareRelease(string appVersion)
         {
             VersionCompare compare;
             try
             {
                 string latestRelease = await versionGetter.GetLatestRelease();
-                compare = Version.Compare(latestRelease);
+                compare = Version.Compare(appVersion, latestRelease);
             }
             catch (Exception)
             {
                 compare = new VersionCompare {
                     Result = VersionCompareValues.Error,
-                    CurrentVersion = Version.AppVersion,
+                    CurrentVersion = appVersion,
                     LatestVersion = null,
                 };
             }
