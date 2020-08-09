@@ -58,6 +58,7 @@ namespace XOutput.Devices.Input.Mouse
             if (Running)
             {
                 readThreadContext.Cancel().Wait();
+                hook.StopHook();
                 if (InputConfiguration.Autostart) {
                     InputConfiguration.Autostart = false;
                     inputConfigManager.SaveConfig(this);

@@ -71,7 +71,9 @@ namespace XOutput.Devices.Input
 
         public List<InputDeviceHolder> GetInputDevices()
         {
-            return devices.ToList();
+            lock(lockObject) {
+                return devices.ToList();
+            }
         }
 
         public InputDeviceHolder FindInputDevice(string id)

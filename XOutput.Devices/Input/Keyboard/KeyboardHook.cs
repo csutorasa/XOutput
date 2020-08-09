@@ -29,6 +29,10 @@ namespace XOutput.Devices.Input.Keyboard
 
         public void StartHook()
         {
+            if (hookPtr != IntPtr.Zero)
+            {
+                return;
+            }
             hook = (nCode, wParam, lParam) =>
             {
                 if (nCode >= 0)
@@ -45,9 +49,21 @@ namespace XOutput.Devices.Input.Keyboard
             hookPtr = NativeMethods.SetWindowsHookEx(HookType.WH_KEYBOARD_LL, hook, Marshal.GetHINSTANCE(Assembly.GetExecutingAssembly().GetModules()[0]), 0);
             if (hookPtr == IntPtr.Zero)
             {
-                throw new Win32Exception("Unable to set MouseHook");
+                throw new Win32Exception("Unable to set KeyboardHook");
             }
             logger.Info("Keyboard Windows API hook is set up");
+        }
+
+        public void StopHook() {
+            if (hookPtr == IntPtr.Zero)
+            {
+                return;
+            }
+            if (!NativeMethods.UnhookWindowsHookEx(hookPtr))
+            {
+                throw new Win32Exception("Unable to clear KeyboardHook");
+            }
+            hookPtr = IntPtr.Zero;
         }
 
         public bool IsPressed(KeyboardButton button)

@@ -40,11 +40,11 @@ namespace XOutput.Devices.Input.RawInput
 
         public void SearchDevices()
         {
+            var local = DeviceList.Local;
+            var devices = local.GetDevices(DeviceTypes.Hid).OfType<HidDevice>();
+            List<string> instances = new List<string>();
             lock (lockObject)
             {
-                var local = DeviceList.Local;
-                var devices = local.GetDevices(DeviceTypes.Hid).OfType<HidDevice>();
-                List<string> instances = new List<string>();
                 foreach (var device in devices)
                 {
                     if (ignoredDeviceService.IsIgnored(device.DevicePath))

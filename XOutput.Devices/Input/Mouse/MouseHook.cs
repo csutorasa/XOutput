@@ -29,6 +29,10 @@ namespace XOutput.Devices.Input.Mouse
 
         public void StartHook()
         {
+            if (hookPtr != IntPtr.Zero)
+            {
+                return;
+            }
             hook = (nCode, wParam, lParam) =>
             {
                 if (nCode >= 0)
@@ -48,6 +52,18 @@ namespace XOutput.Devices.Input.Mouse
                 throw new Win32Exception("Unable to set MouseHook");
             }
             logger.Info("Mouse Windows API hook is set up");
+        }
+
+        public void StopHook() {
+            if (hookPtr == IntPtr.Zero)
+            {
+                return;
+            }
+            if (!NativeMethods.UnhookWindowsHookEx(hookPtr))
+            {
+                throw new Win32Exception("Unable to clear MouseHook");
+            }
+            hookPtr = IntPtr.Zero;
         }
 
         public bool IsPressed(MouseButton button)
