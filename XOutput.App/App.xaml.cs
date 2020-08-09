@@ -17,6 +17,7 @@ using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Notifications;
 using XOutput.Core.Resources;
+using XOutput.Core.Versioning;
 using XOutput.Server.Emulation.HidGuardian;
 
 namespace XOutput.App
@@ -42,6 +43,8 @@ namespace XOutput.App
             AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) => UnhandledException(e.ExceptionObject as Exception, LogLevel.Error);
             TaskScheduler.UnobservedTaskException += (object sender, UnobservedTaskExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
 
+            logger.Info($"Starting XOutput version: {Core.Versioning.Version.AppVersion}");
+
             var globalContext = ApplicationContext.Global;
             globalContext.AddFromConfiguration(typeof(CoreConfiguration));
             globalContext.AddFromConfiguration(typeof(ApiConfiguration));
@@ -54,6 +57,7 @@ namespace XOutput.App
             MainWindow = mainWindow;
 
             var hidGuardianManager = globalContext.Resolve<HidGuardianManager>();
+            var notificationService = globalContext.Resolve<NotificationService>();
 
             if (hidGuardianManager.Installed)
             {
@@ -64,9 +68,11 @@ namespace XOutput.App
                 }
                 catch(Exception)
                 {
-                    globalContext.Resolve<NotificationService>().Add(Notifications.HidGuardianRegistry, null, NotificationTypes.Warning);
+                    notificationService.Add(Notifications.HidGuardianRegistry, null, NotificationTypes.Warning);
                 }
             }
+            CheckUpdate(globalContext.Resolve<UpdateChecker>(), notificationService);
+
             server = globalContext.Resolve<Server.Server>();
             server.StartAsync();
         }
@@ -86,6 +92,20 @@ namespace XOutput.App
                 // Cannot create logger
             }
             LogManager.Configuration = new XmlLoggingConfiguration(XmlReader.Create(AssemblyResourceManager.GetResourceStream("XOutput.App.nlog.config")));
+        }
+
+        private Task CheckUpdate(UpdateChecker updateChecker, NotificationService notificationService)
+        {
+            return updateChecker.CompareRelease().ContinueWith(t => {
+                switch (t.Result.Result) {
+                    case VersionCompareValues.NeedsUpgrade:
+                        notificationService.Add(Notifications.NeedsVersionUpgrade, new List<string>() { t.Result.LatestVersion });
+                        break;
+                    case VersionCompareValues.Error:
+                        notificationService.Add(Notifications.VersionCheckError, new List<string>() { }, NotificationTypes.Warning);
+                        break;
+                }
+            });
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

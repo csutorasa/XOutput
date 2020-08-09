@@ -26,5 +26,7 @@
     "input.hidguardian": "Enable HidGuardian",
     "input.forcefeedback.notimplemented": "Force feedback driver is missing or corrupt for {0}",
     "input.instance.duplication": "More devices share that same ID of {0}",
-    "hidguardian.registry.noaccess": "No access to write registry for HidGuardian (try running the application as admin)"
+    "hidguardian.registry.noaccess": "No access to write registry for HidGuardian (try running the application as admin)",
+    "version.needsupgrade": "There is a new version available {0}",
+    "version.error": "Failed to get the latest version"
 }
