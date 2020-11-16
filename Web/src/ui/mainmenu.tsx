@@ -28,6 +28,7 @@ import Translation from "../translation/translation";
 import { Notifications } from "./notifications/Notifications";
 import { MainMenuListItem } from "./MainMenuListItem";
 import { rest, Notification } from "../communication/rest";
+import { Home } from "./home/home";
 
 type ClassNames = 'menubarButton' | 'mainContent' | 'title' | 'drawerRoot' | 'drawerHeader' | 'placeholder';
 
@@ -105,9 +106,11 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
                             <IconButton edge="start" className={classes.menubarButton} color="inherit" aria-label="menu" onClick={() => this.changeMenu(true)}>
                                 <MenuIcon />
                             </IconButton>
-                            <Typography variant="h6" className={classes.title}>
-                                XOutput
-                            </Typography>
+                            <Link to='/' color='textPrimary'>
+                                <Typography variant="h6" className={classes.title}>
+                                    XOutput
+                                </Typography>
+                            </Link>
                             <div className={classes.placeholder}></div>
                             <Link to='/notifications' color='textPrimary'>
                                 <IconButton edge="start" className={classes.menubarButton} color="inherit" aria-label="menu">
@@ -124,7 +127,7 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
                                 <Typography variant='h4'>XOutput</Typography>
                             </div>
                             <List component="nav">
-                                <MainMenuListItem path='/' onClick={() => this.changeMenu(false)} >
+                                <MainMenuListItem path='/controllers' onClick={() => this.changeMenu(false)} >
                                     <ListItemIcon>
                                         <SportsEsportsIcon />
                                     </ListItemIcon>
@@ -159,6 +162,9 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
             <div className={classes.mainContent}>
                 <Switch>
                     <Route path="/" exact>
+                        <Home></Home>
+                    </Route>
+                    <Route path="/controllers">
                         <Controllers></Controllers>
                     </Route>
                     <Route path="/devices">

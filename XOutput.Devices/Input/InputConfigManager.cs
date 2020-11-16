@@ -15,7 +15,7 @@ namespace XOutput.Devices.Input
 
         public InputConfig LoadConfig(IInputDevice device)
         {
-            return configurationManager.Load($"conf/{device.UniqueId}/{device.InputMethod}", () => new InputConfig());
+            return configurationManager.Load($"conf/{device.UniqueId}/{device.InputMethod}", () => new InputConfig(device));
         }
 
         public void SaveConfig(IInputDevice device)

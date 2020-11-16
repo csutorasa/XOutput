@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace XOutput.Devices.Input
 {
     public class InputDeviceHolder
     {
+        public event DeviceConnectedHandler Connected;
+        public event DeviceDisconnectedHandler Disconnected;
         public string DisplayName => displayName;
         public string InterfacePath => interfacePath;
         public string UniqueId => uniqueId;
@@ -36,12 +37,21 @@ namespace XOutput.Devices.Input
 
         public void SetInput(InputDeviceMethod method, IInputDevice device)
         {
+            if (devices.ContainsKey(method))
+            {
+                Disconnected?.Invoke(this, new DeviceDisconnectedEventArgs(devices[method]));
+            }
             devices[method] = device;
+            Connected?.Invoke(this, new DeviceConnectedEventArgs(devices[method]));
         }
 
         public bool RemoveInput(InputDeviceMethod method)
         {
-            devices.Remove(method);
+            if (devices.ContainsKey(method))
+            {
+                devices.Remove(method);
+                Disconnected?.Invoke(this, new DeviceDisconnectedEventArgs(devices[method]));
+            }
             return !devices.Any();
         }
 

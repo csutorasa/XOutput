@@ -76,7 +76,6 @@ namespace XOutput.Devices.Input.RawInput
                                 }
                                 currentDevices.Add(inputDevice);
                                 Connected?.Invoke(this, new DeviceConnectedEventArgs(inputDevice));
-                                    
                             }
                         }
                     }

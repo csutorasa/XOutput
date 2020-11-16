@@ -121,17 +121,18 @@ namespace XOutput.Devices.Input.RawInput
             {
                 return null;
             }
-            switch (changes[Usage.GenericDesktopHatSwitch].GetPhysicalValue())
+            var dataValue = changes[Usage.GenericDesktopHatSwitch];
+            switch (dataValue.GetLogicalValue() - dataValue.DataItem.LogicalMinimum)
             {
-                case double.NaN: return DPadDirection.None;
-                case 0: return DPadDirection.Up;
-                case 45: return DPadDirection.Up | DPadDirection.Right;
-                case 90: return DPadDirection.Right;
-                case 135: return DPadDirection.Down | DPadDirection.Right;
-                case 180: return DPadDirection.Down;
-                case 225: return DPadDirection.Down | DPadDirection.Left;
-                case 270: return DPadDirection.Left;
-                case 315: return DPadDirection.Up | DPadDirection.Left;
+                case 0: return DPadDirection.None;
+                case 1: return DPadDirection.Up;
+                case 2: return DPadDirection.Up | DPadDirection.Right;
+                case 3: return DPadDirection.Right;
+                case 4: return DPadDirection.Down | DPadDirection.Right;
+                case 5: return DPadDirection.Down;
+                case 6: return DPadDirection.Down | DPadDirection.Left;
+                case 7: return DPadDirection.Left;
+                case 8: return DPadDirection.Up | DPadDirection.Left;
             }
             return null;
         }

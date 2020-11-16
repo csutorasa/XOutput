@@ -11,7 +11,6 @@ namespace XOutput.Server.Websocket.Input
     class InputValuesMessageHandler : IMessageHandler
     {
         private readonly InputDeviceHolder device;
-        private readonly List<IInputDevice> devices;
         private readonly SenderFunction<InputValuesMessage> senderFunction;
         private readonly ThreadContext threadContext;
         private readonly object lockObject = new object();
@@ -21,11 +20,24 @@ namespace XOutput.Server.Websocket.Input
         {
             this.device = device;
             this.senderFunction = senderFunction;
-            devices = device.GetInputDevices();
+
+            var devices = device.GetInputDevices();
+            device.Connected += InputConnected;
+            device.Disconnected += InputDisconnected;
             foreach(var inputDevice in devices) {
                 inputDevice.InputChanged += InputChanged;
             }
             threadContext = ThreadCreator.CreateLoop($"Websocket input value writer {device.DisplayName}", ResponseLoop, 33).Start();
+        }
+
+        private void InputConnected(object sender, DeviceConnectedEventArgs e)
+        {
+            e.Device.InputChanged += InputChanged;
+        }
+
+        private void InputDisconnected(object sender, DeviceDisconnectedEventArgs e)
+        {
+            e.Device.InputChanged += InputChanged;
         }
 
         private void ResponseLoop()
@@ -70,7 +82,7 @@ namespace XOutput.Server.Websocket.Input
 
         public void Close()
         {
-            foreach(var inputDevice in devices) {
+            foreach(var inputDevice in device.GetInputDevices()) {
                 inputDevice.InputChanged -= InputChanged;
             }
             threadContext.Cancel().Wait();

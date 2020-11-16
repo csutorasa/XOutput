@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Paper from '@material-ui/core/Paper';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { ControllerInfoResponse, DeviceType, rest, ControllerInfo } from "../../communication/rest";
 import { Translation } from "../../translation/translation";
@@ -102,6 +103,18 @@ class ControllersComponent extends Component<ControllersProps, ControllersState>
                 </Grid>
               </Paper>
             </Grid>)}
+            <Grid item xs={12} md={6} lg={4}>
+              <Paper className={classes.paper}>
+                <Grid container>
+                  <Grid item xs={1} className={classes.iconWrapper}>
+                    <AddCircleOutline />
+                  </Grid>
+                  <Grid item xs={11}>
+                    <Typography variant='body1'>{Translation.translate('New device'}</Typography>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
           </Grid>}
       </Async>
     </>;

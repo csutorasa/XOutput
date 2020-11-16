@@ -98,6 +98,12 @@ namespace XOutput.Devices.Input.DirectInput
         {
             if (!Running)
             {
+                InputConfiguration.Sources.ForEach(s => {
+                    var source = FindSource(s.Offset);
+                    if (source != null) {
+                        source.Update(s);
+                    }
+                });
                 readThreadContext = ThreadCreator.CreateLoop($"{DisplayName} DirectInput reader", ReadLoop, 1).Start();
                 forceFeedbackThreadContext = ThreadCreator.CreateLoop($"{DisplayName} DirectInput force feedback", ForceFeedbackLoop, 10).Start();
                 if (!InputConfiguration.Autostart) {

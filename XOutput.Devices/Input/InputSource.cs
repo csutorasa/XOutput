@@ -1,4 +1,6 @@
-﻿namespace XOutput.Devices.Input
+﻿using System;
+
+namespace XOutput.Devices.Input
 {
     public abstract class InputSource
     {
@@ -10,6 +12,7 @@
         public bool IsButton => type == SourceTypes.Button;
         public bool IsSlider => type == SourceTypes.Slider;
         public bool IsDPad => type == SourceTypes.Dpad;
+        public double Deadzone { get; set; }
 
         protected IInputDevice inputDevice;
         protected string name;
@@ -30,6 +33,10 @@
             return name;
         }
 
+        public void Update(InputSourceConfig config) {
+            Deadzone = config.Deadzone;
+        }
+
         public double GetValue()
         {
             return value;
@@ -37,12 +44,40 @@
 
         protected bool RefreshValue(double newValue)
         {
-            if (newValue != value)
+            double calculatedValue = CalculatedValue(newValue);
+            if (calculatedValue != value)
             {
-                value = newValue;
+                value = calculatedValue;
                 return true;
             }
             return false;
+        }
+
+        private double CalculatedValue(double newValue)
+        {
+            switch (type) {
+                case SourceTypes.Button:
+                case SourceTypes.Dpad:
+                    return newValue;
+                case SourceTypes.Slider:
+                    if (newValue < Deadzone) {
+                        return 0;
+                    }
+                    if (newValue > 1 - Deadzone) {
+                        return 1;
+                    }
+                    return newValue;
+                case SourceTypes.AxisX:
+                case SourceTypes.AxisY:
+                case SourceTypes.AxisZ:
+                case SourceTypes.Axis:
+                    if (Math.Abs(newValue - 0.5) < Deadzone) {
+                        return 0.5;
+                    }
+                    return newValue;
+                default:
+                    return newValue;
+            }
         }
     }
 

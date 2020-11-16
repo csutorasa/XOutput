@@ -64,6 +64,12 @@ namespace XOutput.Devices.Input.RawInput
         {
             if (!Running)
             {
+                InputConfiguration.Sources.ForEach(s => {
+                    var source = FindSource(s.Offset);
+                    if (source != null) {
+                        source.Update(s);
+                    }
+                });
                 readThreadContext = ThreadCreator.CreateLoop($"{DisplayName} RawInput reader", ReadLoop, 1).Start();
                 if (!InputConfiguration.Autostart) {
                     InputConfiguration.Autostart = true;

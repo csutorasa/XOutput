@@ -81,14 +81,19 @@ namespace XOutput.Devices.Input
             return devices.FirstOrDefault(d => d.UniqueId == id);
         }
 
-        public bool ChangeInputConfiguration(string id, InputDeviceMethod method, Action<InputConfig> configuration)
+        public IInputDevice FindInputDevice(string id, InputDeviceMethod method)
         {
-            var inputDevice = FindInputDevice(id)?.FindInput(method);
+            return FindInputDevice(id)?.FindInput(method);
+        }
+
+        public bool ChangeInputConfiguration(string id, InputDeviceMethod method, Action<IInputDevice> configuration)
+        {
+            var inputDevice = FindInputDevice(id, method);
             if (inputDevice == null)
             {
                 return false;
             }
-            configuration(inputDevice.InputConfiguration);
+            configuration(inputDevice);
             inputConfigManager.SaveConfig(inputDevice);
             return true;
         }

@@ -50,15 +50,18 @@ namespace XOutput.Server.Input
                 Id = inputDevice.UniqueId,
                 Name = inputDevice.DisplayName,
                 HardwareId = inputDevice.HardwareID,
-                Inputs = inputDevice.GetInputDevices().Select(d => new InputDeviceInputDetails {
+                Inputs = inputDevice.GetInputDevices().Select(d => new InputDeviceInputDetails
+                {
                     Running = d.Running,
-                    Sources = d.Sources.Select(s => new InputDeviceSource { 
+                    Sources = d.Sources.Select(s => new InputDeviceSource
+                    {
                         Offset = s.Offset,
                         Name = s.DisplayName,
                         Type = FromType(s.Type),
                     }).ToList(),
-                    ForceFeedbacks = d.ForceFeedbacks.Select(s => new InputForceFeedback {
-                        Offset = s.Offset 
+                    ForceFeedbacks = d.ForceFeedbacks.Select(s => new InputForceFeedback
+                    {
+                        Offset = s.Offset
                     }).ToList(),
                     InputMethod = d.InputMethod.ToString(),
                 }).ToList(),
@@ -76,7 +79,7 @@ namespace XOutput.Server.Input
             }
             return new InputConfiguration
             {
-                
+
             };
         }
 
@@ -89,7 +92,8 @@ namespace XOutput.Server.Input
             {
                 return NotFound("Device not found");
             }
-            return new HidGuardianInfo {
+            return new HidGuardianInfo
+            {
                 Available = inputDevice.HardwareID != null && hidGuardianManager.Installed,
                 Active = inputDevice.HardwareID != null && hidGuardianManager.IsAffected(inputDevice.HardwareID),
             };
@@ -126,6 +130,41 @@ namespace XOutput.Server.Input
                 return NotFound("Hardware ID not found");
             }
             hidGuardianManager.RemoveAffectedDevice(inputDevice.HardwareID);
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("/api/inputs/{id}/{method}/{offset}/deadzone")]
+        public ActionResult SetDeadzone(string id, InputDeviceMethod method, int offset, [FromBody] double deadzone)
+        {
+            var device = inputDeviceManager.FindInputDevice(id);
+            if (device == null)
+            {
+                return NotFound("Device not found");
+            }
+            var inputDevice = device.FindInput(method);
+            if (inputDevice == null)
+            {
+                return NotFound("Input device method not found");
+            }
+            var source = inputDevice.FindSource(offset);
+            if (source == null)
+            {
+                return NotFound("ForceFeedback target not found");
+            }
+            inputDeviceManager.ChangeInputConfiguration(id, method, (inputDevice) =>
+            {
+                var config = inputDevice.InputConfiguration.Sources.FirstOrDefault(s => s.Offset == offset);
+                if (config == null)
+                {
+                    config = new InputSourceConfig
+                    {
+                        Offset = offset,
+                    };
+                    inputDevice.InputConfiguration.Sources.Add(config);
+                }
+                config.Deadzone = deadzone;
+            });
             return NoContent();
         }
 
