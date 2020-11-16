@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>library</OutputType>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
     <RootNamespace>XOutput.Devices</RootNamespace>
     <AssemblyName>XOutput.Devices</AssemblyName>
     <Authors>Ármin Csutorás</Authors>
