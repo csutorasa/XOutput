@@ -84,7 +84,7 @@ namespace XOutput.Devices.Mapper
                         {
                             if (mapperData.InputDevice == inputDevice.UniqueId)
                             {
-                                mapperData.Source = inputDevice.Sources.FirstOrDefault(s => s.Offset.ToString() == mapperData.InputType);
+                                mapperData.SetSourceWithoutSaving(inputDevice.Sources.FirstOrDefault(s => s.Offset.ToString() == mapperData.InputType));
                                 inputs.Add(inputDevice);
                                 found = true;
                                 break;
@@ -93,7 +93,7 @@ namespace XOutput.Devices.Mapper
                     }
                     if (!found)
                     {
-                        mapperData.Source = DisabledInputSource.Instance;
+                        mapperData.SetSourceWithoutSaving(DisabledInputSource.Instance);
                     }
                 }
             }
