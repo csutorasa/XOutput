@@ -10,13 +10,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using System.Xml;
+using XOutput.App.Devices;
+using XOutput.App.UI;
 using XOutput.Core;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Notifications;
 using XOutput.Core.Resources;
 using XOutput.Core.Versioning;
-using XOutput.Server.Emulation.HidGuardian;
 
 namespace XOutput.App
 {
@@ -46,7 +47,7 @@ namespace XOutput.App
 
             var globalContext = ApplicationContext.Global;
             globalContext.AddFromConfiguration(typeof(CoreConfiguration));
-            globalContext.AddFromConfiguration(typeof(ApiConfiguration));
+            globalContext.AddFromConfiguration(typeof(AppConfiguration));
             globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Api", "XOutput.App"));
             logger.Info("Configuration classes are loaded");
             var configurationManager = globalContext.Resolve<ConfigurationManager>();

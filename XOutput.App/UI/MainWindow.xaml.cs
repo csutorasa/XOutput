@@ -4,24 +4,24 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Interop;
+using XOutput.App.Devices.Input;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.External;
 using XOutput.Core.Threading;
 
-namespace XOutput.App
+namespace XOutput.App.UI
 {
     public partial class MainWindow : Window
     {
         private readonly CommandRunner commandRunner;
 
         [ResolverMethod]
-        public MainWindow(CommandRunner commandRunner)
+        public MainWindow(CommandRunner commandRunner, InputDeviceManager inputDeviceManager)
         {
             this.commandRunner = commandRunner;
             InitializeComponent();
             var helper = new WindowInteropHelper(this);
             WindowHandleStore.Handle = helper.EnsureHandle();
-
         }
 
         private async void OpenClick(object sender, RoutedEventArgs e)

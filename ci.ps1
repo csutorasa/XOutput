@@ -33,7 +33,6 @@ $target='netcoreapp5.0'
 $guitarget='net5.0-windows'
 7z a XOutput.zip -- `
 $PSScriptRoot\XOutput.Core\bin\Release\$target\XOutput.Core.dll `
-$PSScriptRoot\XOutput.Core\bin\Release\$target\Newtonsoft.Json.dll `
 $PSScriptRoot\XOutput.Core\bin\Release\$target\NLog.dll `
 $PSScriptRoot\XOutput.Api\bin\Release\$target\XOutput.Api.dll `
 $PSScriptRoot\XOutput.Server\bin\Release\$target\XOutput.Server.dll `

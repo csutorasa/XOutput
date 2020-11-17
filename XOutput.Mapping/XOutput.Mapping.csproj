@@ -17,7 +17,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
-    <ProjectReference Include="..\XOutput.Devices\XOutput.Devices.csproj" />
     <ProjectReference Include="..\XOutput.Emulation\XOutput.Emulation.csproj" />
   </ItemGroup>
 

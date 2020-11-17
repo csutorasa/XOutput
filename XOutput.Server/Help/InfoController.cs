@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Reflection;
+using XOutput.Api.Help;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.Server.Help
@@ -18,9 +18,9 @@ namespace XOutput.Server.Help
 
         [HttpGet]
         [Route("/api/info")]
-        public ActionResult<object> ListNotifications()
+        public ActionResult<InfoResponse> ListNotifications()
         {
-            return new
+            return new InfoResponse
             {
                 Version = version,
             };

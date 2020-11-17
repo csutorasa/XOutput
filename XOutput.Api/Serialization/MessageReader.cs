@@ -1,33 +1,38 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Text.Json;
 using XOutput.Api.Message;
 
 namespace XOutput.Api.Serialization
 {
     public class MessageReader
     {
-        private readonly JsonMessageConverter converter = new JsonMessageConverter();
-        private readonly JsonSerializer jsonSerializer = new JsonSerializer();
+        private readonly Dictionary<string, Type> mapping;
 
-        public MessageReader()
+        public MessageReader(Dictionary<string, Type> mapping)
         {
-            jsonSerializer.Converters.Add(converter);
+            this.mapping = mapping;
+            foreach (var type in mapping.Values)
+            {
+                if (!typeof(MessageBase).IsAssignableFrom(type))
+                {
+                    throw new ArgumentException("Invalid mapping");
+                }
+            }
         }
 
         public MessageBase ReadString(string input)
         {
-            return JsonConvert.DeserializeObject<MessageBase>(input, converter);
-        }
-
-        public MessageBase ReadMessage(byte[] input, Encoding encoding)
-        {
-            return ReadString(encoding.GetString(input));
+            var message = JsonSerializer.Deserialize<MessageBase>(input);
+            var type = mapping[message.Type];
+            return JsonSerializer.Deserialize(input, type) as MessageBase;
         }
 
         public MessageBase Read(StreamReader input)
         {
-            return (MessageBase)jsonSerializer.Deserialize(input, typeof(MessageBase));
+            string text = input.ReadToEnd();
+            return ReadString(text);
         }
     }
 }
