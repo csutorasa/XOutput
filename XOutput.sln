@@ -13,11 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Api", "XOutput.Api\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Server", "XOutput.Server\XOutput.Server.csproj", "{564AD7EA-1A09-4227-BF8F-7CD4BD8621D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Devices", "XOutput.Devices\XOutput.Devices.csproj", "{ECDE1779-C48C-40D3-9088-682335D274C4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.DevicesTests", "XOutput.DevicesTests\XOutput.DevicesTests.csproj", "{DF44DE3B-444F-4C33-A5DB-7C86C7621620}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.App", "XOutput.App\XOutput.App.csproj", "{CFE0A593-5D28-4C2D-AE7C-39C5A83A4291}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.AppTests", "XOutput.AppTests\XOutput.AppTests.csproj", "{DF44DE3B-444F-4C33-A5DB-7C86C7621620}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Client", "XOutput.Client\XOutput.Client.csproj", "{50C4CE81-79A6-4DD9-AD5E-A774A3D672F5}"
 EndProject

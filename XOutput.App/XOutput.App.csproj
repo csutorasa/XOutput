@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
+    <TargetFrameworks>net5.0-windows</TargetFrameworks>
     <OutputType>WinExe</OutputType>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
@@ -22,17 +22,17 @@
   <ItemGroup>
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
-    <ProjectReference Include="..\XOutput.Server\XOutput.Server.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
+    <ProjectReference Include="..\XOutput.Devices\XOutput.Devices.csproj" />
   </ItemGroup>
   
   <ItemGroup>
     <Resource Include="Resources\icon.ico" />
     <Content Remove="nlog.config" />
     <EmbeddedResource Include="nlog.config" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf.NetCore" Version="1.0.14" />
   </ItemGroup>
 
 </Project>

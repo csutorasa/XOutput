@@ -1,14 +1,11 @@
-﻿using NLog;
+using NLog;
 using NLog.Config;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 using System.Xml;
 using XOutput.Core;
 using XOutput.Core.Configuration;
@@ -16,60 +13,52 @@ using XOutput.Core.DependencyInjection;
 using XOutput.Core.Notifications;
 using XOutput.Core.Resources;
 using XOutput.Core.Versioning;
-using XOutput.Server.Emulation.HidGuardian;
 
 namespace XOutput.App
 {
-    public partial class App : Application
+    public class App
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private readonly string appVersion;
 
-        public App()
+
+        public static void Main()
         {
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
-            this.appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+            new App(Assembly.GetExecutingAssembly().GetName().Version.ToString(3)).Run().Wait();
         }
 
-        private void Application_Startup(object sender, StartupEventArgs e)
+        public App(string appVersion)
+        {
+            this.appVersion = appVersion;
+        }
+
+        private async Task Run()
         {
             SetLoggerConfiguration();
 
-            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
             // AppDomain.CurrentDomain.FirstChanceException += (object sender, FirstChanceExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Info);
             AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) => UnhandledException(e.ExceptionObject as Exception, LogLevel.Error);
             TaskScheduler.UnobservedTaskException += (object sender, UnobservedTaskExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
 
-            logger.Info($"Starting XOutput app version: {appVersion}");
+            logger.Info($"Starting XOutput server version: {appVersion}");
 
             var globalContext = ApplicationContext.Global;
             globalContext.AddFromConfiguration(typeof(CoreConfiguration));
-            globalContext.AddFromConfiguration(typeof(ApiConfiguration));
-            globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Api", "XOutput.App"));
+            globalContext.AddFromConfiguration(typeof(ServerConfiguration));
+            globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Api", "XOutput.Devices", "XOutput.Emulation", "XOutput.Server"));
             logger.Info("Configuration classes are loaded");
             var configurationManager = globalContext.Resolve<ConfigurationManager>();
 
-            var mainWindow = ApplicationContext.Global.Resolve<MainWindow>();
-            MainWindow = mainWindow;
-
-            var hidGuardianManager = globalContext.Resolve<HidGuardianManager>();
             var notificationService = globalContext.Resolve<NotificationService>();
 
-            if (hidGuardianManager.Installed)
-            {
-                try
-                {
-                    hidGuardianManager.ClearPid(Process.GetCurrentProcess().Id);
-                    hidGuardianManager.SetPid(Process.GetCurrentProcess().Id);
-                }
-                catch(Exception)
-                {
-                    notificationService.Add(Notifications.HidGuardianRegistry, null, NotificationTypes.Warning);
-                }
-            }
-            CheckUpdate(globalContext.Resolve<UpdateChecker>(), notificationService);
+            await CheckUpdate(globalContext.Resolve<UpdateChecker>(), notificationService);
+
+            var server = globalContext.Resolve<Server.Server>();
+            server.Run();
+            globalContext.Close();
         }
 
         private void SetLoggerConfiguration()
@@ -86,13 +75,14 @@ namespace XOutput.App
             {
                 // Cannot create logger
             }
-            LogManager.Configuration = new XmlLoggingConfiguration(XmlReader.Create(AssemblyResourceManager.GetResourceStream("XOutput.App.nlog.config")));
+            LogManager.Configuration = new XmlLoggingConfiguration(XmlReader.Create(AssemblyResourceManager.GetResourceStream("XOutput.Server.nlog.config")));
         }
 
         private Task CheckUpdate(UpdateChecker updateChecker, NotificationService notificationService)
         {
             return updateChecker.CompareRelease(appVersion).ContinueWith(t => {
-                switch (t.Result.Result) {
+                switch (t.Result.Result)
+                {
                     case VersionCompareValues.NeedsUpgrade:
                         notificationService.Add(Notifications.NeedsVersionUpgrade, new List<string>() { t.Result.LatestVersion });
                         break;
@@ -101,11 +91,6 @@ namespace XOutput.App
                         break;
                 }
             });
-        }
-
-        private void Application_Exit(object sender, ExitEventArgs e)
-        {
-            ApplicationContext.Global.Close();
         }
 
         public static void UnhandledException(Exception exceptionObject, LogLevel level)

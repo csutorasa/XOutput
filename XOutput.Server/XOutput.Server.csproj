@@ -2,13 +2,12 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
-    <OutputType>library</OutputType>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
-    <ProjectReference Include="..\XOutput.Devices\XOutput.Devices.csproj" />
     <ProjectReference Include="..\XOutput.Emulation\XOutput.Emulation.csproj" />
     <ProjectReference Include="..\XOutput.Mapping\XOutput.Mapping.csproj" />
   </ItemGroup>

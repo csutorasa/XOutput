@@ -21,56 +21,30 @@ using XOutput.Server.Websocket;
 
 namespace XOutput.Server
 {
-    public class Server : IDisposable
+    public class Server
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         private const string ConfigurationFilepath = "conf/server";
-        private readonly ConfigurationManager configurationManager;
         private readonly ServerConfig config;
-        private IHost host;
-        private bool disposed = false;
 
         [ResolverMethod]
         public Server(ConfigurationManager configurationManager) {
-            this.configurationManager = configurationManager;
-            this.config = configurationManager.Load(ConfigurationFilepath, () => new ServerConfig {
-                Urls = new List<string> { "*:8000" },
+            config = configurationManager.Load(ConfigurationFilepath, () => new ServerConfig {
+                Urls = new List<string> { "*:8000", "localhost:8000" },
             });
-            logger.Info($"Server config loaded with urls: {string.Join(", ", this.config.Urls)}");
+            logger.Info($"Server config loaded with urls: {string.Join(", ", config.Urls)}");
         }
 
-        public Task StartAsync() {
-            this.host = Host.CreateDefaultBuilder(new string[0])
+        public void Run() {
+            using (var host = Host.CreateDefaultBuilder(new string[0])
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseUrls(config.Urls.Select(url => "http://" + url).ToArray());
                     webBuilder.UseStartup<Startup>();
-                }).Build();
-            return host.StartAsync().ContinueWith((t) => {
-                logger.Info($"Server started with urls: {string.Join(", ", this.config.Urls)}");
-            });
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposed)
-            {
-                return;
+                })
+                .Build()) {
+                host.Run();
             }
-            if (disposing)
-            {
-                if(host != null) {
-                    host?.Dispose();
-                    logger.Info($"Server stopped");
-                }
-            }
-            disposed = true;
         }
     }
 }

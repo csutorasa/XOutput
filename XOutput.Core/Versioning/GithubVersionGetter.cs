@@ -44,9 +44,9 @@ namespace XOutput.Core.Versioning
                 string content = await response.Content.ReadAsStringAsync();
                 return content.Trim();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("Failed to get latest version");
+                throw new Exception("Failed to get latest version", e);
             }
             finally
             {

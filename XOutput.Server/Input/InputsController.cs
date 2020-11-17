@@ -6,20 +6,17 @@ using XOutput.Api.Input;
 using XOutput.Core.DependencyInjection;
 using XOutput.Devices;
 using XOutput.Devices.Input;
-using XOutput.Server.Emulation.HidGuardian;
 
 namespace XOutput.Server.Input
 {
     public class InputsController : Controller
     {
         private readonly InputDeviceManager inputDeviceManager;
-        private readonly HidGuardianManager hidGuardianManager;
 
         [ResolverMethod]
-        public InputsController(InputDeviceManager inputDeviceManager, HidGuardianManager hidGuardianManager)
+        public InputsController(InputDeviceManager inputDeviceManager)
         {
             this.inputDeviceManager = inputDeviceManager;
-            this.hidGuardianManager = hidGuardianManager;
         }
 
         [HttpGet]
@@ -81,56 +78,6 @@ namespace XOutput.Server.Input
             {
 
             };
-        }
-
-        [HttpGet]
-        [Route("/api/inputs/{id}/hidguardian")]
-        public ActionResult<HidGuardianInfo> GetHidGuardian(string id)
-        {
-            var inputDevice = inputDeviceManager.FindInputDevice(id);
-            if (inputDevice == null)
-            {
-                return NotFound("Device not found");
-            }
-            return new HidGuardianInfo
-            {
-                Available = inputDevice.HardwareID != null && hidGuardianManager.Installed,
-                Active = inputDevice.HardwareID != null && hidGuardianManager.IsAffected(inputDevice.HardwareID),
-            };
-        }
-
-        [HttpPut]
-        [Route("/api/inputs/{id}/hidguardian")]
-        public ActionResult EnableHidGuardian(string id)
-        {
-            var inputDevice = inputDeviceManager.FindInputDevice(id);
-            if (inputDevice == null)
-            {
-                return NotFound("Device not found");
-            }
-            if (inputDevice.HardwareID == null)
-            {
-                return NotFound("Hardware ID not found");
-            }
-            hidGuardianManager.AddAffectedDevice(inputDevice.HardwareID);
-            return NoContent();
-        }
-
-        [HttpDelete]
-        [Route("/api/inputs/{id}/hidguardian")]
-        public ActionResult DisableHidGuardian(string id)
-        {
-            var inputDevice = inputDeviceManager.FindInputDevice(id);
-            if (inputDevice == null)
-            {
-                return NotFound("Device not found");
-            }
-            if (inputDevice.HardwareID == null)
-            {
-                return NotFound("Hardware ID not found");
-            }
-            hidGuardianManager.RemoveAffectedDevice(inputDevice.HardwareID);
-            return NoContent();
         }
 
         [HttpPost]
