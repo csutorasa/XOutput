@@ -6,9 +6,8 @@ using System.Diagnostics;
 using System.IO;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
-using XOutput.Core.Notifications;
 
-namespace XOutput.Server.Emulation.HidGuardian
+namespace XOutput.App.Devices
 {
     public class HidGuardianManager : IDisposable
     {

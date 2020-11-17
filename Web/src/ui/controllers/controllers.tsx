@@ -110,7 +110,7 @@ class ControllersComponent extends Component<ControllersProps, ControllersState>
                     <AddCircleOutline />
                   </Grid>
                   <Grid item xs={11}>
-                    <Typography variant='body1'>{Translation.translate('New device'}</Typography>
+                    <Typography variant='body1'>{Translation.translate('New device')}</Typography>
                   </Grid>
                 </Grid>
               </Paper>
