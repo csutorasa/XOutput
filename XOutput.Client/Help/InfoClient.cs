@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using XOutput.Api.Help;
@@ -18,7 +19,12 @@ namespace XOutput.Client.Help
 
         public async Task<InfoResponse> GetInfo()
         {
-            return await GetResult<InfoResponse>(new Uri(url + "/info"));
+            var request = new HttpRequestMessage
+            {
+                RequestUri = new Uri(url + "/info"),
+                Method = HttpMethod.Get,
+            };
+            return await GetResult<InfoResponse>(request);
         }
     }
 }

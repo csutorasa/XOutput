@@ -22,8 +22,4 @@
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Websocket\" />
-  </ItemGroup>
-
 </Project>

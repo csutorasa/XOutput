@@ -14,12 +14,6 @@ namespace XOutput.Core.WebSocket
 
         }
 
-        public async Task<T> ReadAsync<T>(System.Net.WebSockets.WebSocket websocket, Func<byte[], T> mapper, CancellationToken cancellationToken)
-        {
-            var data = await ReadBytesAsync(websocket, cancellationToken);
-            return mapper(data);
-        }
-
         public async Task<string> ReadStringAsync(System.Net.WebSockets.WebSocket websocket, Encoding encoding, CancellationToken cancellationToken)
         {
             var data = await ReadBytesAsync(websocket, cancellationToken);
@@ -47,11 +41,6 @@ namespace XOutput.Core.WebSocket
             while (!result.EndOfMessage);
 
             return buffer.Array.Take(length).ToArray();
-        }
-
-        public Task SendAsync(System.Net.WebSockets.WebSocket websocket, Func<byte[]> supplier, CancellationToken cancellationToken)
-        {
-            return SendBytesAsync(websocket, supplier(), cancellationToken);
         }
 
         public Task SendStringAsync(System.Net.WebSockets.WebSocket websocket, string message, Encoding encoding, CancellationToken cancellationToken)

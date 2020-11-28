@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
-using XOutput.Api.Serialization;
 
 namespace XOutput.Client
 {
-    public class HttpJsonClient
+    public abstract class HttpJsonClient
     {
         protected readonly HttpClient client;
 
@@ -24,27 +20,36 @@ namespace XOutput.Client
             this.client = client;
         }
 
-        protected async Task<HttpResponseMessage> GetResponse(Uri uri)
+        protected CancellationToken GetToken(int millis)
         {
-            return await client.GetAsync(uri);
+            var source = new CancellationTokenSource();
+            source.CancelAfter(millis);
+            return source.Token;
         }
 
-        protected async Task<string> GetResponseBody(Uri uri)
+        protected async Task<HttpResponseMessage> GetResponse(HttpRequestMessage request, CancellationToken token = default)
         {
-            using (var response = await GetResponse(uri))
+            return await client.SendAsync(request, token);
+        }
+
+        protected async Task<string> GetResponseBody(HttpRequestMessage request, int timeoutMillis = 1000)
+        {
+            var token = GetToken(timeoutMillis);
+            using (var response = await GetResponse(request, token))
             {
                 response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
+                return await response.Content.ReadAsStringAsync(token);
             }
         }
 
-        protected async Task<T> GetResult<T>(Uri uri)
+        protected async Task<T> GetResult<T>(HttpRequestMessage request, int timeoutMillis = 1000)
         {
-            using (var response = await GetResponse(uri))
+            var token = GetToken(timeoutMillis);
+            using (var response = await GetResponse(request, token))
             {
                 response.EnsureSuccessStatusCode();
-                var stream = await response.Content.ReadAsStreamAsync();
-                return await JsonSerializer.DeserializeAsync<T>(stream);
+                var stream = await response.Content.ReadAsStreamAsync(token);
+                return await JsonSerializer.DeserializeAsync<T>(stream, null, token);
             }
         }
     }
