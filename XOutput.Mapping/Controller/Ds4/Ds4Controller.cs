@@ -1,5 +1,5 @@
-﻿using XOutput.Devices.Input;
-using XOutput.Emulation.Ds4;
+﻿using XOutput.Emulation.Ds4;
+using XOutput.Mapping.Input;
 
 namespace XOutput.Mapping.Controller.Ds4
 {
@@ -21,7 +21,7 @@ namespace XOutput.Mapping.Controller.Ds4
             return input.GetDefaultValue();
         }
 
-        protected override void InputChanged(DeviceInputChangedEventArgs args)
+        protected override void InputChanged(MappableDeviceInputChangedEventArgs args)
         {
             device.SendInput(new Ds4Input
             {

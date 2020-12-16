@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using XOutput.Devices.Input;
+using XOutput.Mapping.Input;
 using XOutput.Mapping.Mapper;
 
 namespace XOutput.Mapping.Controller
@@ -10,9 +10,9 @@ namespace XOutput.Mapping.Controller
     {
         private Dictionary<T, Func<double>> inputGetters = new Dictionary<T, Func<double>>();
         private List<Action<double, double>> forceFeedbackSetters = new List<Action<double, double>>();
-        private readonly List<IInputDevice> boundDevices = new List<IInputDevice>();
+        private readonly List<MappableDevice> boundDevices = new List<MappableDevice>();
 
-        public void Configure(ControllerConfig<T> config, IEnumerable<IInputDevice> devices)
+        public void Configure(ControllerConfig<T> config, IEnumerable<MappableDevice> devices)
         {
             var mapping = config.InputMapping;
             foreach (var input in Enum.GetValues(typeof(T)).OfType<T>().Where(i => !mapping.ContainsKey(i)))
@@ -25,7 +25,7 @@ namespace XOutput.Mapping.Controller
             }
             forceFeedbackSetters.Clear();
             boundDevices.Clear();
-            var deviceLookup = devices.ToDictionary(d => d.UniqueId, d => d);
+            var deviceLookup = devices.ToDictionary(d => d.Id, d => d);
             inputGetters = mapping.ToDictionary(m => m.Key, m => CreateGetter(deviceLookup, m.Value, GetDefaultValue(m.Key)));
             forceFeedbackSetters = config.ForceFeedbackMapping.Select(m => CreateSetter(deviceLookup, m)).ToList();
             foreach (var device in devices)
@@ -35,12 +35,12 @@ namespace XOutput.Mapping.Controller
             }
         }
 
-        protected void InputDeviceChanged(object sender, DeviceInputChangedEventArgs e)
+        protected void InputDeviceChanged(object sender, MappableDeviceInputChangedEventArgs e)
         {
             InputChanged(e);
         }
 
-        protected abstract void InputChanged(DeviceInputChangedEventArgs args);
+        protected abstract void InputChanged(MappableDeviceInputChangedEventArgs args);
 
         protected abstract double GetDefaultValue(T input);
 
@@ -50,7 +50,7 @@ namespace XOutput.Mapping.Controller
         }
         protected bool GetBoolValue(T input)
         {
-            return GetValue(input) > 0.5 ? true : false;
+            return GetValue(input) > 0.5;
         }
 
         protected void SetForceFeedback(double big, double small)
@@ -58,7 +58,7 @@ namespace XOutput.Mapping.Controller
             forceFeedbackSetters.ForEach(s => s(big, small));
         }
 
-        private Func<double> CreateGetter(Dictionary<string, IInputDevice> deviceLookup, InputMapperCollection collection, double defaultValue)
+        private Func<double> CreateGetter(Dictionary<string, MappableDevice> deviceLookup, InputMapperCollection collection, double defaultValue)
         {
             var sources = collection.Mappers
                 .Where(m => deviceLookup.ContainsKey(m.Device))
@@ -71,24 +71,24 @@ namespace XOutput.Mapping.Controller
             }
             return () =>
             {
-                return collection.GetValue(sources.Select(s => s.GetValue()));
+                return collection.GetValue(sources.Select(s => s.Value));
             };
         }
 
-        private Action<double, double> CreateSetter(Dictionary<string, IInputDevice> deviceLookup, ForceFeedbackMapper mapper)
+        private Action<double, double> CreateSetter(Dictionary<string, MappableDevice> deviceLookup, ForceFeedbackMapper mapper)
         {
             if (deviceLookup.ContainsKey(mapper.Device))
             {
-                var target = deviceLookup[mapper.Device].FindTarget(mapper.InputId);
+                var target = deviceLookup[mapper.Device];
                 if (target != null)
                 {
                     if (mapper.Big)
                     {
-                        return (big, small) => { target.Value = big; };
+                        // target.SetFeedback(0, 0);
                     }
                     else
                     {
-                        return (big, small) => { target.Value = small; };
+                        // target.SetFeedback(0, 0);
                     }
                 }
             }

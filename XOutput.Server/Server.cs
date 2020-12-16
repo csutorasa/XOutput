@@ -1,23 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using NLog;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 using XOutput.Server.Configuration;
-using XOutput.Server.Emulation;
-using XOutput.Server.Input;
-using XOutput.Server.Notifications;
-using XOutput.Server.Websocket;
 
 namespace XOutput.Server
 {

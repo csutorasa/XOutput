@@ -6,9 +6,9 @@ using XOutput.Api.Message.Xbox;
 using XOutput.Api.Serialization;
 using XOutput.Message.Mappable;
 
-namespace XOutput.App
+namespace XOutput.Client
 {
-    public static class ServerConfiguration
+    public static class ClientConfiguration
     {
         public static MessageReader MessageReader()
         {
@@ -16,8 +16,8 @@ namespace XOutput.App
             {
                 { InputDataMessage.MessageType, typeof(InputDataMessage) },
                 { DebugMessage.MessageType,  typeof(DebugMessage) },
-                { XboxInputMessage.MessageType,  typeof(XboxInputMessage) },
-                { Ds4InputMessage.MessageType,  typeof(Ds4InputMessage) },
+                { XboxFeedbackMessage.MessageType,  typeof(XboxFeedbackMessage) },
+                { Ds4FeedbackMessage.MessageType,  typeof(Ds4FeedbackMessage) },
                 { MappableDeviceDetailsMessage.MessageType,  typeof(MappableDeviceDetailsMessage) },
                 { MappableDeviceInputMessage.MessageType,  typeof(MappableDeviceInputMessage) },
             };

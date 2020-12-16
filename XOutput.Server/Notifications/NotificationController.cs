@@ -7,9 +7,6 @@ using XOutput.Api.Input;
 using XOutput.Api.Notifications;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Notifications;
-using XOutput.Devices;
-using XOutput.Devices.Input;
-using XOutput.Server.Emulation.HidGuardian;
 
 namespace XOutput.Server.Notifications
 {

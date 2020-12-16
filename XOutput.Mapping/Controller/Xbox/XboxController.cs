@@ -1,5 +1,5 @@
-﻿using XOutput.Devices.Input;
-using XOutput.Emulation.Xbox;
+﻿using XOutput.Emulation.Xbox;
+using XOutput.Mapping.Input;
 
 namespace XOutput.Mapping.Controller.Xbox
 {
@@ -21,7 +21,7 @@ namespace XOutput.Mapping.Controller.Xbox
             return input.GetDefaultValue();
         }
 
-        protected override void InputChanged(DeviceInputChangedEventArgs args)
+        protected override void InputChanged(MappableDeviceInputChangedEventArgs args)
         {
             device.SendInput(new XboxInput
             {

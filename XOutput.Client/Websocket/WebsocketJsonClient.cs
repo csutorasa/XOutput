@@ -42,11 +42,11 @@ namespace XOutput.Client.Websocket
                 return;
             }
             await client.ConnectAsync(uri, token);
-            threadContext = ThreadCreator.CreateLoop("${asd}", ReadIncomingMessages, 0);
+            threadContext = ThreadCreator.CreateLoop("Websocket client", async (token) => await ReadIncomingMessages(token), 0);
             started = true;
         }
 
-        protected async Task Close(CancellationToken token = default)
+        public async Task Close(CancellationToken token = default)
         {
             if (!started)
             {
@@ -62,7 +62,7 @@ namespace XOutput.Client.Websocket
             return webSocketHelper.SendStringAsync(client, messageWriter.GetString(message), Encoding.UTF8, token);
         }
 
-        private async void ReadIncomingMessages(CancellationToken token)
+        private async Task ReadIncomingMessages(CancellationToken token)
         {
             string data = await webSocketHelper.ReadStringAsync(client, Encoding.UTF8, token);
             var message = messageReader.ReadString(data);

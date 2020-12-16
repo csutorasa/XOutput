@@ -1,5 +1,5 @@
 ﻿using System;
-using XOutput.Devices;
+using XOutput.Mapping.Input;
 
 namespace XOutput.Mapping.Controller.Xbox
 {
@@ -30,41 +30,6 @@ namespace XOutput.Mapping.Controller.Xbox
 
     public static class XboxInputTypesExtension
     {
-        public static SourceTypes GetSourceType(this XboxInputTypes input)
-        {
-            switch (input)
-            {
-                case XboxInputTypes.A:
-                case XboxInputTypes.B:
-                case XboxInputTypes.X:
-                case XboxInputTypes.Y:
-                case XboxInputTypes.L1:
-                case XboxInputTypes.R1:
-                case XboxInputTypes.L3:
-                case XboxInputTypes.R3:
-                case XboxInputTypes.Start:
-                case XboxInputTypes.Back:
-                case XboxInputTypes.Home:
-                    return SourceTypes.Button;
-                case XboxInputTypes.Up:
-                case XboxInputTypes.Down:
-                case XboxInputTypes.Left:
-                case XboxInputTypes.Right:
-                    return SourceTypes.Dpad;
-                case XboxInputTypes.LX:
-                case XboxInputTypes.RX:
-                    return SourceTypes.AxisX;
-                case XboxInputTypes.LY:
-                case XboxInputTypes.RY:
-                    return SourceTypes.AxisY;
-                case XboxInputTypes.L2:
-                case XboxInputTypes.R2:
-                    return SourceTypes.Slider;
-                default:
-                    throw new ArgumentException(nameof(input));
-            }
-        }
-
         public static double GetDefaultValue(this XboxInputTypes input)
         {
             switch (input)

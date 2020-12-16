@@ -4,22 +4,21 @@ using System.Linq;
 using XOutput.Api.Devices;
 using XOutput.Api.Input;
 using XOutput.Core.DependencyInjection;
-using XOutput.Devices;
-using XOutput.Devices.Input;
+using XOutput.Mapping.Input;
 
 namespace XOutput.Server.Input
 {
     public class InputsController : Controller
     {
-        private readonly InputDeviceManager inputDeviceManager;
+        private readonly MappableDevices inputDeviceManager;
 
         [ResolverMethod]
-        public InputsController(InputDeviceManager inputDeviceManager)
+        public InputsController(MappableDevices inputDeviceManager)
         {
             this.inputDeviceManager = inputDeviceManager;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("/api/inputs")]
         public ActionResult<IEnumerable<InputDeviceInfo>> ListInputDevices()
         {
@@ -35,14 +34,14 @@ namespace XOutput.Server.Input
 
         [HttpGet]
         [Route("/api/inputs/{id}")]
-        public ActionResult<InputDeviceDetails> InputDeviceDetails(string id)
+        public ActionResult<InputDeviceDetailsMessage> InputDeviceDetails(string id)
         {
             var inputDevice = inputDeviceManager.FindInputDevice(id);
             if (inputDevice == null)
             {
                 return NotFound();
             }
-            return new InputDeviceDetails
+            return new InputDeviceDetailsMessage
             {
                 Id = inputDevice.UniqueId,
                 Name = inputDevice.DisplayName,
@@ -206,6 +205,6 @@ namespace XOutput.Server.Input
                 return "slider";
             }
             return null;
-        }
+        }*/
     }
 }

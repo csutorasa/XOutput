@@ -50,7 +50,6 @@ namespace XOutput.App
             globalContext.AddFromConfiguration(typeof(AppConfiguration));
             globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Api", "XOutput.App"));
             logger.Info("Configuration classes are loaded");
-            var configurationManager = globalContext.Resolve<ConfigurationManager>();
 
             var mainWindow = ApplicationContext.Global.Resolve<MainWindow>();
             MainWindow = mainWindow;
@@ -62,8 +61,8 @@ namespace XOutput.App
             {
                 try
                 {
-                    hidGuardianManager.ClearPid(Process.GetCurrentProcess().Id);
-                    hidGuardianManager.SetPid(Process.GetCurrentProcess().Id);
+                    hidGuardianManager.ClearPid(Environment.ProcessId);
+                    hidGuardianManager.SetPid(Environment.ProcessId);
                 }
                 catch(Exception)
                 {
@@ -73,7 +72,7 @@ namespace XOutput.App
             CheckUpdate(globalContext.Resolve<UpdateChecker>(), notificationService);
         }
 
-        private void SetLoggerConfiguration()
+        private static void SetLoggerConfiguration()
         {
             try
             {
@@ -114,11 +113,11 @@ namespace XOutput.App
             logger.Log(level, exceptionObject);
         }
 
-        private IEnumerable<Assembly> GetOrLoadAssemblies(params string[] assemblyNames)
+        private static IEnumerable<Assembly> GetOrLoadAssemblies(params string[] assemblyNames)
         {
             return assemblyNames.Select(assemblyName =>
             {
-                var assembly = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName == assemblyName).FirstOrDefault();
+                var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == assemblyName);
                 if (assembly != null)
                 {
                     return assembly;

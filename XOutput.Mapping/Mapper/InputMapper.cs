@@ -4,8 +4,6 @@ namespace XOutput.Mapping.Mapper
 {
     public class InputMapper : Mapper
     {
-        public double Deadzone { get; set; }
-        public double AntiDeadzone { get; set; }
         public bool HasStaticValue { get; private set; }
         private double minValue;
         public double MinValue
@@ -40,8 +38,6 @@ namespace XOutput.Mapping.Mapper
         {
             MinValue = 0;
             MaxValue = 0;
-            Deadzone = 0;
-            AntiDeadzone = 0;
             CalculateRange();
         }
 
@@ -57,21 +53,7 @@ namespace XOutput.Mapping.Mapper
             {
                 return MinValue;
             }
-            var readvalue = value;
-            if (Math.Abs(value - 0.5) < Deadzone)
-            {
-                readvalue = 0.5;
-            }
-            else if (value < AntiDeadzone)
-            {
-                readvalue = 0;
-            }
-            else if (value > 1 - AntiDeadzone)
-            {
-                readvalue = 1;
-            }
-
-            double mappedValue = (readvalue - MinValue) / range;
+            double mappedValue = (value - MinValue) / range;
             if (mappedValue < 0)
             {
                 return 0;
