@@ -69,6 +69,19 @@ namespace XOutput.UI.Windows
             }
         }
 
+        public bool DisableAutoRefresh
+        {
+            get => settings.DisableAutoRefresh;
+            set
+            {
+                if (settings.DisableAutoRefresh != value)
+                {
+                    settings.DisableAutoRefresh = value;
+                    OnPropertyChanged(nameof(DisableAutoRefresh));
+                }
+            }
+        }
+
         public SettingsModel(RegistryModifier registryModifier, Settings settings)
         {
             this.registryModifier = registryModifier;
