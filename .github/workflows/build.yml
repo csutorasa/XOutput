@@ -16,7 +16,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
@@ -35,7 +36,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Setup node
       uses: actions/setup-node@v2
       with:
@@ -48,6 +50,8 @@ jobs:
     needs: [ build_net, build_node ]
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Create package
       shell: powershell
       run: | 
