@@ -19,12 +19,18 @@ Any contribution is welcome, open your [Pull request](https://github.com/csutora
 
 To join the discussion or just say hi in the [discord channel](https://discord.gg/Y628tcp).
 
+This is version is currently under development. Check out the [stable version](https://github.com/csutorasa/XOutput/tree/3.x), or the [versions](#versions) for more information.
+
 ## How to install
+
+### Install emulation software
 
 Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, legacy)
 
   a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases) (Recommended)
   b) Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
+
+### Install dependencies
 
 Install:
 
@@ -35,7 +41,7 @@ Install:
 -   [.Net Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42642) if you do not have Windows 10
 -   if you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
-Download the application:
+### Download XOutput
 
 -   Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
 -   Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
