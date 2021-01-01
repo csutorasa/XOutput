@@ -30,7 +30,7 @@ jobs:
       run: dotnet restore
     - name: Build .NET
       shell: powershell
-      run: dotnet msbuild -p:Configuration=Release -p:Version=$env:VERSION -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION --no-restore
+      run: dotnet msbuild -p:Configuration=Release -p:Version=$env:VERSION -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION
     - name: Test .NET
       run: dotnet test --no-build --verbosity normal
     - name: Build node
