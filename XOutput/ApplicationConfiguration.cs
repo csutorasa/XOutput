@@ -16,9 +16,9 @@ namespace XOutput
             return new ArgumentParser();
         }
         [ResolverMethod]
-        public static HidGuardianManager GetHidGuardianManager(RegistryModifier registryModifier)
+        public static HidGuardianManager GetHidGuardianManager()
         {
-            return new HidGuardianManager(registryModifier);
+            return new HidGuardianManager();
         }
         [ResolverMethod]
         public static RegistryModifier GetRegistryModifier()

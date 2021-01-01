@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using Microsoft.Win32;
+using SharpDX;
 using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using XOutput.Logging;
+using XOutput.Tools;
 
 namespace XOutput.Devices.Input.DirectInput
 {
@@ -98,6 +100,23 @@ namespace XOutput.Devices.Input.DirectInput
                     var match = hidRegex.Match(path);
                     if (match.Success)
                     {
+                        string key = $"SYSTEM\\CurrentControlSet\\Enum\\USB\\{match.Groups[2].Value}";
+                        if (RegistryModifier.KeyExists(Registry.LocalMachine, key))
+                        {
+                            foreach (string subkey in RegistryModifier.GetSubKeyNames(Registry.LocalMachine, key))
+                            {
+                                string parentIdPrefix = (string) RegistryModifier.GetValue(Registry.LocalMachine, $"{key}\\{subkey}", "ParentIdPrefix");
+                                if (parentIdPrefix == null || !match.Groups[3].Value.StartsWith(parentIdPrefix))
+                                {
+                                    continue;
+                                }
+                                object registryHardwareIds = RegistryModifier.GetValue(Registry.LocalMachine, $"{key}\\{subkey}", "HardwareID");
+                                if (registryHardwareIds is string[])
+                                {
+                                    return (registryHardwareIds as string[]).Select(id => id.Replace("USB\\", "HID\\")).FirstOrDefault();
+                                }
+                            }
+                        }
                         return string.Join("\\", new string[] { match.Groups[1].Value, match.Groups[2].Value, match.Groups[3].Value }).ToUpper();
                     }
                     if (path.Contains("hid#"))

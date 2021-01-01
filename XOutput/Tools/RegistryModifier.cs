@@ -74,12 +74,12 @@ namespace XOutput.Tools
             }
         }
 
-        private RegistryKey GetRegistryKey(bool writeable = true)
+        private static RegistryKey GetRegistryKey(bool writeable = true)
         {
             return Registry.CurrentUser.OpenSubKey(AutostartRegistry, writeable);
         }
 
-        public bool KeyExists(RegistryKey registryKey, string subkey)
+        public static bool KeyExists(RegistryKey registryKey, string subkey)
         {
             using (var registry = registryKey.OpenSubKey(subkey))
             {
@@ -87,29 +87,34 @@ namespace XOutput.Tools
             }
         }
 
-        public void DeleteTree(RegistryKey registryKey, string subkey)
+        public static void DeleteTree(RegistryKey registryKey, string subkey)
         {
             registryKey.DeleteSubKeyTree(subkey, false);
             registryKey.Close();
         }
 
-        public void CreateKey(RegistryKey registryKey, string subkey)
+        public static void CreateKey(RegistryKey registryKey, string subkey)
         {
             var registry = registryKey.CreateSubKey(subkey);
             registry.Close();
         }
 
-        public object GetValue(RegistryKey registryKey, string subkey, string key)
+        public static object GetValue(RegistryKey registryKey, string subkey, string key)
         {
             return registryKey.OpenSubKey(subkey).GetValue(key);
         }
 
-        public void SetValue(RegistryKey registryKey, string subkey, string key, object value)
+        public static void SetValue(RegistryKey registryKey, string subkey, string key, object value)
         {
             using (var registry = registryKey.OpenSubKey(subkey, true))
             {
                 registry.SetValue(key, value);
             }
+        }
+
+        public static string[] GetSubKeyNames(RegistryKey registryKey, string subkey)
+        {
+            return registryKey.OpenSubKey(subkey).GetSubKeyNames();
         }
     }
 }
