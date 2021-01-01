@@ -1,0 +1,32 @@
+name: Build XOutput
+
+env:
+  VERSION: '3.30'
+
+on:
+  push:
+    branches: [ 3.x ]
+  pull_request:
+    branches: [ 3.x ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Clean
+      run: dotnet clean --configuration Release && dotnet nuget locals all --clear
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      shell: powershell
+      run: dotnet build -c Release -p:Version=$env:VERSION -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION
+    - name: Test
+      run: dotnet test -c Release --no-build
+    - name: Create package
+      uses: actions/upload-artifact@v2
+      with:
+        name: XOutput
+        path: ./XOutput/bin/Release/net452/XOutput.exe
