@@ -19,7 +19,7 @@ Any contribution is welcome, open your [Pull request](https://github.com/csutora
 
 To join the discussion or just say hi in the [discord channel](https://discord.gg/Y628tcp).
 
-This is version is currently under development. Check out the [stable version](https://github.com/csutorasa/XOutput/tree/3.x), or the [versions](#versions) for more information.
+This is version is the stable version. Check out the [under development](https://github.com/csutorasa/XOutput), or the [versions](#versions) for more information.
 
 ## How to install
 
