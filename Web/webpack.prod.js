@@ -4,11 +4,15 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     mode: 'production',
-    entry: {
-        'index': './src/index.ts',
-    },
+    entry: path.resolve(__dirname, './src/index.ts'),
     module: {
         rules: [
+            {
+                test: /\.m?js/,
+                resolve: {
+                    fullySpecified: false
+                }
+            },
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
@@ -24,7 +28,7 @@ module.exports = {
             },
             {
                 test: /\.html$/,
-                use: 'raw-loader'
+                type: 'asset/resource'
             },
             {
                 test: /\.css$/,
@@ -32,19 +36,19 @@ module.exports = {
             },
             {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'raw-loader',
+                type: 'asset/resource'
             }
-        ],
+        ]   
+    },
+    output: {
+        path: path.resolve(__dirname, 'webapp'),
+        filename: '[name].js',
     },
     optimization: {
         minimizer: [new TerserPlugin()]
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-    },
-    output: {
-        path: path.resolve(__dirname, 'webapp'),
-        filename: '[name].js',
+        extensions: ['.tsx', '.ts', '.js', '.json'],
     },
     plugins: [
         new HtmlWebpackPlugin({
