@@ -19,7 +19,14 @@ Any contribution is welcome, open your [Pull request](https://github.com/csutora
 
 To join the discussion or just say hi in the [discord channel](https://discord.gg/Y628tcp).
 
-This is version is the stable version. Check out the [under development](https://github.com/csutorasa/XOutput), or the [versions](#versions) for more information.
+This version is the stable version.
+
+| Version                                                  | State                               | Support                              |
+| -------------------------------------------------------- | ----------------------------------- | ------------------------------------ |
+| [4.x](https://github.com/csutorasa/XOutput)              | Under development (no releases yet) | Active development with new features |
+| **[3.x](https://github.com/csutorasa/XOutput/tree/3.x)** | **Stable**                          | **Bugfixes only**                    |
+| 2.x                                                      | Old version (superseeded by 3.x)    | Expired at Mar 7 2018                |
+| 1.x                                                      | Old version (superseeded by 3.x)    | Expired at Mar 7 2018                |
 
 ## How to install
 
@@ -100,7 +107,7 @@ Add affected device manually (use this method only, if you want to hide non reco
 3.  Open Device Manager, find your input device and open properties
 4.  Go to details, select `Hardware ID` and copy string that looks like `HID\VID_046D&PID_C219&REV_0200` and `HID\VID_046D&PID_C219`
 5.  Paste the values into `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters`
-6.  Reconnect devices
+6.  Reconnect devices or reboot PC
 
 Manage process whitelist manually (use this method only, if you want to use HidGuardian for other applications):
 
@@ -127,12 +134,3 @@ XOutput has a diagnostics screen. A few tests are run to check if the applicatio
 | green circle with a tick                 | Everything is optimal.                                                                                  |
 | yellow triangle with an exclamation mark | The experience may be sub-optimal. Some functions may not work, but the application is functional.      |
 | red circle with a minus sign             | Something is not working, the application cannot function properly. Some core features may be unusable. |
-
-## Versions
-
-| Version                                              | State                               | Support                              |
-| ---------------------------------------------------- | ----------------------------------- | ------------------------------------ |
-| [4.x](https://github.com/csutorasa/XOutput)          | Under development (no releases yet) | Active development with new features |
-| [3.x](https://github.com/csutorasa/XOutput/tree/3.x) | Stable                              | Bugfixes only                        |
-| 2.x                                                  | Old version (superseeded by 3.x)    | Expired at Mar 7 2018                |
-| 1.x                                                  | Old version (superseeded by 3.x)    | Expired at Mar 7 2018                |
