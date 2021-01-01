@@ -44,24 +44,24 @@ build_script:
   - ps: .\ci.ps1 -version $env:versionnumber
   - ps: |
       7z a XOutput.zip -- `
-      $PSScriptRoot\XOutput.Core\bin\Release\$env:SERVER_TARGET\XOutput.Core.dll `
-      $PSScriptRoot\XOutput.Core\bin\Release\$env:SERVER_TARGET\NLog.dll `
-      $PSScriptRoot\XOutput.Api\bin\Release\$env:SERVER_TARGET\XOutput.Api.dll `
-      $PSScriptRoot\XOutput.Emulation\bin\Release\$env:SERVER_TARGET\XOutput.Emulation.dll `
-      $PSScriptRoot\XOutput.Emulation\bin\Release\$env:SERVER_TARGET\Nefarius.ViGEm.Client.dll `
-      $PSScriptRoot\XOutput.Mapping\bin\Release\$env:SERVER_TARGET\XOutput.Mapping.dll `
-      $PSScriptRoot\XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.dll `
-      $PSScriptRoot\XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.exe `
-      $PSScriptRoot\XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.runtimeconfig.json `
-      $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.dll `
-      $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.exe `
-      $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.runtimeconfig.json `
-      $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.dll `
-      $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.DirectInput.dll `
-      $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\Hardcodet.Wpf.TaskbarNotification.dll `
-      $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\HIDSharp.dll `
-      $PSScriptRoot\Web\webapp `
-      $PSScriptRoot\bin\*
+      XOutput.Core\bin\Release\$env:SERVER_TARGET\XOutput.Core.dll `
+      XOutput.Core\bin\Release\$env:SERVER_TARGET\NLog.dll `
+      XOutput.Api\bin\Release\$env:SERVER_TARGET\XOutput.Api.dll `
+      XOutput.Emulation\bin\Release\$env:SERVER_TARGET\XOutput.Emulation.dll `
+      XOutput.Emulation\bin\Release\$env:SERVER_TARGET\Nefarius.ViGEm.Client.dll `
+      XOutput.Mapping\bin\Release\$env:SERVER_TARGET\XOutput.Mapping.dll `
+      XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.dll `
+      XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.exe `
+      XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.runtimeconfig.json `
+      XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.dll `
+      XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.exe `
+      XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.runtimeconfig.json `
+      XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.dll `
+      XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.DirectInput.dll `
+      XOutput.App\bin\Release\$env:GUI_TARGET\Hardcodet.Wpf.TaskbarNotification.dll `
+      XOutput.App\bin\Release\$env:GUI_TARGET\HIDSharp.dll `
+      Web\webapp `
+      bin\*
 
 #---------------------------------#
 #      artifacts configuration    #
