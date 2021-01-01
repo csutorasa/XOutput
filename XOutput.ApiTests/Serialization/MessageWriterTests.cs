@@ -28,16 +28,14 @@ namespace XOutput.Api.Serialization.Tests
         public void UnknownMessageStreamTest()
         {
             var message = new MessageBase { Type = "test" };
-            using (MemoryStream ms = new MemoryStream(1024))
-            {
-                writer.Write(message, ms);
-                int length = (int)ms.Position;
-                ms.Seek(0, SeekOrigin.Begin);
-                byte[] buffer = new byte[length];
-                ms.Read(buffer, 0, length);
-                string output = Encoding.UTF8.GetString(buffer);
-                Assert.AreEqual("{\"Type\":\"test\"}", output);
-            }
+            using MemoryStream ms = new MemoryStream(1024);
+            writer.Write(message, ms);
+            int length = (int)ms.Position;
+            ms.Seek(0, SeekOrigin.Begin);
+            byte[] buffer = new byte[length];
+            ms.Read(buffer, 0, length);
+            string output = Encoding.UTF8.GetString(buffer);
+            Assert.AreEqual("{\"Type\":\"test\"}", output);
         }
     }
 }

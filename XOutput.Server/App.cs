@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using NLog;
@@ -66,7 +65,7 @@ namespace XOutput.Server
 
         public IHost BuildWebHost()
         {
-            return Host.CreateDefaultBuilder(new string[0])
+            return Host.CreateDefaultBuilder(Array.Empty<string>())
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
@@ -111,11 +110,11 @@ namespace XOutput.Server
             logger.Log(level, exceptionObject);
         }
 
-        private IEnumerable<Assembly> GetOrLoadAssemblies(params string[] assemblyNames)
+        private static IEnumerable<Assembly> GetOrLoadAssemblies(params string[] assemblyNames)
         {
             return assemblyNames.Select(assemblyName =>
             {
-                var assembly = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName == assemblyName).FirstOrDefault();
+                var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == assemblyName);
                 if (assembly != null)
                 {
                     return assembly;

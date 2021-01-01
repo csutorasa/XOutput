@@ -66,12 +66,10 @@ namespace XOutput.Api.Serialization.Tests
         public void UnknownMessageStreamTest()
         {
             string input = "{\"Type\":\"test\"}";
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(input)))
-            {
-                var message = reader.Read(new StreamReader(ms));
-                Assert.IsNotNull(message);
-                Assert.AreEqual("test", message.Type);
-            }
+            using MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(input));
+            var message = reader.Read(new StreamReader(ms));
+            Assert.IsNotNull(message);
+            Assert.AreEqual("test", message.Type);
         }
     }
 }

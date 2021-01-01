@@ -66,7 +66,6 @@ namespace XOutput.Server
             app.UseWebSockets(new WebSocketOptions()
             {
                 KeepAliveInterval = TimeSpan.FromSeconds(300),
-                ReceiveBufferSize = 4 * 1024
             });
             app.Use(async (context, next) =>
             {

@@ -104,7 +104,7 @@ namespace XOutput.App.Devices.Input.DirectInput
                     logger.Error(e, "Force feedback is not implmented");
                     notificationService.Add(Notifications.ForceFeedbackNotImplemented, new[] { uniqueId }, NotificationTypes.Error);
                     Error = true;
-                    throw e;
+                    throw new InvalidOperationException("Force feedback is not implmented", e);
                 }
                 logger.Warn(e, $"Failed to create and start effect for {ToString()}");
                 return null;

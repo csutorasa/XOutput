@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XOutput.Api.Devices;
-using XOutput.Api.Input;
 using XOutput.Api.Notifications;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Notifications;

@@ -2,7 +2,6 @@
 using NLog.Config;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,7 +12,6 @@ using System.Xml;
 using XOutput.App.Devices;
 using XOutput.App.UI;
 using XOutput.Core;
-using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Notifications;
 using XOutput.Core.Resources;
@@ -89,9 +87,9 @@ namespace XOutput.App
             LogManager.Configuration = new XmlLoggingConfiguration(XmlReader.Create(AssemblyResourceManager.GetResourceStream("XOutput.App.nlog.config")));
         }
 
-        private Task CheckUpdate(UpdateChecker updateChecker, NotificationService notificationService)
+        private void CheckUpdate(UpdateChecker updateChecker, NotificationService notificationService)
         {
-            return updateChecker.CompareRelease(appVersion).ContinueWith(t => {
+            updateChecker.CompareRelease(appVersion).ContinueWith(t => {
                 switch (t.Result.Result) {
                     case VersionCompareValues.NeedsUpgrade:
                         notificationService.Add(Notifications.NeedsVersionUpgrade, new List<string>() { t.Result.LatestVersion });

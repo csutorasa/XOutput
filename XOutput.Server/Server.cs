@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using XOutput.Core.Configuration;
@@ -25,15 +25,14 @@ namespace XOutput.Server
         }
 
         public void Run() {
-            using (var host = Host.CreateDefaultBuilder(new string[0])
+            using var host = Host.CreateDefaultBuilder(Array.Empty<string>())
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseUrls(config.Urls.Select(url => "http://" + url).ToArray());
                     webBuilder.UseStartup<Startup>();
                 })
-                .Build()) {
-                host.Run();
-            }
+                .Build();
+            host.Run();
         }
     }
 }
