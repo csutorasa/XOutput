@@ -32,12 +32,12 @@ jobs:
     - name: Test
       run: dotnet test -c Release --no-build
     - name: Persist server  
-    - uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
         name: server
         path: ./*/bin/Release/${{ env.SERVER_TARGET }}/
     - name: Persist app  
-    - uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
         name: app
         path: ./*/bin/Release/${{ env.GUI_TARGET }}/
@@ -55,7 +55,7 @@ jobs:
     - name: Build node
       run: cd Web && npm install
     - name: Persist webapp  
-    - uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
         name: webapp
         path: ./Web/webapp
