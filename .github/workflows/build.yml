@@ -56,6 +56,7 @@ jobs:
       with:
         name: app
         path: ./app
+        retention-days: 1
 
   build_node:
     runs-on: windows-latest
@@ -74,6 +75,7 @@ jobs:
       with:
         name: webapp
         path: ./Web/webapp
+        retention-days: 1
 
   create_package:
     runs-on: windows-latest
@@ -91,31 +93,11 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: webapp
-        path: ./webapp
-    - name: Create package
-      shell: powershell
-      run: | 
-        7z a XOutput.zip -- `
-        app\XOutput.Core.dll `
-        app\NLog.dll `
-        app\XOutput.Api.dll `
-        app\XOutput.Emulation.dll `
-        app\Nefarius.ViGEm.Client.dll `
-        app\XOutput.Mapping.dll `
-        app\XOutput.Server.dll `
-        app\XOutput.Server.exe `
-        app\XOutput.Server.runtimeconfig.json `
-        app\XOutput.App.dll `
-        app\XOutput.App.exe `
-        app\XOutput.App.runtimeconfig.json `
-        app\SharpDX.dll `
-        app\SharpDX.DirectInput.dll `
-        app\Hardcodet.Wpf.TaskbarNotification.dll `
-        app\HIDSharp.dll `
-        webapp `
-        bin\*
+        path: ./app/webapp
+    - name: Copy resources
+      run: move bin app\bin
     - name: Upload zip
       uses: actions/upload-artifact@v2
       with:
         name: XOutput
-        path: XOutput.zip
+        path: ./app/

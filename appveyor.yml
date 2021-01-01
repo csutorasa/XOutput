@@ -45,14 +45,14 @@ build_script:
   - ps: |
       7z a XOutput.zip -- `
       XOutput.Core\bin\Release\$env:SERVER_TARGET\XOutput.Core.dll `
-      XOutput.Core\bin\Release\$env:SERVER_TARGET\NLog.dll `
       XOutput.Api\bin\Release\$env:SERVER_TARGET\XOutput.Api.dll `
       XOutput.Emulation\bin\Release\$env:SERVER_TARGET\XOutput.Emulation.dll `
-      XOutput.Emulation\bin\Release\$env:SERVER_TARGET\Nefarius.ViGEm.Client.dll `
       XOutput.Mapping\bin\Release\$env:SERVER_TARGET\XOutput.Mapping.dll `
       XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.dll `
       XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.exe `
       XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.runtimeconfig.json `
+      XOutput.Server\bin\Release\$env:SERVER_TARGET\NLog.dll `
+      XOutput.Server\bin\Release\$env:SERVER_TARGET\Nefarius.ViGEm.Client.dll `
       XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.dll `
       XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.exe `
       XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.runtimeconfig.json `
