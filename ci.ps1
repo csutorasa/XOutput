@@ -35,11 +35,12 @@ $guitarget='net5.0-windows'
 $PSScriptRoot\XOutput.Core\bin\Release\$target\XOutput.Core.dll `
 $PSScriptRoot\XOutput.Core\bin\Release\$target\NLog.dll `
 $PSScriptRoot\XOutput.Api\bin\Release\$target\XOutput.Api.dll `
-$PSScriptRoot\XOutput.Server\bin\Release\$target\XOutput.Server.dll `
-$PSScriptRoot\XOutput.Server\bin\Release\$target\XOutput.Server.exe `
 $PSScriptRoot\XOutput.Emulation\bin\Release\$target\XOutput.Emulation.dll `
 $PSScriptRoot\XOutput.Emulation\bin\Release\$target\Nefarius.ViGEm.Client.dll `
 $PSScriptRoot\XOutput.Mapping\bin\Release\$target\XOutput.Mapping.dll `
+$PSScriptRoot\XOutput.Server\bin\Release\$target\XOutput.Server.dll `
+$PSScriptRoot\XOutput.Server\bin\Release\$target\XOutput.Server.exe `
+$PSScriptRoot\XOutput.Server\bin\Release\$target\XOutput.Server.runtimeconfig.json `
 $PSScriptRoot\XOutput.App\bin\Release\$guitarget\XOutput.App.dll `
 $PSScriptRoot\XOutput.App\bin\Release\$guitarget\XOutput.App.exe `
 $PSScriptRoot\XOutput.App\bin\Release\$guitarget\XOutput.App.runtimeconfig.json `
