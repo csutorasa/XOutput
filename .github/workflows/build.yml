@@ -30,7 +30,7 @@ jobs:
       shell: powershell
       run: dotnet msbuild -p:Configuration=Release -p:Version=$env:VERSION -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION
     - name: Test
-      run: dotnet test
+      run: dotnet test -c Release --no-build
 
   build_node:
     runs-on: windows-latest
