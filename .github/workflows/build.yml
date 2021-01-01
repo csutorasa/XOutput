@@ -12,8 +12,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  build_net:
     runs-on: windows-latest
 
     steps:
@@ -35,6 +34,53 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: Build node
       run: cd Web && npm install
+    - name: Create package
+      shell: powershell
+      run: | 
+        7z a XOutput.zip -- `
+        $PSScriptRoot\XOutput.Core\bin\Release\$env:SERVER_TARGET\XOutput.Core.dll `
+        $PSScriptRoot\XOutput.Core\bin\Release\$env:SERVER_TARGET\NLog.dll `
+        $PSScriptRoot\XOutput.Api\bin\Release\$env:SERVER_TARGET\XOutput.Api.dll `
+        $PSScriptRoot\XOutput.Emulation\bin\Release\$env:SERVER_TARGET\XOutput.Emulation.dll `
+        $PSScriptRoot\XOutput.Emulation\bin\Release\$env:SERVER_TARGET\Nefarius.ViGEm.Client.dll `
+        $PSScriptRoot\XOutput.Mapping\bin\Release\$env:SERVER_TARGET\XOutput.Mapping.dll `
+        $PSScriptRoot\XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.dll `
+        $PSScriptRoot\XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.exe `
+        $PSScriptRoot\XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.runtimeconfig.json `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.dll `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.exe `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.runtimeconfig.json `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.dll `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.DirectInput.dll `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\Hardcodet.Wpf.TaskbarNotification.dll `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\HIDSharp.dll `
+        $PSScriptRoot\Web\webapp `
+        $PSScriptRoot\bin\*
+    - name: Upload zip
+      uses: actions/upload-artifact@v2
+      with:
+        name: XOutput
+        path: XOutput.zip
+
+  build_node:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup node
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Test .NET
+      run: dotnet test --no-build --verbosity normal
+    - name: Build node
+      run: cd Web && npm install
+
+  create_package:
+    runs-on: windows-latest
+    needs: [ build_net, build_node ]
+
+    steps:
     - name: Create package
       shell: powershell
       run: | 
