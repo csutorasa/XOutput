@@ -92,7 +92,7 @@ namespace XOutput.Server
 
         private Task CheckUpdate(UpdateChecker updateChecker, NotificationService notificationService)
         {
-            return updateChecker.CompareRelease(appVersion).ContinueWith(t => {
+            return updateChecker.CompareReleaseAsync(appVersion).ContinueWith(t => {
                 switch (t.Result.Result)
                 {
                     case VersionCompareValues.NeedsUpgrade:

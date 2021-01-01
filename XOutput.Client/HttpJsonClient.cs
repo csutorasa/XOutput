@@ -27,25 +27,25 @@ namespace XOutput.Client
             return source.Token;
         }
 
-        protected async Task<HttpResponseMessage> GetResponse(HttpRequestMessage request, CancellationToken token = default)
+        protected async Task<HttpResponseMessage> GetResponseAsync(HttpRequestMessage request, CancellationToken token = default)
         {
             return await client.SendAsync(request, token);
         }
 
-        protected async Task<string> GetResponseBody(HttpRequestMessage request, int timeoutMillis = 1000)
+        protected async Task<string> GetResponseBodyAsync(HttpRequestMessage request, int timeoutMillis = 1000)
         {
             var token = GetToken(timeoutMillis);
-            using (var response = await GetResponse(request, token))
+            using (var response = await GetResponseAsync(request, token))
             {
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsStringAsync(token);
             }
         }
 
-        protected async Task<T> GetResult<T>(HttpRequestMessage request, int timeoutMillis = 1000)
+        protected async Task<T> GetResultAsync<T>(HttpRequestMessage request, int timeoutMillis = 1000)
         {
             var token = GetToken(timeoutMillis);
-            using (var response = await GetResponse(request, token))
+            using (var response = await GetResponseAsync(request, token))
             {
                 response.EnsureSuccessStatusCode();
                 var stream = await response.Content.ReadAsStreamAsync(token);

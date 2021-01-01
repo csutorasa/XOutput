@@ -33,7 +33,7 @@ namespace XOutput.Core.Versioning
             client.Dispose();
         }
 
-        public async Task<string> GetLatestRelease()
+        public async Task<string> GetLatestReleaseAsync()
         {
             HttpResponseMessage response = null;
             try

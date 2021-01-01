@@ -19,10 +19,10 @@ namespace XOutput.Client.Input
             uri = new Uri(apiUrl + "/ws/mappableDevice");
         }
 
-        public async Task Connect(MappableDeviceDetailsMessage message)
+        public async Task ConnectAsync(MappableDeviceDetailsMessage message)
         {
-            await Connect(uri);
-            await Send(message);
+            await ConnectAsync(uri);
+            await SendAsync(message);
         }
 
         protected override void ProcessMessage(MessageBase message)
@@ -38,9 +38,9 @@ namespace XOutput.Client.Input
             }
         }
 
-        protected Task SendInput(MappableDeviceInputMessage message)
+        protected Task SendInputAsync(MappableDeviceInputMessage message)
         {
-            return Send(message);
+            return SendAsync(message);
         }
     }
 

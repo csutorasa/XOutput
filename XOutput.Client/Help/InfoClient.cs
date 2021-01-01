@@ -14,14 +14,14 @@ namespace XOutput.Client.Help
             url = apiUrl;
         }
 
-        public Task<InfoResponse> GetInfo()
+        public Task<InfoResponse> GetInfoAsync()
         {
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri(url + "/info"),
                 Method = HttpMethod.Get,
             };
-            return GetResult<InfoResponse>(request);
+            return GetResultAsync<InfoResponse>(request);
         }
     }
 }

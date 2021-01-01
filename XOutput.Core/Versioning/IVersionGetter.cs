@@ -9,6 +9,6 @@ namespace XOutput.Core.Versioning
 {
     public interface IVersionGetter
     {
-        Task<string> GetLatestRelease();
+        Task<string> GetLatestReleaseAsync();
     }
 }

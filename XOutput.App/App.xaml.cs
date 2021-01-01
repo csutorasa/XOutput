@@ -89,7 +89,7 @@ namespace XOutput.App
 
         private void CheckUpdate(UpdateChecker updateChecker, NotificationService notificationService)
         {
-            updateChecker.CompareRelease(appVersion).ContinueWith(t => {
+            updateChecker.CompareReleaseAsync(appVersion).ContinueWith(t => {
                 switch (t.Result.Result) {
                     case VersionCompareValues.NeedsUpgrade:
                         notificationService.Add(Notifications.NeedsVersionUpgrade, new List<string>() { t.Result.LatestVersion });
