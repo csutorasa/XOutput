@@ -6,7 +6,7 @@ namespace XOutput.Api.Serialization
 {
     public class MessageWriter
     {
-        public string GetString(MessageBase message)
+        public string GetString<T>(T message) where T: MessageBase
         {
             return JsonSerializer.Serialize(message);
         }

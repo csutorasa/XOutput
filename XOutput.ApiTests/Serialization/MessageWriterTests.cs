@@ -21,7 +21,7 @@ namespace XOutput.Api.Serialization.Tests
                 LedNumber = 1,
             };
             var message = writer.GetString(input);
-            Assert.AreEqual("{\"Small\":0.0,\"Large\":1.0,\"LedNumber\":1,\"Type\":\"XboxFeedback\"}", message);
+            Assert.AreEqual("{\"Small\":0,\"Large\":1,\"LedNumber\":1,\"Type\":\"XboxFeedback\"}", message);
         }
 
         [TestMethod]

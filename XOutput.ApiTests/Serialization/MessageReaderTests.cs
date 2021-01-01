@@ -15,7 +15,7 @@ namespace XOutput.Api.Serialization.Tests
             {
                 { InputDataMessage.MessageType, typeof(InputDataMessage) },
                 { DebugMessage.MessageType,  typeof(DebugMessage) },
-                { XboxFeedbackMessage.MessageType,  typeof(XboxFeedbackMessage) }
+                { XboxInputMessage.MessageType,  typeof(XboxInputMessage) }
             };
         private MessageReader reader = new MessageReader(deserializationMapping);
 
@@ -57,7 +57,7 @@ namespace XOutput.Api.Serialization.Tests
         public void UnknownMessageTest()
         {
             string input = "{\"Type\":\"test\"}";
-            var message = reader.ReadString(input) as MessageBase;
+            var message = reader.ReadString(input);
             Assert.IsNotNull(message);
             Assert.AreEqual("test", message.Type);
         }
@@ -68,7 +68,7 @@ namespace XOutput.Api.Serialization.Tests
             string input = "{\"Type\":\"test\"}";
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(input)))
             {
-                var message = reader.Read(new StreamReader(ms)) as MessageBase;
+                var message = reader.Read(new StreamReader(ms));
                 Assert.IsNotNull(message);
                 Assert.AreEqual("test", message.Type);
             }

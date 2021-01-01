@@ -25,6 +25,10 @@ namespace XOutput.Api.Serialization
         public MessageBase ReadString(string input)
         {
             var message = JsonSerializer.Deserialize<MessageBase>(input);
+            if (!mapping.ContainsKey(message.Type))
+            {
+                return message;
+            }
             var type = mapping[message.Type];
             return JsonSerializer.Deserialize(input, type) as MessageBase;
         }
