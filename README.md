@@ -1,14 +1,22 @@
-[![Build](https://ci.appveyor.com/api/projects/status/github/csutorasa/XOutput?branch=master&svg=true)](https://ci.appveyor.com/project/csutorasa/xoutput/)
 [![Github All Releases](https://img.shields.io/github/downloads/csutorasa/XOutput/total.svg)](https://github.com/csutorasa/XOutput/releases/)
 [![Download XOutput](https://img.shields.io/sourceforge/dt/xoutput.svg)](https://sourceforge.net/projects/xoutput/files/latest/download)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/csutorasa)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=XOutput&metric=alert_status)](https://sonarcloud.io/dashboard?id=XOutput)
+[![Discord](https://img.shields.io/discord/673150216169455637?label=Discord&logo=Discord)](https://discord.gg/Y628tcp)
 
 # XOutput
 
 If you have an older or not supported game controller (gamepad, wheel, joystick, etc.), but XBox 360 controllers are supported you can use this software and enjoy gaming with your controller.
 
 XOutput is a software that can convert DirectInput into XInput. DirectInput data is read and sent to a virtual XInput (Xbox 360 Controller) device. XInput is the new standard game controller input on windows, and DirectInput can no longer be used with Universal Windows Platform software, but with this tool you can use DirectInput devices as well.
+
+## General information
+
+If you have any questions or feature requests feel free to create [Github Issue](https://github.com/csutorasa/XOutput/issues).
+
+Any contribution is welcome, open your [Pull request](https://github.com/csutorasa/XOutput/pulls).
+
+To join the discussion or just say hi in the [discord channel](https://discord.gg/Y628tcp).
 
 ## How to install
 
@@ -31,6 +39,15 @@ Download the application:
 -   Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
 -   Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
 -   Unzip to any directory
+
+## How to upgrade
+
+Download the application:
+
+-   Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
+-   Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
+-   Unzip to the same directory as before
+-   Delete the old `settings.json` file before starting the application
 
 ## How to use
 
@@ -67,6 +84,7 @@ Affected devices and whitelist can be managed by the application, but it needs a
 1.  Enable HidGuardian initialization in the settings.
 2.  Restart the application as administrator.
 3.  Add device to affected devices in the input settings.
+4.  Reconnect device or reboot PC
 
 Add affected device manually (use this method only, if you want to hide non recognized HID devices):
 
@@ -102,3 +120,12 @@ XOutput has a diagnostics screen. A few tests are run to check if the applicatio
 | green circle with a tick                 | Everything is optimal.                                                                                  |
 | yellow triangle with an exclamation mark | The experience may be sub-optimal. Some functions may not work, but the application is functional.      |
 | red circle with a minus sign             | Something is not working, the application cannot function properly. Some core features may be unusable. |
+
+## Versions
+
+| Version                                              | State                               | Support                              |
+| ---------------------------------------------------- | ----------------------------------- | ------------------------------------ |
+| [4.x](https://github.com/csutorasa/XOutput)          | Under development (no releases yet) | Active development with new features |
+| [3.x](https://github.com/csutorasa/XOutput/tree/3.x) | Stable                              | Bugfixes only                        |
+| 2.x                                                  | Old version (superseeded by 3.x)    | Expired at Mar 7 2018                |
+| 1.x                                                  | Old version (superseeded by 3.x)    | Expired at Mar 7 2018                |
