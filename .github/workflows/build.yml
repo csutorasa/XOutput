@@ -1,0 +1,58 @@
+name: Build XOutput
+
+env:
+  VERSION: 4.0.0
+  SERVER_TARGET: 'netcoreapp5.0'
+  GUI_TARGET: 'net5.0-windows'
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.101
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      shell: powershell
+      run: dotnet msbuild -p:Configuration=Release -p:Version=$env:VERSION -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Create package
+      shell: powershell
+      run: | 
+        7z a XOutput.zip -- `
+        $PSScriptRoot\XOutput.Core\bin\Release\$env:SERVER_TARGET\XOutput.Core.dll `
+        $PSScriptRoot\XOutput.Core\bin\Release\$env:SERVER_TARGET\NLog.dll `
+        $PSScriptRoot\XOutput.Api\bin\Release\$env:SERVER_TARGET\XOutput.Api.dll `
+        $PSScriptRoot\XOutput.Emulation\bin\Release\$env:SERVER_TARGET\XOutput.Emulation.dll `
+        $PSScriptRoot\XOutput.Emulation\bin\Release\$env:SERVER_TARGET\Nefarius.ViGEm.Client.dll `
+        $PSScriptRoot\XOutput.Mapping\bin\Release\$env:SERVER_TARGET\XOutput.Mapping.dll `
+        $PSScriptRoot\XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.dll `
+        $PSScriptRoot\XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.exe `
+        $PSScriptRoot\XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.runtimeconfig.json `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.dll `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.exe `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.runtimeconfig.json `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.dll `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.DirectInput.dll `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\Hardcodet.Wpf.TaskbarNotification.dll `
+        $PSScriptRoot\XOutput.App\bin\Release\$env:GUI_TARGET\HIDSharp.dll `
+        $PSScriptRoot\Web\webapp `
+        $PSScriptRoot\bin\*
+    - name: Upload zip
+      uses: actions/upload-artifact@v2
+      with:
+        name: XOutput
+        path: XOutput.zip
