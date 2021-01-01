@@ -1,10 +1,13 @@
 # IDE
 .vs
 .vscode
+.idea
 
 # Output
 */bin
 */obj
+Web/webapp/*
+!Web/webapp/favicon.ico
 
 # Nuget packages
 packages
@@ -12,4 +15,7 @@ packages
 
 # Test result files
 TestResults
-XOutputTests/coverage.opencover.xml
+*Tests/coverage.*.opencover.xml
+
+# node modules
+Web/node_modules
