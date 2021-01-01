@@ -30,7 +30,7 @@ namespace XOutput.Api.Serialization.Tests
             var message = new MessageBase { Type = "test" };
             using (MemoryStream ms = new MemoryStream(1024))
             {
-                writer.Write(message, new StreamWriter(ms));
+                writer.Write(message, ms);
                 int length = (int)ms.Position;
                 ms.Seek(0, SeekOrigin.Begin);
                 byte[] buffer = new byte[length];

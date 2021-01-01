@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using NLog;
 using NLog.Config;
 using System;
@@ -14,7 +17,7 @@ using XOutput.Core.Notifications;
 using XOutput.Core.Resources;
 using XOutput.Core.Versioning;
 
-namespace XOutput.App
+namespace XOutput.Server
 {
     public class App
     {
@@ -56,9 +59,19 @@ namespace XOutput.App
 
             await CheckUpdate(globalContext.Resolve<UpdateChecker>(), notificationService);
 
-            var server = globalContext.Resolve<Server.Server>();
+            var server = globalContext.Resolve<Server>();
             server.Run();
             globalContext.Close();
+        }
+
+        public IHost BuildWebHost()
+        {
+            return Host.CreateDefaultBuilder(new string[0])
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                })
+                .Build();
         }
 
         private void SetLoggerConfiguration()
@@ -84,10 +97,10 @@ namespace XOutput.App
                 switch (t.Result.Result)
                 {
                     case VersionCompareValues.NeedsUpgrade:
-                        notificationService.Add(Notifications.NeedsVersionUpgrade, new List<string>() { t.Result.LatestVersion });
+                        notificationService.Add(Core.Notifications.Notifications.NeedsVersionUpgrade, new List<string>() { t.Result.LatestVersion });
                         break;
                     case VersionCompareValues.Error:
-                        notificationService.Add(Notifications.VersionCheckError, new List<string>() { }, NotificationTypes.Warning);
+                        notificationService.Add(Core.Notifications.Notifications.VersionCheckError, new List<string>() { }, NotificationTypes.Warning);
                         break;
                 }
             });

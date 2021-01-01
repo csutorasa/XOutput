@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using XOutput.App.Devices;
 
 namespace XOutput.Devices.Tests
 {

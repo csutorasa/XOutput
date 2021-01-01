@@ -22,13 +22,19 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.101
-    - name: Restore dependencies
+    - name: Setup node
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Restore .NET dependencies
       run: dotnet restore
-    - name: Build
+    - name: Build .NET
       shell: powershell
       run: dotnet msbuild -p:Configuration=Release -p:Version=$env:VERSION -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION --no-restore
-    - name: Test
+    - name: Test .NET
       run: dotnet test --no-build --verbosity normal
+    - name: Build node
+      run: cd Web && npm install
     - name: Create package
       shell: powershell
       run: | 

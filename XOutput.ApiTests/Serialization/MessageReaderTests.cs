@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using XOutput.Api.Message;
@@ -9,7 +11,13 @@ namespace XOutput.Api.Serialization.Tests
     [TestClass()]
     public class MessageReaderTests
     {
-        private MessageReader reader = new MessageReader();
+        private static readonly Dictionary<string, Type> deserializationMapping = new Dictionary<string, Type>
+            {
+                { InputDataMessage.MessageType, typeof(InputDataMessage) },
+                { DebugMessage.MessageType,  typeof(DebugMessage) },
+                { XboxFeedbackMessage.MessageType,  typeof(XboxFeedbackMessage) }
+            };
+        private MessageReader reader = new MessageReader(deserializationMapping);
 
         [TestMethod]
         public void InputDataTest()

@@ -6,7 +6,7 @@ using XOutput.Api.Message.Xbox;
 using XOutput.Api.Serialization;
 using XOutput.Message.Mappable;
 
-namespace XOutput.App
+namespace XOutput.Server
 {
     public static class ServerConfiguration
     {
