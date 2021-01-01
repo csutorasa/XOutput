@@ -20,7 +20,14 @@ Any contribution is welcome, open your [Pull request](https://github.com/csutora
 
 To join the discussion or just say hi in the [discord channel](https://discord.gg/Y628tcp).
 
-This is version is currently under development. Check out the [stable version](https://github.com/csutorasa/XOutput/tree/3.x), or the [versions](#versions) for more information.
+This version is currently under development.
+
+| Version                                              | State                                   | Support                                  |
+| ---------------------------------------------------- | --------------------------------------- | ---------------------------------------- |
+| **[4.x](https://github.com/csutorasa/XOutput)**      | **Under development (no releases yet)** | **Active development with new features** |
+| [3.x](https://github.com/csutorasa/XOutput/tree/3.x) | Stable                                  | Bugfixes only                            |
+| 2.x                                                  | Old version (superseeded by 3.x)        | Expired at Mar 7 2018                    |
+| 1.x                                                  | Old version (superseeded by 3.x)        | Expired at Mar 7 2018                    |
 
 ## How to install
 
@@ -128,15 +135,6 @@ XOutput has a diagnostics screen. A few tests are run to check if the applicatio
 | green circle with a tick                 | Everything is optimal.                                                                                  |
 | yellow triangle with an exclamation mark | The experience may be sub-optimal. Some functions may not work, but the application is functional.      |
 | red circle with a minus sign             | Something is not working, the application cannot function properly. Some core features may be unusable. |
-
-## Versions
-
-| Version                                              | State                               | Support                              |
-| ---------------------------------------------------- | ----------------------------------- | ------------------------------------ |
-| [4.x](https://github.com/csutorasa/XOutput)          | Under development (no releases yet) | Active development with new features |
-| [3.x](https://github.com/csutorasa/XOutput/tree/3.x) | Stable                              | Bugfixes only                        |
-| 2.x                                                  | Old version (superseeded by 3.x)    | Expired at Mar 7 2018                |
-| 1.x                                                  | Old version (superseeded by 3.x)    | Expired at Mar 7 2018                |
 
 ## 4.x Information
 
