@@ -17,16 +17,18 @@ namespace XOutput.App.Devices.Input.RawInput
 
         private readonly IgnoredDeviceService ignoredDeviceService;
         private readonly InputConfigManager inputConfigManager;
+        private readonly IdHelper idHelper;
         private readonly List<IInputDevice> currentDevices = new List<IInputDevice>();
         private readonly object lockObject = new object();
         private bool disposed = false;
         private bool allDevices = false;
 
         [ResolverMethod]
-        public RawInputDeviceProvider(IgnoredDeviceService ignoredDeviceService, InputConfigManager inputConfigManager)
+        public RawInputDeviceProvider(IgnoredDeviceService ignoredDeviceService, InputConfigManager inputConfigManager, IdHelper idHelper)
         {
             this.ignoredDeviceService = ignoredDeviceService;
             this.inputConfigManager = inputConfigManager;
+            this.idHelper = idHelper;
         }
 
 
@@ -68,7 +70,7 @@ namespace XOutput.App.Devices.Input.RawInput
                                 Usage.GenericDesktopGamepad, Usage.GenericDesktopJoystick, Usage.GenericDesktopMultiaxisController));
                             foreach (var deviceItem in deviceItems)
                             {
-                                var inputDevice = new RawInputDevice(inputConfigManager, device, reportDescriptor, deviceItem, hidStream, uniqueId);
+                                var inputDevice = new RawInputDevice(inputConfigManager, idHelper, device, reportDescriptor, deviceItem, hidStream, uniqueId);
                                 var config = inputConfigManager.LoadConfig(inputDevice);
                                 inputDevice.InputConfiguration = config;
                                 if (config.Autostart) {

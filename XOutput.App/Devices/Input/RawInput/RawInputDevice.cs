@@ -39,7 +39,7 @@ namespace XOutput.App.Devices.Input.RawInput
         private bool disposed = false;
         private ThreadContext readThreadContext;
 
-        public RawInputDevice(InputConfigManager inputConfigManager, HidDevice device, ReportDescriptor reportDescriptor, DeviceItem deviceItem,
+        public RawInputDevice(InputConfigManager inputConfigManager, IdHelper idHelper, HidDevice device, ReportDescriptor reportDescriptor, DeviceItem deviceItem,
             HidStream hidStream, string uniqueId)
         {
             this.inputConfigManager = inputConfigManager;
@@ -51,7 +51,7 @@ namespace XOutput.App.Devices.Input.RawInput
             DisplayName = device.GetProductName();
             UniqueId = uniqueId;
             InterfacePath = device.DevicePath;
-            HardwareID = IdHelper.GetHardwareId(InterfacePath);
+            HardwareID = idHelper.GetHardwareId(InterfacePath);
             inputChangedEventArgs = new DeviceInputChangedEventArgs(this);
             sources = reportDescriptor.InputReports.SelectMany(ir => ir.DataItems)
                 .SelectMany(di => di.Usages.GetAllValues())

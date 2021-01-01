@@ -21,6 +21,7 @@ namespace XOutput.App.Devices.Input.DirectInput
 
         private readonly IgnoredDeviceService ignoredDeviceService;
         private readonly InputConfigManager inputConfigManager;
+        private readonly IdHelper idHelper;
         private readonly NotificationService notificationService;
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
         private readonly List<IInputDevice> currentDevices = new List<IInputDevice>();
@@ -29,10 +30,11 @@ namespace XOutput.App.Devices.Input.DirectInput
         private bool allDevices = false;
 
         [ResolverMethod]
-        public DirectInputDeviceProvider(IgnoredDeviceService ignoredDeviceService, InputConfigManager inputConfigManager, NotificationService notificationService)
+        public DirectInputDeviceProvider(IgnoredDeviceService ignoredDeviceService, InputConfigManager inputConfigManager, IdHelper idHelper, NotificationService notificationService)
         {
             this.ignoredDeviceService = ignoredDeviceService;
             this.inputConfigManager = inputConfigManager;
+            this.idHelper = idHelper;
             this.notificationService = notificationService;
         }
 
@@ -110,7 +112,7 @@ namespace XOutput.App.Devices.Input.DirectInput
                     }
                     interfacePath = joystick.Properties.InterfacePath;
                     uniqueIdBase = interfacePath;
-                    hardwareId = IdHelper.GetHardwareId(interfacePath);
+                    hardwareId = idHelper.GetHardwareId(interfacePath);
                 } else {
                     uniqueIdBase = string.Join(":", deviceInstance.ProductGuid.ToString(), deviceInstance.InstanceGuid.ToString());
                 }
