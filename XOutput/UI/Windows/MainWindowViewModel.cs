@@ -144,12 +144,9 @@ namespace XOutput.UI.Windows
             Model.Settings = settings;
             RefreshGameControllers();
 
-            if (!settings.DisableAutoRefresh)
-            {
-                timer.Interval = TimeSpan.FromMilliseconds(5000);
-                timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
-                timer.Start();
-            }
+            timer.Interval = TimeSpan.FromMilliseconds(5000);
+            timer.Tick += (object sender1, EventArgs e1) => { if (!settings.DisableAutoRefresh) { RefreshGameControllers(); } };
+            timer.Start();
 
             logger.Debug("Creating keyboard controller");
             Devices.Input.Keyboard.Keyboard keyboard = new Devices.Input.Keyboard.Keyboard();
@@ -218,6 +215,7 @@ namespace XOutput.UI.Windows
 
         public void RefreshGameControllers()
         {
+            logger.Debug("REFRESH");
             IEnumerable<SharpDX.DirectInput.DeviceInstance> instances = directInputDevices.GetInputDevices(Model.AllDevices);
 
             bool changed = false;
