@@ -35,8 +35,9 @@ This version is currently under development.
 
 Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, legacy)
 
-  a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases) (Recommended)
-  b) Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
+a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases) (recommended)
+
+b) Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
 
 ### Install dependencies
 
@@ -117,25 +118,6 @@ Manage process whitelist manually (use this method only, if you want to use HidG
 3.  Remember the value of the PID column.
 4.  Run `regedit` and go to `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters\Whitelist`
 5.  Create subkey with the PID you found before.
-
-## Command line arguments
-
--   `--minimized` - starts the application minimized to tray
-
-### Deadzone
-
-If your analogue stick isn't in perfect condition, you may have what is called a deadzone, which means that a part of the axis isn't working right, usually it's the center part, syndromes of this are: wrong center position and unwanted movement of the camera, character, etc. To solve apply a bit of deadzone in the mapping settings, how much depends on the device in question.
-
-## Diagnostics
-
-XOutput has a diagnostics screen. A few tests are run to check if the application is working correctly.
-
-| Image                                    | Meaning                                                                                                 |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| green circle with a tick                 | Everything is optimal.                                                                                  |
-| yellow triangle with an exclamation mark | The experience may be sub-optimal. Some functions may not work, but the application is functional.      |
-| red circle with a minus sign             | Something is not working, the application cannot function properly. Some core features may be unusable. |
-
 ## 4.x Information
 
 The 4.x version is built with .NET 5, you will need to [download it](https://dotnet.microsoft.com/download).
