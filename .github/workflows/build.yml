@@ -1,27 +1,21 @@
 name: Build XOutput
 
 env:
-  VERSION: 4.0.0
-  SERVER_TARGET: 'netcoreapp5.0'
-  GUI_TARGET: 'net5.0-windows'
+  VERSION: '3.31'
 
 on:
   push:
-    branches: [ master ]
+    branches: [ 3.x ]
   pull_request:
-    branches: [ master ]
+    branches: [ 3.x ]
 
 jobs:
-  build_net:
+  build:
     runs-on: windows-latest
 
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.101
     - name: Clean
       run: dotnet clean --configuration Release && dotnet nuget locals all --clear
     - name: Restore dependencies
@@ -31,73 +25,8 @@ jobs:
       run: dotnet build -c Release -p:Version=$env:VERSION -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION
     - name: Test
       run: dotnet test -c Release --no-build
-    - name: Copy artifacts
-      shell: powershell
-      run: |
-        mkdir app
-        move XOutput.Core\bin\Release\$env:SERVER_TARGET\XOutput.Core.dll app\XOutput.Core.dll
-        move XOutput.Api\bin\Release\$env:SERVER_TARGET\XOutput.Api.dll app\XOutput.Api.dll
-        move XOutput.Emulation\bin\Release\$env:SERVER_TARGET\XOutput.Emulation.dll app\XOutput.Emulation.dll
-        move XOutput.Mapping\bin\Release\$env:SERVER_TARGET\XOutput.Mapping.dll app\XOutput.Mapping.dll
-        move XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.dll app\XOutput.Server.dll
-        move XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.exe app\XOutput.Server.exe
-        move XOutput.Server\bin\Release\$env:SERVER_TARGET\XOutput.Server.runtimeconfig.json app\XOutput.Server.runtimeconfig.json
-        move XOutput.Server\bin\Release\$env:SERVER_TARGET\Nefarius.ViGEm.Client.dll app\Nefarius.ViGEm.Client.dll
-        move XOutput.Server\bin\Release\$env:SERVER_TARGET\NLog.dll app\NLog.dll
-        move XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.dll app\XOutput.App.dll
-        move XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.exe app\XOutput.App.exe
-        move XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.runtimeconfig.json app\XOutput.App.runtimeconfig.json
-        move XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.dll app\SharpDX.dll
-        move XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.DirectInput.dll app\SharpDX.DirectInput.dll
-        move XOutput.App\bin\Release\$env:GUI_TARGET\Hardcodet.Wpf.TaskbarNotification.dll app\Hardcodet.Wpf.TaskbarNotification.dll
-        move XOutput.App\bin\Release\$env:GUI_TARGET\HIDSharp.dll app\HIDSharp.dll
-    - name: Persist app
-      uses: actions/upload-artifact@v2
-      with:
-        name: app
-        path: ./app
-        retention-days: 1
-
-  build_node:
-    runs-on: windows-latest
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Setup node
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-    - name: Build node
-      run: cd Web && npm install
-    - name: Persist webapp  
-      uses: actions/upload-artifact@v2
-      with:
-        name: webapp
-        path: ./Web/webapp
-        retention-days: 1
-
-  create_package:
-    runs-on: windows-latest
-    needs: [ build_net, build_node ]
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Restore app
-      uses: actions/download-artifact@v2
-      with:
-        name: app
-        path: ./app
-    - name: Restore webapp
-      uses: actions/download-artifact@v2
-      with:
-        name: webapp
-        path: ./app/webapp
-    - name: Copy resources
-      run: move bin app\bin
-    - name: Upload zip
+    - name: Create package
       uses: actions/upload-artifact@v2
       with:
         name: XOutput
-        path: ./app/
+        path: ./XOutput/bin/Release/net452/XOutput.exe
