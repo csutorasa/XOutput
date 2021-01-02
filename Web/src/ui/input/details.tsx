@@ -2,24 +2,27 @@ import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Accordion from '@material-ui/core/Accordion';
 import Paper from '@material-ui/core/Paper';
 import Switch from '@material-ui/core/Switch';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { rest, InputDeviceDetails, InputDeviceConfig } from "../../communication/rest";
-import { Translation } from "../../translation/Translation";
+import { rest, InputDeviceDetails, InputDeviceConfig, InputDeviceInputDetails, InputMethod } from "../../communication/rest";
+import { Translation } from "../../translation/translation";
 import { withStyles, Theme } from "@material-ui/core";
-import { Styles } from "@material-ui/core/styles/withStyles";
-import { WebSocketService } from '../../communication/Websocket';
+import { WebSocketService, WebSocketSession } from '../../communication/websocket';
 import { InputValues } from "../../communication/input";
 import { MessageBase } from "../../communication/message";
 import { Dpad } from "./dpad";
 import { StyleGenerator, Styled } from "../../utils";
 
-type ClassNames = 'header' | 'bar' | 'iconWrapper';
+type ClassNames = 'header' | 'paper' | 'bar' | 'iconWrapper';
 
 const styles: StyleGenerator<ClassNames> = () => ({
   header: {
     margin: '10px 0',
+  },
+  paper: {
+    padding: '10px',
   },
   bar: {
     transition: 'none',
@@ -37,7 +40,7 @@ export interface InputDetailsProps extends Styled<ClassNames> {
 interface InputDetailsState {
   device: InputDeviceDetails;
   config: InputDeviceConfig;
-  values: { [offset: string]: number };
+  values: { [method: string]: { [offset: string]: number } };
   forceFeedbacks: number[];
   hidGuardianEnabled: boolean;
   hidGuardianAvailable: boolean;
@@ -46,6 +49,7 @@ interface InputDetailsState {
 class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsState> {
 
   private websocket: WebSocketService = new WebSocketService();
+  private websocketSession: WebSocketSession;
   state: InputDetailsState = {
     device: null,
     config: null,
@@ -67,18 +71,24 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
     this.websocket.connect(`input/${this.props.id}`, (data: MessageBase) => {
       if (data.Type === 'InputValues') {
         const inputValues = data as InputValues;
-        const newValues: { [offset: string]: number } = {};
-        for (const offset in this.state.values) {
-          newValues[offset] = this.state.values[offset];
-        }
-        for (const offset in inputValues.Values) {
-          newValues[offset] = inputValues.Values[offset] * 100;
+        const newValues: { [method: string]: { [offset: string]: number } } = Object.assign(this.state.values, {});
+        for (const index in inputValues.Values) {
+          const method =  inputValues.Values[index].Method;
+          const offset =  inputValues.Values[index].Offset;
+          if (!newValues[method]) {
+            newValues[method] = {};
+          }
+          newValues[method][offset] = inputValues.Values[index].Value * 100;
         }
         this.setState({
           values: newValues,
         });
       }
-    });
+    }).then((s) => this.websocketSession = s);
+  }
+
+  componentWillUnmount() {
+    this.websocketSession?.close();
   }
 
   changeConfig(add: boolean, config: string, offset: number) {
@@ -107,6 +117,20 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
     })
   }
 
+  getValue(method: InputMethod, offset: number, defaultValue: number = 0): number {
+    if (!this.state.values) {
+      return null;
+    }
+    if (!this.state.values[method]) {
+      this.state.values[method] = {};
+      return null;
+    }
+    if (!this.state.values[method][offset]) {
+      this.state.values[method][offset] = defaultValue;
+    }
+    return this.state.values[method][offset];
+  }
+
   switchForceFeedback(offset: number) {
     const enabled = this.state.forceFeedbacks.indexOf(offset) >= 0;
     let values: number[];
@@ -123,26 +147,26 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
     })
   }
 
-  dpadGroups(): { up?: number; down?: number; left?: number; right?: number }[] {
+  dpadGroups(inputDetails: InputDeviceInputDetails): { up?: number; down?: number; left?: number; right?: number }[] {
     const dpads: { up?: number; down?: number; left?: number; right?: number }[] = [];
-    this.state.device.sources.filter(s => s.type == 'dpad').forEach(s => {
-      const index = Math.floor((s.offset - 10000) / 4);
+    inputDetails.sources.filter(s => s.type == 'dpad').forEach(s => {
+      const index = Math.floor((s.offset - 100000) / 4);
       if (!dpads[index]) {
         dpads[index] = {};
       }
       const value = dpads[index];
       switch (s.offset % 4) {
         case 0:
-          value.up = this.state.values[s.offset] || 0;
+          value.up = this.getValue(inputDetails.inputMethod, s.offset);
           break;
         case 1:
-          value.down = this.state.values[s.offset] || 0;
+          value.down = this.getValue(inputDetails.inputMethod, s.offset)
           break;
         case 2:
-          value.left = this.state.values[s.offset] || 0;
+          value.left = this.getValue(inputDetails.inputMethod, s.offset);
           break;
         case 3:
-          value.right = this.state.values[s.offset] || 0;
+          value.right = this.getValue(inputDetails.inputMethod, s.offset);
           break;
       }
     });
@@ -161,24 +185,125 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
     });
   }
 
+  runningChange(checked: boolean, method: InputMethod) {
+    const promise = checked ? rest.startInputDevice(this.props.id, method) : rest.stopInputDevice(this.props.id, method);
+    promise.then(() => this.getDetails());
+  }
+
   createForceFeedback(offset: number) {
     const active = this.state.forceFeedbacks.indexOf(offset) >= 0;
-    const big = this.state.config ? this.state.config.bigMotors.indexOf(offset) >= 0 : false;
-    const small = this.state.config ? this.state.config.smallMotors.indexOf(offset) >= 0 : false;
     return (<>
       <div>
         <Switch color='primary' checked={active} onChange={() => this.switchForceFeedback(offset)} />
         {Translation.translate("Test")}
       </div>
-      <div>
-        <Switch color='primary' checked={big} onChange={() => this.changeConfig((event.target as any).checked, "big", offset)} />
-        {Translation.translate("BigMotor")}
-      </div>
-      <div>
-        <Switch color='primary' checked={small} onChange={() => this.changeConfig((event.target as any).checked, "small", offset)} />
-        {Translation.translate("SmallMotor")}
-      </div>
     </>);
+  }
+
+  getDPads(inputDetails: InputDeviceInputDetails) {
+    const groups = this.dpadGroups(inputDetails);
+    if (groups.length == 0) {
+      return null;
+    }
+    const { classes } = this.props;
+    return <>
+      <Typography className={classes.header} variant='h5'>{Translation.translate("DPads")}</Typography>
+      <Grid container spacing={3}>
+        {groups.map((d, i) => <Grid item xs={6} md={4} lg={3} key={i}>
+          <Paper>
+            <Typography align='center' variant='body1'>{Translation.translate('DPad') + " " + (i + 1)}</Typography>
+            <Dpad up={d.up} down={d.down} left={d.left} right={d.right} />
+          </Paper>
+        </Grid>)}
+      </Grid>
+    </>;
+  }
+
+  getButtons(inputDetails: InputDeviceInputDetails) {
+    if (inputDetails.sources.filter(s => s.type == 'button').length == 0) {
+      return null;
+    }
+    const { classes } = this.props;
+    return <>
+      <Typography className={classes.header} variant='h5'>{Translation.translate("Buttons")}</Typography>
+      <Grid container spacing={3}>
+        {inputDetails.sources.filter(s => s.type == 'button').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
+          <Paper>
+            <Typography align='center' variant='body1'>{s.name}</Typography>
+            <LinearProgress variant="determinate" value={this.getValue(inputDetails.inputMethod, s.offset)} classes={{ bar: classes.bar }} />
+          </Paper>
+        </Grid>)}
+      </Grid>
+    </>;
+  }
+
+  getAxes(inputDetails: InputDeviceInputDetails) {
+    if (inputDetails.sources.filter(s => s.type == 'axis').length == 0) {
+      return null;
+    }
+    const { classes } = this.props;
+    return <>
+      <Typography className={classes.header} variant='h5'>{Translation.translate("Axes")}</Typography>
+      <Grid container spacing={3}>
+        {inputDetails.sources.filter(s => s.type == 'axis').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
+          <Paper>
+            <Typography align='center' variant='body1'>{s.name}</Typography>
+            <LinearProgress variant="determinate" value={this.getValue(inputDetails.inputMethod, s.offset, 0.5)} classes={{ bar: classes.bar }} />
+          </Paper>
+        </Grid>)}
+      </Grid>
+    </>;
+  }
+
+  getSliders(inputDetails: InputDeviceInputDetails) {
+    if (inputDetails.sources.filter(s => s.type == 'slider').length == 0) {
+      return null;
+    }
+    const { classes } = this.props;
+    return <>
+      <Typography className={classes.header} variant='h5'>{Translation.translate("Sliders")}</Typography>
+      <Grid container spacing={3}>
+        {inputDetails.sources.filter(s => s.type == 'slider').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
+          <Paper>
+            <Typography align='center' variant='body1'>{s.name}</Typography>
+            <LinearProgress variant="determinate" value={this.getValue(inputDetails.inputMethod, s.offset)} classes={{ bar: classes.bar }} />
+          </Paper>
+        </Grid>)}
+      </Grid>
+    </>;
+  }
+
+  getForceFeedbacks(inputDetails: InputDeviceInputDetails) {
+    if (inputDetails.forceFeedbacks.length == 0) {
+      return null;
+    }
+    const { classes } = this.props;
+    return <>
+      <Typography className={classes.header} variant='h5'>{Translation.translate("ForceFeedbacks")}</Typography>
+      <Grid container spacing={3}>
+        {inputDetails.forceFeedbacks.map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
+          <Paper>
+            <Typography align='center' variant='body1'>{s.offset}</Typography>
+            {this.createForceFeedback(s.offset)}
+          </Paper>
+        </Grid>)}
+      </Grid>
+    </>;
+  }
+
+  mapMethod(method: InputMethod) {
+    switch(method) {
+      case InputMethod.WindowsApi:
+        return 'Windows API';
+      case InputMethod.DirectInput:
+        return 'Direct Input';
+      case InputMethod.RawInput:
+        return 'RawInput';
+      case InputMethod.Websocket:
+        return 'Web device';
+      default:
+        return method;
+    }
   }
 
   render() {
@@ -188,80 +313,36 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
     if (!this.state.device) {
       content = <CircularProgress />;
     } else {
-      const dpads = this.dpadGroups().length == 0 ? <></> : (<>
-        <Typography className={classes.header} variant='h5'>{Translation.translate("DPads")}</Typography>
-        <Grid container spacing={3}>
-          {this.dpadGroups().map((d, i) => <Grid item xs={6} md={4} lg={3} key={i}>
-            <Paper>
-              <Typography align='center' variant='body1'>{Translation.translate('DPad') + " " + (i + 1)}</Typography>
-              <Dpad up={d.up} down={d.down} left={d.left} right={d.right} />
-            </Paper>
-          </Grid>)}
-        </Grid>
-      </>);
-      const axes = this.state.device.sources.filter(s => s.type == 'axis').length == 0 ? <></> : (<>
-        <Typography className={classes.header} variant='h5'>{Translation.translate("Axes")}</Typography>
-        <Grid container spacing={3}>
-          {this.state.device.sources.filter(s => s.type == 'axis').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
-            <Paper>
-              <Typography align='center' variant='body1'>{s.name}</Typography>
-              <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0.5} classes={{ bar: classes.bar }} />
-            </Paper>
-          </Grid>)}
-        </Grid>
-      </>);
-      const buttons = this.state.device.sources.filter(s => s.type == 'button').length == 0 ? <></> : (<>
-        <Typography className={classes.header} variant='h5'>{Translation.translate("Buttons")}</Typography>
-        <Grid container spacing={3}>
-          {this.state.device.sources.filter(s => s.type == 'button').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
-            <Paper>
-              <Typography align='center' variant='body1'>{s.name}</Typography>
-              <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0} classes={{ bar: classes.bar }} />
-            </Paper>
-          </Grid>)}
-        </Grid>
-      </>);
-      const sliders = this.state.device.sources.filter(s => s.type == 'slider').length == 0 ? <></> : (<>
-        <Typography className={classes.header} variant='h5'>{Translation.translate("Sliders")}</Typography>
-        <Grid container spacing={3}>
-          {this.state.device.sources.filter(s => s.type == 'slider').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
-            <Paper>
-              <Typography align='center' variant='body1'>{s.name}</Typography>
-              <LinearProgress variant="determinate" value={this.state.values[s.offset] || 0} classes={{ bar: classes.bar }} />
-            </Paper>
-          </Grid>)}
-        </Grid>
-      </>);
-      const forceFeedbacks = this.state.device.forceFeedbacks.length == 0 ? <></> : (<>
-        <Typography className={classes.header} variant='h5'>{Translation.translate("ForceFeedbacks")}</Typography>
-        <Grid container spacing={3}>
-          {this.state.device.forceFeedbacks.map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
-            <Paper>
-              <Typography align='center' variant='body1'>{s.offset}</Typography>
-              {this.createForceFeedback(s.offset)}
-            </Paper>
-          </Grid>)}
-        </Grid>
-      </>);
-      let hidguardian;
-      if (this.state.hidGuardianAvailable) {
-        hidguardian = (<>
-          <Typography className={classes.header} variant='h5'>{Translation.translate("HidGuardian")}</Typography>
-          <Paper>
-            <Typography className={classes.header} variant='body1'>{this.state.device.hardwareId}</Typography>
-            <Switch color='primary' checked={this.state.hidGuardianEnabled} onChange={() => this.hidGuardianChange((event.target as any).checked)} />
-          </Paper>
-        </>);
-      } else {
-        hidguardian = <></>
-      }
+      const summary = <Paper className={classes.paper}>
+        <p>{ Translation.translate('input.name') }: { this.state.device.name }</p>
+        <p>{ Translation.translate('input.id') }: { this.state.device.id }</p>
+        <p>{ Translation.translate('input.hardwareid') }: { this.state.device.hardwareId }</p>
+        { this.state.hidGuardianAvailable ?
+            <div>
+              <span>{ Translation.translate('input.hidguardian') }</span>
+              <Switch color='primary'
+                checked={this.state.hidGuardianEnabled}
+                onChange={() => this.hidGuardianChange((event.target as any).checked)} />
+            </div>
+            : null
+        }
+      </Paper>;
+
       content = (<>
-        {dpads}
-        {axes}
-        {buttons}
-        {sliders}
-        {forceFeedbacks}
-        {hidguardian}
+        {summary}
+        {this.state.device.inputs.map(i => <div className={classes.paper} key={i.inputMethod}>
+          <Typography className={classes.header} variant='h4'>{this.mapMethod(i.inputMethod)}</Typography>
+          <Switch color='primary'
+                checked={i.running}
+                onChange={() => this.runningChange((event.target as any).checked, i.inputMethod)} />
+          <div style={{width: '100%'}}>
+            { this.getDPads(i) }
+            { this.getAxes(i) }
+            { this.getButtons(i) }
+            { this.getSliders(i) }
+            { this.getForceFeedbacks(i) }
+          </div>
+        </div>)}
       </>);
     }
     return <>

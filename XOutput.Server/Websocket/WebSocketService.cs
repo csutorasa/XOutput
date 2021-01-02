@@ -7,6 +7,9 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using XOutput.Api.Message;
+using XOutput.Api.Message.Ds4;
+using XOutput.Api.Message.Xbox;
 using XOutput.Api.Serialization;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.WebSocket;
@@ -24,11 +27,17 @@ namespace XOutput.Server.Websocket
         private readonly WebSocketHelper webSocketHelper;
 
         [ResolverMethod]
-        public WebSocketService(List<IWebSocketHandler> webSocketHandlers, MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper)
+        public WebSocketService(List<IWebSocketHandler> webSocketHandlers, WebSocketHelper webSocketHelper)
         {
             this.webSocketHandlers = webSocketHandlers;
-            this.messageReader = messageReader;
-            this.messageWriter = messageWriter;
+            this.messageReader = new MessageReader(new Dictionary<string, Type>
+            {
+                { InputDataMessage.MessageType, typeof(InputDataMessage) },
+                { DebugMessage.MessageType,  typeof(DebugMessage) },
+                { XboxInputMessage.MessageType,  typeof(XboxInputMessage) },
+                { Ds4InputMessage.MessageType,  typeof(Ds4InputMessage) },
+            });
+            messageWriter = new MessageWriter();
             this.webSocketHelper = webSocketHelper;
         }
 

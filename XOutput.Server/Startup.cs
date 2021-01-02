@@ -8,9 +8,6 @@ using System;
 using System.IO;
 using System.Threading;
 using XOutput.Core.DependencyInjection;
-using XOutput.Server.Emulation;
-using XOutput.Server.Input;
-using XOutput.Server.Notifications;
 using XOutput.Server.Websocket;
 
 namespace XOutput.Server
@@ -29,7 +26,7 @@ namespace XOutput.Server
         public void ConfigureServices(IServiceCollection services)
         {
             applicationContext.ResolveAll<Controller>().ForEach(c => services.AddSingleton(c.GetType(), c));
-
+            services.AddSwaggerGen();
             services.AddMvc().AddControllersAsServices();
         }
 
@@ -56,6 +53,8 @@ namespace XOutput.Server
             env.WebRootPath = webRoot;
             env.WebRootFileProvider = new PhysicalFileProvider(webRoot);
 
+            app.UseSwagger();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -67,7 +66,6 @@ namespace XOutput.Server
             app.UseWebSockets(new WebSocketOptions()
             {
                 KeepAliveInterval = TimeSpan.FromSeconds(300),
-                ReceiveBufferSize = 4 * 1024
             });
             app.Use(async (context, next) =>
             {

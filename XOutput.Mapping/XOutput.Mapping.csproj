@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>library</OutputType>
+    <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
+    <RootNamespace>XOutput.Mapping</RootNamespace>
+    <AssemblyName>XOutput.Mapping</AssemblyName>
+    <Authors>Ármin Csutorás</Authors>
+    <Product>XOutput.Mapping</Product>
+    <PackageId>XOutput.Mapping</PackageId>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
+    <ProjectReference Include="..\XOutput.Emulation\XOutput.Emulation.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace XOutput.Api.Message.Input
 {
@@ -11,6 +12,24 @@ namespace XOutput.Api.Message.Input
             Type = MessageType;
         }
 
-        public Dictionary<int, double> Values { get; set; }
+        public List<InputValueData> Values { get; set; }
+    }
+
+    public class InputValueData {
+        public int Offset { get; set; }
+        public string Method { get; set; }
+        public double Value { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is InputValueData data &&
+                   Offset == data.Offset &&
+                   Method == data.Method;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Offset, Method);
+        }
     }
 }

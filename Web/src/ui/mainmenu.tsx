@@ -1,9 +1,9 @@
 import React from "react";
 import { Switch, Route, Redirect, RouteChildrenProps, withRouter, RouteComponentProps } from "react-router";
-import { DeviceSelector } from "./emulation/DeviceSelector";
+import { DeviceSelector } from "./emulation/deviceselector";
 import { XboxEmulation } from "./emulation/xbox";
 import { Link } from "react-router-dom";
-import { Controllers } from "./controllers/Controllers";
+import { Controllers } from "./controllers/controllers";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -20,26 +20,28 @@ import InputIcon from '@material-ui/icons/Input';
 import LanguageIcon from '@material-ui/icons/Language';
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Inputs } from "./input/Inputs";
-import { InputDetails } from "./input/Details";
+import { Inputs } from "./input/inputs";
+import { InputDetails } from "./input/details";
 import { Ds4Emulation } from "./emulation/ds4";
 import { Styled, StyleGenerator } from '../utils'
-import Translation from "../translation/Translation";
+import Translation from "../translation/translation";
 import { Notifications } from "./notifications/Notifications";
 import { MainMenuListItem } from "./MainMenuListItem";
 import { rest, Notification } from "../communication/rest";
+import { Home } from "./home/home";
 
 type ClassNames = 'menubarButton' | 'mainContent' | 'title' | 'drawerRoot' | 'drawerHeader' | 'placeholder';
 
 const styles: StyleGenerator<ClassNames> = (theme) => ({
     menubarButton: {
-        color: 'white',
+        color: theme.palette.common.white,
     },
     mainContent: {
         margin: '8px',
     },
     title: {
         flexGrow: 1,
+        color: theme.palette.common.white,
     },
     drawerRoot: {
         width: '360px',
@@ -104,9 +106,11 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
                             <IconButton edge="start" className={classes.menubarButton} color="inherit" aria-label="menu" onClick={() => this.changeMenu(true)}>
                                 <MenuIcon />
                             </IconButton>
-                            <Typography variant="h6" className={classes.title}>
-                                XOutput
-                            </Typography>
+                            <Link to='/' color='textPrimary'>
+                                <Typography variant="h6" className={classes.title}>
+                                    XOutput
+                                </Typography>
+                            </Link>
                             <div className={classes.placeholder}></div>
                             <Link to='/notifications' color='textPrimary'>
                                 <IconButton edge="start" className={classes.menubarButton} color="inherit" aria-label="menu">
@@ -123,7 +127,7 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
                                 <Typography variant='h4'>XOutput</Typography>
                             </div>
                             <List component="nav">
-                                <MainMenuListItem path='/' onClick={() => this.changeMenu(false)} >
+                                <MainMenuListItem path='/controllers' onClick={() => this.changeMenu(false)} >
                                     <ListItemIcon>
                                         <SportsEsportsIcon />
                                     </ListItemIcon>
@@ -158,6 +162,9 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
             <div className={classes.mainContent}>
                 <Switch>
                     <Route path="/" exact>
+                        <Home></Home>
+                    </Route>
+                    <Route path="/controllers">
                         <Controllers></Controllers>
                     </Route>
                     <Route path="/devices">

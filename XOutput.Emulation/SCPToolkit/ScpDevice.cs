@@ -40,10 +40,10 @@ namespace XOutput.Emulation.SCPToolkit
 
         public override void SendInput(XboxInput input)
         {
-            SetValueIfNeeded(2, 0, input.UP);
-            SetValueIfNeeded(2, 1, input.DOWN);
-            SetValueIfNeeded(2, 2, input.LEFT);
-            SetValueIfNeeded(2, 3, input.RIGHT);
+            SetValueIfNeeded(2, 0, input.Up);
+            SetValueIfNeeded(2, 1, input.Down);
+            SetValueIfNeeded(2, 2, input.Left);
+            SetValueIfNeeded(2, 3, input.Right);
             SetValueIfNeeded(2, 4, input.Start);
             SetValueIfNeeded(2, 5, input.Back);
             SetValueIfNeeded(2, 6, input.L3);

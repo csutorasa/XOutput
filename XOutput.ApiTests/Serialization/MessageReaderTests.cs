@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using XOutput.Api.Message;
@@ -9,7 +11,13 @@ namespace XOutput.Api.Serialization.Tests
     [TestClass()]
     public class MessageReaderTests
     {
-        private MessageReader reader = new MessageReader();
+        private static readonly Dictionary<string, Type> deserializationMapping = new Dictionary<string, Type>
+            {
+                { InputDataMessage.MessageType, typeof(InputDataMessage) },
+                { DebugMessage.MessageType,  typeof(DebugMessage) },
+                { XboxInputMessage.MessageType,  typeof(XboxInputMessage) }
+            };
+        private MessageReader reader = new MessageReader(deserializationMapping);
 
         [TestMethod]
         public void InputDataTest()
@@ -49,7 +57,7 @@ namespace XOutput.Api.Serialization.Tests
         public void UnknownMessageTest()
         {
             string input = "{\"Type\":\"test\"}";
-            var message = reader.ReadString(input) as MessageBase;
+            var message = reader.ReadString(input);
             Assert.IsNotNull(message);
             Assert.AreEqual("test", message.Type);
         }
@@ -58,12 +66,10 @@ namespace XOutput.Api.Serialization.Tests
         public void UnknownMessageStreamTest()
         {
             string input = "{\"Type\":\"test\"}";
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(input)))
-            {
-                var message = reader.Read(new StreamReader(ms)) as MessageBase;
-                Assert.IsNotNull(message);
-                Assert.AreEqual("test", message.Type);
-            }
+            using MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(input));
+            var message = reader.Read(new StreamReader(ms));
+            Assert.IsNotNull(message);
+            Assert.AreEqual("test", message.Type);
         }
     }
 }

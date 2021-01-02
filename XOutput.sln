@@ -13,15 +13,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Api", "XOutput.Api\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Server", "XOutput.Server\XOutput.Server.csproj", "{564AD7EA-1A09-4227-BF8F-7CD4BD8621D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Devices", "XOutput.Devices\XOutput.Devices.csproj", "{ECDE1779-C48C-40D3-9088-682335D274C4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.DevicesTests", "XOutput.DevicesTests\XOutput.DevicesTests.csproj", "{DF44DE3B-444F-4C33-A5DB-7C86C7621620}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.App", "XOutput.App\XOutput.App.csproj", "{CFE0A593-5D28-4C2D-AE7C-39C5A83A4291}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.AppTests", "XOutput.AppTests\XOutput.AppTests.csproj", "{DF44DE3B-444F-4C33-A5DB-7C86C7621620}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Client", "XOutput.Client\XOutput.Client.csproj", "{50C4CE81-79A6-4DD9-AD5E-A774A3D672F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Emulation", "XOutput.Emulation\XOutput.Emulation.csproj", "{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.Mapping", "XOutput.Mapping\XOutput.Mapping.csproj", "{570B46BC-A10E-4D44-B159-D45A39F056BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOutput.MappingTests", "XOutput.MappingTests\XOutput.MappingTests.csproj", "{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -165,6 +167,30 @@ Global
 		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Release|x64.Build.0 = Release|Any CPU
 		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Release|x86.ActiveCfg = Release|Any CPU
 		{6C8D61B8-CF7A-4E5F-8400-9F09C0ADBB85}.Release|x86.Build.0 = Release|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Debug|x64.Build.0 = Debug|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Debug|x86.Build.0 = Debug|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Release|x64.ActiveCfg = Release|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Release|x64.Build.0 = Release|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Release|x86.ActiveCfg = Release|Any CPU
+		{570B46BC-A10E-4D44-B159-D45A39F056BB}.Release|x86.Build.0 = Release|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Debug|x64.Build.0 = Debug|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Debug|x86.Build.0 = Debug|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Release|x64.ActiveCfg = Release|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Release|x64.Build.0 = Release|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Release|x86.ActiveCfg = Release|Any CPU
+		{CEFB0D52-8168-49F6-B4C8-E7E95F9F98BE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

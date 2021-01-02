@@ -2,8 +2,8 @@ import './index.scss'
 
 import { render } from 'react-dom';
 import { RootElement } from './ui/RootElement';
-import { WebSocketService } from './communication/Websocket';
-import { http } from './communication/Http'; 
+import { WebSocketService } from './communication/websocket';
+import { http } from './communication/http'; 
 import 'typeface-roboto';
 
 const host = window.location.hostname;
@@ -13,9 +13,9 @@ WebSocketService.initialize(host, port);
 const websocket = new WebSocketService();
 
 window.onerror = function(msg, url, line, col) {
-    if (websocket.isReady()) {
+    /*if (websocket.isReady()) {
         websocket.sendDebug(`Error in ${url} at ${line}:${col} ${msg}`);
-    }
+    }*/
 };
 
 function disableResize() {

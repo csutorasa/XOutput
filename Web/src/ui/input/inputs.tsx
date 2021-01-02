@@ -13,7 +13,7 @@ import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { rest, InputDeviceInfoResponse, InputDeviceInformation } from "../../communication/rest";
 import { Link } from "react-router-dom";
-import { Translation } from "../../translation/Translation";
+import { Translation } from "../../translation/translation";
 import { withStyles, Theme } from "@material-ui/core";
 import { StyleGenerator, Styled } from "../../utils";
 import { Async } from "../components/Asnyc";
@@ -64,10 +64,10 @@ class InputsComponent extends Component<InputsProps, InputsState> {
   }
 
   private deviceToIcon(device: InputDeviceInformation) {
-    if (device.name == 'Keyboard') {
+    if (device.id == 'keyboard') {
       return <KeyboardIcon />;
     }
-    if (device.name == 'Mouse') {
+    if (device.id == 'mouse') {
       return <MouseIcon />;
     }
     return <SportsEsportsIcon />;
@@ -83,13 +83,30 @@ class InputsComponent extends Component<InputsProps, InputsState> {
     return name;
   }
 
+  private mapFeatureToChip(feature: string) {
+    const { classes } = this.props;
+    let label;
+    switch (feature) {
+      case 'WindowsApi':
+        label = 'Windows API'
+        break;
+      case 'RawInput':
+        label = 'Raw Input'
+        break;
+      case 'DirectInput':
+        label = 'Direct Input'
+        break;
+    }
+    return <Chip variant='outlined' className={classes.chip} label={label} key={feature} />
+  }
+
   render() {
     const { classes } = this.props;
     return (<>
       <Typography variant='h3'>{Translation.translate("InputDevices")}</Typography>
       <Async task={this.loading}>
         { () =>
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
           {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
             <Paper className={classes.paper}>
               <Grid container>
@@ -102,18 +119,8 @@ class InputsComponent extends Component<InputsProps, InputsState> {
                 </Grid>
               </Grid>
               <div>
-                <Tooltip title={Translation.translate('DPads')}>
-                  <Chip variant='outlined' className={classes.chip} icon={<GamepadIcon />} label={d.dPads} />
-                </Tooltip>
-                <Tooltip title={Translation.translate('Axes')}>
-                  <Chip variant='outlined' className={classes.chip} icon={<ZoomOutMapIcon />} label={d.axes} />
-                </Tooltip>
-                <Tooltip title={Translation.translate('Buttons')}>
-                  <Chip variant='outlined' className={classes.chip} icon={<RadioButtonUncheckedIcon />} label={d.buttons} />
-                </Tooltip>
-                <Tooltip title={Translation.translate('Sliders')}>
-                  <Chip variant='outlined' className={classes.chip} icon={<RadioButtonCheckedIcon />} label={d.sliders} />
-                </Tooltip>
+                { d.activeFeatures.map(f => this.mapFeatureToChip(f))
+                }
               </div>
             </Paper>
           </Grid>)}

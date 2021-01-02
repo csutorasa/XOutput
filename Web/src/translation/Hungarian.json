@@ -20,5 +20,13 @@
     "Test": "Teszt",
     "BigMotor": "Nagy motor",
     "SmallMotor": "Kis motor",
-    "input.forcefeedback.notimplemented": "A rezgő funkció drivere hiányzik vagy korrupt a {0} eszköznél."
+    "input.name": "Név",
+    "input.id": "XOutput azonosító",
+    "input.hardwareid": "Hardware azonosító",
+    "input.hidguardian": "HidGuardian engedélyezése",
+    "input.forcefeedback.notimplemented": "A rezgő funkció drivere hiányzik vagy korrupt a {0} eszköznél.",
+    "input.instance.duplication": "Több eszköz is használja a {0} azonosítót",
+    "hidguardian.registry.noaccess": "Nincs jogosultsága a HidGuardian beállításait a registry-be írni (próbálja adminisztátorként futtatni az alkalmazást)",
+    "version.needsupgrade": "Újabb verzió elérhető: {0}",
+    "version.error": "A legfrissebb verzió lekérdezése sikertelen"
 }

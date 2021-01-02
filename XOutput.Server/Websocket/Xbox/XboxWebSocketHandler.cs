@@ -57,7 +57,7 @@ namespace XOutput.Server.Websocket.Xbox
                 if (handler is XboxInputMessageHandler)
                 {
                     var device = (handler as XboxInputMessageHandler).device;
-                    deviceInfoService.Remove(device);
+                    deviceInfoService.StopAndRemove(device.Id);
                 }
                 handler.Close();
             }

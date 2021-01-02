@@ -6,6 +6,7 @@ namespace XOutput.Core.Threading
 {
     public class ThreadContext
     {
+        public bool Running => !Stopped;
         private bool Stopped => thread == null || thread.ThreadState.HasFlag(ThreadState.Stopped) || thread.ThreadState.HasFlag(ThreadState.Aborted) || thread.ThreadState.HasFlag(ThreadState.Unstarted);
 
         private readonly Thread thread;

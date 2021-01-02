@@ -1,3 +1,4 @@
+![Build XOutput](https://github.com/csutorasa/XOutput/workflows/Build%20XOutput/badge.svg)
 [![Build](https://ci.appveyor.com/api/projects/status/github/csutorasa/XOutput?branch=master&svg=true)](https://ci.appveyor.com/project/csutorasa/xoutput/)
 [![Github All Releases](https://img.shields.io/github/downloads/csutorasa/XOutput/total.svg)](https://github.com/csutorasa/XOutput/releases/)
 [![Download XOutput](https://img.shields.io/sourceforge/dt/xoutput.svg)](https://sourceforge.net/projects/xoutput/files/latest/download)
@@ -19,12 +20,26 @@ Any contribution is welcome, open your [Pull request](https://github.com/csutora
 
 To join the discussion or just say hi in the [discord channel](https://discord.gg/Y628tcp).
 
+This version is currently under development.
+
+| Version                                              | State                                   | Support                                  |
+| ---------------------------------------------------- | --------------------------------------- | ---------------------------------------- |
+| **[4.x](https://github.com/csutorasa/XOutput)**      | **Under development (no releases yet)** | **Active development with new features** |
+| [3.x](https://github.com/csutorasa/XOutput/tree/3.x) | Stable                                  | Bugfixes only                            |
+| 2.x                                                  | Old version (superseeded by 3.x)        | Expired at Mar 7 2018                    |
+| 1.x                                                  | Old version (superseeded by 3.x)        | Expired at Mar 7 2018                    |
+
 ## How to install
+
+### Install emulation software
 
 Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, legacy)
 
-  a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases) (Recommended)
-  b) Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
+a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases) (recommended)
+
+b) Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
+
+### Install dependencies
 
 Install:
 
@@ -35,7 +50,7 @@ Install:
 -   [.Net Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42642) if you do not have Windows 10
 -   if you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
-Download the application:
+### Download XOutput
 
 -   Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
 -   Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
@@ -94,7 +109,7 @@ Add affected device manually (use this method only, if you want to hide non reco
 3.  Open Device Manager, find your input device and open properties
 4.  Go to details, select `Hardware ID` and copy string that looks like `HID\VID_046D&PID_C219&REV_0200` and `HID\VID_046D&PID_C219`
 5.  Paste the values into `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters`
-6.  Reconnect devices
+6.  Reconnect devices or reboot PC
 
 Manage process whitelist manually (use this method only, if you want to use HidGuardian for other applications):
 
@@ -103,21 +118,46 @@ Manage process whitelist manually (use this method only, if you want to use HidG
 3.  Remember the value of the PID column.
 4.  Run `regedit` and go to `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters\Whitelist`
 5.  Create subkey with the PID you found before.
+## 4.x Information
 
-## Command line arguments
+The 4.x version is built with .NET 5, you will need to [download it](https://dotnet.microsoft.com/download).
 
--   `--minimized` - starts the application minimized to tray
+| Action                         | Required dependency  |
+| ------------------------------ | -------------------- |
+| Running the server application | ASP.NET Core Runtime |
+| Running the reader application | .NET Desktop Runtime |
+| Building the application       | SDK                  |
 
-### Deadzone
+However these runtimes and SDKs are cross platform the application is only compatible with Windows.
 
-If your analogue stick isn't in perfect condition, you may have what is called a deadzone, which means that a part of the axis isn't working right, usually it's the center part, syndromes of this are: wrong center position and unwanted movement of the camera, character, etc. To solve apply a bit of deadzone in the mapping settings, how much depends on the device in question.
+### Server application
 
-## Diagnostics
+The server application is responsible for:
 
-XOutput has a diagnostics screen. A few tests are run to check if the application is working correctly.
+- collecting input from various sources
+- mapping these sources
+- emulating devices
+- configuring all the above
 
-| Image                                    | Meaning                                                                                                 |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| green circle with a tick                 | Everything is optimal.                                                                                  |
-| yellow triangle with an exclamation mark | The experience may be sub-optimal. Some functions may not work, but the application is functional.      |
-| red circle with a minus sign             | Something is not working, the application cannot function properly. Some core features may be unusable. |
+It is recommended to create a Windows task from the server,
+so it can start at computer startup (with Administrator priviledges without UAC).
+Help can be found in the [bin directory](./bin).
+
+Server application might write the registry, therefore it needs administrator prividledges.
+Alternatively it can be started without admin access, but then when it tries to write the registry it will prompt UAC.
+
+### Reader application
+
+The reader application is a GUI Windows application which can read input values.
+
+| Interface    | Devices                       | Requirements                            |
+| ------------ | ----------------------------- | --------------------------------------- |
+| Windows API  | Mouse and keyboard            | None                                    |
+| Raw input    | Mouse, keyboard and joysticks | USB device with drivers                 |
+| Direct input | Joysticks                     | DirectX compatible devices with drivers |
+| XInput       | Joysticks                     | XInput compatible devices               |
+
+### Client project
+
+The client project enabled developers to create a new type of input.
+It can be used to integrate with the server application.

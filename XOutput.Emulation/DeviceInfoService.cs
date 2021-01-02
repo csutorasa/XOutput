@@ -6,7 +6,7 @@ namespace XOutput.Emulation
 {
     public class DeviceInfoService
     {
-        private List<NetworkDeviceInfo> connectedDevices = new List<NetworkDeviceInfo>();
+        private readonly List<NetworkDeviceInfo> connectedDevices = new List<NetworkDeviceInfo>();
 
         [ResolverMethod]
         public DeviceInfoService()
@@ -17,11 +17,6 @@ namespace XOutput.Emulation
         public void Add(NetworkDeviceInfo deviceInfo)
         {
             connectedDevices.Add(deviceInfo);
-        }
-
-        public void Remove(IDevice device)
-        {
-            connectedDevices.RemoveAll(di => di.Device == device);
         }
 
         public void StopAndRemove(string id)

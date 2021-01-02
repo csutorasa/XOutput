@@ -1,7 +1,6 @@
 import { MessageBase } from "./message";
 
 export class WebSocketService {
-    private websocket: WebSocket;
     private static globalHost: string;
     private static globalPort: string | number;
     private host: string;
@@ -12,18 +11,19 @@ export class WebSocketService {
         this.globalPort = port;
     }
 
-    connect(path: string, onMessage: (data: MessageBase) => void): Promise<void> {
+    connect(path: string, onMessage: (data: MessageBase) => void): Promise<WebSocketSession> {
         this.host = WebSocketService.globalHost;
         this.port = WebSocketService.globalPort;
         return new Promise((resolve, reject) => {
-            this.websocket = new WebSocket(`ws://${this.host}:${this.port}/ws/${path}`);
-            this.websocket.onopen = (event) => {
-                resolve();
+            const url = `ws://${this.host}:${this.port}/ws/${path}`;
+            const websocket = new WebSocket(url);
+            websocket.onopen = (event) => {
+                resolve(new WebSocketSession(websocket, url));
                 this.onOpen(event);
             };
-            this.websocket.onerror = (event) => this.onError(event);
-            this.websocket.onclose = (event) => this.onClose(event as CloseEvent);
-            this.websocket.onmessage = (event: MessageEvent) => {
+            websocket.onerror = (event) => this.onError(event);
+            websocket.onclose = (event) => this.onClose(event as CloseEvent);
+            websocket.onmessage = (event: MessageEvent) => {
                 this.onMessage(event);
                 const data = JSON.parse(event.data);
                 onMessage(data);
@@ -36,16 +36,19 @@ export class WebSocketService {
     private onError(event: Event): void {
         const message: string = (<any>event).message;
         console.error(message);
-        if (this.isReady()) {
-            this.sendDebug(message);
-        }
     }
     private onClose(event: CloseEvent): void {
         console.log("Disconnected from " + this.host + ":" + this.port);
-        this.websocket = null;
     }
     private onMessage(event: MessageEvent): void {
         
+    }
+}
+
+export class WebSocketSession {
+
+    constructor(private websocket: WebSocket, private url: string) {
+
     }
     close(): void {
         this.websocket.close();

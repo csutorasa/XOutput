@@ -1,5 +1,5 @@
 import React, { ReactNode, Component } from "react";
-import { Translation } from "../translation/Translation";
+import { Translation } from "../translation/translation";
 
 export interface TranslatedTextProps {
     text?: string;

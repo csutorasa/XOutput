@@ -10,26 +10,34 @@ namespace XOutput.Core.Resources
     {
         public static Stream GetResourceStream(string resource)
         {
-            return GetResourceStream(Assembly.GetExecutingAssembly(), resource);
+            return GetResourceStream(resource, AppDomain.CurrentDomain.GetAssemblies());
         }
 
         public static string GetResourceString(string resource)
         {
-            return GetResourceString(Assembly.GetExecutingAssembly(), resource, Encoding.UTF8);
+            return GetResourceString(resource, Encoding.UTF8, AppDomain.CurrentDomain.GetAssemblies());
 
         }
 
-        public static string GetResourceString(Assembly assembly, string resource, Encoding encoding)
+        public static string GetResourceString(string resource, Encoding encoding, params Assembly[] assemblies)
         {
-            using (var stream = new StreamReader(GetResourceStream(assembly, resource), encoding))
+            using (var stream = new StreamReader(GetResourceStream(resource, assemblies), encoding))
             {
                 return stream.ReadToEnd();
             }
         }
 
-        public static Stream GetResourceStream(Assembly assembly, string resource)
+        public static Stream GetResourceStream(string resource, params Assembly[] assemblies)
         {
-            return assembly.GetManifestResourceStream(resource);
+            foreach (var assembly in assemblies)
+            {
+                var stream = assembly.GetManifestResourceStream(resource);
+                if (stream != null)
+                {
+                    return stream;
+                }
+            }
+            throw new ArgumentException($"Cannot find resource {resource}");
         }
     }
 }

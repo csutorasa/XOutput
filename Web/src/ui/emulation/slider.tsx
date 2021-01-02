@@ -1,5 +1,5 @@
 import React, { CSSProperties, TouchEvent, MouseEvent, Touch, RefObject } from "react";
-import { WebSocketService } from "../../communication/Websocket";
+import { WebSocketSession } from "../../communication/websocket";
 import { AbstractInputFlow, UIInputEvent } from "../../events/base";
 import { CommonProps } from "./common";
 import { ButtonFlow } from "./button";
@@ -7,7 +7,7 @@ import { ButtonFlow } from "./button";
 export class SliderFlow extends AbstractInputFlow<number> {
     private key: string;
 
-    constructor(communication: WebSocketService, element: HTMLElement, input: string, private inverted: boolean, private emulator: string) {
+    constructor(communication: WebSocketSession, element: HTMLElement, input: string, private inverted: boolean, private emulator: string) {
         super(communication, element);
         this.key = input;
     }

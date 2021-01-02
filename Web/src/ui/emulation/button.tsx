@@ -1,5 +1,5 @@
 import React, { CSSProperties, MouseEvent, RefObject, TouchEvent, Touch } from "react";
-import { WebSocketService } from "../../communication/Websocket";
+import { WebSocketSession } from "../../communication/websocket";
 import { CommonProps } from "./common";
 import { AbstractInputFlow, UIInputEvent } from "../../events/base";
 
@@ -9,7 +9,7 @@ export class ButtonFlow extends AbstractInputFlow<ButtonValue> {
     private key: string;
     private fillContainer: HTMLElement;
 
-    constructor(communication: WebSocketService, element: HTMLElement, input: string, private emulator: string) {
+    constructor(communication: WebSocketSession, element: HTMLElement, input: string, private emulator: string) {
         super(communication, element);
         this.key = input;
         if (this.key == 'L2' || this.key == 'R2') {

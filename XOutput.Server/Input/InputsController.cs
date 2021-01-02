@@ -4,25 +4,21 @@ using System.Linq;
 using XOutput.Api.Devices;
 using XOutput.Api.Input;
 using XOutput.Core.DependencyInjection;
-using XOutput.Devices;
-using XOutput.Devices.Input;
-using XOutput.Server.Emulation.HidGuardian;
+using XOutput.Mapping.Input;
 
 namespace XOutput.Server.Input
 {
     public class InputsController : Controller
     {
-        private readonly InputDeviceManager inputDeviceManager;
-        private readonly HidGuardianManager hidGuardianManager;
+        private readonly MappableDevices inputDeviceManager;
 
         [ResolverMethod]
-        public InputsController(InputDeviceManager inputDeviceManager, HidGuardianManager hidGuardianManager)
+        public InputsController(MappableDevices inputDeviceManager)
         {
             this.inputDeviceManager = inputDeviceManager;
-            this.hidGuardianManager = hidGuardianManager;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("/api/inputs")]
         public ActionResult<IEnumerable<InputDeviceInfo>> ListInputDevices()
         {
@@ -32,29 +28,39 @@ namespace XOutput.Server.Input
             {
                 Id = d.UniqueId,
                 Name = d.DisplayName,
-                Axes = d.Sources.Where(s => s.IsAxis).Count(),
-                DPads = d.Sources.Where(s => s.IsDPad).Count() / 4,
-                Buttons = d.Sources.Where(s => s.IsButton).Count(),
-                Sliders = d.Sources.Where(s => s.IsSlider).Count(),
+                ActiveFeatures = d.GetActiveFeatures(),
             }).ToList();
         }
 
         [HttpGet]
         [Route("/api/inputs/{id}")]
-        public ActionResult<InputDeviceDetails> InputDeviceDetails(string id)
+        public ActionResult<InputDeviceDetailsMessage> InputDeviceDetails(string id)
         {
             var inputDevice = inputDeviceManager.FindInputDevice(id);
             if (inputDevice == null)
             {
                 return NotFound();
             }
-            return new InputDeviceDetails
+            return new InputDeviceDetailsMessage
             {
                 Id = inputDevice.UniqueId,
                 Name = inputDevice.DisplayName,
                 HardwareId = inputDevice.HardwareID,
-                Sources = inputDevice.Sources.Select(s => new InputDeviceSource { Offset = s.Offset, Name = s.DisplayName, Type = fromType(s.Type), }).ToList(),
-                ForceFeedbacks = inputDevice.ForceFeedbacks.Select(s => new InputForceFeedback { Offset = s.Offset }).ToList(),
+                Inputs = inputDevice.GetInputDevices().Select(d => new InputDeviceInputDetails
+                {
+                    Running = d.Running,
+                    Sources = d.Sources.Select(s => new InputDeviceSource
+                    {
+                        Offset = s.Offset,
+                        Name = s.DisplayName,
+                        Type = FromType(s.Type),
+                    }).ToList(),
+                    ForceFeedbacks = d.ForceFeedbacks.Select(s => new InputForceFeedback
+                    {
+                        Offset = s.Offset
+                    }).ToList(),
+                    InputMethod = d.InputMethod.ToString(),
+                }).ToList(),
             };
         }
 
@@ -69,117 +75,42 @@ namespace XOutput.Server.Input
             }
             return new InputConfiguration
             {
-                BigMotors = inputDevice.InputConfiguration?.BigMotors,
-                SmallMotors = inputDevice.InputConfiguration?.SmallMotors,
+
             };
         }
 
-        [HttpPut]
-        [Route("/api/inputs/{id}/configuration/big/{offset}")]
-        public ActionResult AddBigMotor(string id, int offset)
+        [HttpPost]
+        [Route("/api/inputs/{id}/{method}/{offset}/deadzone")]
+        public ActionResult SetDeadzone(string id, InputDeviceMethod method, int offset, [FromBody] double deadzone)
         {
-            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
-            {
-                config.BigMotors.Add(offset);
-            });
-            if (!found)
+            var device = inputDeviceManager.FindInputDevice(id);
+            if (device == null)
             {
                 return NotFound("Device not found");
             }
-            return NoContent();
-        }
-
-        [HttpDelete]
-        [Route("/api/inputs/{id}/configuration/big/{offset}")]
-        public ActionResult RemoveBigMotor(string id, int offset)
-        {
-            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
-            {
-                config.BigMotors = config.BigMotors.Where(o => o != offset).ToList();
-            });
-            if (!found)
-            {
-                return NotFound("Device not found");
-            }
-            return NoContent();
-        }
-
-        [HttpPut]
-        [Route("/api/inputs/{id}/configuration/small/{offset}")]
-        public ActionResult AddSmallMotor(string id, int offset)
-        {
-            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
-            {
-                config.SmallMotors.Add(offset);
-            });
-            if (!found)
-            {
-                return NotFound("Device not found");
-            }
-            return NoContent();
-        }
-
-        [HttpDelete]
-        [Route("/api/inputs/{id}/configuration/small/{offset}")]
-        public ActionResult RemoveSmallMotor(string id, int offset)
-        {
-            var found = inputDeviceManager.ChangeInputConfiguration(id, config =>
-            {
-                config.SmallMotors = config.SmallMotors.Where(o => o != offset).ToList();
-            });
-            if (!found)
-            {
-                return NotFound("Device not found");
-            }
-            return NoContent();
-        }
-
-        [HttpGet]
-        [Route("/api/inputs/{id}/hidguardian")]
-        public ActionResult<HidGuardianInfo> GetHidGuardian(string id)
-        {
-            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            var inputDevice = device.FindInput(method);
             if (inputDevice == null)
             {
-                return NotFound("Device not found");
+                return NotFound("Input device method not found");
             }
-            return new HidGuardianInfo {
-                Available = inputDevice.HardwareID != null && hidGuardianManager.Installed,
-                Active = inputDevice.HardwareID != null && hidGuardianManager.IsAffected(inputDevice.HardwareID),
-            };
-        }
-
-        [HttpPut]
-        [Route("/api/inputs/{id}/hidguardian")]
-        public ActionResult EnableHidGuardian(string id, InputConfiguration config)
-        {
-            var inputDevice = inputDeviceManager.FindInputDevice(id);
-            if (inputDevice == null)
+            var source = inputDevice.FindSource(offset);
+            if (source == null)
             {
-                return NotFound("Device not found");
+                return NotFound("ForceFeedback target not found");
             }
-            if (inputDevice.HardwareID == null)
+            inputDeviceManager.ChangeInputConfiguration(id, method, (inputDevice) =>
             {
-                return NotFound("Hardware ID not found");
-            }
-            hidGuardianManager.AddAffectedDevice(inputDevice.HardwareID);
-            return NoContent();
-        }
-
-        [HttpDelete]
-        [Route("/api/inputs/{id}/hidguardian")]
-        public ActionResult DisableHidGuardian(string id, InputConfiguration config)
-        {
-            var inputDevice = inputDeviceManager.FindInputDevice(id);
-            if (inputDevice == null)
-            {
-                return NotFound("Device not found");
-            }
-            if (inputDevice.HardwareID == null)
-            {
-                return NotFound("Hardware ID not found");
-            }
-            hidGuardianManager.RemoveAffectedDevice(inputDevice.HardwareID);
+                var config = inputDevice.InputConfiguration.Sources.FirstOrDefault(s => s.Offset == offset);
+                if (config == null)
+                {
+                    config = new InputSourceConfig
+                    {
+                        Offset = offset,
+                    };
+                    inputDevice.InputConfiguration.Sources.Add(config);
+                }
+                config.Deadzone = deadzone;
+            });
             return NoContent();
         }
 
@@ -192,7 +123,7 @@ namespace XOutput.Server.Input
             {
                 return NotFound("Device not found");
             }
-            var target = inputDevice.FindTarget(offset);
+            var target = inputDevice.FindInput(InputDeviceMethod.DirectInput)?.FindTarget(offset);
             if (target == null)
             {
                 return NotFound("ForceFeedback target not found");
@@ -210,7 +141,7 @@ namespace XOutput.Server.Input
             {
                 return NotFound("Device not found");
             }
-            var target = inputDevice.FindTarget(offset);
+            var target = inputDevice.FindInput(InputDeviceMethod.DirectInput)?.FindTarget(offset);
             if (target == null)
             {
                 return NotFound("ForceFeedback target not found");
@@ -219,7 +150,43 @@ namespace XOutput.Server.Input
             return NoContent();
         }
 
-        private string fromType(SourceTypes sourceTypes)
+        [HttpPut]
+        [Route("/api/inputs/{id}/{method}/running")]
+        public ActionResult StartInputDevice(string id, InputDeviceMethod method)
+        {
+            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            if (inputDevice == null)
+            {
+                return NotFound("Device not found");
+            }
+            var target = inputDevice.FindInput(method);
+            if (target == null)
+            {
+                return NotFound("Input device not found");
+            }
+            target.Start();
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("/api/inputs/{id}/{method}/running")]
+        public ActionResult StopForceFeedback(string id, InputDeviceMethod method)
+        {
+            var inputDevice = inputDeviceManager.FindInputDevice(id);
+            if (inputDevice == null)
+            {
+                return NotFound("Device not found");
+            }
+            var target = inputDevice.FindInput(method);
+            if (target == null)
+            {
+                return NotFound("Input device not found");
+            }
+            target.Stop();
+            return NoContent();
+        }
+
+        private string FromType(SourceTypes sourceTypes)
         {
             if (sourceTypes.IsAxis())
             {
@@ -238,6 +205,6 @@ namespace XOutput.Server.Input
                 return "slider";
             }
             return null;
-        }
+        }*/
     }
 }

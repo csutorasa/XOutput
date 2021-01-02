@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>library</OutputType>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
     <RootNamespace>XOutput.Core</RootNamespace>
     <AssemblyName>XOutput.Core</AssemblyName>
     <Authors>Ármin Csutorás</Authors>
@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.7.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.6.8" />
   </ItemGroup>
 

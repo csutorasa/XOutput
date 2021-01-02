@@ -1,27 +1,20 @@
-﻿using Newtonsoft.Json;
-using System.IO;
-using System.Text;
+﻿using System.IO;
+using System.Text.Json;
 using XOutput.Api.Message;
 
 namespace XOutput.Api.Serialization
 {
     public class MessageWriter
     {
-        private readonly JsonSerializer jsonSerializer = new JsonSerializer();
-
-        public string GetString(MessageBase message)
+        public string GetString<T>(T message) where T: MessageBase
         {
-            return JsonConvert.SerializeObject(message);
+            return JsonSerializer.Serialize(message);
         }
 
-        public byte[] GetBytes(MessageBase message, Encoding encoding)
+        public void Write(MessageBase message, Stream output)
         {
-            return encoding.GetBytes(GetString(message));
-        }
-
-        public void Write(MessageBase message, StreamWriter output)
-        {
-            jsonSerializer.Serialize(output, message);
+            var bytes = JsonSerializer.SerializeToUtf8Bytes(message);
+            output.Write(bytes);
             output.Flush();
         }
     }
