@@ -215,7 +215,6 @@ namespace XOutput.UI.Windows
 
         public void RefreshGameControllers()
         {
-            logger.Debug("REFRESH");
             IEnumerable<SharpDX.DirectInput.DeviceInstance> instances = directInputDevices.GetInputDevices(Model.AllDevices);
 
             bool changed = false;
