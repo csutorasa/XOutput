@@ -96,40 +96,7 @@ namespace XOutput.Devices.Input.DirectInput
             {
                 if (deviceInstance.IsHumanInterfaceDevice)
                 {
-                    string path = joystick.Properties.InterfacePath;
-                    var match = hidRegex.Match(path);
-                    if (match.Success)
-                    {
-                        string key = $"SYSTEM\\CurrentControlSet\\Enum\\USB\\{match.Groups[2].Value}";
-                        if (RegistryModifier.KeyExists(Registry.LocalMachine, key))
-                        {
-                            foreach (string subkey in RegistryModifier.GetSubKeyNames(Registry.LocalMachine, key))
-                            {
-                                string parentIdPrefix = (string) RegistryModifier.GetValue(Registry.LocalMachine, $"{key}\\{subkey}", "ParentIdPrefix");
-                                if (parentIdPrefix == null || !match.Groups[3].Value.StartsWith(parentIdPrefix))
-                                {
-                                    continue;
-                                }
-                                object registryHardwareIds = RegistryModifier.GetValue(Registry.LocalMachine, $"{key}\\{subkey}", "HardwareID");
-                                if (registryHardwareIds is string[])
-                                {
-                                    return (registryHardwareIds as string[]).Select(id => id.Replace("USB\\", "HID\\")).FirstOrDefault();
-                                }
-                            }
-                        }
-                        return string.Join("\\", new string[] { match.Groups[1].Value, match.Groups[2].Value, match.Groups[3].Value }).ToUpper();
-                    }
-                    if (path.Contains("hid#"))
-                    {
-                        path = path.Substring(path.IndexOf("hid#"));
-                        path = path.Replace('#', '\\');
-                        int first = path.IndexOf('\\');
-                        int second = path.IndexOf('\\', first + 1);
-                        if (second > 0)
-                        {
-                            return path.Remove(second).ToUpper();
-                        }
-                    }
+                    return IdHelper.GetHardwareId(joystick.Properties.InterfacePath);
                 }
                 return null;
             }
