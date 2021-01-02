@@ -1,0 +1,10 @@
+{
+	"MainMenu": {
+		"General": "General",
+		"WindowsApiKeyboard": "Windows API keyboard",
+		"WindowsApiMouse": "Windows API mouse",
+		"DirectInput": "Direct input",
+		"RawInput": "Raw input",
+		"XInput": "XInput"
+	}
+}

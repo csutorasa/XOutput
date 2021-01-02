@@ -3,25 +3,44 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
+using XOutput.App.Configuration;
 using XOutput.App.Devices.Input;
+using XOutput.App.UI.View;
+using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.External;
 using XOutput.Core.Threading;
 
 namespace XOutput.App.UI
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IViewBase<MainWindowViewModel, MainWindowModel>
     {
+        public MainWindowViewModel ViewModel => viewModel;
+
+        private readonly MainWindowViewModel viewModel;
         private readonly CommandRunner commandRunner;
+        private readonly ConfigurationManager configurationManager;
+
+        private AppConfig appConfig;
 
         [ResolverMethod]
-        public MainWindow(CommandRunner commandRunner, InputDeviceManager inputDeviceManager)
+        public MainWindow(MainWindowViewModel viewModel, CommandRunner commandRunner, ConfigurationManager configurationManager, InputDeviceManager inputDeviceManager)
         {
+            this.viewModel = viewModel;
             this.commandRunner = commandRunner;
+            this.configurationManager = configurationManager;
+            DataContext = viewModel;
+            viewModel.Model.MainContent = new TextBox();
             InitializeComponent();
             var helper = new WindowInteropHelper(this);
             WindowHandleStore.Handle = helper.EnsureHandle();
+            appConfig = configurationManager.Load("conf/app", () => new AppConfig());
+            if (!appConfig.Minimized)
+            {
+                Show();
+            }
         }
 
         private async void OpenClick(object sender, RoutedEventArgs e)
@@ -56,6 +75,39 @@ namespace XOutput.App.UI
         private void ExitClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var item = (sender as TreeView).SelectedItem as TreeViewItem;
+            if (item == GeneralTreeViewItem)
+            {
+                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<GeneralPanel>();
+            }
+            else if (item == WindowsApiKeyboardTreeViewItem)
+            {
+                ViewModel.Model.MainContent = null;
+            }
+            else if (item == WindowsApiMouseTreeViewItem)
+            {
+                ViewModel.Model.MainContent = null;
+            }
+            else if (item == DirectInputTreeViewItem)
+            {
+                ViewModel.Model.MainContent = null;
+            }
+            else if (item == RawInputTreeViewItem)
+            {
+                ViewModel.Model.MainContent = null;
+            }
+            else if (item == XInputTreeViewItem)
+            {
+                ViewModel.Model.MainContent = null;
+            }
+            else
+            {
+                
+            }
         }
     }
 }

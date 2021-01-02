@@ -1,0 +1,10 @@
+{
+	"MainMenu": {
+		"General": "Általános",
+		"WindowsApiKeyboard": "Windows API billentyűzet",
+		"WindowsApiMouse": "Windows API egér",
+		"DirectInput": "Direct input",
+		"RawInput": "Raw input",
+		"XInput": "XInput"
+	}
+}

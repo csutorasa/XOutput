@@ -22,12 +22,18 @@
   <ItemGroup>
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
+    <ProjectReference Include="..\XOutput.Client\XOutput.Client.csproj" />
   </ItemGroup>
   
   <ItemGroup>
     <Resource Include="Resources\icon.ico" />
     <Content Remove="nlog.config" />
     <EmbeddedResource Include="nlog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Resources\Translations\*.json" />
+    <EmbeddedResource Include="Resources\Translations\*.json" />
   </ItemGroup>
   
   <ItemGroup>

@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using System.Xml;
 using XOutput.App.Devices;
 using XOutput.App.UI;
+using XOutput.Client;
 using XOutput.Core;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Notifications;
@@ -45,8 +46,9 @@ namespace XOutput.App
 
             var globalContext = ApplicationContext.Global;
             globalContext.AddFromConfiguration(typeof(CoreConfiguration));
+            globalContext.AddFromConfiguration(typeof(ClientConfiguration));
             globalContext.AddFromConfiguration(typeof(AppConfiguration));
-            globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Api", "XOutput.App"));
+            globalContext.Discover(GetOrLoadAssemblies("XOutput.Core", "XOutput.Api", "XOutput.Client", "XOutput.App"));
             logger.Info("Configuration classes are loaded");
 
             var mainWindow = ApplicationContext.Global.Resolve<MainWindow>();
