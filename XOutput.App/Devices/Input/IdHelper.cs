@@ -13,7 +13,8 @@ namespace XOutput.App.Devices.Input
     {
 
         private static readonly Regex idRegex = new Regex("[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}");
-        private static readonly Regex hidRegex = new Regex("(hid)#([^#]+)#([^#]+)");
+        private static readonly Regex hidRegex = new Regex("(hid)#([^#]+)#[^#]+");
+        private static readonly Regex hidForRegistryRegex = new Regex("hid#(vid_[0-9a-f]{4}&pid_[0-9a-f]{4})[^#]*#([0-9a-f&]+)");
 
         private static readonly SHA256 sha = SHA256.Create();
         private static Encoding encoding = Encoding.UTF8;
@@ -31,7 +32,7 @@ namespace XOutput.App.Devices.Input
             if (string.IsNullOrEmpty(path)) {
                 return null;
             }
-            var match = hidRegex.Match(path);
+            var match = hidForRegistryRegex.Match(path);
             if (match.Success)
             {
                 string harwareIdFromRegistry = GetHardwareIdFromRegistryWithHidMatch(match);
@@ -39,6 +40,10 @@ namespace XOutput.App.Devices.Input
                 {
                     return harwareIdFromRegistry;
                 }
+            }
+            match = hidRegex.Match(path);
+            if (match.Success)
+            {
                 return GetHardwareIdFromHidMatch(match);
             }
             if (path.Contains("hid#"))
@@ -63,18 +68,18 @@ namespace XOutput.App.Devices.Input
 
         private static string GetHardwareIdFromHidMatch(Match match)
         {
-            return string.Join('\\', new string[] { match.Groups[1].Value, match.Groups[2].Value, match.Groups[3].Value }).ToUpper();
+            return string.Join('\\', new string[] { match.Groups[1].Value, match.Groups[2].Value }).ToUpper();
         }
 
         private string GetHardwareIdFromRegistryWithHidMatch(Match match)
         {
-            string path = $"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\{match.Groups[2].Value}";
+            string path = $"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\{match.Groups[1].Value}";
             if (registryModifierService.KeyExists(path))
             {
                 foreach (string subkey in registryModifierService.GetSubKeyNames(path))
                 {
                     string parentIdPrefix = registryModifierService.GetValue<string>($"{path}\\{subkey}", "ParentIdPrefix");
-                    if (parentIdPrefix == null || !match.Groups[3].Value.StartsWith(parentIdPrefix))
+                    if (parentIdPrefix == null || !match.Groups[2].Value.StartsWith(parentIdPrefix))
                     {
                         continue;
                     }
