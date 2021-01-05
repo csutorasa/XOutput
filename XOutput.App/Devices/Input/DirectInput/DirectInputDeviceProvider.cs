@@ -18,6 +18,25 @@ namespace XOutput.App.Devices.Input.DirectInput
 
         public event DeviceConnectedHandler Connected;
         public event DeviceDisconnectedHandler Disconnected;
+        public bool Enabled
+        {
+            get => enabled;
+            set
+            {
+                if (value != enabled)
+                {
+                    enabled = value;
+                    if (enabled)
+                    {
+                        Start();
+                    }
+                    else
+                    {
+                        Stop();
+                    }
+                }
+            }
+        }
 
         private readonly IgnoredDeviceService ignoredDeviceService;
         private readonly InputConfigManager inputConfigManager;
@@ -26,6 +45,7 @@ namespace XOutput.App.Devices.Input.DirectInput
         private readonly SharpDX.DirectInput.DirectInput directInput = new SharpDX.DirectInput.DirectInput();
         private readonly List<IInputDevice> currentDevices = new List<IInputDevice>();
         private readonly object lockObject = new object();
+        private bool enabled = false;
         private bool disposed = false;
         private bool allDevices = false;
 
@@ -156,6 +176,17 @@ namespace XOutput.App.Devices.Input.DirectInput
                 return currentDevices;
             }
         }
+
+        private void Start()
+        {
+
+        }
+
+        private void Stop()
+        {
+
+        }
+
         public void Dispose()
         {
             Dispose(true);

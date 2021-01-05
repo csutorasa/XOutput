@@ -7,6 +7,7 @@ namespace XOutput.App.Devices.Input
     {
         event DeviceConnectedHandler Connected;
         event DeviceDisconnectedHandler Disconnected;
+        bool Enabled { get; set; }
         void SearchDevices();
         IEnumerable<IInputDevice> GetActiveDevices();
     }

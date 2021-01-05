@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -36,6 +37,7 @@ namespace XOutput.App.UI
             InitializeComponent();
             var helper = new WindowInteropHelper(this);
             WindowHandleStore.Handle = helper.EnsureHandle();
+            ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<GeneralPanel>();
             appConfig = configurationManager.Load("conf/app", () => new AppConfig());
             if (!appConfig.Minimized)
             {
@@ -86,27 +88,27 @@ namespace XOutput.App.UI
             }
             else if (item == WindowsApiKeyboardTreeViewItem)
             {
-                ViewModel.Model.MainContent = null;
+                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<WindowsApiKeyboardPanel>();
             }
             else if (item == WindowsApiMouseTreeViewItem)
             {
-                ViewModel.Model.MainContent = null;
+                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<WindowsApiMousePanel>();
             }
             else if (item == DirectInputTreeViewItem)
             {
-                ViewModel.Model.MainContent = null;
+                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<DirectInputPanel>();
             }
             else if (item == RawInputTreeViewItem)
             {
-                ViewModel.Model.MainContent = null;
+                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<RawInputPanel>();
             }
             else if (item == XInputTreeViewItem)
             {
-                ViewModel.Model.MainContent = null;
+                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<XInputPanel>();
             }
             else
             {
-                
+                throw new ArgumentException(nameof(sender));
             }
         }
     }

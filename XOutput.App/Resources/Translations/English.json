@@ -6,5 +6,17 @@
 		"DirectInput": "Direct input",
 		"RawInput": "Raw input",
 		"XInput": "XInput"
+	},
+	"General": {
+		"Title": "General settings",
+		"Language": "Language"
+	},
+	"WindowsApiMouse": {
+		"Title": "Windows API mouse",
+		"Enabled": "Enabled"
+	},
+	"WindowsApiKeyboard": {
+		"Title": "Windows API keyboard",
+		"Enabled": "Enabled"
 	}
 }

@@ -30,7 +30,7 @@ namespace XOutput.App
             string exePath = Assembly.GetExecutingAssembly().Location;
             string cwd = Path.GetDirectoryName(exePath);
             Directory.SetCurrentDirectory(cwd);
-            this.appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+            appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -70,6 +70,8 @@ namespace XOutput.App
                 }
             }
             CheckUpdate(globalContext.Resolve<UpdateChecker>(), notificationService);
+            var translationService = globalContext.Resolve<TranslationService>();
+            translationService.Load("English");
         }
 
         private static void SetLoggerConfiguration()

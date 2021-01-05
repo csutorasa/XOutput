@@ -16,7 +16,7 @@ namespace XOutput.App.UI
         [ResolverMethod]
         public TranslationService()
         {
-            Load("English");
+
         }
 
         public string[] GetAvailableLanguages()
@@ -41,6 +41,7 @@ namespace XOutput.App.UI
                         data.Clear();
                         Traverse("", translation);
                     }
+                    TranslationModel.Instance.Language = language;
                     return true;
                 }
             }

@@ -6,6 +6,7 @@ namespace XOutput.App.UI
     {
         private readonly M model;
         public M Model => model;
+        public TranslationModel Translation => TranslationModel.Instance;
 
         protected ViewModelBase(M model)
         {

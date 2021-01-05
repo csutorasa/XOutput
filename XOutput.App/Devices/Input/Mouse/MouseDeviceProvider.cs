@@ -1,7 +1,6 @@
 ﻿using NLog;
 using System;
 using System.Collections.Generic;
-using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.App.Devices.Input.Mouse
@@ -13,39 +12,53 @@ namespace XOutput.App.Devices.Input.Mouse
 
         public event DeviceConnectedHandler Connected;
         public event DeviceDisconnectedHandler Disconnected;
+        public bool Enabled
+        {
+            get => enabled;
+            set
+            {
+                if (value != enabled)
+                {
+                    enabled = value;
+                    if (enabled)
+                    {
+                        device.Start();
+                    }
+                    else
+                    {
+                        device.Stop();
+                    }
+                }
+            }
+        }
 
-        private readonly InputConfigManager inputConfigManager;
         private readonly MouseHook hook;
+        private readonly MouseDevice device;
+        private bool enabled = false;
         private bool disposed = false;
-        private MouseDevice device;
 
         [ResolverMethod]
         public MouseDeviceProvider(InputConfigManager inputConfigManager, MouseHook hook)
         {
             this.hook = hook;
-            this.inputConfigManager = inputConfigManager;
+            device = new MouseDevice(inputConfigManager, hook);
+            var config = inputConfigManager.LoadConfig(device);
+            device.InputConfiguration = config;
+            if (config.Autostart)
+            {
+                enabled = true;
+                device.Start();
+            }
+            Connected?.Invoke(this, new DeviceConnectedEventArgs(device));
         }
 
         public void SearchDevices()
         {
-            if (device == null)
-            {
-                device = new MouseDevice(inputConfigManager, hook);
-                var config = inputConfigManager.LoadConfig(device);
-                device.InputConfiguration = config;
-                if (config.Autostart) {
-                    device.Start();
-                }
-                Connected?.Invoke(this, new DeviceConnectedEventArgs(device));
-            }
+
         }
 
         public IEnumerable<IInputDevice> GetActiveDevices()
         {
-            if (device == null)
-            {
-                return new IInputDevice[] { };
-            }
             return new IInputDevice[] { device };
         }
 
@@ -63,10 +76,7 @@ namespace XOutput.App.Devices.Input.Mouse
             }
             if (disposing)
             {
-                if (device != null)
-                {
-                    device.Dispose();
-                }
+                device.Dispose();
                 hook.Dispose();
             }
             disposed = true;

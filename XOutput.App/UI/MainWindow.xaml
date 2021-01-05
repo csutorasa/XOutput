@@ -6,6 +6,7 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:XOutput.App.UI"
         xmlns:converter="clr-namespace:XOutput.App.UI.Converter"
+        Title="XOutput"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local:MainWindowModel, IsDesignTimeCreatable=False}">
     <Grid>
@@ -23,44 +24,39 @@
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
         <TreeView SelectedItemChanged="TreeView_SelectedItemChanged">
-            <TreeViewItem Header="{Binding Converter={StaticResource Translator}, ConverterParameter='MainMenu.General'}" Name="GeneralTreeViewItem"/>
+            <TreeViewItem Header="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='MainMenu.General'}" Name="GeneralTreeViewItem"/>
             <TreeViewItem Name="WindowsApiKeyboardTreeViewItem">
                 <TreeViewItem.Header>
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding Converter={StaticResource Translator}, ConverterParameter='MainMenu.WindowsApiKeyboard'}"/>
-                        <Ellipse Width="10" Height="10" Fill="Green" Margin="5,0,0,0" />
+                        <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='MainMenu.WindowsApiKeyboard'}"/>
                     </StackPanel>
                 </TreeViewItem.Header>
             </TreeViewItem>
             <TreeViewItem Name="WindowsApiMouseTreeViewItem">
                 <TreeViewItem.Header>
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding Converter={StaticResource Translator}, ConverterParameter='MainMenu.WindowsApiMouse'}"/>
-                        <Ellipse Width="10" Height="10" Fill="Green" Margin="5,0,0,0" />
+                        <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='MainMenu.WindowsApiMouse'}"/>
                     </StackPanel>
                 </TreeViewItem.Header>
             </TreeViewItem>
             <TreeViewItem Name="DirectInputTreeViewItem">
                 <TreeViewItem.Header>
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding Converter={StaticResource Translator}, ConverterParameter='MainMenu.DirectInput'}"/>
-                        <Ellipse Width="10" Height="10" Fill="Green" Margin="5,0,0,0" />
+                        <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='MainMenu.DirectInput'}"/>
                     </StackPanel>
                 </TreeViewItem.Header>
             </TreeViewItem>
             <TreeViewItem Name="RawInputTreeViewItem">
                 <TreeViewItem.Header>
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding Converter={StaticResource Translator}, ConverterParameter='MainMenu.RawInput'}"/>
-                        <Ellipse Width="10" Height="10" Fill="Green" Margin="5,0,0,0" />
+                        <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='MainMenu.RawInput'}"/>
                     </StackPanel>
                 </TreeViewItem.Header>
             </TreeViewItem>
             <TreeViewItem Name="XInputTreeViewItem">
                 <TreeViewItem.Header>
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding Converter={StaticResource Translator}, ConverterParameter='MainMenu.XInput'}"/>
-                        <Ellipse Width="10" Height="10" Fill="Green" Margin="5,0,0,0" />
+                        <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='MainMenu.XInput'}"/>
                     </StackPanel>
                 </TreeViewItem.Header>
             </TreeViewItem>

@@ -6,5 +6,15 @@
       xmlns:local="clr-namespace:XOutput.App.UI.View"
       mc:Ignorable="d"
       d:DataContext="{d:DesignInstance local:GeneralPanelViewModel, IsDesignTimeCreatable=False}">
-    <TextBlock>General</TextBlock>
+    <StackPanel>
+        <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='General.Title'}" Margin="5"/>
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='General.Language'}"/>
+            <ComboBox ItemsSource="{Binding Model.Languages}" SelectedValue="{Binding Model.SelectedLanguage}" HorizontalAlignment="Left" Width="150" Grid.Column="1"/>
+        </Grid>
+    </StackPanel>
 </Grid>

@@ -10,17 +10,13 @@ namespace XOutput.App.UI.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string key;
-            if (value is string)
-            {
-                key = value as string;
-            } 
-            else if (parameter is string)
+            if (parameter is string)
             {
                 key = parameter as string;
             }
             else
             {
-                throw new ArgumentException("Value and parameter are both null");
+                throw new ArgumentException("Parameter is not a string");
             }
             return ApplicationContext.Global.Resolve<TranslationService>().Translate(key);
         }

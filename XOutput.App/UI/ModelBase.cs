@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using XOutput.Core.DependencyInjection;
 
 namespace XOutput.App.UI
 {

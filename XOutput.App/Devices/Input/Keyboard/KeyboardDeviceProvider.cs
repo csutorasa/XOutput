@@ -1,7 +1,6 @@
 ﻿using NLog;
 using System;
 using System.Collections.Generic;
-using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.App.Devices.Input.Keyboard
@@ -14,38 +13,53 @@ namespace XOutput.App.Devices.Input.Keyboard
         public event DeviceConnectedHandler Connected;
         public event DeviceDisconnectedHandler Disconnected;
 
-        private readonly InputConfigManager inputConfigManager;
+        public bool Enabled
+        {
+            get => enabled;
+            set
+            {
+                if (value != enabled)
+                {
+                    enabled = value;
+                    if (enabled)
+                    {
+                        device.Start();
+                    }
+                    else
+                    {
+                        device.Stop();
+                    }
+                }
+            }
+        }
+
         private readonly KeyboardHook hook;
+        private readonly KeyboardDevice device;
+        private bool enabled = false;
         private bool disposed = false;
-        private KeyboardDevice device;
 
         [ResolverMethod]
         public KeyboardDeviceProvider(InputConfigManager inputConfigManager, KeyboardHook hook)
         {
             this.hook = hook;
-            this.inputConfigManager = inputConfigManager;
+            device = new KeyboardDevice(inputConfigManager, hook);
+            var config = inputConfigManager.LoadConfig(device);
+            device.InputConfiguration = config;
+            if (config.Autostart)
+            {
+                enabled = true;
+                device.Start();
+            }
+            Connected?.Invoke(this, new DeviceConnectedEventArgs(device));
         }
 
         public void SearchDevices()
         {
-            if (device == null)
-            {
-                device = new KeyboardDevice(inputConfigManager, hook);
-                var config = inputConfigManager.LoadConfig(device);
-                device.InputConfiguration = config;
-                if (config.Autostart) {
-                    device.Start();
-                }
-                Connected?.Invoke(this, new DeviceConnectedEventArgs(device));
-            }
+
         }
 
         public IEnumerable<IInputDevice> GetActiveDevices()
         {
-            if (device == null)
-            {
-                return new IInputDevice[] { };
-            }
             return new IInputDevice[] { device };
         }
 
@@ -63,10 +77,7 @@ namespace XOutput.App.Devices.Input.Keyboard
             }
             if (disposing)
             {
-                if (device != null)
-                {
-                    device.Dispose();
-                }
+                device.Dispose();
                 hook.Dispose();
             }
             disposed = true;

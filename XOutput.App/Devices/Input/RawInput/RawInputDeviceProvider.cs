@@ -14,12 +14,32 @@ namespace XOutput.App.Devices.Input.RawInput
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         public event DeviceConnectedHandler Connected;
         public event DeviceDisconnectedHandler Disconnected;
+        public bool Enabled
+        {
+            get => enabled;
+            set
+            {
+                if (value != enabled)
+                {
+                    enabled = value;
+                    if (enabled)
+                    {
+                        Start();
+                    }
+                    else
+                    {
+                        Stop();
+                    }
+                }
+            }
+        }
 
         private readonly IgnoredDeviceService ignoredDeviceService;
         private readonly InputConfigManager inputConfigManager;
         private readonly IdHelper idHelper;
         private readonly List<IInputDevice> currentDevices = new List<IInputDevice>();
         private readonly object lockObject = new object();
+        private bool enabled = false;
         private bool disposed = false;
         private bool allDevices = false;
 
@@ -105,6 +125,15 @@ namespace XOutput.App.Devices.Input.RawInput
             return allDevices || deviceItem.Usages.GetAllValues().Any(u => usages.Any(usage => (Usage)u == usage));
         }
 
+        private void Start()
+        {
+
+        }
+
+        private void Stop()
+        {
+
+        }
 
         public void Dispose()
         {
