@@ -11,22 +11,28 @@ namespace XOutput.Core.Configuration
 
         public void Save<T>(string filePath, T configuration) where T : ConfigurationBase
         {
-            configuration.FilePath = GetFilePath(filePath);
+            configuration.FilePath = filePath;
             Save(configuration);
         }
 
         public void Save<T>(T configuration) where T : ConfigurationBase
         {
-            string directory = Path.GetDirectoryName(configuration.FilePath);
+            string pathWithExtension = GetFilePath(configuration.FilePath);
+            string directory = Path.GetDirectoryName(pathWithExtension);
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
             }
-            using (StreamWriter writer = new StreamWriter(new FileStream(configuration.FilePath, FileMode.Create, FileAccess.Write), Encoding.UTF8))
+            using (StreamWriter writer = new StreamWriter(new FileStream(pathWithExtension, FileMode.Create, FileAccess.Write), Encoding.UTF8))
             {
                 WriteConfiguration(writer, configuration);
-                logger.Info($"Configuration saved to {configuration.FilePath}");
+                logger.Info($"Configuration saved to {pathWithExtension}");
             }
+        }
+
+        public T Load<T>(Func<T> defaultGetter) where T : ConfigurationBase
+        {
+            return Load<T>(GetConfigurationPathFromAttribute<T>(), defaultGetter);
         }
 
         public T Load<T>(string filePath, Func<T> defaultGetter) where T : ConfigurationBase
@@ -38,6 +44,7 @@ namespace XOutput.Core.Configuration
                 {
                     var config = ReadConfiguration<T>(reader);
                     logger.Info($"Configuration loaded from {path}");
+                    config.FilePath = filePath;
                     return config;
                 }
             }
@@ -71,6 +78,18 @@ namespace XOutput.Core.Configuration
 
             watcher.EnableRaisingEvents = true;
             return watcher;
+        }
+
+        private static string GetConfigurationPathFromAttribute<T>() where T : ConfigurationBase
+        {
+            foreach (var attribute in typeof(T).GetCustomAttributes(false))
+            {
+                if (attribute is ConfigurationPathAttribute)
+                {
+                    return (attribute as ConfigurationPathAttribute).Path;
+                }
+            }
+            throw new ArgumentException($"{typeof(T).FullName} does not have {nameof(ConfigurationPathAttribute)} attribute");
         }
 
         protected abstract void WriteConfiguration<T>(StreamWriter writer, T configuration) where T : ConfigurationBase;

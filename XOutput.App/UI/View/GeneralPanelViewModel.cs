@@ -4,22 +4,27 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XOutput.App.Configuration;
+using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 
 namespace XOutput.App.UI.View
 {
     public class GeneralPanelViewModel : ViewModelBase<GeneralPanelModel>
     {
+        private readonly ConfigurationManager configurationManager;
         private readonly TranslationService translationService;
 
         [ResolverMethod]
-        public GeneralPanelViewModel(GeneralPanelModel model, TranslationService translationService) : base(model)
+        public GeneralPanelViewModel(GeneralPanelModel model, ConfigurationManager configurationManager, TranslationService translationService) : base(model)
         {
+            this.configurationManager = configurationManager;
             this.translationService = translationService;
             foreach (var language in translationService.GetAvailableLanguages())
             {
                 Model.Languages.Add(language);
             }
+            Model.SelectedLanguage = TranslationModel.Instance.Language;
             Model.PropertyChanged += Model_PropertyChanged;
         }
 
@@ -27,7 +32,13 @@ namespace XOutput.App.UI.View
         {
             if (e.PropertyName == nameof(Model.SelectedLanguage))
             {
-                translationService.Load(Model.SelectedLanguage);
+                if (translationService.Load(Model.SelectedLanguage))
+                {
+                    var appConfig = configurationManager.Load(() => new AppConfig(translationService.DefaultLanguage));
+                    appConfig.Language = Model.SelectedLanguage;
+                    configurationManager.Save(appConfig);
+                }
+                
             }
         }
     }

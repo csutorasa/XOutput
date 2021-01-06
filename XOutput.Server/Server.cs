@@ -13,12 +13,11 @@ namespace XOutput.Server
     public class Server
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
-        private const string ConfigurationFilepath = "conf/server";
         private readonly ServerConfig config;
 
         [ResolverMethod]
         public Server(ConfigurationManager configurationManager) {
-            config = configurationManager.Load(ConfigurationFilepath, () => new ServerConfig {
+            config = configurationManager.Load(() => new ServerConfig {
                 Urls = new List<string> { "*:8000", "localhost:8000" },
             });
             logger.Info($"Server config loaded with urls: {string.Join(", ", config.Urls)}");

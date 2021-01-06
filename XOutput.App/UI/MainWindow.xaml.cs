@@ -27,18 +27,21 @@ namespace XOutput.App.UI
         private AppConfig appConfig;
 
         [ResolverMethod]
-        public MainWindow(MainWindowViewModel viewModel, CommandRunner commandRunner, ConfigurationManager configurationManager, InputDeviceManager inputDeviceManager)
+        public MainWindow(MainWindowViewModel viewModel, CommandRunner commandRunner, ConfigurationManager configurationManager, TranslationService translationService)
         {
             this.viewModel = viewModel;
             this.commandRunner = commandRunner;
             this.configurationManager = configurationManager;
             DataContext = viewModel;
-            viewModel.Model.MainContent = new TextBox();
             InitializeComponent();
             var helper = new WindowInteropHelper(this);
             WindowHandleStore.Handle = helper.EnsureHandle();
+            appConfig = configurationManager.Load(() => new AppConfig(translationService.DefaultLanguage));
+            if (!translationService.Load(appConfig.Language))
+            {
+                translationService.Load(translationService.DefaultLanguage);
+            }
             ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<GeneralPanel>();
-            appConfig = configurationManager.Load("conf/app", () => new AppConfig());
             if (!appConfig.Minimized)
             {
                 Show();

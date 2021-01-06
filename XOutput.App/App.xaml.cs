@@ -70,8 +70,6 @@ namespace XOutput.App
                 }
             }
             CheckUpdate(globalContext.Resolve<UpdateChecker>(), notificationService);
-            var translationService = globalContext.Resolve<TranslationService>();
-            translationService.Load("English");
         }
 
         private static void SetLoggerConfiguration()

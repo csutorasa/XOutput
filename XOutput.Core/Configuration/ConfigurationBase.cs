@@ -9,6 +9,15 @@ namespace XOutput.Core.Configuration
         public string FilePath { get; internal set; }
     }
 
+    public class ConfigurationPathAttribute : Attribute
+    {
+        public string Path { get; private set; }
+        public ConfigurationPathAttribute(string path)
+        {
+            Path = path;
+        }
+    }
+
     public static class ConfigurationHelper
     {
         public static bool AreSame<T>(this T a, T b) where T : ConfigurationBase, IEquatable<T>

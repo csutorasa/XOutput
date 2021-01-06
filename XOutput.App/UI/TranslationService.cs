@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,12 +12,23 @@ namespace XOutput.App.UI
 {
     public sealed class TranslationService
     {
+        public string DefaultLanguage => defaultLanguage;
+
         private readonly Dictionary<string, string> data = new Dictionary<string, string>();
+        private readonly string defaultLanguage;
 
         [ResolverMethod]
         public TranslationService()
         {
-
+            string cultureName = CultureInfo.CurrentCulture.Name;
+            if (cultureName.StartsWith("hu-"))
+            {
+                defaultLanguage = "Hungarian";
+            }
+            else 
+            {
+                defaultLanguage = "English";
+            }
         }
 
         public string[] GetAvailableLanguages()

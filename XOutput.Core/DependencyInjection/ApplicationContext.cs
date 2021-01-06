@@ -193,7 +193,7 @@ namespace XOutput.Core.DependencyInjection
         {
             lock (lockObj)
             {
-                foreach (var singleton in resolvers.Where(r => r.IsSingleton).Where(r => typeof(IDisposable).IsAssignableFrom(r.CreatedType)).Select(r => r.Create(new object[0])).OfType<IDisposable>())
+                foreach (var singleton in resolvers.Where(r => r.IsResolvedSingleton).Where(r => typeof(IDisposable).IsAssignableFrom(r.CreatedType)).Select(r => r.Create(new object[0])).OfType<IDisposable>())
                 {
                     singleton.Dispose();
                 }

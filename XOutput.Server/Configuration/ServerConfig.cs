@@ -4,6 +4,7 @@ using XOutput.Core.Configuration;
 
 namespace XOutput.Server.Configuration
 {
+    [ConfigurationPath("conf/server")]
     public class ServerConfig : ConfigurationBase, IEquatable<ServerConfig>
     {
         public List<string> Urls { get; set; }
