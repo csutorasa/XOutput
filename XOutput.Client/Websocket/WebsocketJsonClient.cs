@@ -16,32 +16,35 @@ namespace XOutput.Client.Websocket
         protected readonly MessageWriter messageWriter;
         protected readonly WebSocketHelper webSocketHelper;
         protected readonly ClientWebSocket client;
+        protected readonly Uri baseUri;
         protected ThreadContext threadContext;
         private bool started = false;
 
-        protected WebsocketJsonClient(MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper)
+        protected WebsocketJsonClient(MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper, Uri baseUri)
         {
             this.messageReader = messageReader;
             this.messageWriter = messageWriter;
             this.webSocketHelper = webSocketHelper;
+            this.baseUri = baseUri;
             client = new ClientWebSocket();
         }
 
-        protected WebsocketJsonClient(MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper, ClientWebSocket client)
+        protected WebsocketJsonClient(MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper, Uri baseUri, ClientWebSocket client)
         {
             this.messageReader = messageReader;
             this.messageWriter = messageWriter;
             this.webSocketHelper = webSocketHelper;
+            this.baseUri = baseUri;
             this.client = client;
         }
 
-        protected async Task ConnectAsync(Uri uri, CancellationToken token = default)
+        protected async Task ConnectAsync(string path, CancellationToken token = default)
         {
             if (started)
             {
                 return;
             }
-            await client.ConnectAsync(uri, token);
+            await client.ConnectAsync(new Uri(baseUri.ToString() + path), token);
             threadContext = ThreadCreator.CreateLoop("Websocket client", async (token) => await ReadIncomingMessagesAsync(token), 0);
             started = true;
         }

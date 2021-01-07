@@ -9,6 +9,10 @@ namespace XOutput.Api.Serialization
     public class MessageReader
     {
         private readonly Dictionary<string, Type> mapping;
+        private readonly JsonSerializerOptions serializerOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
 
         public MessageReader(Dictionary<string, Type> mapping)
         {
@@ -24,13 +28,13 @@ namespace XOutput.Api.Serialization
 
         public MessageBase ReadString(string input)
         {
-            var message = JsonSerializer.Deserialize<MessageBase>(input);
+            var message = JsonSerializer.Deserialize<MessageBase>(input, serializerOptions);
             if (!mapping.ContainsKey(message.Type))
             {
                 return message;
             }
             var type = mapping[message.Type];
-            return JsonSerializer.Deserialize(input, type) as MessageBase;
+            return JsonSerializer.Deserialize(input, type, serializerOptions) as MessageBase;
         }
 
         public MessageBase Read(StreamReader input)

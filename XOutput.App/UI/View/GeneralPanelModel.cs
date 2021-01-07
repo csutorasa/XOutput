@@ -14,16 +14,43 @@ namespace XOutput.App.UI.View
         public ObservableCollection<string> Languages => languages;
 
         private string selectedLanguage;
-
         public string SelectedLanguage
         {
             get => selectedLanguage;
-            set 
+            set
             {
                 if (selectedLanguage != value)
                 {
                     selectedLanguage = value;
                     OnPropertyChanged(nameof(SelectedLanguage));
+                }
+            }
+        }
+
+        private string serverUrl;
+        public string ServerUrl
+        {
+            get => serverUrl;
+            set
+            {
+                if (serverUrl != value)
+                {
+                    serverUrl = value;
+                    OnPropertyChanged(nameof(ServerUrl));
+                }
+            }
+        }
+
+        private bool autoConnect;
+        public bool AutoConnect
+        {
+            get => autoConnect;
+            set
+            {
+                if (autoConnect != value)
+                {
+                    autoConnect = value;
+                    OnPropertyChanged(nameof(AutoConnect));
                 }
             }
         }

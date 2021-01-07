@@ -9,7 +9,10 @@
 	},
 	"General": {
 		"Title": "Általános beállítások",
-		"Language": "Nyelv"
+		"Language": "Nyelv",
+		"ServerUrl": "Server címe",
+		"AutoConnect": "Kapcsolódás a szerverhez induláskor",
+		"Connect": "Kapcsolódás"
 	},
 	"WindowsApiMouse": {
 		"Title": "Windows API egér",

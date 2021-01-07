@@ -4,17 +4,22 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local="clr-namespace:XOutput.App.UI.View"
+      xmlns:component="clr-namespace:XOutput.App.UI.Component"
       mc:Ignorable="d"
       d:DataContext="{d:DesignInstance local:GeneralPanelViewModel, IsDesignTimeCreatable=False}">
     <StackPanel>
         <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='General.Title'}" Margin="5"/>
-        <Grid Margin="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='General.Language'}"/>
-            <ComboBox ItemsSource="{Binding Model.Languages}" SelectedValue="{Binding Model.SelectedLanguage}" HorizontalAlignment="Left" Width="150" Grid.Column="1"/>
-        </Grid>
+        <component:Titled Title="General.Language">
+            <ComboBox ItemsSource="{Binding Model.Languages}" SelectedValue="{Binding Model.SelectedLanguage}" HorizontalAlignment="Left" Width="150"/>
+        </component:Titled>
+        <component:Titled Title="General.ServerUrl">
+            <StackPanel>
+                <TextBox Text="{Binding Model.ServerUrl}" HorizontalAlignment="Left" Width="250"/>
+                <CheckBox IsChecked="{Binding Model.AutoConnect}" HorizontalAlignment="Left"
+                          Content="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='General.AutoConnect'}"/>
+                <Button Content="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='General.Connect'}"
+                        HorizontalAlignment="Left" Click="Connect_Click" Width="150"/>
+            </StackPanel>
+        </component:Titled>
     </StackPanel>
 </Grid>

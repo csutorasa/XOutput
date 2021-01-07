@@ -12,16 +12,14 @@ namespace XOutput.Client.Input
     {
         public event FeedbackReceived FeedbackReceived;
 
-        private readonly Uri uri;
-
-        public MappableDeviceClient(MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper, string apiUrl) : base(messageReader, messageWriter, webSocketHelper)
+        public MappableDeviceClient(MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper, Uri baseUri) : base(messageReader, messageWriter, webSocketHelper, baseUri)
         {
-            uri = new Uri(apiUrl + "/ws/mappableDevice");
+
         }
 
         public async Task ConnectAsync(MappableDeviceDetailsMessage message)
         {
-            await ConnectAsync(uri);
+            await ConnectAsync("mappableDevice");
             await SendAsync(message);
         }
 

@@ -16,5 +16,10 @@ namespace XOutput.App.UI.View
             DataContext = viewModel;
             InitializeComponent();
         }
+
+        private async void Connect_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            await viewModel.Connect();
+        }
     }
 }

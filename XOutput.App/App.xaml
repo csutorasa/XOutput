@@ -7,5 +7,6 @@
              Exit="Application_Exit">
     <Application.Resources>
         <converter:TranslationConverter x:Key="Translator" />
+        <converter:DynamicTranslationConverter x:Key="DynamicTranslator" />
     </Application.Resources>
 </Application>

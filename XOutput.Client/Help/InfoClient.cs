@@ -7,21 +7,19 @@ namespace XOutput.Client.Help
 {
     public class InfoClient : HttpJsonClient
     {
-        private readonly string url;
-
-        public InfoClient(string apiUrl)
+        public InfoClient(Uri baseUri) : this(new HttpClient { BaseAddress = baseUri })
         {
-            url = apiUrl;
+
         }
 
-        public Task<InfoResponse> GetInfoAsync()
+        public InfoClient(HttpClient client) : base(client)
         {
-            var request = new HttpRequestMessage
-            {
-                RequestUri = new Uri(url + "/info"),
-                Method = HttpMethod.Get,
-            };
-            return GetResultAsync<InfoResponse>(request);
+
+        }
+
+        public Task<InfoResponse> GetInfoAsync(int timeoutMillis = 1000)
+        {
+            return GetAsync<InfoResponse>("info", GetToken(timeoutMillis));
         }
     }
 }

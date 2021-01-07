@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using XOutput.Core.DependencyInjection;
 
@@ -12,6 +13,10 @@ namespace XOutput.App.UI.Converter
             if (values.Length != 2)
             {
                 throw new ArgumentException("There must be 2 values");
+            }
+            if (values[1] == null || values[1] == DependencyProperty.UnsetValue)
+            {
+                return "";
             }
             string key;
             if (values[1] is string)

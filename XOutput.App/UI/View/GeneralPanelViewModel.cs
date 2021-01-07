@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XOutput.App.Configuration;
+using XOutput.Client.Help;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 
@@ -25,6 +26,9 @@ namespace XOutput.App.UI.View
                 Model.Languages.Add(language);
             }
             Model.SelectedLanguage = TranslationModel.Instance.Language;
+            var appConfig = GetAppConfig();
+            Model.AutoConnect = appConfig.AutoConnect;
+            Model.ServerUrl = appConfig.ServerUrl;
             Model.PropertyChanged += Model_PropertyChanged;
         }
 
@@ -34,12 +38,26 @@ namespace XOutput.App.UI.View
             {
                 if (translationService.Load(Model.SelectedLanguage))
                 {
-                    var appConfig = configurationManager.Load(() => new AppConfig(translationService.DefaultLanguage));
+                    var appConfig = GetAppConfig();
                     appConfig.Language = Model.SelectedLanguage;
                     configurationManager.Save(appConfig);
                 }
                 
             }
+        }
+
+        public async Task Connect()
+        {
+            var x = await new InfoClient(new Uri($"http://{Model.ServerUrl}/api/")).GetInfoAsync();
+            var appConfig = GetAppConfig();
+            appConfig.AutoConnect = Model.AutoConnect;
+            appConfig.ServerUrl = Model.ServerUrl;
+            configurationManager.Save(appConfig);
+        }
+
+        private AppConfig GetAppConfig()
+        {
+            return configurationManager.Load(() => new AppConfig(translationService.DefaultLanguage));
         }
     }
 }

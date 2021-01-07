@@ -9,7 +9,10 @@
 	},
 	"General": {
 		"Title": "General settings",
-		"Language": "Language"
+		"Language": "Language",
+		"ServerUrl": "Server URL",
+		"AutoConnect": "Connect to server on start",
+		"Connect": "Connect"
 	},
 	"WindowsApiMouse": {
 		"Title": "Windows API mouse",
