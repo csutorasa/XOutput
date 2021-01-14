@@ -34,6 +34,7 @@ namespace XOutput.Tools
         public bool CloseToTray { get; set; }
         public bool ShowAll { get; set; }
         public bool HidGuardianEnabled { get; set; }
+        public bool DisableAutoRefresh { get; set; }
         public string Language
         {
             get => LanguageManager.Instance.Language;

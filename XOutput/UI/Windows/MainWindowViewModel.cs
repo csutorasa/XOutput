@@ -40,9 +40,6 @@ namespace XOutput.UI.Windows
         {
             this.dispatcher = dispatcher;
             this.hidGuardianManager = hidGuardianManager;
-            timer.Interval = TimeSpan.FromMilliseconds(5000);
-            timer.Tick += (object sender1, EventArgs e1) => { RefreshGameControllers(); };
-            timer.Start();
         }
 
         public void Dispose()
@@ -146,6 +143,10 @@ namespace XOutput.UI.Windows
             }
             Model.Settings = settings;
             RefreshGameControllers();
+
+            timer.Interval = TimeSpan.FromMilliseconds(5000);
+            timer.Tick += (object sender1, EventArgs e1) => { if (!settings.DisableAutoRefresh) { RefreshGameControllers(); } };
+            timer.Start();
 
             logger.Debug("Creating keyboard controller");
             Devices.Input.Keyboard.Keyboard keyboard = new Devices.Input.Keyboard.Keyboard();

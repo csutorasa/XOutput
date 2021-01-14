@@ -17,6 +17,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Language'}"/>
         <ComboBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Width="200" Height="25" ItemsSource="{Binding Model.Languages}" SelectedItem="{Binding Model.SelectedLanguage}"/>
@@ -26,5 +27,7 @@
         <CheckBox Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Width="200" VerticalAlignment="Center" IsChecked="{Binding Model.RunAtStartup}"/>
         <Label Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='HidGuardianEnabled'}"/>
         <CheckBox Grid.Column="1" Grid.Row="3" Width="200" VerticalAlignment="Center" IsChecked="{Binding Model.HidGuardianEnabled}"/>
+        <Label Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='DisableAutoRefresh'}"/>
+        <CheckBox Grid.Column="1" Grid.Row="4" Width="200" VerticalAlignment="Center" IsChecked="{Binding Model.DisableAutoRefresh}"/>
     </Grid>
 </Window>
