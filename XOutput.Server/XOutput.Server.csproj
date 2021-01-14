@@ -12,7 +12,7 @@
     <ProjectReference Include="..\XOutput.Mapping\XOutput.Mapping.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Nefarius.ViGEm.Client" Version="1.16.148" />
+    <PackageReference Include="Nefarius.ViGEm.Client" Version="1.16.150" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
