@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
-using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Notifications;
 

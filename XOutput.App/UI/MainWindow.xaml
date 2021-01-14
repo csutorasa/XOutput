@@ -39,26 +39,50 @@
                     </StackPanel>
                 </TreeViewItem.Header>
             </TreeViewItem>
-            <TreeViewItem Name="DirectInputTreeViewItem">
+            <TreeViewItem Name="DirectInputTreeViewItem" ItemsSource="{Binding Model.DirectInputs}">
                 <TreeViewItem.Header>
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='MainMenu.DirectInput'}"/>
                     </StackPanel>
                 </TreeViewItem.Header>
+                <TreeViewItem.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock Text="{Binding DisplayName}"/>
+                            (<TextBlock Text="{Binding HardwareID}"/>)
+                        </TextBlock>
+                    </DataTemplate>
+                </TreeViewItem.ItemTemplate>
             </TreeViewItem>
-            <TreeViewItem Name="RawInputTreeViewItem">
+            <TreeViewItem Name="RawInputTreeViewItem" ItemsSource="{Binding Model.RawInputs}">
                 <TreeViewItem.Header>
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='MainMenu.RawInput'}"/>
                     </StackPanel>
                 </TreeViewItem.Header>
+                <TreeViewItem.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock Text="{Binding DisplayName}"/>
+                            (<TextBlock Text="{Binding HardwareID}"/>)
+                        </TextBlock>
+                    </DataTemplate>
+                </TreeViewItem.ItemTemplate>
             </TreeViewItem>
-            <TreeViewItem Name="XInputTreeViewItem">
+            <TreeViewItem Name="XInputTreeViewItem" ItemsSource="{Binding Model.XInputs}">
                 <TreeViewItem.Header>
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='MainMenu.XInput'}"/>
                     </StackPanel>
                 </TreeViewItem.Header>
+                <TreeViewItem.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock Text="{Binding DisplayName}"/>
+                            (<TextBlock Text="{Binding HardwareID}"/>)
+                        </TextBlock>
+                    </DataTemplate>
+                </TreeViewItem.ItemTemplate>
             </TreeViewItem>
         </TreeView>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5"/>

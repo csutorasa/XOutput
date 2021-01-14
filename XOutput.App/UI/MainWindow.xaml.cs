@@ -94,30 +94,38 @@ namespace XOutput.App.UI
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var item = (sender as TreeView).SelectedItem as TreeViewItem;
-            if (item == GeneralTreeViewItem)
+            var selectedItem = (sender as TreeView).SelectedItem;
+            if (selectedItem is IInputDevice)
             {
-                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<GeneralPanel>();
+                ViewModel.DeviceSelected(selectedItem as IInputDevice);
             }
-            else if (item == WindowsApiKeyboardTreeViewItem)
+            else if (selectedItem is TreeViewItem)
             {
-                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<WindowsApiKeyboardPanel>();
-            }
-            else if (item == WindowsApiMouseTreeViewItem)
-            {
-                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<WindowsApiMousePanel>();
-            }
-            else if (item == DirectInputTreeViewItem)
-            {
-                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<DirectInputPanel>();
-            }
-            else if (item == RawInputTreeViewItem)
-            {
-                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<RawInputPanel>();
-            }
-            else if (item == XInputTreeViewItem)
-            {
-                ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<XInputPanel>();
+                var treeItem = selectedItem as TreeViewItem;
+                if (treeItem == GeneralTreeViewItem)
+                {
+                    ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<GeneralPanel>();
+                }
+                else if (treeItem == WindowsApiKeyboardTreeViewItem)
+                {
+                    ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<WindowsApiKeyboardPanel>();
+                }
+                else if (treeItem == WindowsApiMouseTreeViewItem)
+                {
+                    ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<WindowsApiMousePanel>();
+                }
+                else if (treeItem == DirectInputTreeViewItem)
+                {
+                    ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<DirectInputPanel>();
+                }
+                else if (treeItem == RawInputTreeViewItem)
+                {
+                    ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<RawInputPanel>();
+                }
+                else if (treeItem == XInputTreeViewItem)
+                {
+                    ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<XInputPanel>();
+                }
             }
             else
             {

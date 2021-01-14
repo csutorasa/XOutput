@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using XOutput.Core.DependencyInjection;
+﻿using System;
+using System.ComponentModel;
 
 namespace XOutput.App.UI
 {
@@ -14,6 +14,30 @@ namespace XOutput.App.UI
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    public abstract class DisposableModelBase : ModelBase, IDisposable
+    {
+        protected bool disposed = false;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+            {
+                return;
+            }
+            if (disposing)
+            {
+
+            }
+            disposed = true;
         }
     }
 }

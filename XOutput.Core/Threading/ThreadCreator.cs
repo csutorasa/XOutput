@@ -8,7 +8,7 @@ namespace XOutput.Core.Threading
 {
     public static class ThreadCreator
     {
-        private static ILogger logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         public static ThreadContext Create(string name, Action<CancellationToken> action, bool isBackground = true, CancellationToken token = default)
         {
@@ -38,9 +38,11 @@ namespace XOutput.Core.Threading
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationTokenSource linkedTokens = CancellationTokenSource.CreateLinkedTokenSource(source.Token, token);
             var threadResult = new ThreadResult();
-            var thread = new Thread(() => ThreadAction(name, threadResult, action, linkedTokens.Token));
-            thread.Name = name;
-            thread.IsBackground = isBackground;
+            var thread = new Thread(() => ThreadAction(name, threadResult, action, linkedTokens.Token))
+            {
+                Name = name,
+                IsBackground = isBackground
+            };
             return new ThreadContext(thread, source, threadResult);
         }
 

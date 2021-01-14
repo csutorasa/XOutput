@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Threading;
 using System.Xml;
 using XOutput.App.Devices;
+using XOutput.App.Devices.Input;
 using XOutput.App.UI;
 using XOutput.Client;
 using XOutput.Core;
@@ -56,6 +57,7 @@ namespace XOutput.App
 
             var hidGuardianManager = globalContext.Resolve<HidGuardianManager>();
             var notificationService = globalContext.Resolve<NotificationService>();
+            globalContext.Resolve<InputDeviceManager>();
 
             if (hidGuardianManager.Installed)
             {

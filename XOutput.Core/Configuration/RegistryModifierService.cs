@@ -10,13 +10,13 @@ namespace XOutput.Core.Configuration
 
         public RegistryModifierService()
         {
-            fillMapping(Registry.LocalMachine);
-            fillMapping(Registry.CurrentUser);
-            fillMapping(Registry.ClassesRoot);
-            fillMapping(Registry.CurrentConfig);
+            FillMapping(Registry.LocalMachine);
+            FillMapping(Registry.CurrentUser);
+            FillMapping(Registry.ClassesRoot);
+            FillMapping(Registry.CurrentConfig);
         }
 
-        private void fillMapping(RegistryKey key)
+        private void FillMapping(RegistryKey key)
         {
             mapping.Add(key.ToString(), key);
         }
