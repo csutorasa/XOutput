@@ -9,14 +9,14 @@ namespace XOutput.Client
 {
     public abstract class HttpJsonClient
     {
-        protected readonly HttpClient client;
+        protected readonly IHttpClientProvider clientProvider;
         protected readonly JsonSerializerOptions serializerOptions = new JsonSerializerOptions {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
 
-        protected HttpJsonClient(HttpClient client)
+        protected HttpJsonClient(IHttpClientProvider clientProvider)
         {
-            this.client = client;
+            this.clientProvider = clientProvider;
         }
 
         protected CancellationToken GetToken(int millis)
@@ -54,36 +54,33 @@ namespace XOutput.Client
             {
                 response.EnsureSuccessStatusCode();
                 var stream = await response.Content.ReadAsStreamAsync(token);
-                //var b = new byte[8096];
-                //var size = stream.Read(b);
-                //var s = Encoding.UTF8.GetString(b, 0, size);
                 return await JsonSerializer.DeserializeAsync<T>(stream, serializerOptions, token);
             }
         }
 
         protected Task<T> GetAsync<T>(string path, CancellationToken token)
         {
-            return GetResultAsync<T>(() => client.GetAsync(path, token), token);
+            return GetResultAsync<T>(() => clientProvider.Client.GetAsync(path, token), token);
         }
 
         protected Task<T> DeleteAsync<T>(string path, CancellationToken token)
         {
-            return GetResultAsync<T>(() => client.DeleteAsync(path, token), token);
+            return GetResultAsync<T>(() => clientProvider.Client.DeleteAsync(path, token), token);
         }
 
         protected Task<T> PostAsync<T, R>(string path, R request, CancellationToken token)
         {
-            return GetResultAsync<T>(() => client.PostAsync(path, GetRequest(request), token), token);
+            return GetResultAsync<T>(() => clientProvider.Client.PostAsync(path, GetRequest(request), token), token);
         }
 
         protected Task<T> PatchAsync<T, R>(string path, R request, CancellationToken token)
         {
-            return GetResultAsync<T>(() => client.PatchAsync(path, GetRequest(request), token), token);
+            return GetResultAsync<T>(() => clientProvider.Client.PatchAsync(path, GetRequest(request), token), token);
         }
 
         protected Task<T> PutAsync<T, R>(string path, R request, CancellationToken token)
         {
-            return GetResultAsync<T>(() => client.PutAsync(path, GetRequest(request), token), token);
+            return GetResultAsync<T>(() => clientProvider.Client.PutAsync(path, GetRequest(request), token), token);
         }
     }
 }

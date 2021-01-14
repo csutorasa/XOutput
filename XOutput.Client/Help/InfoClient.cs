@@ -7,12 +7,7 @@ namespace XOutput.Client.Help
 {
     public class InfoClient : HttpJsonClient
     {
-        public InfoClient(Uri baseUri) : this(new HttpClient { BaseAddress = baseUri })
-        {
-
-        }
-
-        public InfoClient(HttpClient client) : base(client)
+        public InfoClient(IHttpClientProvider clientProvider) : base(clientProvider)
         {
 
         }

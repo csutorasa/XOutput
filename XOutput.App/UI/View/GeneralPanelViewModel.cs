@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XOutput.App.Configuration;
+using XOutput.Client;
 using XOutput.Client.Help;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
@@ -15,12 +16,14 @@ namespace XOutput.App.UI.View
     {
         private readonly ConfigurationManager configurationManager;
         private readonly TranslationService translationService;
+        private readonly DynamicHttpClientProvider dynamicHttpClientProvider;
 
         [ResolverMethod]
-        public GeneralPanelViewModel(GeneralPanelModel model, ConfigurationManager configurationManager, TranslationService translationService) : base(model)
+        public GeneralPanelViewModel(GeneralPanelModel model, ConfigurationManager configurationManager, TranslationService translationService, DynamicHttpClientProvider dynamicHttpClientProvider) : base(model)
         {
             this.configurationManager = configurationManager;
             this.translationService = translationService;
+            this.dynamicHttpClientProvider = dynamicHttpClientProvider;
             foreach (var language in translationService.GetAvailableLanguages())
             {
                 Model.Languages.Add(language);
@@ -42,17 +45,18 @@ namespace XOutput.App.UI.View
                     appConfig.Language = Model.SelectedLanguage;
                     configurationManager.Save(appConfig);
                 }
-                
             }
         }
 
         public async Task Connect()
         {
-            var x = await new InfoClient(new Uri($"http://{Model.ServerUrl}/api/")).GetInfoAsync();
+            var uri = new Uri($"http://{Model.ServerUrl}/api/");
+            var x = await new InfoClient(new StaticHttpClientProvider(uri)).GetInfoAsync();
             var appConfig = GetAppConfig();
             appConfig.AutoConnect = Model.AutoConnect;
             appConfig.ServerUrl = Model.ServerUrl;
             configurationManager.Save(appConfig);
+            dynamicHttpClientProvider.SetBaseAddress(uri);
         }
 
         private AppConfig GetAppConfig()

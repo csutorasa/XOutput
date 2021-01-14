@@ -9,6 +9,7 @@ using System.Windows.Interop;
 using XOutput.App.Configuration;
 using XOutput.App.Devices.Input;
 using XOutput.App.UI.View;
+using XOutput.Client;
 using XOutput.Core.Configuration;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.External;
@@ -27,7 +28,7 @@ namespace XOutput.App.UI
         private AppConfig appConfig;
 
         [ResolverMethod]
-        public MainWindow(MainWindowViewModel viewModel, CommandRunner commandRunner, ConfigurationManager configurationManager, TranslationService translationService)
+        public MainWindow(MainWindowViewModel viewModel, CommandRunner commandRunner, ConfigurationManager configurationManager, TranslationService translationService, DynamicHttpClientProvider dynamicHttpClientProvider)
         {
             this.viewModel = viewModel;
             this.commandRunner = commandRunner;
@@ -42,6 +43,15 @@ namespace XOutput.App.UI
                 translationService.Load(translationService.DefaultLanguage);
             }
             ViewModel.Model.MainContent = ApplicationContext.Global.Resolve<GeneralPanel>();
+            if (appConfig.ServerUrl != null)
+            {
+                var uri = new Uri($"http://{appConfig.ServerUrl}/api/");
+                dynamicHttpClientProvider.SetBaseAddress(uri);
+                if (appConfig.AutoConnect)
+                {
+                    // TODO autoconnect
+                }
+            }
             if (!appConfig.Minimized)
             {
                 Show();
