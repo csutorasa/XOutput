@@ -21,7 +21,7 @@ namespace XOutput.Api.Serialization.Tests
                 LedNumber = 1,
             };
             var message = writer.GetString(input);
-            Assert.AreEqual("{\"Small\":0,\"Large\":1,\"LedNumber\":1,\"Type\":\"XboxFeedback\"}", message);
+            Assert.AreEqual("{\"small\":0,\"large\":1,\"ledNumber\":1,\"type\":\"XboxFeedback\"}", message);
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace XOutput.Api.Serialization.Tests
             byte[] buffer = new byte[length];
             ms.Read(buffer, 0, length);
             string output = Encoding.UTF8.GetString(buffer);
-            Assert.AreEqual("{\"Type\":\"test\"}", output);
+            Assert.AreEqual("{\"type\":\"test\"}", output);
         }
     }
 }
