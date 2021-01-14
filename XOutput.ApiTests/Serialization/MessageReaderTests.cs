@@ -22,7 +22,7 @@ namespace XOutput.Api.Serialization.Tests
         [TestMethod]
         public void InputDataTest()
         {
-            string input = "{\"Type\":\"InputData\",\"Data\":[{\"InputType\":\"test\",\"Value\":0.5}]}";
+            string input = "{\"type\":\"InputData\",\"data\":[{\"inputType\":\"test\",\"value\":0.5}]}";
             var message = reader.ReadString(input) as InputDataMessage;
             Assert.IsNotNull(message);
             Assert.AreEqual("InputData", message.Type);
@@ -35,7 +35,7 @@ namespace XOutput.Api.Serialization.Tests
         [TestMethod]
         public void DebugTest()
         {
-            string input = "{\"Type\":\"Debug\",\"Data\":\"test\"}";
+            string input = "{\"type\":\"Debug\",\"data\":\"test\"}";
             var message = reader.ReadString(input) as DebugMessage;
             Assert.IsNotNull(message);
             Assert.AreEqual("Debug", message.Type);
@@ -45,7 +45,7 @@ namespace XOutput.Api.Serialization.Tests
         [TestMethod]
         public void XboxInputTest()
         {
-            string input = "{\"Type\":\"XboxInput\",\"LX\":0.5}";
+            string input = "{\"type\":\"XboxInput\",\"lx\":0.5}";
             var message = reader.ReadString(input) as XboxInputMessage;
             Assert.IsNotNull(message);
             Assert.AreEqual("XboxInput", message.Type);
@@ -56,7 +56,7 @@ namespace XOutput.Api.Serialization.Tests
         [TestMethod]
         public void UnknownMessageTest()
         {
-            string input = "{\"Type\":\"test\"}";
+            string input = "{\"type\":\"test\"}";
             var message = reader.ReadString(input);
             Assert.IsNotNull(message);
             Assert.AreEqual("test", message.Type);
@@ -65,7 +65,7 @@ namespace XOutput.Api.Serialization.Tests
         [TestMethod]
         public void UnknownMessageStreamTest()
         {
-            string input = "{\"Type\":\"test\"}";
+            string input = "{\"type\":\"test\"}";
             using MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(input));
             var message = reader.Read(new StreamReader(ms));
             Assert.IsNotNull(message);
