@@ -41,6 +41,8 @@ jobs:
         dotnet build -c Release -p:Version=$env:VERSION -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION
         dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
         dotnet sonarscanner end /d:sonar.login=$env:SONARCLOUD_TOKEN
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Copy artifacts
       shell: powershell
       run: |
