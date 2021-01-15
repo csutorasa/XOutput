@@ -25,7 +25,7 @@ jobs:
     - name: Cache app
       uses: actions/cache@v2
       with:
-        key: app-${{ env.GITHUB_RUN_NUMBER }}
+        key: app
         path: ./app
     - name: Clean
       run: dotnet clean --configuration Release && dotnet nuget locals all --clear
@@ -70,7 +70,7 @@ jobs:
     - name: Cache webapp
       uses: actions/cache@v2
       with:
-        key: webapp-${{ env.GITHUB_RUN_NUMBER }}
+        key: webapp
         path: ./Web/webapp
     - name: Build node
       run: cd Web && npm install
@@ -85,15 +85,15 @@ jobs:
     - name: Cache app
       uses: actions/cache@v2
       with:
-        key: app-${{ env.GITHUB_RUN_NUMBER }}
+        key: app
         path: ./app
     - name: Cache webapp
       uses: actions/cache@v2
       with:
-        key: webapp-${{ env.GITHUB_RUN_NUMBER }}
-        path: ./app/webapp
+        key: webapp
+        path: ./Web/webapp
     - name: Copy resources
-      run: move bin app\bin
+      run: move bin app\bin && move Web\webapp app\Webapp
     - name: Create package
       uses: actions/upload-artifact@v2
       with:
