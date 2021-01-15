@@ -39,7 +39,7 @@ jobs:
     - name: Copy artifacts
       shell: powershell
       run: |
-        if not exist "app" mkdir app
+        New-Item -ItemType Directory -Force -Path app
         move XOutput.Core\bin\Release\$env:SERVER_TARGET\XOutput.Core.dll app\XOutput.Core.dll
         move XOutput.Api\bin\Release\$env:SERVER_TARGET\XOutput.Api.dll app\XOutput.Api.dll
         move XOutput.Emulation\bin\Release\$env:SERVER_TARGET\XOutput.Emulation.dll app\XOutput.Emulation.dll
