@@ -1,4 +1,4 @@
-![Build XOutput](https://github.com/csutorasa/XOutput/workflows/Build%20XOutput/badge.svg)
+[![Build XOutput](https://github.com/csutorasa/XOutput/workflows/Build%20XOutput/badge.svg)](https://github.com/csutorasa/XOutput/actions?query=branch%3Amaster)
 [![Github All Releases](https://img.shields.io/github/downloads/csutorasa/XOutput/total.svg)](https://github.com/csutorasa/XOutput/releases/)
 [![Download XOutput](https://img.shields.io/sourceforge/dt/xoutput.svg)](https://sourceforge.net/projects/xoutput/files/latest/download)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/csutorasa)
