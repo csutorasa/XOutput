@@ -31,17 +31,17 @@ export class WebSocketService {
         });
     }
     private onOpen(event: Event): void {
-        console.log("Connected to " + this.host + ":" + this.port);
+        console.info("Connected to " + this.host + ":" + this.port);
     }
     private onError(event: Event): void {
-        const message: string = (<any>event).message;
+        const message: string = (event as any).message;
         console.error(message);
     }
     private onClose(event: CloseEvent): void {
-        console.log("Disconnected from " + this.host + ":" + this.port);
+        console.info("Disconnected from " + this.host + ":" + this.port);
     }
     private onMessage(event: MessageEvent): void {
-        
+        //
     }
 }
 
@@ -54,7 +54,7 @@ export class WebSocketSession {
         this.websocket.close();
     }
     isReady(): boolean {
-        return this.websocket && this.websocket.readyState == WebSocket.OPEN;
+        return this.websocket && this.websocket.readyState === WebSocket.OPEN;
     }
     sendMessage(obj: { Type: string; [key: string]: any }): void {
         this.websocket.send(JSON.stringify(obj));

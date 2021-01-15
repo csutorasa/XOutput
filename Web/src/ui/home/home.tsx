@@ -17,7 +17,7 @@ import { StyleGenerator, Styled } from "../../utils";
 type ClassNames = never;
 
 const styles: StyleGenerator<ClassNames> = () => ({
-  
+
 });
 
 export interface HomeProps extends Styled<ClassNames> {
@@ -25,12 +25,12 @@ export interface HomeProps extends Styled<ClassNames> {
 }
 
 interface HomeState {
-  
+
 }
 
 class HomeComponent extends Component<HomeProps, HomeState> {
   state: HomeState = {
-    
+
   };
 
   componentDidMount() {

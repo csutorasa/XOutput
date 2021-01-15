@@ -53,7 +53,7 @@ class ControllersComponent extends Component<ControllersProps, ControllersState>
   refreshDevices() {
     return rest.getControllers().then(devices => {
       this.setState({
-        devices: devices
+        devices
       })
     });
   }

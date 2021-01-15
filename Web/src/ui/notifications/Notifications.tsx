@@ -59,7 +59,7 @@ class NotificationsComponent extends React.Component<NotificationsProps, Notific
     refreshDevices(): Promise<Notification[]> {
         return rest.getNotifiations().then(notifications => {
             this.setState({
-                notifications: notifications,
+                notifications,
             })
             return notifications;
         })
@@ -71,7 +71,7 @@ class NotificationsComponent extends React.Component<NotificationsProps, Notific
             this.forceUpdate();
         });
     }
-  
+
     createIcon(level: string, classes: Classes<ClassNames>) {
         switch(level) {
             case 'Error':
@@ -82,7 +82,7 @@ class NotificationsComponent extends React.Component<NotificationsProps, Notific
                 return <InfoIcon className={classes.infoIcon}/>;
         }
     }
-  
+
     getTime(createdAt: string): string {
         const d = moment(createdAt);
         return `${d.format('LLL')} (${d.fromNow()})`

@@ -39,7 +39,7 @@ class AsyncComponent<T> extends React.Component<AsyncComponentProps<T>, AsyncCom
     }
 
     componentDidUpdate() {
-        if (this.props.task && (!this.state.promise || this.state.promise != this.props.task)) {
+        if (this.props.task && (!this.state.promise || this.state.promise !== this.props.task)) {
             this.subscribe();
         }
     }
@@ -76,8 +76,7 @@ class AsyncComponent<T> extends React.Component<AsyncComponentProps<T>, AsyncCom
                 return this.handleChildren(node);
             }
             throw new Error('Only 1 function children is expected');
-        } else 
-        if (node instanceof Function) {
+        } else if (node instanceof Function) {
             return node(this.state.result);
         } else {
             throw new Error('Only 1 function children is expected');

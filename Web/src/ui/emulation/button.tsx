@@ -12,13 +12,13 @@ export class ButtonFlow extends AbstractInputFlow<ButtonValue> {
     constructor(communication: WebSocketSession, element: HTMLElement, input: string, private emulator: string) {
         super(communication, element);
         this.key = input;
-        if (this.key == 'L2' || this.key == 'R2') {
+        if (this.key === 'L2' || this.key === 'R2') {
             this.fillContainer = document.querySelector(`.root .slider.${this.key}`);
             this.fillElement = this.fillContainer.querySelector(".fill");
         }
     }
     protected onStart(event: UIInputEvent): ButtonValue {
-        if (this.key == 'L2' || this.key == 'R2') {
+        if (this.key === 'L2' || this.key === 'R2') {
             return 1;
         }
         return true;
@@ -27,7 +27,7 @@ export class ButtonFlow extends AbstractInputFlow<ButtonValue> {
         return null;
     }
     protected onEnd(): ButtonValue {
-        if (this.key == 'L2' || this.key == 'R2') {
+        if (this.key === 'L2' || this.key === 'R2') {
             return 0;
         }
         return false;
@@ -65,7 +65,7 @@ export class Button extends React.Component<ButtonProp> {
     private mouseDown(event: MouseEvent) {
         this.props.eventHolder.mouseAdd(new ButtonFlow(this.props.websocket, this.element.current, this.props.input, this.props.emulator), event);
     }
-    
+
     private handleTouchEvent(event: TouchEvent, action: (t: Touch) => void) {
         Array.from(event.changedTouches).forEach(t => {
             action(t);

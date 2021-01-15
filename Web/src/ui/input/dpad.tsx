@@ -61,7 +61,7 @@ class DpadComponent extends Component<DpadProps> {
   }
 
   private getColor(themeClass: string, i: number): string {
-    return this.getActiveIndex() == i ? themeClass : '';
+    return this.getActiveIndex() === i ? themeClass : '';
   }
 
   render() {

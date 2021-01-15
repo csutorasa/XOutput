@@ -3,7 +3,7 @@ import './index.scss'
 import { render } from 'react-dom';
 import { RootElement } from './ui/RootElement';
 import { WebSocketService } from './communication/websocket';
-import { http } from './communication/http'; 
+import { http } from './communication/http';
 import 'typeface-roboto';
 
 const host = window.location.hostname;
@@ -12,7 +12,7 @@ http.initialize(host, port);
 WebSocketService.initialize(host, port);
 const websocket = new WebSocketService();
 
-window.onerror = function(msg, url, line, col) {
+window.onerror = (msg, url, line, col) => {
     /*if (websocket.isReady()) {
         websocket.sendDebug(`Error in ${url} at ${line}:${col} ${msg}`);
     }*/

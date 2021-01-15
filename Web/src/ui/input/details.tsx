@@ -73,8 +73,8 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
         const inputValues = data as InputValues;
         const newValues: { [method: string]: { [offset: string]: number } } = Object.assign(this.state.values, {});
         for (const index in inputValues.Values) {
-          const method =  inputValues.Values[index].Method;
-          const offset =  inputValues.Values[index].Offset;
+          const method = inputValues.Values[index].Method;
+          const offset = inputValues.Values[index].Offset;
           if (!newValues[method]) {
             newValues[method] = {};
           }
@@ -104,7 +104,7 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
   getDetails() {
     return rest.getInputDeviceDetails(this.props.id).then(device => {
       this.setState({
-        device: device
+        device
       })
     })
   }
@@ -112,7 +112,7 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
   getConfig() {
     return rest.getInputDeviceConfig(this.props.id).then(config => {
       this.setState({
-        config: config
+        config
       })
     })
   }
@@ -135,7 +135,7 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
     const enabled = this.state.forceFeedbacks.indexOf(offset) >= 0;
     let values: number[];
     if (enabled) {
-      values = this.state.forceFeedbacks.filter(f => f != offset);
+      values = this.state.forceFeedbacks.filter(f => f !== offset);
       rest.stopForceFeedback(this.props.id, offset);
     } else {
       values = this.state.forceFeedbacks.slice();
@@ -149,7 +149,7 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
 
   dpadGroups(inputDetails: InputDeviceInputDetails): { up?: number; down?: number; left?: number; right?: number }[] {
     const dpads: { up?: number; down?: number; left?: number; right?: number }[] = [];
-    inputDetails.sources.filter(s => s.type == 'dpad').forEach(s => {
+    inputDetails.sources.filter(s => s.type === 'dpad').forEach(s => {
       const index = Math.floor((s.offset - 100000) / 4);
       if (!dpads[index]) {
         dpads[index] = {};
@@ -202,7 +202,7 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
 
   getDPads(inputDetails: InputDeviceInputDetails) {
     const groups = this.dpadGroups(inputDetails);
-    if (groups.length == 0) {
+    if (groups.length === 0) {
       return null;
     }
     const { classes } = this.props;
@@ -220,14 +220,14 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
   }
 
   getButtons(inputDetails: InputDeviceInputDetails) {
-    if (inputDetails.sources.filter(s => s.type == 'button').length == 0) {
+    if (inputDetails.sources.filter(s => s.type === 'button').length === 0) {
       return null;
     }
     const { classes } = this.props;
     return <>
       <Typography className={classes.header} variant='h5'>{Translation.translate("Buttons")}</Typography>
       <Grid container spacing={3}>
-        {inputDetails.sources.filter(s => s.type == 'button').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
+        {inputDetails.sources.filter(s => s.type === 'button').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
           <Paper>
             <Typography align='center' variant='body1'>{s.name}</Typography>
             <LinearProgress variant="determinate" value={this.getValue(inputDetails.inputMethod, s.offset)} classes={{ bar: classes.bar }} />
@@ -238,14 +238,14 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
   }
 
   getAxes(inputDetails: InputDeviceInputDetails) {
-    if (inputDetails.sources.filter(s => s.type == 'axis').length == 0) {
+    if (inputDetails.sources.filter(s => s.type === 'axis').length === 0) {
       return null;
     }
     const { classes } = this.props;
     return <>
       <Typography className={classes.header} variant='h5'>{Translation.translate("Axes")}</Typography>
       <Grid container spacing={3}>
-        {inputDetails.sources.filter(s => s.type == 'axis').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
+        {inputDetails.sources.filter(s => s.type === 'axis').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
           <Paper>
             <Typography align='center' variant='body1'>{s.name}</Typography>
             <LinearProgress variant="determinate" value={this.getValue(inputDetails.inputMethod, s.offset, 0.5)} classes={{ bar: classes.bar }} />
@@ -256,14 +256,14 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
   }
 
   getSliders(inputDetails: InputDeviceInputDetails) {
-    if (inputDetails.sources.filter(s => s.type == 'slider').length == 0) {
+    if (inputDetails.sources.filter(s => s.type === 'slider').length === 0) {
       return null;
     }
     const { classes } = this.props;
     return <>
       <Typography className={classes.header} variant='h5'>{Translation.translate("Sliders")}</Typography>
       <Grid container spacing={3}>
-        {inputDetails.sources.filter(s => s.type == 'slider').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
+        {inputDetails.sources.filter(s => s.type === 'slider').map(s => <Grid item xs={6} md={4} lg={3} key={s.offset}>
           <Paper>
             <Typography align='center' variant='body1'>{s.name}</Typography>
             <LinearProgress variant="determinate" value={this.getValue(inputDetails.inputMethod, s.offset)} classes={{ bar: classes.bar }} />
@@ -274,7 +274,7 @@ class InputDetailsComponent extends Component<InputDetailsProps, InputDetailsSta
   }
 
   getForceFeedbacks(inputDetails: InputDeviceInputDetails) {
-    if (inputDetails.forceFeedbacks.length == 0) {
+    if (inputDetails.forceFeedbacks.length === 0) {
       return null;
     }
     const { classes } = this.props;

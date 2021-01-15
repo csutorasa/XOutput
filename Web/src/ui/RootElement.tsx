@@ -5,7 +5,7 @@ import { MainMenu } from "./mainmenu";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 
 const productionTheme = createMuiTheme({
-    
+
 });
 
 const developmentTheme = createMuiTheme({

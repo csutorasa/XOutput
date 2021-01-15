@@ -50,7 +50,7 @@ export class EventHolder {
     }
 
     touchEndAll() {
-        for (let key in Object.keys(this.touchFlows)) {
+        for (const key in Object.keys(this.touchFlows)) {
             const flow = this.touchFlows[key];
             flow.end();
             delete this.touchFlows[key];

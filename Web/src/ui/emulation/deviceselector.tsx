@@ -18,7 +18,7 @@ const styles: StyleGenerator<ClassNames> = () => ({
 });
 
 export interface DeviceSelectorProps extends Styled<ClassNames> {
-    
+
 }
 
 interface DeviceSelectorState {
@@ -26,7 +26,7 @@ interface DeviceSelectorState {
 }
 
 export class DeviceSelectorPage extends React.Component<DeviceSelectorProps, DeviceSelectorState> {
-    
+
     state: DeviceSelectorState = {
         emulators: null,
     };
@@ -73,14 +73,14 @@ export class DeviceSelectorPage extends React.Component<DeviceSelectorProps, Dev
         return (<>
             <Typography variant='h3'>{Translation.translate("OnlineDevices")}</Typography>
             <Async task={this.loading}>
-            { () => Object.keys(this.state.emulators).map(key => this.renderListElement(key, this.state.emulators[key])) } 
+            { () => Object.keys(this.state.emulators).map(key => this.renderListElement(key, this.state.emulators[key])) }
             </Async>
             <Typography variant='h5'>{Translation.translate("Share")}</Typography>
             <Async task={this.qrGeneration}>
                 { (dataUrl: string) => <>
                     <Typography variant='body1'>{this.path}</Typography>
                     <img src={dataUrl} />
-                    </> 
+                    </>
                 }
             </Async>
         </>);

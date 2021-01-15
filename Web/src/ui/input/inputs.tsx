@@ -58,26 +58,26 @@ class InputsComponent extends Component<InputsProps, InputsState> {
   refreshDevices() {
     return rest.getInputDevices().then(devices => {
       this.setState({
-        devices: devices,
+        devices,
       })
     })
   }
 
   private deviceToIcon(device: InputDeviceInformation) {
-    if (device.id == 'keyboard') {
+    if (device.id === 'keyboard') {
       return <KeyboardIcon />;
     }
-    if (device.id == 'mouse') {
+    if (device.id === 'mouse') {
       return <MouseIcon />;
     }
     return <SportsEsportsIcon />;
   }
 
   private translateName(name: string): string {
-    if (name == 'mouse') {
+    if (name === 'mouse') {
       return Translation.translate('Mouse');
     }
-    if (name == 'keyboard') {
+    if (name === 'keyboard') {
       return Translation.translate('Keyboard');
     }
     return name;
