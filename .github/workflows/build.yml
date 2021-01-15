@@ -22,6 +22,11 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.101
+    - name: Cache app
+      uses: actions/cache@v2
+      with:
+        key: app-${{ GITHUB_RUN_NUMBER }}
+        path: ./app
     - name: Clean
       run: dotnet clean --configuration Release && dotnet nuget locals all --clear
     - name: Restore dependencies
@@ -51,12 +56,6 @@ jobs:
         move XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.DirectInput.dll app\SharpDX.DirectInput.dll
         move XOutput.App\bin\Release\$env:GUI_TARGET\Hardcodet.Wpf.TaskbarNotification.dll app\Hardcodet.Wpf.TaskbarNotification.dll
         move XOutput.App\bin\Release\$env:GUI_TARGET\HIDSharp.dll app\HIDSharp.dll
-    - name: Persist app
-      uses: actions/upload-artifact@v2
-      with:
-        name: app
-        path: ./app
-        retention-days: 1
 
   build_node:
     runs-on: windows-latest
@@ -68,14 +67,13 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '14'
+    - name: Cache webapp
+      uses: actions/cache@v2
+      with:
+        key: webapp-${{ GITHUB_RUN_NUMBER }}
+        path: ./Web/webapp
     - name: Build node
       run: cd Web && npm install
-    - name: Persist webapp  
-      uses: actions/upload-artifact@v2
-      with:
-        name: webapp
-        path: ./Web/webapp
-        retention-days: 1
 
   create_package:
     runs-on: windows-latest
@@ -84,15 +82,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Restore app
-      uses: actions/download-artifact@v2
+    - name: Cache app
+      uses: actions/cache@v2
       with:
-        name: app
+        key: app-${{ GITHUB_RUN_NUMBER }}
         path: ./app
-    - name: Restore webapp
-      uses: actions/download-artifact@v2
+    - name: Cache webapp
+      uses: actions/cache@v2
       with:
-        name: webapp
+        key: webapp-${{ GITHUB_RUN_NUMBER }}
         path: ./app/webapp
     - name: Copy resources
       run: move bin app\bin
