@@ -4,6 +4,7 @@ env:
   VERSION: 4.0.0
   SERVER_TARGET: 'netcoreapp5.0'
   GUI_TARGET: 'net5.0-windows'
+  SONARCLOUD_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
 
 on:
   push:
@@ -31,16 +32,15 @@ jobs:
       run: dotnet clean --configuration Release && dotnet nuget locals all --clear
     - name: Restore dependencies
       run: dotnet restore
+    - name: Install SonaScanner
+      run: dotnet tool install --global dotnet-sonarscanner
     - name: Build and test
       shell: powershell
       run: |
+        dotnet sonarscanner begin /k:XOutput /d:sonar.host.url=https://sonarcloud.io /o:csutorasa /d:sonar.login=$env:SONARCLOUD_TOKEN /d:sonar.coverage.exclusions="**Tests*.cs"
         dotnet build -c Release -p:Version=$env:VERSION -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION
         dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+        dotnet sonarscanner end /d:sonar.login=$env:SONARCLOUD_TOKEN
     - name: Copy artifacts
       shell: powershell
       run: |
