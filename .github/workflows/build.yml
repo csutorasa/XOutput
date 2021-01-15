@@ -93,7 +93,7 @@ jobs:
         key: webapp
         path: ./Web/webapp
     - name: Copy resources
-      run: move bin app\bin && move Web\webapp app\Webapp
+      run: move bin app\bin && move Web\webapp app\webapp
     - name: Create package
       uses: actions/upload-artifact@v2
       with:
