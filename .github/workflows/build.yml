@@ -37,7 +37,7 @@ jobs:
     - name: Build and test
       shell: powershell
       run: |
-        dotnet sonarscanner begin /k:XOutput /o:csutorasa /d:sonar.login=$env:SONARCLOUD_TOKEN /d:sonar.coverage.exclusions="**Tests*.cs"
+        dotnet sonarscanner begin /k:XOutput /d:sonar.host.url=https://sonarcloud.io /o:csutorasa /d:sonar.login=$env:SONARCLOUD_TOKEN /d:sonar.coverage.exclusions="**Tests*.cs"
         dotnet build -c Release -p:Version=$env:VERSION -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION
         dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
         dotnet sonarscanner end /d:sonar.login=$env:SONARCLOUD_TOKEN
