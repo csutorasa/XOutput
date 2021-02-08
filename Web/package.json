@@ -22,7 +22,7 @@
     "html-webpack-plugin": "^5.0.0",
     "node-sass": "^5.0.0",
     "sass": "^1.32.6",
-    "sass-loader": "^10.1.1",
+    "sass-loader": "^11.0.0",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.15",
     "tslint": "^6.1.3",
