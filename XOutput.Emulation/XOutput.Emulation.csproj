@@ -16,7 +16,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Nefarius.ViGEm.Client" Version="1.17.175" />
+    <PackageReference Include="Nefarius.ViGEm.Client" Version="1.17.178" />
   </ItemGroup>
 
   <ItemGroup>
