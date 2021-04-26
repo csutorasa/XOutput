@@ -97,6 +97,7 @@ jobs:
   create_package:
     runs-on: windows-latest
     needs: [ build_net, build_node ]
+    if: github.ref == 'refs/heads/master'
 
     steps:
     - name: Checkout
