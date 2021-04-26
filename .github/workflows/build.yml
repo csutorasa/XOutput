@@ -27,7 +27,7 @@ jobs:
       with:
         java-version: '15'
     - name: Cache app
-      uses: actions/cache@v2.1.4
+      uses: actions/cache@v2.1.5
       with:
         key: app
         path: ./app
@@ -38,6 +38,15 @@ jobs:
     - name: Install SonaScanner
       run: dotnet tool install --global dotnet-sonarscanner
     - name: Build and test
+      if: github.ref != 'refs/heads/master'
+      shell: powershell
+      run: |
+        dotnet build -c Release -p:Version=$env:VERSION -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION
+        dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build and test and analysis
+      if: github.ref == 'refs/heads/master'
       shell: powershell
       run: |
         dotnet sonarscanner begin /k:XOutput /d:sonar.host.url=https://sonarcloud.io /o:csutorasa /d:sonar.login=$env:SONARCLOUD_TOKEN /d:sonar.coverage.exclusions="**Tests*.cs"
@@ -78,7 +87,7 @@ jobs:
       with:
         node-version: '14'
     - name: Cache webapp
-      uses: actions/cache@v2.1.4
+      uses: actions/cache@v2.1.5
       with:
         key: webapp
         path: ./Web/webapp
@@ -88,17 +97,18 @@ jobs:
   create_package:
     runs-on: windows-latest
     needs: [ build_net, build_node ]
+    if: github.ref == 'refs/heads/master'
 
     steps:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Cache app
-      uses: actions/cache@v2.1.4
+      uses: actions/cache@v2.1.5
       with:
         key: app
         path: ./app
     - name: Cache webapp
-      uses: actions/cache@v2.1.4
+      uses: actions/cache@v2.1.5
       with:
         key: webapp
         path: ./Web/webapp
