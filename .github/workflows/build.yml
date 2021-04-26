@@ -27,7 +27,7 @@ jobs:
       with:
         java-version: '15'
     - name: Cache app
-      uses: actions/cache@v2.1.4
+      uses: actions/cache@v2.1.5
       with:
         key: app
         path: ./app
@@ -87,7 +87,7 @@ jobs:
       with:
         node-version: '14'
     - name: Cache webapp
-      uses: actions/cache@v2.1.4
+      uses: actions/cache@v2.1.5
       with:
         key: webapp
         path: ./Web/webapp
@@ -103,12 +103,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Cache app
-      uses: actions/cache@v2.1.4
+      uses: actions/cache@v2.1.5
       with:
         key: app
         path: ./app
     - name: Cache webapp
-      uses: actions/cache@v2.1.4
+      uses: actions/cache@v2.1.5
       with:
         key: webapp
         path: ./Web/webapp
