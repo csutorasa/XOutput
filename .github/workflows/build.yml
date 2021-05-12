@@ -84,7 +84,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Setup node
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v2.1.5
       with:
         node-version: '14'
     - name: Cache webapp
