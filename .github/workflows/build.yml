@@ -20,7 +20,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '5.0.x'
     - uses: actions/setup-java@v2
@@ -28,7 +28,7 @@ jobs:
         distribution: 'zulu'
         java-version: '15'
     - name: Cache app
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v2
       with:
         key: app
         path: ./app
@@ -88,7 +88,7 @@ jobs:
       with:
         node-version: '16'
     - name: Cache webapp
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v2
       with:
         key: webapp
         path: ./Web/webapp
@@ -104,12 +104,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Cache app
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v2
       with:
         key: app
         path: ./app
     - name: Cache webapp
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v2
       with:
         key: webapp
         path: ./Web/webapp
