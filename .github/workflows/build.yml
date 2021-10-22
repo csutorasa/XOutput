@@ -93,7 +93,8 @@ jobs:
         key: webapp
         path: ./Web/webapp
     - name: Build node
-      run: cd Web && npm install && npm run lint
+      run: cd Web && npm install 
+      # && npm run lint
 
   create_package:
     runs-on: windows-latest
