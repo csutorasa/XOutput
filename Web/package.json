@@ -4,7 +4,7 @@
   "description": "XOutput web UI",
   "private": true,
   "scripts": {
-    "dev": "webpack serve --config webpack.dev.js --watch",
+    "dev": "webpack serve --config webpack.dev.js",
     "install": "webpack --config webpack.prod.js",
     "lint": "eslint --project .",
     "test": "echo \"No test specified\""
