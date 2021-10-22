@@ -21,8 +21,8 @@ namespace XOutput.Server.Websocket.Ds4
         {
             senderFunction(new Ds4FeedbackMessage
             {
-                Small = args.Small,
-                Large = args.Large,
+                SmallForceFeedback = args.Small,
+                BigForceFeedback = args.Large,
             });
         }
 

@@ -21,8 +21,8 @@ namespace XOutput.Server.Websocket.Xbox
         {
             senderFunction(new XboxFeedbackMessage
             {
-                Small = args.Small,
-                Large = args.Large,
+                SmallForceFeedback = args.Small,
+                BigForceFeedback = args.Large,
                 LedNumber = args.LedNumber,
             });
         }

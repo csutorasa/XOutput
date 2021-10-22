@@ -16,12 +16,12 @@ namespace XOutput.Api.Serialization.Tests
         {
             var input = new XboxFeedbackMessage
             {
-                Small = 0,
-                Large = 1,
+                SmallForceFeedback = 0,
+                BigForceFeedback = 1,
                 LedNumber = 1,
             };
             var message = writer.GetString(input);
-            Assert.AreEqual("{\"small\":0,\"large\":1,\"ledNumber\":1,\"type\":\"XboxFeedback\"}", message);
+            Assert.AreEqual("{\"smallForceFeedback\":0,\"bigForceFeedback\":1,\"ledNumber\":1,\"type\":\"XboxFeedback\"}", message);
         }
 
         [TestMethod]
