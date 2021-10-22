@@ -10,7 +10,7 @@ namespace XOutput.Client.Input
 {
     public class MappableDeviceClient : WebsocketJsonClient
     {
-        public event FeedbackReceived FeedbackReceived;
+        public event MappableDeviceFeedbackReceived FeedbackReceived;
 
         public MappableDeviceClient(MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper, Uri baseUri) : base(messageReader, messageWriter, webSocketHelper, baseUri)
         {
@@ -28,7 +28,7 @@ namespace XOutput.Client.Input
             if (message is MappableDeviceFeedbackMessage)
             {
                 var feedbackMessage = message as MappableDeviceFeedbackMessage;
-                FeedbackReceived?.Invoke(this, new FeedbackReceivedEventArgs
+                FeedbackReceived?.Invoke(this, new MappableDeviceFeedbackReceivedEventArgs
                 {
                     SmallForceFeedback = feedbackMessage.SmallForceFeedback,
                     BigForceFeedback = feedbackMessage.BigForceFeedback,
@@ -42,9 +42,9 @@ namespace XOutput.Client.Input
         }
     }
 
-    public delegate void FeedbackReceived(object sender, FeedbackReceivedEventArgs args);
+    public delegate void MappableDeviceFeedbackReceived(object sender, MappableDeviceFeedbackReceivedEventArgs args);
 
-    public class FeedbackReceivedEventArgs
+    public class MappableDeviceFeedbackReceivedEventArgs
     {
         public double SmallForceFeedback { get; set; }
         public double BigForceFeedback { get; set; }

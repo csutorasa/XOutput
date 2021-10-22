@@ -9,8 +9,8 @@
             Type = MessageType;
         }
 
-        public double Small { get; set; }
-        public double Large { get; set; }
+        public double SmallForceFeedback { get; set; }
+        public double BigForceFeedback { get; set; }
         public int LedNumber { get; set; }
     }
 }
