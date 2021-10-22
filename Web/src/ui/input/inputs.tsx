@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -11,12 +11,12 @@ import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
 import GamepadIcon from '@material-ui/icons/Gamepad';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import { rest, InputDeviceInfoResponse, InputDeviceInformation } from "../../communication/rest";
-import { Link } from "react-router-dom";
-import { Translation } from "../../translation/translation";
-import { withStyles, Theme } from "@material-ui/core";
-import { StyleGenerator, Styled } from "../../utils";
-import { Async } from "../components/Asnyc";
+import { rest, InputDeviceInfoResponse, InputDeviceInformation } from '../../communication/rest';
+import { Link } from 'react-router-dom';
+import { Translation } from '../../translation/translation';
+import { withStyles, Theme } from '@material-ui/core';
+import { StyleGenerator, Styled } from '../../utils';
+import { Async } from '../components/Asnyc';
 
 type ClassNames = 'paper' | 'chip' | 'iconWrapper';
 
@@ -35,15 +35,12 @@ const styles: StyleGenerator<ClassNames> = () => ({
   iconWrapper: {
     margin: 'auto',
     textAlign: 'center',
-  }
+  },
 });
 
-export interface InputsProps extends Styled<ClassNames> {
-
-}
+export interface InputsProps extends Styled<ClassNames> {}
 
 class InputsComponent extends Component<InputsProps, InputsState> {
-
   state: InputsState = {
     devices: null,
   };
@@ -56,11 +53,11 @@ class InputsComponent extends Component<InputsProps, InputsState> {
   }
 
   refreshDevices() {
-    return rest.getInputDevices().then(devices => {
+    return rest.getInputDevices().then((devices) => {
       this.setState({
         devices,
-      })
-    })
+      });
+    });
   }
 
   private deviceToIcon(device: InputDeviceInformation) {
@@ -88,46 +85,49 @@ class InputsComponent extends Component<InputsProps, InputsState> {
     let label;
     switch (feature) {
       case 'WindowsApi':
-        label = 'Windows API'
+        label = 'Windows API';
         break;
       case 'RawInput':
-        label = 'Raw Input'
+        label = 'Raw Input';
         break;
       case 'DirectInput':
-        label = 'Direct Input'
+        label = 'Direct Input';
         break;
     }
-    return <Chip variant='outlined' className={classes.chip} label={label} key={feature} />
+    return <Chip variant="outlined" className={classes.chip} label={label} key={feature} />;
   }
 
   render() {
     const { classes } = this.props;
-    return (<>
-      <Typography variant='h3'>{Translation.translate("InputDevices")}</Typography>
-      <Async task={this.loading}>
-        { () =>
-        <Grid container spacing={2}>
-          {this.state.devices.map(d => <Grid item xs={12} md={6} lg={4} key={d.id}>
-            <Paper className={classes.paper}>
-              <Grid container>
-                <Grid item xs={1} className={classes.iconWrapper}>
-                  {this.deviceToIcon(d)}
+    return (
+      <>
+        <Typography variant="h3">{Translation.translate('InputDevices')}</Typography>
+        <Async task={this.loading}>
+          {() => (
+            <Grid container spacing={2}>
+              {this.state.devices.map((d) => (
+                <Grid item xs={12} md={6} lg={4} key={d.id}>
+                  <Paper className={classes.paper}>
+                    <Grid container>
+                      <Grid item xs={1} className={classes.iconWrapper}>
+                        {this.deviceToIcon(d)}
+                      </Grid>
+                      <Grid item xs={11}>
+                        <Typography variant="body1">
+                          <Link to={`/inputs/${d.id}`}>{this.translateName(d.name)}</Link>
+                        </Typography>
+                        <Typography variant="body2">{d.id}</Typography>
+                      </Grid>
+                    </Grid>
+                    <div>{d.activeFeatures.map((f) => this.mapFeatureToChip(f))}</div>
+                  </Paper>
                 </Grid>
-                <Grid item xs={11}>
-                  <Typography variant='body1'><Link to={`/inputs/${d.id}`}>{this.translateName(d.name)}</Link></Typography>
-                  <Typography variant='body2'>{d.id}</Typography>
-                </Grid>
-              </Grid>
-              <div>
-                { d.activeFeatures.map(f => this.mapFeatureToChip(f))
-                }
-              </div>
-            </Paper>
-          </Grid>)}
-        </Grid>
-        }
-      </Async>
-    </>);
+              ))}
+            </Grid>
+          )}
+        </Async>
+      </>
+    );
   }
 }
 

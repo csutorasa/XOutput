@@ -1,4 +1,4 @@
-import './index.scss'
+import './index.scss';
 
 import { render } from 'react-dom';
 import { RootElement } from './ui/RootElement';
@@ -10,19 +10,19 @@ const host = window.location.hostname;
 const port = window.location.port;
 http.initialize(host, port);
 WebSocketService.initialize(host, port);
-const websocket = new WebSocketService();
+// const websocket = new WebSocketService();
 
 window.onerror = (msg, url, line, col) => {
-    /*if (websocket.isReady()) {
+  /* if (websocket.isReady()) {
         websocket.sendDebug(`Error in ${url} at ${line}:${col} ${msg}`);
-    }*/
+    } */
 };
 
 function disableResize() {
-    const meta = document.createElement('meta');
-    meta.name = 'viewport';
-    meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
-    document.getElementsByTagName('head')[0].appendChild(meta);
+  const meta = document.createElement('meta');
+  meta.name = 'viewport';
+  meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+  document.getElementsByTagName('head')[0].appendChild(meta);
 }
 
 disableResize();

@@ -1,7 +1,7 @@
-import { MessageBase } from "../message";
+import { MessageBase } from '../message';
 
 export interface XboxFeedback extends MessageBase {
-    Small: number;
-    Large: number;
-    LedNumber: number;
+  Small: number;
+  Large: number;
+  LedNumber: number;
 }

@@ -1,6 +1,6 @@
-import { MessageBase } from "../message";
+import { MessageBase } from '../message';
 
 export interface Ds4Feedback extends MessageBase {
-    Small: number;
-    Large: number;
+  Small: number;
+  Large: number;
 }

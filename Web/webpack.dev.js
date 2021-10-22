@@ -1,60 +1,56 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   entry: {
-    index: path.resolve(__dirname, './src/index.ts')
+    index: path.resolve(__dirname, './src/index.ts'),
   },
   module: {
     rules: [
       {
         test: /\.m?js/,
         resolve: {
-          fullySpecified: false
-        }
+          fullySpecified: false,
+        },
       },
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.html$/,
-        type: 'asset/resource'
+        type: 'asset/resource',
       },
       {
         test: /\.css$/,
-        use: 'css-loader'
+        use: 'css-loader',
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        type: 'asset/resource'
-      }
-    ]
+        type: 'asset/resource',
+      },
+    ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
     path: path.resolve(__dirname, 'webapp'),
-    filename: '[name].js'
+    filename: '[name].js',
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'XOutput'
-    })
+      title: 'XOutput',
+    }),
   ],
   optimization: {
-    minimize: false
+    minimize: false,
   },
   devServer: {
     port: 8080,
@@ -63,8 +59,8 @@ module.exports = {
       '/api': 'http://localhost:8000',
       '/ws': {
         target: 'ws://localhost:8000',
-        ws: true
-      }
-    }
-  }
-}
+        ws: true,
+      },
+    },
+  },
+};

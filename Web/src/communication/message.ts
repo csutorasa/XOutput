@@ -1,3 +1,3 @@
 export interface MessageBase {
-    Type: string;
+  Type: string;
 }
