@@ -27,7 +27,12 @@ namespace XOutput.App.Devices.Input
                 inputDeviceProvider.Connected += Connected;
                 inputDeviceProvider.Disconnected += Disconnected;
             }
-            readThreadContext = ThreadCreator.CreateLoop($"Input device manager refresh", RefreshLoop, 5000).Start();
+            readThreadContext = ThreadCreator.CreateLoop($"Input device manager refresh", RefreshLoop, 5000);
+        }
+
+        public void Start()
+        {
+            readThreadContext.Start();
         }
 
         private void Connected(object sender, DeviceConnectedEventArgs e)

@@ -119,7 +119,7 @@ Manage process whitelist manually (use this method only, if you want to use HidG
 5.  Create subkey with the PID you found before.
 ## 4.x Information
 
-The 4.x version is built with .NET 5, you will need to [download it](https://dotnet.microsoft.com/download).
+The 4.x version backend is built with .NET 5, you will need to [download it](https://dotnet.microsoft.com/download).
 
 | Action                         | Required dependency  |
 | ------------------------------ | -------------------- |
@@ -144,6 +144,11 @@ Help can be found in the [bin directory](./bin).
 
 Server application might write the registry, therefore it needs administrator prividledges.
 Alternatively it can be started without admin access, but then when it tries to write the registry it will prompt UAC.
+
+### Webapp
+
+The web application required Node 16 to build it, you can [download it](https://nodejs.org/en/download/).
+It can be found in the [web directory](./Web).
 
 ### Reader application
 

@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
+using System.Security;
 using XOutput.Core.DependencyInjection;
 using XOutput.Core.Notifications;
+using XOutput.Core.Threading;
 
 namespace XOutput.App.Devices.Input.DirectInput
 {
@@ -103,7 +105,7 @@ namespace XOutput.App.Devices.Input.DirectInput
             }
         }
 
-        [HandleProcessCorruptedStateExceptions]
+        [HandleProcessCorruptedStateExceptions, SecurityCritical]
         private IInputDevice CreateDevice(DeviceInstance deviceInstance, List<string> uniqueIds)
         {
             try
@@ -152,8 +154,8 @@ namespace XOutput.App.Devices.Input.DirectInput
             catch (Exception ex)
             {
                 logger.Error("Failed to create device " + deviceInstance.InstanceGuid + " " + deviceInstance.InstanceName + ex.ToString());
-                return null;
             }
+            return null;
         }
 
         private string GetUniqueId(DeviceInstance deviceInstance, Joystick joystick)

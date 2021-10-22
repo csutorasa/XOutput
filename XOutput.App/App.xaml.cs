@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
+using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -38,10 +40,10 @@ namespace XOutput.App
         {
             SetLoggerConfiguration();
 
-            Dispatcher.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
+            Dispatcher.UnhandledException += Dispatcher_UnhandledException;
             // AppDomain.CurrentDomain.FirstChanceException += (object sender, FirstChanceExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Info);
-            AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) => UnhandledException(e.ExceptionObject as Exception, LogLevel.Error);
-            TaskScheduler.UnobservedTaskException += (object sender, UnobservedTaskExceptionEventArgs e) => UnhandledException(e.Exception, LogLevel.Error);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
 
             logger.Info($"Starting XOutput app version: {appVersion}");
 
@@ -72,6 +74,22 @@ namespace XOutput.App
                 }
             }
             CheckUpdate(globalContext.Resolve<UpdateChecker>(), notificationService);
+        }
+
+        [HandleProcessCorruptedStateExceptions, SecurityCritical]
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            UnhandledException(e.ExceptionObject as Exception, LogLevel.Error);
+        }
+
+        private void Dispatcher_UnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            UnhandledException(e.Exception, LogLevel.Error);
+        }
+
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            UnhandledException(e.Exception, LogLevel.Error);
         }
 
         private static void SetLoggerConfiguration()
