@@ -1,26 +1,30 @@
-import React, { ReactNode, Component } from 'react';
+import React, { ReactNode, Component, PropsWithChildren } from 'react';
 import { Translation } from '../translation/translation';
 
-export interface TranslatedTextProps {
-  text?: string;
+export type TextTranslatedTextProps = {
+  text: string;
+};
+
+export type ChildrenTranslatedTextProps = {
+  children: string;
+};
+
+export type TranslatedTextProps = TextTranslatedTextProps | ChildrenTranslatedTextProps;
+
+function hasText(props: TranslatedTextProps): props is TextTranslatedTextProps {
+  return !!(props as TextTranslatedTextProps).text;
 }
 
-export class TranslatedText extends Component<TranslatedTextProps, any, any> {
-  private childText(children: ReactNode): string {
-    return children.toString();
+export const TranslatedText = (props: TranslatedTextProps) => {
+  let translationKey: string;
+  if (hasText(props)) {
+    translationKey = props.text;
+  } else {
+    translationKey = props.children;
   }
-
-  render() {
-    let text: string;
-    if (this.props.text) {
-      text = this.props.text;
-    } else {
-      text = this.childText(this.props.children);
-    }
-    const translatedText = Translation.translate(text);
-    return <>{translatedText}</>;
-  }
-}
+  const translatedText = Translation.translate(translationKey);
+  return <>{translatedText}</>;
+};
 
 export const TT = TranslatedText;
 export default TT;

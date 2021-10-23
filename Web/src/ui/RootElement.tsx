@@ -1,7 +1,7 @@
 import React from 'react';
 import green from '@material-ui/core/colors/green';
 import { HashRouter } from 'react-router-dom';
-import { MainMenu } from './mainmenu';
+import { MainMenu } from './MainMenu';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core';
 
 const productionTheme = createMuiTheme({});
@@ -12,7 +12,7 @@ const developmentTheme = createMuiTheme({
   },
 });
 
-const theme = process.env.NODE_ENV !== 'production' ? productionTheme : productionTheme;
+const theme = process.env.NODE_ENV !== 'production' ? developmentTheme : productionTheme;
 
 export const RootElement = (
   <HashRouter>

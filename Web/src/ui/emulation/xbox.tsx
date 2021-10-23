@@ -10,7 +10,7 @@ import { Square } from './square';
 import { EventHolder } from '../../events/eventholder';
 import { MessageBase } from '../../communication/message';
 import { XboxFeedback } from '../../communication/response/XboxFeedback';
-import { TranslatedText } from '../translatedtext';
+import { TranslatedText } from '../TranslatedText';
 
 interface EmulationState {
   emulators: ListEmulatorsResponse;
