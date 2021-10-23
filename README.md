@@ -19,7 +19,7 @@ Any contribution is welcome, open your [Pull request](https://github.com/csutora
 
 To join the discussion or just say hi in the [discord channel](https://discord.gg/Y628tcp).
 
-This version is currently under development.
+**This version is currently under development. Please use [3.x](https://github.com/csutorasa/XOutput/tree/3.x) version for stable features**
 
 | Version                                              | State                                   | Support                                  |
 | ---------------------------------------------------- | --------------------------------------- | ---------------------------------------- |
@@ -46,13 +46,12 @@ Install:
 -   Visual C++ Redistributable for Visual Studio 2015 32-bit
 -   Visual C++ Redistributable for Visual Studio 2015 64-bit
 -   all the drivers for your controllers
--   [.Net Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42642) if you do not have Windows 10
+-   [.NET 5 ASP.NET and Desktop runtime](https://dotnet.microsoft.com/download)
 -   if you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
 ### Download XOutput
 
 -   Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
--   Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
 -   Unzip to any directory
 
 ## How to upgrade
@@ -60,35 +59,19 @@ Install:
 Download the application:
 
 -   Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
--   Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
 -   Unzip to the same directory as before
--   Delete the old `settings.json` file before starting the application
+-   If there are errors, remove the existing `conf` directory
 
-## How to use
+## How it works
 
-If all the requirements are installed, the software should start up without any error messages.
-
-### Input devices
-
-Input devices can be checked and configured individually.
-Input values can be seen in the input fields.
-Force feedback can be disabled for each device.
-
-### Game controllers
-
-The available input devices are shown in the Game Controllers section. Choose a  device and click 'Edit'.
-
-On the configuration screen there are 3 blocks. The left block shows the input, the right one shows the emulated output and in the middle is where the mapping can be set. For each output axis or button, you can choose from the input axes and buttons.
-
-1.  Press 'Configure All' to set the mapping all at once, or press 'Configure' on each field to set them individually.
-2.  Press the button or move the axis from one end to the other.
-3.  Check your mapping comparing the input and output blocks.
-4.  If needed, you can apply deadzone values to axes. (more info below)
-5.  Close the configuration window
-6.  Save the settings using the 'File->Save' menu or the button located at the bottom right of the main window.
-7.  Select 'Start' on the device.
-
-You can check if it is working in the Windows settings, or just select 'File->Game controllers', that opens the Windows calibration for you. An Xbox gamepad should have appeared in the list.
+| Component         | Implementation | Description                                                                                                                     |
+| ----------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Device emualation | ViGEm          | External software that emulates XBox and DS4 controllers                                                                        |
+| Device emualation | SCP toolkit    | Legacy external software that emulates XBox controllers                                                                         |
+| Backend           | XOutput.Server | Server that collects data from clients and sends to the emulation software                                                      |
+| Client            | XOutput.App    | Desktop application that collects data from the devices and sends to the backend                                                |
+| Client            | Web controller | Web application that allows to emulate a device                                                                                 |
+| Client            | Web client     | Web application that uses the [Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API) |
 
 ## HidGuardian (exclusive mode)
 
@@ -117,7 +100,8 @@ Manage process whitelist manually (use this method only, if you want to use HidG
 3.  Remember the value of the PID column.
 4.  Run `regedit` and go to `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters\Whitelist`
 5.  Create subkey with the PID you found before.
-## 4.x Information
+
+## Developer Information
 
 The 4.x version backend is built with .NET 5, you will need to [download it](https://dotnet.microsoft.com/download).
 
