@@ -1,5 +1,5 @@
 import React, { CSSProperties, TouchEvent, MouseEvent, Touch, RefObject } from 'react';
-import { WebSocketSession } from '../../communication/websocket';
+import { WebSocketSession } from '../../client/websocket';
 import { AbstractInputFlow, UIInputEvent } from '../../events/base';
 import { CommonProps } from './common';
 import { ButtonFlow } from './button';

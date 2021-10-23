@@ -2,8 +2,8 @@ import './index.scss';
 
 import { render } from 'react-dom';
 import { RootElement } from './ui/RootElement';
-import { WebSocketService } from './communication/websocket';
-import { http } from './communication/http';
+import { WebSocketService } from './client/websocket';
+import { http } from './client/http';
 import 'typeface-roboto';
 
 const host = window.location.hostname;

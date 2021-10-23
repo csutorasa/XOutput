@@ -1,4 +1,4 @@
-import { MessageBase } from './message';
+import { MessageBase } from '../api/MessageBase';
 import { InputMethod } from './rest';
 
 export interface InputValues extends MessageBase {

@@ -4,12 +4,12 @@ import { Slider } from './slider';
 import { Button } from './button';
 import { Axis } from './axis';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { ListEmulatorsResponse, rest, EmulatorResponse } from '../../communication/rest';
-import { WebSocketService, WebSocketSession } from '../../communication/websocket';
+import { ListEmulatorsResponse, rest, EmulatorResponse } from '../../client/rest';
+import { WebSocketService, WebSocketSession } from '../../client/websocket';
 import { Square } from './square';
 import { EventHolder } from '../../events/eventholder';
-import { MessageBase } from '../../communication/message';
-import { XboxFeedback } from '../../communication/response/XboxFeedback';
+import { MessageBase } from '../../api/MessageBase';
+import { XboxFeedbackEvent } from '../../api/XboxFeedbackEvent';
 import { TranslatedText } from '../TranslatedText';
 
 interface EmulationState {
@@ -89,7 +89,7 @@ export class XboxEmulation extends React.Component<EmulationProps, EmulationStat
 
   private onData(data: MessageBase) {
     if (data.Type === 'XboxFeedback') {
-      const feedback = data as XboxFeedback;
+      const feedback = data as XboxFeedbackEvent;
       if (navigator.vibrate) {
         if (feedback.Small > 0 || feedback.Large > 0) {
           navigator.vibrate(60 * 60 * 1000);

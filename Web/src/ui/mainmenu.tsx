@@ -27,7 +27,7 @@ import { Styled, StyleGenerator } from '../utils';
 import Translation from '../translation/translation';
 import { Notifications } from './notifications/Notifications';
 import { MainMenuListItem } from './MainMenuListItem';
-import { rest, Notification } from '../communication/rest';
+import { rest, Notification } from '../client/rest';
 import { Home } from './home/home';
 
 type ClassNames = 'menubarButton' | 'mainContent' | 'title' | 'drawerRoot' | 'drawerHeader' | 'placeholder';

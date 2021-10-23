@@ -1,4 +1,4 @@
-import { MessageBase } from './message';
+import { MessageBase } from '../api/MessageBase';
 
 export class WebSocketService {
   private static globalHost: string;

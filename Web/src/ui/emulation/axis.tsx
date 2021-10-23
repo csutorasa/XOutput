@@ -1,6 +1,6 @@
 import React, { CSSProperties, MouseEvent, TouchEvent, Touch, RefObject } from 'react';
 import { AbstractInputFlow, UIInputEvent } from '../../events/base';
-import { WebSocketService, WebSocketSession } from '../../communication/websocket';
+import { WebSocketService, WebSocketSession } from '../../client/websocket';
 import { CommonProps } from './common';
 
 type AxisValue = { x: number; y: number };

@@ -6,12 +6,12 @@ import Accordion from '@material-ui/core/Accordion';
 import Paper from '@material-ui/core/Paper';
 import Switch from '@material-ui/core/Switch';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { rest, InputDeviceDetails, InputDeviceConfig, InputDeviceInputDetails, InputMethod } from '../../communication/rest';
+import { rest, InputDeviceDetails, InputDeviceConfig, InputDeviceInputDetails, InputMethod } from '../../client/rest';
 import { Translation } from '../../translation/translation';
 import { withStyles, Theme } from '@material-ui/core';
-import { WebSocketService, WebSocketSession } from '../../communication/websocket';
-import { InputValues } from '../../communication/input';
-import { MessageBase } from '../../communication/message';
+import { WebSocketService, WebSocketSession } from '../../client/websocket';
+import { InputValues } from '../../client/input';
+import { MessageBase } from '../../api/MessageBase';
 import { Dpad } from './dpad';
 import { StyleGenerator, Styled } from '../../utils';
 

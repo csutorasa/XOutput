@@ -11,7 +11,7 @@ import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
 import GamepadIcon from '@material-ui/icons/Gamepad';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import { rest, InputDeviceInfoResponse, InputDeviceInformation } from '../../communication/rest';
+import { rest, InputDeviceInfoResponse, InputDeviceInformation } from '../../client/rest';
 import { Link } from 'react-router-dom';
 import { Translation } from '../../translation/translation';
 import { withStyles, Theme } from '@material-ui/core';

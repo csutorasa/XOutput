@@ -1,5 +1,5 @@
 import React, { ReactElement, Fragment } from 'react';
-import { ListEmulatorsResponse, rest, EmulatorResponse } from '../../communication/rest';
+import { ListEmulatorsResponse, rest, EmulatorResponse } from '../../client/rest';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Translation } from '../../translation/translation';
