@@ -23,7 +23,6 @@ namespace XOutput.Client
                 { Ds4FeedbackResponse.MessageType,  typeof(Ds4FeedbackResponse) },
                 { InputDeviceFeedbackResponse.MessageType,  typeof(InputDeviceFeedbackResponse) },
                 { InputDeviceInputResponse.MessageType,  typeof(InputDeviceInputResponse) },
-                { InputDeviceOutputResponse.MessageType,  typeof(InputDeviceOutputResponse) },
             };
             return new MessageReader(deserializationMapping);
         }

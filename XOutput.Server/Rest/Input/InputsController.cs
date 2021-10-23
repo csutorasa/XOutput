@@ -38,5 +38,30 @@ namespace XOutput.Rest.Input
                 }).ToList(),
             }).ToList();
         }
+
+        [HttpGet]
+        [Route("/api/inputs/{id}")]
+        public ActionResult<InputDeviceInfo> GetInputDevice(string id)
+        {
+            var d = InputDevices.Find(id);
+            if (d == null) {                
+                return NotFound();
+            }
+            return new InputDeviceInfo {
+                Id = d.Id,
+                Name = d.Name,
+                DeviceApi = d.DeviceApi.ToString(),
+                Sources = d.FindAllSources().Select(s => new InputDeviceSource {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Type = s.Type.ToString(),
+                }).ToList(),
+                Targets = d.FindAllTargets().Select(t => new InputDeviceTarget {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Type = "ForceFeedback",
+                }).ToList(),
+            };
+        }
     }
 }

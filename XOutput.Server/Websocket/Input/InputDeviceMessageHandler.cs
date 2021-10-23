@@ -10,13 +10,13 @@ namespace XOutput.Websocket.Input
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly InputDevices InputDevices;
+        private readonly InputDevices inputDevices;
         private readonly SenderFunction<InputDeviceFeedbackResponse> senderFunction;
         private InputDevice device;
 
-        public InputDeviceMessageHandler(InputDevices InputDevices, SenderFunction<InputDeviceFeedbackResponse> senderFunction)
+        public InputDeviceMessageHandler(InputDevices inputDevices, SenderFunction<InputDeviceFeedbackResponse> senderFunction)
         {
-            this.InputDevices = InputDevices;
+            this.inputDevices = inputDevices;
             this.senderFunction = senderFunction;
         }
 
@@ -31,7 +31,7 @@ namespace XOutput.Websocket.Input
             {
                 var detailsMessage = message as InputDeviceDetailsRequest;
                 var deviceApi = (InputDeviceApi) Enum.Parse(typeof(InputDeviceApi), detailsMessage.InputApi);
-                device = InputDevices.Create(detailsMessage.Id, detailsMessage.Name, deviceApi, detailsMessage.Sources.Select(InputDeviceSourceWithValue.Create).ToList(), detailsMessage.Targets.Select(InputDeviceTargetWithValue.Create).ToList());
+                device = inputDevices.Create(detailsMessage.Id, detailsMessage.Name, deviceApi, detailsMessage.Sources.Select(InputDeviceSourceWithValue.Create).ToList(), detailsMessage.Targets.Select(InputDeviceTargetWithValue.Create).ToList());
                 device.FeedbackReceived += DeviceFeedbackReceived;
             }
             if (message is InputDeviceInputRequest)
@@ -61,7 +61,7 @@ namespace XOutput.Websocket.Input
             if (device != null)
             {
                 device.FeedbackReceived -= DeviceFeedbackReceived;
-                InputDevices.Remove(device);
+                inputDevices.Remove(device);
             }
         }
     }

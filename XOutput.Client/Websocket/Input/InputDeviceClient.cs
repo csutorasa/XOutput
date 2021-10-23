@@ -8,7 +8,7 @@ namespace XOutput.Websocket.Input
 {
     public class InputDeviceClient : WebsocketJsonClient
     {
-        public event InputDeviceFeedbackReceived FeedbackReceived;
+        public event InputDeviceFeedbackReceived ForceFeedbackReceived;
 
         public InputDeviceClient(MessageReader messageReader, MessageWriter messageWriter, WebSocketHelper webSocketHelper, Uri baseUri) : base(messageReader, messageWriter, webSocketHelper, baseUri)
         {
@@ -26,7 +26,7 @@ namespace XOutput.Websocket.Input
             if (message is InputDeviceFeedbackResponse)
             {
                 var feedbackMessage = message as InputDeviceFeedbackResponse;
-                FeedbackReceived?.Invoke(this, new InputDeviceFeedbackReceivedEventArgs
+                ForceFeedbackReceived?.Invoke(this, new InputDeviceFeedbackReceivedEventArgs
                 {
                     ForceFeedbacks = feedbackMessage.Targets.Select(t => new InputDeviceTargetValue { Id = t.Id, Value = t.Value }).ToList(),
                 });
@@ -39,9 +39,9 @@ namespace XOutput.Websocket.Input
         }
     }
 
-    public delegate void InputDeviceFeedbackReceived(object sender, InputDeviceFeedbackReceivedEventArgs args);
+    public delegate void InputDeviceForceFeedbackReceived(object sender, InputDeviceForceFeedbackReceivedEventArgs args);
 
-    public class InputDeviceFeedbackReceivedEventArgs
+    public class InputDeviceForceFeedbackReceivedEventArgs
     {
         public List<InputDeviceTargetValue> ForceFeedbacks { get; set; }
     }

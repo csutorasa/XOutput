@@ -12,13 +12,13 @@ namespace XOutput.Rest.Emulation
     public class ControllersController : Controller
     {
         private readonly NetworkDeviceInfoService networkDeviceInfoService;
-        private readonly InputDevices InputDevices;
+        private readonly InputDevices inputDevices;
 
         [ResolverMethod]
-        public ControllersController(NetworkDeviceInfoService networkDeviceInfoService, InputDevices InputDevices)
+        public ControllersController(NetworkDeviceInfoService networkDeviceInfoService, InputDevices inputDevices)
         {
             this.networkDeviceInfoService = networkDeviceInfoService;
-            this.InputDevices = InputDevices;
+            this.inputDevices = inputDevices;
         }
 
         [HttpGet]
