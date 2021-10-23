@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using XOutput.DependencyInjection;
 
 namespace XOutput.App.UI.View

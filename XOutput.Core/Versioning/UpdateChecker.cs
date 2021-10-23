@@ -1,9 +1,5 @@
-﻿using NLog;
-using System;
-using System.Net;
-using System.Net.Http;
+﻿using System;
 using System.Threading.Tasks;
-using XOutput.DependencyInjection;
 
 namespace XOutput.Versioning
 {

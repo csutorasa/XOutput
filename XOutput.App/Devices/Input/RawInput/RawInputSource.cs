@@ -1,5 +1,4 @@
 ﻿using HidSharp.Reports;
-using HidSharp.Reports.Input;
 using System;
 using System.Collections.Generic;
 

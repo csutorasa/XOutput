@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using XOutput.DependencyInjection;
 using XOutput.Emulation;
 using XOutput.Emulation.Xbox;
-using XOutput.Websocket.Common;
 
 namespace XOutput.Websocket.Xbox
 {

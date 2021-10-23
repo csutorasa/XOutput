@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using XOutput.App.Devices.Input;
 using XOutput.App.Devices.Input.DirectInput;
 using XOutput.App.Devices.Input.RawInput;

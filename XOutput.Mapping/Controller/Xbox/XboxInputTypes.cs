@@ -1,5 +1,4 @@
 ﻿using System;
-using XOutput.Mapping.Input;
 
 namespace XOutput.Mapping.Controller.Xbox
 {

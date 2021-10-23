@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using XOutput.Exceptions;
 
 namespace XOutput.Exceptions.Tests
 {

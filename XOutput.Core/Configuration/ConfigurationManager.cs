@@ -1,7 +1,7 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.IO;
 using System.Text;
-using NLog;
 
 namespace XOutput.Configuration
 {

@@ -1,5 +1,5 @@
-namespace XOutput.Common 
-{ 
+namespace XOutput.Common
+{
     public enum InputDeviceMethod
     {
         WindowsApi,

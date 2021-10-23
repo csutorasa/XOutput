@@ -1,9 +1,9 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using NLog;
 using XOutput.Serialization;
 using XOutput.Threading;
 using XOutput.Websocket.Common;

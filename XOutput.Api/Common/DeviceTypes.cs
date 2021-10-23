@@ -1,4 +1,4 @@
-﻿namespace XOutput.Common 
+﻿namespace XOutput.Common
 {
     public enum DeviceTypes
     {

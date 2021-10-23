@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using XOutput.DependencyInjection;
 using XOutput.Message.Mappable;
-using XOutput.Websocket.Xbox;
+using XOutput.Serialization;
 using XOutput.Websocket.Common;
 using XOutput.Websocket.Ds4;
-using XOutput.Serialization;
-using XOutput.DependencyInjection;
+using XOutput.Websocket.Xbox;
 
 namespace XOutput.Client
 {
