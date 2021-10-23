@@ -1,4 +1,6 @@
-﻿namespace XOutput.App.Devices.Input.Keyboard
+﻿using XOutput.Common.Devices;
+
+namespace XOutput.App.Devices.Input.Keyboard
 {
     public class KeyboardSource : InputSource
     {

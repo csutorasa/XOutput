@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using XOutput.DependencyInjection;
-using XOutput.Message.Mappable;
 using XOutput.Serialization;
 using XOutput.Websocket.Common;
 using XOutput.Websocket.Ds4;
+using XOutput.Websocket.Input;
 using XOutput.Websocket.Xbox;
 
 namespace XOutput
@@ -21,8 +21,7 @@ namespace XOutput
                 { PongResponse.MessageType,  typeof(PongResponse) },
                 { XboxInputRequest.MessageType,  typeof(XboxInputRequest) },
                 { Ds4InputRequest.MessageType,  typeof(Ds4InputRequest) },
-                { MappableDeviceDetailsRequest.MessageType,  typeof(MappableDeviceDetailsRequest) },
-                { MappableDeviceInputRequest.MessageType,  typeof(MappableDeviceInputRequest) },
+                { InputDeviceDetailsRequest.MessageType,  typeof(InputDeviceDetailsRequest) },
             };
             return new MessageReader(deserializationMapping);
         }

@@ -12,16 +12,18 @@ namespace XOutput.Mapping.Controller.Xbox
         {
             device = emulator.CreateXboxDevice();
         }
+        
         public void Stop()
         {
             device.Close();
         }
+        
         protected override double GetDefaultValue(XboxInputTypes input)
         {
             return input.GetDefaultValue();
         }
 
-        protected override void InputChanged(MappableDeviceInputChangedEventArgs args)
+        protected override void InputChanged(InputDeviceInputChangedEventArgs args)
         {
             device.SendInput(new XboxInput
             {

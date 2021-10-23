@@ -1,11 +1,10 @@
-namespace XOutput.Common
+namespace XOutput.Common.Input
 {
-    public enum InputDeviceMethod
+    public enum InputDeviceApi
     {
         WindowsApi,
         DirectInput,
         RawInput,
-        Websocket,
         GamepadApi,
     }
 }

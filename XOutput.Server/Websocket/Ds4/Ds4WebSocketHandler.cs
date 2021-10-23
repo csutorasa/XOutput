@@ -13,10 +13,10 @@ namespace XOutput.Websocket.Ds4
         private static readonly string DeviceType = DeviceTypes.SonyDualShock4.ToString();
         private static readonly Regex PathRegex = new Regex($"/ws/{DeviceType}/([A-Za-z]+)");
         private readonly EmulatorService emulatorService;
-        private readonly DeviceInfoService deviceInfoService;
+        private readonly NetworkDeviceInfoService deviceInfoService;
 
         [ResolverMethod]
-        public Ds4WebSocketHandler(EmulatorService emulatorService, DeviceInfoService deviceInfoService)
+        public Ds4WebSocketHandler(EmulatorService emulatorService, NetworkDeviceInfoService deviceInfoService)
         {
             this.emulatorService = emulatorService;
             this.deviceInfoService = deviceInfoService;

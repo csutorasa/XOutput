@@ -1,6 +1,7 @@
 ﻿using HidSharp.Reports;
 using System;
 using System.Collections.Generic;
+using XOutput.Common.Devices;
 
 namespace XOutput.App.Devices.Input.RawInput
 {

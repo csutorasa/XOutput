@@ -10,9 +10,9 @@ namespace XOutput.Mapping.Controller
     {
         private Dictionary<T, Func<double>> inputGetters = new Dictionary<T, Func<double>>();
         private List<Action<double, double>> forceFeedbackSetters = new List<Action<double, double>>();
-        private readonly List<MappableDevice> boundDevices = new List<MappableDevice>();
+        private readonly List<InputDevice> boundDevices = new List<InputDevice>();
 
-        public void Configure(ControllerConfig<T> config, IEnumerable<MappableDevice> devices)
+        public void Configure(ControllerConfig<T> config, IEnumerable<InputDevice> devices)
         {
             var mapping = config.InputMapping;
             foreach (var input in Enum.GetValues(typeof(T)).OfType<T>().Where(i => !mapping.ContainsKey(i)))
@@ -35,12 +35,12 @@ namespace XOutput.Mapping.Controller
             }
         }
 
-        protected void InputDeviceChanged(object sender, MappableDeviceInputChangedEventArgs e)
+        protected void InputDeviceChanged(object sender, InputDeviceInputChangedEventArgs e)
         {
             InputChanged(e);
         }
 
-        protected abstract void InputChanged(MappableDeviceInputChangedEventArgs args);
+        protected abstract void InputChanged(InputDeviceInputChangedEventArgs args);
 
         protected abstract double GetDefaultValue(T input);
 
@@ -58,7 +58,7 @@ namespace XOutput.Mapping.Controller
             forceFeedbackSetters.ForEach(s => s(big, small));
         }
 
-        private Func<double> CreateGetter(Dictionary<string, MappableDevice> deviceLookup, InputMapperCollection collection, double defaultValue)
+        private Func<double> CreateGetter(Dictionary<string, InputDevice> deviceLookup, InputMapperCollection collection, double defaultValue)
         {
             var sources = collection.Mappers
                 .Where(m => deviceLookup.ContainsKey(m.Device))
@@ -75,7 +75,7 @@ namespace XOutput.Mapping.Controller
             };
         }
 
-        private Action<double, double> CreateSetter(Dictionary<string, MappableDevice> deviceLookup, ForceFeedbackMapper mapper)
+        private Action<double, double> CreateSetter(Dictionary<string, InputDevice> deviceLookup, ForceFeedbackMapper mapper)
         {
             if (deviceLookup.ContainsKey(mapper.Device))
             {

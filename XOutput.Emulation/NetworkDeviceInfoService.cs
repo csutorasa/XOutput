@@ -4,12 +4,12 @@ using XOutput.DependencyInjection;
 
 namespace XOutput.Emulation
 {
-    public class DeviceInfoService
+    public class NetworkDeviceInfoService
     {
         private readonly List<NetworkDeviceInfo> connectedDevices = new List<NetworkDeviceInfo>();
 
         [ResolverMethod]
-        public DeviceInfoService()
+        public NetworkDeviceInfoService()
         {
 
         }

@@ -2,30 +2,29 @@
 using System.Collections.Generic;
 using XOutput.DependencyInjection;
 using XOutput.Mapping.Input;
-using XOutput.Message.Mappable;
 
-namespace XOutput.Websocket.Mappable
+namespace XOutput.Websocket.Input
 {
-    class MappableDeviceWebSocketHandler : IWebSocketHandler
+    class InputDeviceWebSocketHandler : IWebSocketHandler
     {
-        private readonly MappableDevices mappableDevices;
+        private readonly InputDevices InputDevices;
 
         [ResolverMethod]
-        public MappableDeviceWebSocketHandler(MappableDevices mappableDevices)
+        public InputDeviceWebSocketHandler(InputDevices InputDevices)
         {
-            this.mappableDevices = mappableDevices;
+            this.InputDevices = InputDevices;
         }
 
         public bool CanHandle(HttpContext context)
         {
-            return context.Request.Path.Value == "/ws/mappableDevice";
+            return context.Request.Path.Value == "/ws/InputDevice";
         }
 
         public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
             return new List<IMessageHandler>
             {
-                new MappableDeviceMessageHandler(mappableDevices, sendFunction.GetTyped<MappableDeviceFeedbackResponse>()),
+                new InputDeviceMessageHandler(InputDevices, sendFunction.GetTyped<InputDeviceFeedbackResponse>()),
             };
         }
 

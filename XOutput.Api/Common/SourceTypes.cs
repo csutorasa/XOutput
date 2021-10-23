@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace XOutput.App.Devices
+namespace XOutput.Common.Devices
 {
     [Flags]
     public enum SourceTypes

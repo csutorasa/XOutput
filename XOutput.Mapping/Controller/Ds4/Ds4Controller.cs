@@ -11,6 +11,7 @@ namespace XOutput.Mapping.Controller.Ds4
         {
             device = emulator.CreateDs4Device();
         }
+        
         public void Stop()
         {
             device.Close();
@@ -21,7 +22,7 @@ namespace XOutput.Mapping.Controller.Ds4
             return input.GetDefaultValue();
         }
 
-        protected override void InputChanged(MappableDeviceInputChangedEventArgs args)
+        protected override void InputChanged(InputDeviceInputChangedEventArgs args)
         {
             device.SendInput(new Ds4Input
             {

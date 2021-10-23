@@ -1,4 +1,6 @@
-﻿namespace XOutput.App.Devices.Input.Mouse
+﻿using XOutput.Common.Devices;
+
+namespace XOutput.App.Devices.Input.Mouse
 {
     public class MouseSource : InputSource
     {
