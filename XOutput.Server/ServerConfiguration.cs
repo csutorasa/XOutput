@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using XOutput.DependencyInjection;
 using XOutput.Message.Mappable;
 using XOutput.Serialization;
 using XOutput.Websocket.Common;
@@ -10,6 +11,7 @@ namespace XOutput
 {
     public static class ServerConfiguration
     {
+        [ResolverMethod]
         public static MessageReader MessageReader()
         {
             Dictionary<string, Type> deserializationMapping = new Dictionary<string, Type>
@@ -25,6 +27,7 @@ namespace XOutput
             return new MessageReader(deserializationMapping);
         }
 
+        [ResolverMethod]
         public static MessageWriter MessageWriter()
         {
             return new MessageWriter();

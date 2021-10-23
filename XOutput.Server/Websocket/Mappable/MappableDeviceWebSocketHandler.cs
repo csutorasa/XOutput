@@ -20,7 +20,7 @@ namespace XOutput.Websocket.Mappable
 
         public bool CanHandle(HttpContext context)
         {
-            return context.Request.Path.Value.StartsWith($"/ws/mappableDevice");
+            return context.Request.Path.Value == "/ws/mappableDevice";
         }
 
         public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using XOutput.DependencyInjection;
 using XOutput.Emulation;
 using XOutput.Emulation.Ds4;
@@ -10,6 +11,7 @@ namespace XOutput.Websocket.Ds4
     class Ds4WebSocketHandler : IWebSocketHandler
     {
         private static readonly string DeviceType = DeviceTypes.SonyDualShock4.ToString();
+        private static readonly Regex PathRegex = new Regex($"/ws/{DeviceType}/([A-Za-z]+)");
         private readonly EmulatorService emulatorService;
         private readonly DeviceInfoService deviceInfoService;
 
@@ -22,12 +24,13 @@ namespace XOutput.Websocket.Ds4
 
         public bool CanHandle(HttpContext context)
         {
-            return context.Request.Path.Value.StartsWith($"/ws/{DeviceType}/");
+            string path = context.Request.Path.Value;
+            return PathRegex.IsMatch(path);
         }
 
         public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
-            string emulatorName = context.Request.Path.Value.Replace($"/ws/{DeviceType}/", "");
+            string emulatorName = PathRegex.Match(context.Request.Path.Value).Groups[1].Value;
             var emulator = emulatorService.FindEmulator<IDs4Emulator>(XOutput.Emulation.DeviceTypes.SonyDualShock4, emulatorName);
             var device = emulator.CreateDs4Device();
             DeviceDisconnectedEvent disconnectedEvent = (sender, args) => closeFunction();
