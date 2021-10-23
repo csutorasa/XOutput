@@ -1,4 +1,6 @@
-﻿namespace XOutput.Emulation
+﻿using XOutput.Common;
+
+namespace XOutput.Emulation
 {
     public class NetworkDeviceInfo
     {

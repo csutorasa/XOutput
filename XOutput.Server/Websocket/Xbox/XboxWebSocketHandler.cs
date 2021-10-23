@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using XOutput.Common;
 using XOutput.DependencyInjection;
 using XOutput.Emulation;
 using XOutput.Emulation.Xbox;
@@ -30,7 +31,7 @@ namespace XOutput.Websocket.Xbox
         public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
             string emulatorName = PathRegex.Match(context.Request.Path.Value).Groups[1].Value;
-            var emulator = emulatorService.FindEmulator<IXboxEmulator>(XOutput.Emulation.DeviceTypes.MicrosoftXbox360, emulatorName);
+            var emulator = emulatorService.FindEmulator<IXboxEmulator>(DeviceTypes.MicrosoftXbox360, emulatorName);
             var device = emulator.CreateXboxDevice();
             DeviceDisconnectedEvent disconnectedEvent = (sender, args) => closeFunction();
             device.Closed += disconnectedEvent;
@@ -39,7 +40,7 @@ namespace XOutput.Websocket.Xbox
             {
                 Device = device,
                 IPAddress = ip,
-                DeviceType = XOutput.Emulation.DeviceTypes.MicrosoftXbox360,
+                DeviceType = DeviceTypes.MicrosoftXbox360,
                 Emulator = emulator.Name,
             });
             return new List<IMessageHandler>

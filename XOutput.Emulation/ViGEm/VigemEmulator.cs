@@ -2,6 +2,7 @@
 using Nefarius.ViGEm.Client.Exceptions;
 using System;
 using System.Collections.Generic;
+using XOutput.Common;
 using XOutput.DependencyInjection;
 using XOutput.Emulation.Ds4;
 using XOutput.Emulation.Xbox;
@@ -12,7 +13,7 @@ namespace XOutput.Emulation.ViGEm
     {
         public bool Installed { get; private set; }
 
-        public string Name => "ViGEm";
+        public string Name => Emulators.ViGEm.ToString();
 
         public IEnumerable<DeviceTypes> SupportedDeviceTypes { get; } = new DeviceTypes[] { DeviceTypes.MicrosoftXbox360, DeviceTypes.SonyDualShock4 };
 

@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
+    <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
   </ItemGroup>
 
 </Project>

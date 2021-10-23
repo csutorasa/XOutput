@@ -1,4 +1,5 @@
 ﻿using System;
+using XOutput.Common;
 
 namespace XOutput.Emulation.Ds4
 {

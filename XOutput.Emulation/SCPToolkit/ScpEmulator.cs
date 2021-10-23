@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using XOutput.Common;
 using XOutput.DependencyInjection;
 using XOutput.Emulation.Xbox;
 
@@ -10,7 +11,7 @@ namespace XOutput.Emulation.SCPToolkit
     {
         public bool Installed { get; private set; }
 
-        public string Name => "SCPToolkit";
+        public string Name => Emulators.SCPToolkit.ToString();
 
         public IEnumerable<DeviceTypes> SupportedDeviceTypes { get; } = new DeviceTypes[] { DeviceTypes.MicrosoftXbox360 };
 
