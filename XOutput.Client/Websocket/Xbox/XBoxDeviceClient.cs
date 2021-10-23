@@ -14,9 +14,9 @@ namespace XOutput.Websocket.Xbox
 
         }
 
-        public async Task ConnectAsync(string emulatorName)
+        public async Task ConnectAsync(Emulators emulator)
         {
-            await ConnectAsync($"ws/{DeviceTypes.MicrosoftXbox360.ToString()}/{emulatorName}");
+            await base.ConnectAsync($"ws/{DeviceTypes.MicrosoftXbox360.ToString()}/{emulator.ToString()}");
         }
 
         protected override void ProcessMessage(MessageBase message)
