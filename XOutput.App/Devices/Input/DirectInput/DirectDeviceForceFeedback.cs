@@ -2,8 +2,8 @@
 using SharpDX;
 using SharpDX.DirectInput;
 using System;
-using XOutput.Core.DependencyInjection;
-using XOutput.Core.Notifications;
+using XOutput.DependencyInjection;
+using XOutput.Notifications;
 
 namespace XOutput.App.Devices.Input.DirectInput
 {
@@ -102,7 +102,7 @@ namespace XOutput.App.Devices.Input.DirectInput
                 if (e.Message.Contains("E_NOTIMPL"))
                 {
                     logger.Error(e, "Force feedback is not implmented");
-                    notificationService.Add(Notifications.ForceFeedbackNotImplemented, new[] { uniqueId }, NotificationTypes.Error);
+                    notificationService.Add(Notifications.Notifications.ForceFeedbackNotImplemented, new[] { uniqueId }, NotificationTypes.Error);
                     Error = true;
                     throw new InvalidOperationException("Force feedback is not implmented", e);
                 }

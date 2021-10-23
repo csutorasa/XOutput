@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
-using XOutput.Api.Devices;
-using XOutput.Api.Message.Ds4;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 using XOutput.Emulation;
 using XOutput.Emulation.Ds4;
+using XOutput.Websocket.Common;
 
-namespace XOutput.Server.Websocket.Ds4
+namespace XOutput.Websocket.Ds4
 {
     class Ds4WebSocketHandler : IWebSocketHandler
     {
-        private static readonly string DeviceType = Api.Devices.DeviceTypes.SonyDualShock4.ToString();
+        private static readonly string DeviceType = DeviceTypes.SonyDualShock4.ToString();
         private readonly EmulatorService emulatorService;
         private readonly DeviceInfoService deviceInfoService;
 
@@ -44,7 +43,8 @@ namespace XOutput.Server.Websocket.Ds4
             return new List<IMessageHandler>
             {
                 new DebugMessageHandler(),
-                new Ds4FeedbackMessageHandler(device, sendFunction.GetTyped<Ds4FeedbackMessage>()),
+                new PingMessageHandler(sendFunction.GetTyped<PingRequest>(), sendFunction.GetTyped<PongResponse>()),
+                new Ds4FeedbackMessageHandler(device, sendFunction.GetTyped<Ds4FeedbackResponse>()),
                 new Ds4InputMessageHandler(device, disconnectedEvent),
             };
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace XOutput.Core.Notifications
+namespace XOutput.Notifications
 {
     public class NotificationItem
     {

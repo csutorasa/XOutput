@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using XOutput.Core.Configuration;
 
-namespace XOutput.Server.Configuration
+namespace XOutput.Configuration
 {
     [ConfigurationPath("conf/server")]
     public class ServerConfig : ConfigurationBase, IEquatable<ServerConfig>

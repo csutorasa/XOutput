@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace XOutput.Core.DependencyInjection
+namespace XOutput.DependencyInjection
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor, Inherited = false, AllowMultiple = false)]
     public sealed class ResolverMethodAttribute : Attribute

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
     <OutputType>library</OutputType>
-    <RootNamespace>XOutput.Client</RootNamespace>
+    <RootNamespace>XOutput</RootNamespace>
     <AssemblyName>XOutput.Client</AssemblyName>
     <Authors>Ármin Csutorás</Authors>
     <Product>XOutput.Client</Product>

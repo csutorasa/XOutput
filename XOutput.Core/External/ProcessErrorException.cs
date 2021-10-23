@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
-namespace XOutput.Core.External
+namespace XOutput.External
 {
     [Serializable]
     public sealed class ProcessErrorException : Exception

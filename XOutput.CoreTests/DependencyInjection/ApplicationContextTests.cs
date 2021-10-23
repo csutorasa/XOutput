@@ -3,7 +3,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 
-namespace XOutput.Core.DependencyInjection.Tests
+namespace XOutput.DependencyInjection.Tests
 {
     [TestClass()]
     public class ApplicationContextTests

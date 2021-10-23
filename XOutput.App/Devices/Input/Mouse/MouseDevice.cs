@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using XOutput.Core.Threading;
+using XOutput.Threading;
 
 namespace XOutput.App.Devices.Input.Mouse
 {

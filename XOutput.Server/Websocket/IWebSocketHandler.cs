@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
-namespace XOutput.Server.Websocket
+namespace XOutput.Websocket
 {
     public interface IWebSocketHandler
     {

@@ -1,4 +1,4 @@
-import { MessageBase } from '../api/MessageBase';
+import { MessageBase } from '../api/websocket/MessageBase';
 import { InputMethod } from './rest';
 
 export interface InputValues extends MessageBase {

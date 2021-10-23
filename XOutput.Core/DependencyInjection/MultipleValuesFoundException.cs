@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace XOutput.Core.DependencyInjection
+namespace XOutput.DependencyInjection
 {
     [Serializable]
     public sealed class MultipleValuesFoundException : Exception

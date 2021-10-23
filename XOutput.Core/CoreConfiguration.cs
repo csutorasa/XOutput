@@ -1,10 +1,10 @@
-﻿using XOutput.Core.Configuration;
-using XOutput.Core.DependencyInjection;
-using XOutput.Core.External;
-using XOutput.Core.Versioning;
-using XOutput.Core.WebSocket;
+﻿using XOutput.Configuration;
+using XOutput.DependencyInjection;
+using XOutput.External;
+using XOutput.Versioning;
+using XOutput.Websocket;
 
-namespace XOutput.Core
+namespace XOutput
 {
     public static class CoreConfiguration
     {

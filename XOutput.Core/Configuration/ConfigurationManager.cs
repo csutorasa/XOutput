@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using NLog;
 
-namespace XOutput.Core.Configuration
+namespace XOutput.Configuration
 {
     public abstract class ConfigurationManager
     {

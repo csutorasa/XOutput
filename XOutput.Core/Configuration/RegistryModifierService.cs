@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace XOutput.Core.Configuration
+namespace XOutput.Configuration
 {
     public sealed class RegistryModifierService
     {

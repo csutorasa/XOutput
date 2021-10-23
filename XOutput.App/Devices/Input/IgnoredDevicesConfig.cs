@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using XOutput.Core.Configuration;
+using XOutput.Configuration;
 
 namespace XOutput.App.Devices.Input
 {

@@ -2,10 +2,10 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using XOutput.App.Configuration;
-using XOutput.Client;
-using XOutput.Client.Help;
-using XOutput.Core.Configuration;
-using XOutput.Core.DependencyInjection;
+using XOutput.Configuration;
+using XOutput.DependencyInjection;
+using XOutput.Rest;
+using XOutput.Rest.Help;
 
 namespace XOutput.App.UI.View
 {

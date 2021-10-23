@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace XOutput.Core.External
+namespace XOutput.External
 {
     public class CommandRunner
     {

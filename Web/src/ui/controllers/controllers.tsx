@@ -9,7 +9,7 @@ import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { ControllerInfoResponse, DeviceType, rest, ControllerInfo } from '../../client/rest';
-import { Translation } from '../../translation/translation';
+import { Translation } from '../../translation/Translation';
 import { withStyles, Theme } from '@material-ui/core';
 import Async from '../components/Asnyc';
 import { StyleGenerator, Styled } from '../../utils';

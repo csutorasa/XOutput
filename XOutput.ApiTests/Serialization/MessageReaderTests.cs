@@ -3,40 +3,26 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using XOutput.Api.Message;
-using XOutput.Api.Message.Xbox;
+using XOutput.Websocket.Common;
+using XOutput.Websocket.Xbox;
 
-namespace XOutput.Api.Serialization.Tests
+namespace XOutput.Serialization.Tests
 {
     [TestClass()]
     public class MessageReaderTests
     {
         private static readonly Dictionary<string, Type> deserializationMapping = new Dictionary<string, Type>
             {
-                { InputDataMessage.MessageType, typeof(InputDataMessage) },
-                { DebugMessage.MessageType,  typeof(DebugMessage) },
-                { XboxInputMessage.MessageType,  typeof(XboxInputMessage) }
+                { DebugRequest.MessageType,  typeof(DebugRequest) },
+                { XboxInputRequest.MessageType,  typeof(XboxInputRequest) }
             };
         private MessageReader reader = new MessageReader(deserializationMapping);
-
-        [TestMethod]
-        public void InputDataTest()
-        {
-            string input = "{\"type\":\"InputData\",\"data\":[{\"inputType\":\"test\",\"value\":0.5}]}";
-            var message = reader.ReadString(input) as InputDataMessage;
-            Assert.IsNotNull(message);
-            Assert.AreEqual("InputData", message.Type);
-            Assert.IsNotNull(message.Data);
-            Assert.IsTrue(message.Data.Count == 1);
-            Assert.AreEqual("test", message.Data[0].InputType);
-            Assert.AreEqual(0.5, message.Data[0].Value, 0.01);
-        }
 
         [TestMethod]
         public void DebugTest()
         {
             string input = "{\"type\":\"Debug\",\"data\":\"test\"}";
-            var message = reader.ReadString(input) as DebugMessage;
+            var message = reader.ReadString(input) as DebugRequest;
             Assert.IsNotNull(message);
             Assert.AreEqual("Debug", message.Type);
             Assert.AreEqual("test", message.Data);
@@ -46,7 +32,7 @@ namespace XOutput.Api.Serialization.Tests
         public void XboxInputTest()
         {
             string input = "{\"type\":\"XboxInput\",\"lx\":0.5}";
-            var message = reader.ReadString(input) as XboxInputMessage;
+            var message = reader.ReadString(input) as XboxInputRequest;
             Assert.IsNotNull(message);
             Assert.AreEqual("XboxInput", message.Type);
             Assert.AreEqual(0.5, message.LX.Value, 0.001);

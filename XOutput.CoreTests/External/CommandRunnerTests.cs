@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 
-namespace XOutput.Core.External.Tests
+namespace XOutput.External.Tests
 {
     [TestClass()]
     public class CommandRunnerTests

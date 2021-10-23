@@ -1,4 +1,4 @@
-import { http, HttpService } from './http';
+import { http, HttpService } from './rest/http';
 
 export enum InputMethod {
   WindowsApi = 'WindowsApi',

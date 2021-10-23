@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using XOutput.Core.Configuration;
+using XOutput.Configuration;
 
 namespace XOutput.App.Devices.Input
 {

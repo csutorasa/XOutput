@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 
 namespace XOutput.App.UI.Converter
 {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace XOutput.Server.Websocket
+namespace XOutput.Websocket
 {
     public delegate Task CloseFunction();
 }

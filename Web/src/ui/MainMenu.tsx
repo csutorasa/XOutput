@@ -24,7 +24,7 @@ import { Inputs } from './input/inputs';
 import { InputDetails } from './input/details';
 import { Ds4Emulation } from './emulation/ds4';
 import { Styled, StyleGenerator } from '../utils';
-import Translation from '../translation/translation';
+import Translation from '../translation/Translation';
 import { Notifications } from './notifications/Notifications';
 import { MainMenuListItem } from './MainMenuListItem';
 import { rest, Notification } from '../client/rest';

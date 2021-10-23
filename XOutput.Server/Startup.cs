@@ -7,10 +7,10 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using System.Threading;
-using XOutput.Core.DependencyInjection;
-using XOutput.Server.Websocket;
+using XOutput.DependencyInjection;
+using XOutput.Websocket;
 
-namespace XOutput.Server
+namespace XOutput
 {
     public class Startup
     {

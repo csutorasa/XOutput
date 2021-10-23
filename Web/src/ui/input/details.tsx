@@ -7,11 +7,11 @@ import Paper from '@material-ui/core/Paper';
 import Switch from '@material-ui/core/Switch';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { rest, InputDeviceDetails, InputDeviceConfig, InputDeviceInputDetails, InputMethod } from '../../client/rest';
-import { Translation } from '../../translation/translation';
+import { Translation } from '../../translation/Translation';
 import { withStyles, Theme } from '@material-ui/core';
-import { WebSocketService, WebSocketSession } from '../../client/websocket';
+import { WebSocketService, WebSocketSession } from '../../client/websocket/websocket';
 import { InputValues } from '../../client/input';
-import { MessageBase } from '../../api/MessageBase';
+import { MessageBase } from '../../api/websocket/MessageBase';
 import { Dpad } from './dpad';
 import { StyleGenerator, Styled } from '../../utils';
 

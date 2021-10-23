@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading;
 
-namespace XOutput.Core.Threading.Tests
+namespace XOutput.Threading.Tests
 {
     [TestClass()]
     public class ThreadCreatorTests

@@ -1,17 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
-using XOutput.Api.Devices;
-using XOutput.Api.Message.Xbox;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 using XOutput.Emulation;
 using XOutput.Emulation.Xbox;
-using XOutput.Server.Emulation;
+using XOutput.Websocket.Common;
 
-namespace XOutput.Server.Websocket.Xbox
+namespace XOutput.Websocket.Xbox
 {
     class XboxWebSocketHandler : IWebSocketHandler
     {
-        private static readonly string DeviceType = Api.Devices.DeviceTypes.MicrosoftXbox360.ToString();
+        private static readonly string DeviceType = DeviceTypes.MicrosoftXbox360.ToString();
         private readonly EmulatorService emulatorService;
         private readonly DeviceInfoService deviceInfoService;
 
@@ -45,7 +43,7 @@ namespace XOutput.Server.Websocket.Xbox
             return new List<IMessageHandler>
             {
                 new DebugMessageHandler(),
-                new XboxFeedbackMessageHandler(device, sendFunction.GetTyped<XboxFeedbackMessage>()),
+                new XboxFeedbackMessageHandler(device, sendFunction.GetTyped<XboxFeedbackResponse>()),
                 new XboxInputMessageHandler(device, disconnectedEvent),
             };
         }

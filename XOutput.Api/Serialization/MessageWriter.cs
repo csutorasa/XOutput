@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Text.Json;
-using XOutput.Api.Message;
+using XOutput.Websocket;
 
-namespace XOutput.Api.Serialization
+namespace XOutput.Serialization
 {
     public class MessageWriter
     {

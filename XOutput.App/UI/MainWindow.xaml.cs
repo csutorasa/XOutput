@@ -8,12 +8,13 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using XOutput.App.Configuration;
 using XOutput.App.Devices.Input;
+using XOutput.App.Devices.Input.DirectInput.Native;
 using XOutput.App.UI.View;
-using XOutput.Client;
-using XOutput.Core.Configuration;
-using XOutput.Core.DependencyInjection;
-using XOutput.Core.External;
-using XOutput.Core.Threading;
+using XOutput.Configuration;
+using XOutput.DependencyInjection;
+using XOutput.External;
+using XOutput.Rest;
+using XOutput.Threading;
 
 namespace XOutput.App.UI
 {
@@ -28,7 +29,8 @@ namespace XOutput.App.UI
         private AppConfig appConfig;
 
         [ResolverMethod]
-        public MainWindow(MainWindowViewModel viewModel, CommandRunner commandRunner, ConfigurationManager configurationManager, TranslationService translationService, DynamicHttpClientProvider dynamicHttpClientProvider)
+        public MainWindow(MainWindowViewModel viewModel, CommandRunner commandRunner, ConfigurationManager configurationManager,
+            TranslationService translationService, DynamicHttpClientProvider dynamicHttpClientProvider, InputDeviceManager inputDeviceManager)
         {
             this.viewModel = viewModel;
             this.commandRunner = commandRunner;
@@ -56,6 +58,14 @@ namespace XOutput.App.UI
             {
                 Show();
             }
+            IntPtr value;
+            var hinst = DInput8.GetModuleHandle(null);
+            var guid = IID.IID_IDirectInput8W;
+            var x = DInput8.DirectInput8Create(hinst, 0x00000800, guid, out value, IntPtr.Zero);
+            var err = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+            var directInput8W = new DirectInput8W(value);
+            directInput8W.GetLifetimeService();
+            inputDeviceManager.Start();
         }
 
         private async void OpenClick(object sender, RoutedEventArgs e)

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XOutput.App.Devices.Input.Mouse;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 
 namespace XOutput.App.UI.View
 {

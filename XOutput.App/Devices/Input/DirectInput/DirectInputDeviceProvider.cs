@@ -5,9 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Security;
-using XOutput.Core.DependencyInjection;
-using XOutput.Core.Notifications;
-using XOutput.Core.Threading;
+using XOutput.DependencyInjection;
+using XOutput.Notifications;
 
 namespace XOutput.App.Devices.Input.DirectInput
 {
@@ -140,7 +139,7 @@ namespace XOutput.App.Devices.Input.DirectInput
                 string uniqueId = IdHelper.GetUniqueId(uniqueIdBase);
                 if (uniqueIds.Any(uid => uid == uniqueId))
                 {
-                    notificationService.Add(Notifications.DirectInputInstanceIdDuplication, new[] { uniqueId }, NotificationTypes.Warning);
+                    notificationService.Add(Notifications.Notifications.DirectInputInstanceIdDuplication, new[] { uniqueId }, NotificationTypes.Warning);
                 }
                 uniqueIds.Add(uniqueId);
                 if (currentDevices.Any(d => d.UniqueId == uniqueId)) {

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 
 namespace XOutput.App.UI.View
 {

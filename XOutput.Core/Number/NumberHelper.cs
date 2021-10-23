@@ -1,4 +1,4 @@
-﻿namespace XOutput.Core.Number
+﻿namespace XOutput.Number
 {
     public static class NumberHelper
     {

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 
 namespace XOutput.App.Devices.Input.RawInput
 {

@@ -15,11 +15,10 @@ using XOutput.App.Devices;
 using XOutput.App.Devices.Input;
 using XOutput.App.UI;
 using XOutput.Client;
-using XOutput.Core;
-using XOutput.Core.DependencyInjection;
-using XOutput.Core.Notifications;
-using XOutput.Core.Resources;
-using XOutput.Core.Versioning;
+using XOutput.DependencyInjection;
+using XOutput.Notifications;
+using XOutput.Resources;
+using XOutput.Versioning;
 
 namespace XOutput.App
 {
@@ -70,7 +69,7 @@ namespace XOutput.App
                 }
                 catch(Exception)
                 {
-                    notificationService.Add(Notifications.HidGuardianRegistry, null, NotificationTypes.Warning);
+                    notificationService.Add(Notifications.Notifications.HidGuardianRegistry, null, NotificationTypes.Warning);
                 }
             }
             CheckUpdate(globalContext.Resolve<UpdateChecker>(), notificationService);
@@ -114,10 +113,10 @@ namespace XOutput.App
             updateChecker.CompareReleaseAsync(appVersion).ContinueWith(t => {
                 switch (t.Result.Result) {
                     case VersionCompareValues.NeedsUpgrade:
-                        notificationService.Add(Notifications.NeedsVersionUpgrade, new List<string>() { t.Result.LatestVersion });
+                        notificationService.Add(Notifications.Notifications.NeedsVersionUpgrade, new List<string>() { t.Result.LatestVersion });
                         break;
                     case VersionCompareValues.Error:
-                        notificationService.Add(Notifications.VersionCheckError, new List<string>() { }, NotificationTypes.Warning);
+                        notificationService.Add(Notifications.Notifications.VersionCheckError, new List<string>() { }, NotificationTypes.Warning);
                         break;
                 }
             });

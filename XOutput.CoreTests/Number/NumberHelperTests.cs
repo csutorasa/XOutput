@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
-namespace XOutput.Core.Number.Tests
+namespace XOutput.Number.Tests
 {
     [TestClass()]
     public class NumberHelperTests

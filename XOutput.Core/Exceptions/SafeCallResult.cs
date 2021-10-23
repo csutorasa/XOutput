@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace XOutput.Core.Exceptions
+namespace XOutput.Exceptions
 {
     public class SafeCallResult
     {

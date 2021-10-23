@@ -1,9 +1,7 @@
-﻿using XOutput.Api.Message;
-using XOutput.Api.Message.Ds4;
-using XOutput.Emulation;
+﻿using XOutput.Emulation;
 using XOutput.Emulation.Ds4;
 
-namespace XOutput.Server.Websocket.Ds4
+namespace XOutput.Websocket.Ds4
 {
     class Ds4InputMessageHandler : IMessageHandler
     {
@@ -18,12 +16,12 @@ namespace XOutput.Server.Websocket.Ds4
 
         public bool CanHandle(MessageBase message)
         {
-            return message is Ds4InputMessage;
+            return message is Ds4InputRequest;
         }
 
         public void Handle(MessageBase message)
         {
-            var inputMessage = message as Ds4InputMessage;
+            var inputMessage = message as Ds4InputRequest;
             device.SendInput(new Ds4Input
             {
                 Circle = inputMessage.Circle,

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using XOutput.Core.Configuration;
-using XOutput.Core.DependencyInjection;
+using XOutput.Configuration;
+using XOutput.DependencyInjection;
 
 namespace XOutput.App.Devices.Input
 {

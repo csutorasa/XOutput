@@ -2,7 +2,7 @@
 using Nefarius.ViGEm.Client.Exceptions;
 using System;
 using System.Collections.Generic;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 using XOutput.Emulation.Ds4;
 using XOutput.Emulation.Xbox;
 

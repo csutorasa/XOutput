@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace XOutput.Core.Configuration
+namespace XOutput.Configuration
 {
     public class ConfigurationBase
     {

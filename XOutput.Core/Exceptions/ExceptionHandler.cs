@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace XOutput.Core.Exceptions
+namespace XOutput.Exceptions
 {
     public static class ExceptionHandler
     {

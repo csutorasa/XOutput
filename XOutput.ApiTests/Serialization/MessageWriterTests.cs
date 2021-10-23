@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Text;
-using XOutput.Api.Message;
-using XOutput.Api.Message.Xbox;
+using XOutput.Websocket;
+using XOutput.Websocket.Xbox;
 
-namespace XOutput.Api.Serialization.Tests
+namespace XOutput.Serialization.Tests
 {
     [TestClass()]
     public class MessageWriterTests
@@ -14,7 +14,7 @@ namespace XOutput.Api.Serialization.Tests
         [TestMethod]
         public void ForceFeedbackTest()
         {
-            var input = new XboxFeedbackMessage
+            var input = new XboxFeedbackResponse
             {
                 SmallForceFeedback = 0,
                 BigForceFeedback = 1,

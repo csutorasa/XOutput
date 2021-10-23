@@ -3,12 +3,10 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using XOutput.Api.Message;
-using XOutput.Api.Serialization;
-using XOutput.Core.Threading;
-using XOutput.Core.WebSocket;
+using XOutput.Serialization;
+using XOutput.Threading;
 
-namespace XOutput.Client.Websocket
+namespace XOutput.Websocket
 {
     public abstract class WebsocketJsonClient
     {

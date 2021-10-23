@@ -3,7 +3,7 @@ using System.Windows;
 using XOutput.App.Devices.Input.DirectInput;
 using XOutput.App.Devices.Input.RawInput;
 using XOutput.App.UI.View.InputView;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 
 namespace XOutput.App.UI
 {

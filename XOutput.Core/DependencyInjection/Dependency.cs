@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace XOutput.Core.DependencyInjection
+namespace XOutput.DependencyInjection
 {
     [AttributeUsage(AttributeTargets.Parameter, Inherited = false, AllowMultiple = false)]
     public sealed class DependencyAttribute : Attribute

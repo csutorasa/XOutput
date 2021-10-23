@@ -1,9 +1,7 @@
-﻿using XOutput.Api.Message;
-using XOutput.Api.Message.Xbox;
-using XOutput.Emulation;
+﻿using XOutput.Emulation;
 using XOutput.Emulation.Xbox;
 
-namespace XOutput.Server.Websocket.Xbox
+namespace XOutput.Websocket.Xbox
 {
     class XboxInputMessageHandler : IMessageHandler
     {
@@ -18,12 +16,12 @@ namespace XOutput.Server.Websocket.Xbox
 
         public bool CanHandle(MessageBase message)
         {
-            return message is XboxInputMessage;
+            return message is XboxInputRequest;
         }
 
         public void Handle(MessageBase message)
         {
-            var inputMessage = message as XboxInputMessage;
+            var inputMessage = message as XboxInputRequest;
             device.SendInput(new XboxInput
             {
                 A = inputMessage.A,

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 using XOutput.Emulation.Xbox;
 
 namespace XOutput.Emulation.SCPToolkit

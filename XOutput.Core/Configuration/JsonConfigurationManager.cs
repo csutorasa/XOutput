@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text.Json;
 
-namespace XOutput.Core.Configuration
+namespace XOutput.Configuration
 {
     public class JsonConfigurationManager : ConfigurationManager
     {

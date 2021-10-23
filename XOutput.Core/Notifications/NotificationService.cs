@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 
-namespace XOutput.Core.Notifications
+namespace XOutput.Notifications
 {
     public class NotificationService
     {

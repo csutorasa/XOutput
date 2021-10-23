@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace XOutput.Core.Threading
+namespace XOutput.Threading
 {
     public class ThreadContext
     {

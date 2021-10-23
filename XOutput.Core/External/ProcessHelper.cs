@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace XOutput.Core.External
+namespace XOutput.External
 {
     public static class ProcessHelper
     {

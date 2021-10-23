@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace XOutput.Core.Versioning
+namespace XOutput.Versioning
 {
     /// <summary>
     /// Version related informations.

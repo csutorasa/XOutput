@@ -9,14 +9,13 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
-using XOutput.Core;
-using XOutput.Core.Configuration;
-using XOutput.Core.DependencyInjection;
-using XOutput.Core.Notifications;
-using XOutput.Core.Resources;
-using XOutput.Core.Versioning;
+using XOutput.Configuration;
+using XOutput.DependencyInjection;
+using XOutput.Notifications;
+using XOutput.Resources;
+using XOutput.Versioning;
 
-namespace XOutput.Server
+namespace XOutput
 {
     public class App
     {
@@ -58,7 +57,7 @@ namespace XOutput.Server
 
             await CheckUpdate(globalContext.Resolve<UpdateChecker>(), notificationService);
 
-            var server = globalContext.Resolve<Server>();
+            var server = globalContext.Resolve<HttpServer>();
             server.Run();
             globalContext.Close();
         }
@@ -96,10 +95,10 @@ namespace XOutput.Server
                 switch (t.Result.Result)
                 {
                     case VersionCompareValues.NeedsUpgrade:
-                        notificationService.Add(Core.Notifications.Notifications.NeedsVersionUpgrade, new List<string>() { t.Result.LatestVersion });
+                        notificationService.Add(Notifications.Notifications.NeedsVersionUpgrade, new List<string>() { t.Result.LatestVersion });
                         break;
                     case VersionCompareValues.Error:
-                        notificationService.Add(Core.Notifications.Notifications.VersionCheckError, new List<string>() { }, NotificationTypes.Warning);
+                        notificationService.Add(Notifications.Notifications.VersionCheckError, new List<string>() { }, NotificationTypes.Warning);
                         break;
                 }
             });

@@ -5,12 +5,12 @@ import { Button } from './button';
 import { Axis } from './axis';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { ListEmulatorsResponse, rest, EmulatorResponse } from '../../client/rest';
-import { WebSocketService, WebSocketSession } from '../../client/websocket';
+import { WebSocketService, WebSocketSession } from '../../client/websocket/websocket';
 import { Square } from './square';
 import { EventHolder } from '../../events/eventholder';
 import { TranslatedText as TT } from '../TranslatedText';
-import { MessageBase } from '../../api/MessageBase';
-import { Ds4FeedbackEvent } from '../../api/Ds4FeedbackEvent';
+import { MessageBase } from '../../api/websocket/MessageBase';
+import { Ds4FeedbackResponse } from '../../api/websocket/ds4/Ds4FeedbackResponse';
 
 interface EmulationState {
   emulators: ListEmulatorsResponse;
@@ -90,7 +90,7 @@ export class Ds4Emulation extends React.Component<EmulationProps, EmulationState
 
   private onData(data: MessageBase) {
     if (data.Type === 'Ds4Feedback') {
-      const feedback = data as Ds4FeedbackEvent;
+      const feedback = data as Ds4FeedbackResponse;
       if (navigator.vibrate) {
         if (feedback.Small > 0 || feedback.Large > 0) {
           navigator.vibrate(60 * 60 * 1000);

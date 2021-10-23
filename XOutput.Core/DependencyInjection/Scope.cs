@@ -1,4 +1,4 @@
-﻿namespace XOutput.Core.DependencyInjection
+﻿namespace XOutput.DependencyInjection
 {
     public enum Scope
     {

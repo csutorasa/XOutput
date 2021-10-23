@@ -3,6 +3,16 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
+    <RootNamespace>XOutput.Api</RootNamespace>
+    <AssemblyName>XOutput.Server</AssemblyName>
+    <Authors>Ármin Csutorás</Authors>
+    <Product>XOutput.Server</Product>
+    <PackageId>XOutput.Server</PackageId>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

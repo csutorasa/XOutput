@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace XOutput.Core.DependencyInjection
+namespace XOutput.DependencyInjection
 {
     public class Resolver
     {

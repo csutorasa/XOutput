@@ -1,16 +1,14 @@
 ﻿using System;
-using XOutput.Api.Message;
-using XOutput.Api.Message.Xbox;
 using XOutput.Emulation.Xbox;
 
-namespace XOutput.Server.Websocket.Xbox
+namespace XOutput.Websocket.Xbox
 {
     class XboxFeedbackMessageHandler : IMessageHandler
     {
         private readonly XboxDevice device;
-        private readonly SenderFunction<XboxFeedbackMessage> senderFunction;
+        private readonly SenderFunction<XboxFeedbackResponse> senderFunction;
 
-        public XboxFeedbackMessageHandler(XboxDevice device, SenderFunction<XboxFeedbackMessage> senderFunction)
+        public XboxFeedbackMessageHandler(XboxDevice device, SenderFunction<XboxFeedbackResponse> senderFunction)
         {
             this.device = device;
             this.senderFunction = senderFunction;
@@ -19,7 +17,7 @@ namespace XOutput.Server.Websocket.Xbox
 
         private void FeedbackEvent(object sender, XboxFeedbackEventArgs args)
         {
-            senderFunction(new XboxFeedbackMessage
+            senderFunction(new XboxFeedbackResponse
             {
                 SmallForceFeedback = args.Small,
                 BigForceFeedback = args.Large,

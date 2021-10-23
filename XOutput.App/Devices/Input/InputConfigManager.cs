@@ -1,5 +1,5 @@
-﻿using XOutput.Core.Configuration;
-using XOutput.Core.DependencyInjection;
+﻿using XOutput.Configuration;
+using XOutput.DependencyInjection;
 
 namespace XOutput.App.Devices.Input
 {

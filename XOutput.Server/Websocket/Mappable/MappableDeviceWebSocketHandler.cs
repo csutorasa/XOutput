@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 using XOutput.Mapping.Input;
 using XOutput.Message.Mappable;
+using XOutput.Websocket.Common;
 
-namespace XOutput.Server.Websocket.Mappable
+namespace XOutput.Websocket.Mappable
 {
     class MappableDeviceWebSocketHandler : IWebSocketHandler
     {
@@ -27,7 +28,7 @@ namespace XOutput.Server.Websocket.Mappable
             return new List<IMessageHandler>
             {
                 new DebugMessageHandler(),
-                new MappableDeviceMessageHandler(mappableDevices, sendFunction.GetTyped<MappableDeviceFeedbackMessage>()),
+                new MappableDeviceMessageHandler(mappableDevices, sendFunction.GetTyped<MappableDeviceFeedbackResponse>()),
             };
         }
 

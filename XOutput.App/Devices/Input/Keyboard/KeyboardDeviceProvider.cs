@@ -1,7 +1,7 @@
 ﻿using NLog;
 using System;
 using System.Collections.Generic;
-using XOutput.Core.DependencyInjection;
+using XOutput.DependencyInjection;
 
 namespace XOutput.App.Devices.Input.Keyboard
 {

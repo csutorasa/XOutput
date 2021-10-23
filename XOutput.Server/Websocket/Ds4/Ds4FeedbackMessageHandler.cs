@@ -1,16 +1,14 @@
 ﻿using System;
-using XOutput.Api.Message;
-using XOutput.Api.Message.Ds4;
 using XOutput.Emulation.Ds4;
 
-namespace XOutput.Server.Websocket.Ds4
+namespace XOutput.Websocket.Ds4
 {
     class Ds4FeedbackMessageHandler : IMessageHandler
     {
         private readonly Ds4Device device;
-        private readonly SenderFunction<Ds4FeedbackMessage> senderFunction;
+        private readonly SenderFunction<Ds4FeedbackResponse> senderFunction;
 
-        public Ds4FeedbackMessageHandler(Ds4Device device, SenderFunction<Ds4FeedbackMessage> senderFunction)
+        public Ds4FeedbackMessageHandler(Ds4Device device, SenderFunction<Ds4FeedbackResponse> senderFunction)
         {
             this.device = device;
             this.senderFunction = senderFunction;
@@ -19,7 +17,7 @@ namespace XOutput.Server.Websocket.Ds4
 
         private void FeedbackEvent(object sender, Ds4FeedbackEventArgs args)
         {
-            senderFunction(new Ds4FeedbackMessage
+            senderFunction(new Ds4FeedbackResponse
             {
                 SmallForceFeedback = args.Small,
                 BigForceFeedback = args.Large,

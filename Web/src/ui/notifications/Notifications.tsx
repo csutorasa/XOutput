@@ -7,7 +7,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import WarningIcon from '@material-ui/icons/Warning';
 import InfoIcon from '@material-ui/icons/Info';
 import { Styled, StyleGenerator, Classes } from '../../utils';
-import Translation from '../../translation/translation';
+import Translation from '../../translation/Translation';
 import Async from '../components/Asnyc';
 import { rest, Notification } from '../../client/rest';
 import { Card, Button } from '@material-ui/core';

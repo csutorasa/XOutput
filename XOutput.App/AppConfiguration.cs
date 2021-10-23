@@ -1,7 +1,6 @@
-﻿using XOutput.Api.Serialization;
-using XOutput.Client;
-using XOutput.Client.Help;
-using XOutput.Core.DependencyInjection;
+﻿using XOutput.DependencyInjection;
+using XOutput.Rest;
+using XOutput.Rest.Help;
 
 namespace XOutput.App
 {

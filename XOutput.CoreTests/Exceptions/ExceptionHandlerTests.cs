@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using XOutput.Exceptions;
 
-namespace XOutput.Core.Exceptions.Tests
+namespace XOutput.Exceptions.Tests
 {
     [TestClass()]
     public class ExceptionHandlerTests

@@ -1,5 +1,5 @@
 import React, { ReactNode, Component, PropsWithChildren } from 'react';
-import { Translation } from '../translation/translation';
+import { Translation } from '../translation/Translation';
 
 export type TextTranslatedTextProps = {
   text: string;

@@ -1,6 +1,4 @@
-﻿using XOutput.Api.Message;
-
-namespace XOutput.Server.Websocket
+﻿namespace XOutput.Websocket
 {
     public interface IMessageHandler
     {

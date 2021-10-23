@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace XOutput.Core.Threading
+namespace XOutput.Threading
 {
     public class ThreadResult
     {
