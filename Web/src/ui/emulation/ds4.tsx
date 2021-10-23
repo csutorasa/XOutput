@@ -92,7 +92,7 @@ export class Ds4Emulation extends React.Component<EmulationProps, EmulationState
     if (data.Type === 'Ds4Feedback') {
       const feedback = data as Ds4FeedbackResponse;
       if (navigator.vibrate) {
-        if (feedback.Small > 0 || feedback.Large > 0) {
+        if (feedback.SmallForceFeedback > 0 || feedback.BigForceFeedback > 0) {
           navigator.vibrate(60 * 60 * 1000);
         } else {
           navigator.vibrate(0);

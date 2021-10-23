@@ -91,7 +91,7 @@ export class XboxEmulation extends React.Component<EmulationProps, EmulationStat
     if (data.Type === 'XboxFeedback') {
       const feedback = data as XboxFeedbackResponse;
       if (navigator.vibrate) {
-        if (feedback.Small > 0 || feedback.Large > 0) {
+        if (feedback.SmallForceFeedback > 0 || feedback.BigForceFeedback > 0) {
           navigator.vibrate(60 * 60 * 1000);
         } else {
           navigator.vibrate(0);
