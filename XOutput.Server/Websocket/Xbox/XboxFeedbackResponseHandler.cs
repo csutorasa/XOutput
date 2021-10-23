@@ -1,26 +1,27 @@
 ﻿using System;
-using XOutput.Emulation.Ds4;
+using XOutput.Emulation.Xbox;
 
-namespace XOutput.Websocket.Ds4
+namespace XOutput.Websocket.Xbox
 {
-    class Ds4FeedbackMessageHandler : IMessageHandler
+    class XboxFeedbackResponseHandler : IMessageHandler
     {
-        private readonly Ds4Device device;
-        private readonly SenderFunction<Ds4FeedbackResponse> senderFunction;
+        private readonly XboxDevice device;
+        private readonly SenderFunction<XboxFeedbackResponse> senderFunction;
 
-        public Ds4FeedbackMessageHandler(Ds4Device device, SenderFunction<Ds4FeedbackResponse> senderFunction)
+        public XboxFeedbackResponseHandler(XboxDevice device, SenderFunction<XboxFeedbackResponse> senderFunction)
         {
             this.device = device;
             this.senderFunction = senderFunction;
             device.FeedbackEvent += FeedbackEvent;
         }
 
-        private void FeedbackEvent(object sender, Ds4FeedbackEventArgs args)
+        private void FeedbackEvent(object sender, XboxFeedbackEventArgs args)
         {
-            senderFunction(new Ds4FeedbackResponse
+            senderFunction(new XboxFeedbackResponse
             {
                 SmallForceFeedback = args.Small,
                 BigForceFeedback = args.Large,
+                LedNumber = args.LedNumber,
             });
         }
 

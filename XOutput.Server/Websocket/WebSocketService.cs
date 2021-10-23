@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using XOutput.DependencyInjection;
 using XOutput.Serialization;
+using XOutput.Websocket.Common;
 
 namespace XOutput.Websocket
 {
@@ -82,7 +83,13 @@ namespace XOutput.Websocket
             List<IMessageHandler> messageHandlers;
             try
             {
-                messageHandlers = handler.CreateHandlers(httpContext, closeFunction, (message) => WriteStringAsync(ws, messageWriter.GetString(message), cancellationToken));
+                SenderFunction sendFunction = (message) => WriteStringAsync(ws, messageWriter.GetString(message), cancellationToken);
+                var handlers = handler.CreateHandlers(httpContext, closeFunction, sendFunction);
+                var commonHandlers = new List<IMessageHandler> {
+                    new DebugRequestHandler(),
+                    new PingMessageHandler(sendFunction.GetTyped<PingRequest>(), sendFunction.GetTyped<PongResponse>(), closeFunction),
+                };
+                messageHandlers = handlers.Concat(commonHandlers).ToList();
             }
             catch (Exception e)
             {

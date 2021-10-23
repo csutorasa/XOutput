@@ -2,11 +2,11 @@
 
 namespace XOutput.Websocket.Common
 {
-    class DebugMessageHandler : IMessageHandler
+    class DebugRequestHandler : IMessageHandler
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        public DebugMessageHandler()
+        public DebugRequestHandler()
         {
 
         }

@@ -42,10 +42,8 @@ namespace XOutput.Websocket.Ds4
             });
             return new List<IMessageHandler>
             {
-                new DebugMessageHandler(),
-                new PingMessageHandler(sendFunction.GetTyped<PingRequest>(), sendFunction.GetTyped<PongResponse>()),
-                new Ds4FeedbackMessageHandler(device, sendFunction.GetTyped<Ds4FeedbackResponse>()),
-                new Ds4InputMessageHandler(device, disconnectedEvent),
+                new Ds4FeedbackResponseHandler(device, sendFunction.GetTyped<Ds4FeedbackResponse>()),
+                new Ds4InputRequestHandler(device, disconnectedEvent),
             };
         }
 
@@ -53,9 +51,9 @@ namespace XOutput.Websocket.Ds4
         {
             foreach (var handler in handlers)
             {
-                if (handler is Ds4InputMessageHandler)
+                if (handler is Ds4InputRequestHandler)
                 {
-                    var device = (handler as Ds4InputMessageHandler).device;
+                    var device = (handler as Ds4InputRequestHandler).device;
                     deviceInfoService.StopAndRemove(device.Id);
                 }
                 handler.Close();

@@ -3,13 +3,17 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NLog;
 using XOutput.Serialization;
 using XOutput.Threading;
+using XOutput.Websocket.Common;
 
 namespace XOutput.Websocket
 {
     public abstract class WebsocketJsonClient
     {
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
+        
         protected readonly MessageReader messageReader;
         protected readonly MessageWriter messageWriter;
         protected readonly WebSocketHelper webSocketHelper;
@@ -67,7 +71,15 @@ namespace XOutput.Websocket
         {
             string data = await webSocketHelper.ReadStringAsync(client, Encoding.UTF8, token);
             var message = messageReader.ReadString(data);
-            ProcessMessage(message);
+            if (message is DebugRequest) {
+                logger.Debug((message as DebugRequest).Data);
+            } else if (message is PingRequest) {
+                await SendAsync(new PongResponse { Timestamp = (message as PingRequest).Timestamp}, token);
+            } else if (message is PongResponse) {
+                logger.Debug(() => $"Delay is {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - (message as PongResponse).Timestamp}");
+            } else {
+                ProcessMessage(message);
+            }
         }
 
         protected abstract void ProcessMessage(MessageBase message);

@@ -1,3 +1,5 @@
+import { DebugRequest } from '../../api/websocket/common/DebugRequest';
+import { PongResponse } from '../../api/websocket/common/PongResponse';
 import { MessageBase } from '../../api/websocket/MessageBase';
 
 export class WebSocketService {
@@ -17,16 +19,24 @@ export class WebSocketService {
     return new Promise((resolve, reject) => {
       const url = `ws://${this.host}:${this.port}/ws/${path}`;
       const websocket = new WebSocket(url);
+      let session: WebSocketSession;
       websocket.onopen = (event) => {
-        resolve(new WebSocketSession(websocket, url));
+        session = new WebSocketSession(websocket, url);
         this.onOpen(event);
+        resolve(session);
       };
-      websocket.onerror = (event) => this.onError(event);
+      websocket.onerror = (event) => {
+        this.onError(event);
+        if (!session) {
+          reject(event);
+        }
+      };
       websocket.onclose = (event) => this.onClose(event as CloseEvent);
       websocket.onmessage = (event: MessageEvent) => {
-        this.onMessage(event);
-        const data = JSON.parse(event.data);
-        onMessage(data);
+        const data: MessageBase = JSON.parse(event.data);
+        if (!this.onMessage(session, data)) {
+          onMessage(data);
+        }
       };
     });
   }
@@ -40,8 +50,21 @@ export class WebSocketService {
   private onClose(event: CloseEvent): void {
     console.info('Disconnected from ' + this.host + ':' + this.port);
   }
-  private onMessage(event: MessageEvent): void {
-    //
+  private onMessage(session: WebSocketSession, data: MessageBase): boolean {
+    if (data.Type === 'Debug') {
+      console.debug((data as DebugRequest).Data);
+      return true;
+    } else if (data.Type === 'Ping') {
+      session.sendMessage({
+        Type: 'Pong',
+        Timestamp: new Date().getTime(),
+      });
+      return true;
+    } else if (data.Type === 'Pong') {
+      console.debug(`Delay is ${new Date().getTime() - (data as PongResponse).Timestamp}`);
+      return true;
+    }
+    return false;
   }
 }
 

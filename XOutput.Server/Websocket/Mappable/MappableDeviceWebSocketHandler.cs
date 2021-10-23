@@ -27,7 +27,6 @@ namespace XOutput.Websocket.Mappable
         {
             return new List<IMessageHandler>
             {
-                new DebugMessageHandler(),
                 new MappableDeviceMessageHandler(mappableDevices, sendFunction.GetTyped<MappableDeviceFeedbackResponse>()),
             };
         }

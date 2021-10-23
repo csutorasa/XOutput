@@ -42,9 +42,8 @@ namespace XOutput.Websocket.Xbox
             });
             return new List<IMessageHandler>
             {
-                new DebugMessageHandler(),
-                new XboxFeedbackMessageHandler(device, sendFunction.GetTyped<XboxFeedbackResponse>()),
-                new XboxInputMessageHandler(device, disconnectedEvent),
+                new XboxFeedbackResponseHandler(device, sendFunction.GetTyped<XboxFeedbackResponse>()),
+                new XboxInputRequestHandler(device, disconnectedEvent),
             };
         }
 
@@ -52,9 +51,9 @@ namespace XOutput.Websocket.Xbox
         {
             foreach (var handler in handlers)
             {
-                if (handler is XboxInputMessageHandler)
+                if (handler is XboxInputRequestHandler)
                 {
-                    var device = (handler as XboxInputMessageHandler).device;
+                    var device = (handler as XboxInputRequestHandler).device;
                     deviceInfoService.StopAndRemove(device.Id);
                 }
                 handler.Close();

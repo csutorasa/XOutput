@@ -15,8 +15,10 @@ namespace XOutput
             Dictionary<string, Type> deserializationMapping = new Dictionary<string, Type>
             {
                 { DebugRequest.MessageType,  typeof(DebugRequest) },
-                { XboxFeedbackResponse.MessageType,  typeof(XboxFeedbackResponse) },
-                { Ds4FeedbackResponse.MessageType,  typeof(Ds4FeedbackResponse) },
+                { PingRequest.MessageType,  typeof(PingRequest) },
+                { PongResponse.MessageType,  typeof(PongResponse) },
+                { XboxInputRequest.MessageType,  typeof(XboxInputRequest) },
+                { Ds4InputRequest.MessageType,  typeof(Ds4InputRequest) },
                 { MappableDeviceDetailsRequest.MessageType,  typeof(MappableDeviceDetailsRequest) },
                 { MappableDeviceInputRequest.MessageType,  typeof(MappableDeviceInputRequest) },
             };

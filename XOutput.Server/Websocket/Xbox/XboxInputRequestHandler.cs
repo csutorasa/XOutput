@@ -1,14 +1,14 @@
 ﻿using XOutput.Emulation;
-using XOutput.Emulation.Ds4;
+using XOutput.Emulation.Xbox;
 
-namespace XOutput.Websocket.Ds4
+namespace XOutput.Websocket.Xbox
 {
-    class Ds4InputMessageHandler : IMessageHandler
+    class XboxInputRequestHandler : IMessageHandler
     {
-        internal readonly Ds4Device device;
+        internal readonly XboxDevice device;
         private readonly DeviceDisconnectedEvent disconnectedEventHandler;
 
-        public Ds4InputMessageHandler(Ds4Device device, DeviceDisconnectedEvent disconnectedEventHandler)
+        public XboxInputRequestHandler(XboxDevice device, DeviceDisconnectedEvent disconnectedEventHandler)
         {
             this.device = device;
             this.disconnectedEventHandler = disconnectedEventHandler;
@@ -16,25 +16,25 @@ namespace XOutput.Websocket.Ds4
 
         public bool CanHandle(MessageBase message)
         {
-            return message is Ds4InputRequest;
+            return message is XboxInputRequest;
         }
 
         public void Handle(MessageBase message)
         {
-            var inputMessage = message as Ds4InputRequest;
-            device.SendInput(new Ds4Input
+            var inputMessage = message as XboxInputRequest;
+            device.SendInput(new XboxInput
             {
-                Circle = inputMessage.Circle,
-                Cross = inputMessage.Cross,
-                Triangle = inputMessage.Triangle,
-                Square = inputMessage.Square,
+                A = inputMessage.A,
+                B = inputMessage.B,
+                X = inputMessage.X,
+                Y = inputMessage.Y,
                 L1 = inputMessage.L1,
                 L3 = inputMessage.L3,
                 R1 = inputMessage.R1,
                 R3 = inputMessage.R3,
-                Options = inputMessage.Options,
-                Share = inputMessage.Share,
-                Ps = inputMessage.Ps,
+                Start = inputMessage.Start,
+                Back = inputMessage.Back,
+                Home = inputMessage.Home,
                 Up = inputMessage.UP,
                 Down = inputMessage.DOWN,
                 Left = inputMessage.LEFT,
