@@ -7,7 +7,7 @@ namespace XOutput.App
     public static class AppConfiguration
     {
         [ResolverMethod]
-        public static IHttpClientProvider GetHttpClientProvider()
+        public static IHttpClientProvider HttpClientProvider()
         {
             return new DynamicHttpClientProvider();
         }

@@ -12,12 +12,12 @@ namespace XOutput.Rest.Input
 
         public Task<IEnumerable<InputDeviceInfo>> GetInputsAsync(int timeoutMillis = 1000)
         {
-            return GetAsync<IEnumerable<InputDeviceInfo>>("api/inputs", GetToken(timeoutMillis));
+            return GetAsync<IEnumerable<InputDeviceInfo>>("api/inputs", CreateToken(timeoutMillis));
         }
 
         public Task<InputDeviceInfo> GetInputAsync(string id, int timeoutMillis = 1000)
         {
-            return GetAsync<InputDeviceInfo>("api/inputs/" + id, GetToken(timeoutMillis));
+            return GetAsync<InputDeviceInfo>("api/inputs/" + id, CreateToken(timeoutMillis));
         }
     }
 }

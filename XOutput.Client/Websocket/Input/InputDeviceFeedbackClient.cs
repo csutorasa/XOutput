@@ -32,11 +32,6 @@ namespace XOutput.Websocket.Input
                 });
             }
         }
-
-        protected Task SendInputAsync(InputDeviceInputRequest message)
-        {
-            return SendAsync(message);
-        }
     }
 
     public delegate void InputDeviceFeedbackReceived(object sender, InputDeviceFeedbackReceivedEventArgs args);

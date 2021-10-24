@@ -6,8 +6,11 @@ using XOutput.Mapping.Mapper;
 
 namespace XOutput.Mapping.Controller
 {
-    public abstract class ControllerBase<T> where T : struct, IConvertible
+    public abstract class ControllerBase<T> : IEmulatedController where T : struct, Enum
     {
+        public string Id { get; }
+        public string Name { get; }
+
         private Dictionary<T, Func<double>> inputGetters = new Dictionary<T, Func<double>>();
         private List<Action<double, double>> forceFeedbackSetters = new List<Action<double, double>>();
         private readonly List<InputDevice> boundDevices = new List<InputDevice>();
@@ -44,10 +47,26 @@ namespace XOutput.Mapping.Controller
 
         protected abstract double GetDefaultValue(T input);
 
+        public Dictionary<T, double> GetValues()
+        {
+            return Enum.GetValues<T>().ToDictionary((input) => input, (input) => GetValue(input));
+        }
+
+        public Dictionary<string, double> GetSources()
+        {
+            return Enum.GetValues<T>().ToDictionary((input) => input.ToString(), (input) => GetValue(input));
+        }
+
+        public Dictionary<string, double> GetTargets()
+        {
+            return Enum.GetValues<T>().ToDictionary((input) => input.ToString(), (input) => GetValue(input));
+        }
+
         protected double GetValue(T input)
         {
             return inputGetters.ContainsKey(input) ? inputGetters[input]() : GetDefaultValue(input);
         }
+
         protected bool GetBoolValue(T input)
         {
             return GetValue(input) > 0.5;

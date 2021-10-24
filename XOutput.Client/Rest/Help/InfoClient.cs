@@ -11,7 +11,7 @@ namespace XOutput.Rest.Help
 
         public Task<InfoResponse> GetInfoAsync(int timeoutMillis = 1000)
         {
-            return GetAsync<InfoResponse>("info", GetToken(timeoutMillis));
+            return GetAsync<InfoResponse>("info", CreateToken(timeoutMillis));
         }
     }
 }

@@ -4,6 +4,7 @@ using XOutput.DependencyInjection;
 using XOutput.Serialization;
 using XOutput.Websocket.Common;
 using XOutput.Websocket.Ds4;
+using XOutput.Websocket.Emulated;
 using XOutput.Websocket.Input;
 using XOutput.Websocket.Xbox;
 
@@ -23,6 +24,7 @@ namespace XOutput.Client
                 { Ds4FeedbackResponse.MessageType,  typeof(Ds4FeedbackResponse) },
                 { InputDeviceFeedbackResponse.MessageType,  typeof(InputDeviceFeedbackResponse) },
                 { InputDeviceInputResponse.MessageType,  typeof(InputDeviceInputResponse) },
+                { EmulatedControllerInputResponse.MessageType,  typeof(EmulatedControllerInputResponse) },
             };
             return new MessageReader(deserializationMapping);
         }

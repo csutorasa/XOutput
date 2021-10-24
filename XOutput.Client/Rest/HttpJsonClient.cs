@@ -19,14 +19,14 @@ namespace XOutput.Rest
             this.clientProvider = clientProvider;
         }
 
-        protected CancellationToken GetToken(int millis)
+        protected CancellationToken CreateToken(int millis)
         {
             var source = new CancellationTokenSource();
             source.CancelAfter(millis);
             return source.Token;
         }
 
-        protected HttpContent GetRequest<T>(T request)
+        protected HttpContent CreateContent<T>(T request)
         {
             if (request == null)
             {
@@ -39,7 +39,7 @@ namespace XOutput.Rest
             }
         }
 
-        protected async Task<string> GetResponseBodyAsync(Func<Task<HttpResponseMessage>> responseGetter, CancellationToken token)
+        protected async Task<string> ReadResponseBodyAsync(Func<Task<HttpResponseMessage>> responseGetter, CancellationToken token)
         {
             using (var response = await responseGetter())
             {
@@ -70,17 +70,17 @@ namespace XOutput.Rest
 
         protected Task<T> PostAsync<T, R>(string path, R request, CancellationToken token)
         {
-            return GetResultAsync<T>(() => clientProvider.Client.PostAsync(path, GetRequest(request), token), token);
+            return GetResultAsync<T>(() => clientProvider.Client.PostAsync(path, CreateContent(request), token), token);
         }
 
         protected Task<T> PatchAsync<T, R>(string path, R request, CancellationToken token)
         {
-            return GetResultAsync<T>(() => clientProvider.Client.PatchAsync(path, GetRequest(request), token), token);
+            return GetResultAsync<T>(() => clientProvider.Client.PatchAsync(path, CreateContent(request), token), token);
         }
 
         protected Task<T> PutAsync<T, R>(string path, R request, CancellationToken token)
         {
-            return GetResultAsync<T>(() => clientProvider.Client.PutAsync(path, GetRequest(request), token), token);
+            return GetResultAsync<T>(() => clientProvider.Client.PutAsync(path, CreateContent(request), token), token);
         }
     }
 }
