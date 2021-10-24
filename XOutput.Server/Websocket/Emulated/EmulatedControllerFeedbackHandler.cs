@@ -10,8 +10,7 @@ namespace XOutput.Websocket.Emulated
     class EmulatedControllerFeedbackHandler : IMessageHandler
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
-
-        private readonly InputDevices InputDevices;
+        
         private readonly SenderFunction<EmulatedControllerInputResponse> senderFunction;
         private IEmulatedController emulatedController;
         private ThreadContext threadContext;

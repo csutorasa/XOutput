@@ -11,7 +11,6 @@ namespace XOutput.Websocket.Input
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly InputDevices InputDevices;
         private readonly SenderFunction<InputDeviceInputResponse> senderFunction;
         private InputDevice device;
         private ThreadContext threadContext;

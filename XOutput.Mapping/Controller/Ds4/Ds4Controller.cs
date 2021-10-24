@@ -1,10 +1,12 @@
-﻿using XOutput.Emulation.Ds4;
+﻿using XOutput.Emulation;
+using XOutput.Emulation.Ds4;
 using XOutput.Mapping.Input;
 
 namespace XOutput.Mapping.Controller.Ds4
 {
     public class Ds4Controller : ControllerBase<Ds4InputTypes>
     {
+        public override IDevice Device => device;
         private Ds4Device device;
 
         public void Start(IDs4Emulator emulator)
@@ -15,6 +17,7 @@ namespace XOutput.Mapping.Controller.Ds4
         public void Stop()
         {
             device.Close();
+            device = null;
         }
 
         protected override double GetDefaultValue(Ds4InputTypes input)

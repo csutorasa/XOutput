@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using XOutput.Common;
+using XOutput.Emulation;
 using XOutput.Mapping.Input;
 using XOutput.Mapping.Mapper;
 
@@ -10,6 +12,7 @@ namespace XOutput.Mapping.Controller
     {
         public string Id { get; }
         public string Name { get; }
+        public abstract IDevice Device { get; }
 
         private Dictionary<T, Func<double>> inputGetters = new Dictionary<T, Func<double>>();
         private List<Action<double, double>> forceFeedbackSetters = new List<Action<double, double>>();

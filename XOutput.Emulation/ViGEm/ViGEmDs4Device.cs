@@ -1,5 +1,6 @@
 ﻿using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.DualShock4;
+using XOutput.Common;
 using XOutput.Emulation.Ds4;
 
 namespace XOutput.Emulation.ViGEm
@@ -8,6 +9,7 @@ namespace XOutput.Emulation.ViGEm
     {
         private readonly IDualShock4Controller controller;
         public bool Connected { get; private set; }
+        public override Emulators Emulator => Emulators.ViGEm;
 
         public ViGEmDs4Device(IDualShock4Controller controller)
         {

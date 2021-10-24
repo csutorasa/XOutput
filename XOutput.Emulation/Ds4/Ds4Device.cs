@@ -5,9 +5,9 @@ namespace XOutput.Emulation.Ds4
 {
     public abstract class Ds4Device : IDevice
     {
-
         public string Id { get; } = Guid.NewGuid().ToString();
         public DeviceTypes DeviceType => DeviceTypes.SonyDualShock4;
+        public abstract Emulators Emulator { get; }
 
         public event Ds4FeedbackEvent FeedbackEvent;
         public event DeviceDisconnectedEvent Closed;

@@ -1,5 +1,6 @@
 ﻿using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.Xbox360;
+using XOutput.Common;
 using XOutput.Emulation.Xbox;
 
 namespace XOutput.Emulation.ViGEm
@@ -8,6 +9,7 @@ namespace XOutput.Emulation.ViGEm
     {
         private readonly IXbox360Controller controller;
         public bool Connected { get; private set; }
+        public override Emulators Emulator => Emulators.ViGEm;
 
         public ViGEmXboxDevice(IXbox360Controller controller)
         {

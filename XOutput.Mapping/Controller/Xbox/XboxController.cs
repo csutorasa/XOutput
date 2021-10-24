@@ -1,11 +1,13 @@
-﻿using XOutput.Emulation.Xbox;
+﻿using XOutput.Common;
+using XOutput.Emulation;
+using XOutput.Emulation.Xbox;
 using XOutput.Mapping.Input;
 
 namespace XOutput.Mapping.Controller.Xbox
 {
     public class XboxController : ControllerBase<XboxInputTypes>
     {
-
+        public override IDevice Device => device;
         private XboxDevice device;
 
         public void Start(IXboxEmulator emulator)
@@ -16,6 +18,7 @@ namespace XOutput.Mapping.Controller.Xbox
         public void Stop()
         {
             device.Close();
+            device = null;
         }
         
         protected override double GetDefaultValue(XboxInputTypes input)

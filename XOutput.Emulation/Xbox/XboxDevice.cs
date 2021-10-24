@@ -8,6 +8,7 @@ namespace XOutput.Emulation.Xbox
 
         public string Id { get; } = Guid.NewGuid().ToString();
         public DeviceTypes DeviceType => DeviceTypes.MicrosoftXbox360;
+        public abstract Emulators Emulator { get; }
 
         public event XboxFeedbackEvent FeedbackEvent;
         public event DeviceDisconnectedEvent Closed;

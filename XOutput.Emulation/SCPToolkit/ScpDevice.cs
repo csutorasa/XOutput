@@ -1,4 +1,5 @@
-﻿using XOutput.Emulation.Xbox;
+﻿using XOutput.Common;
+using XOutput.Emulation.Xbox;
 
 namespace XOutput.Emulation.SCPToolkit
 {
@@ -6,6 +7,7 @@ namespace XOutput.Emulation.SCPToolkit
     {
 
         public bool Connected { get; private set; }
+        public override Emulators Emulator => Emulators.SCPToolkit;
 
         private readonly ScpClient client;
         private readonly int controllerCount;

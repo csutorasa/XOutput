@@ -7,6 +7,7 @@ namespace XOutput.Emulation
         event DeviceDisconnectedEvent Closed;
         string Id { get; }
         DeviceTypes DeviceType { get; }
+        Emulators Emulator { get; }
         void Close();
     }
 

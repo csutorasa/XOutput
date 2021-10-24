@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using XOutput.DependencyInjection;
 using XOutput.Emulation;
-using XOutput.Mapping.Input;
+using XOutput.Mapping.Controller;
 using XOutput.Rest.Devices;
 
 namespace XOutput.Rest.Emulation
@@ -12,13 +12,13 @@ namespace XOutput.Rest.Emulation
     public class ControllersController : Controller
     {
         private readonly NetworkDeviceInfoService networkDeviceInfoService;
-        private readonly InputDevices inputDevices;
+        private readonly EmulatedControllers emulatedControllers;
 
         [ResolverMethod]
-        public ControllersController(NetworkDeviceInfoService networkDeviceInfoService, InputDevices inputDevices)
+        public ControllersController(NetworkDeviceInfoService networkDeviceInfoService, EmulatedControllers emulatedControllers)
         {
             this.networkDeviceInfoService = networkDeviceInfoService;
-            this.inputDevices = inputDevices;
+            this.emulatedControllers = emulatedControllers;
         }
 
         [HttpGet]
@@ -33,7 +33,14 @@ namespace XOutput.Rest.Emulation
                 Emulator = d.Emulator,
                 Active = true,
             });
-            return networkDevices.ToList();
+            var mappedDevices = emulatedControllers.FindAll().Select(c => new DeviceInfo
+            {
+                Id = c.Device.Id,
+                DeviceType = c.Device == null ? null : c.Device.DeviceType.ToString(),
+                Emulator = c.Device == null ? null : c.Device.Emulator.ToString(),
+                Active = c.Device != null,
+            });
+            return networkDevices.Concat(mappedDevices).ToList();
         }
 
         [HttpDelete]
