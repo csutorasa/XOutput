@@ -21,7 +21,7 @@
     "@typescript-eslint/parser": "^5.1.0",
     "css-loader": "^6.4.0",
     "html-webpack-plugin": "^5.4.0",
-    "lint-staged": "^11.2.3",
+    "lint-staged": "^11.2.5",
     "prettier": "^2.4.1",
     "sass": "^1.43.3",
     "sass-loader": "^12.2.0",
