@@ -4,7 +4,6 @@ import { Slider } from './slider';
 import { Button } from './button';
 import { Axis } from './axis';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { ListEmulatorsResponse, rest, EmulatorResponse } from '../../client/rest';
 import { WebSocketService, WebSocketSession } from '../../client/websocket/websocket';
 import { Square } from './square';
 import { EventHolder } from '../../events/eventholder';
@@ -13,7 +12,7 @@ import { MessageBase } from '../../api/websocket/MessageBase';
 import { Ds4FeedbackResponse } from '../../api/websocket/ds4/Ds4FeedbackResponse';
 
 interface EmulationState {
-  emulators: ListEmulatorsResponse;
+  //emulators: ListEmulatorsResponse;
   loading: boolean;
 }
 
@@ -35,7 +34,7 @@ export class Ds4Emulation extends React.Component<EmulationProps, EmulationState
   constructor(props: Readonly<any>) {
     super(props);
     this.state = {
-      emulators: null,
+      //emulators: null,
       loading: true,
     };
   }
@@ -61,7 +60,7 @@ export class Ds4Emulation extends React.Component<EmulationProps, EmulationState
         document.addEventListener('touchcancel', this.touchCancel, false);
         this.setState((state, props) => {
           return {
-            emulators: state.emulators,
+            //emulators: state.emulators,
             loading: false,
           };
         });
@@ -89,7 +88,7 @@ export class Ds4Emulation extends React.Component<EmulationProps, EmulationState
   }
 
   private onData(data: MessageBase) {
-    if (data.Type === 'Ds4Feedback') {
+    if (data.type === 'Ds4Feedback') {
       const feedback = data as Ds4FeedbackResponse;
       if (navigator.vibrate) {
         if (feedback.SmallForceFeedback > 0 || feedback.BigForceFeedback > 0) {

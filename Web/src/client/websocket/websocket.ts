@@ -3,19 +3,15 @@ import { PongResponse } from '../../api/websocket/common/PongResponse';
 import { MessageBase } from '../../api/websocket/MessageBase';
 
 export class WebSocketService {
-  private static globalHost: string;
-  private static globalPort: string | number;
   private host: string;
   private port: string | number;
 
-  static initialize(host: string, port: string | number): void {
-    this.globalHost = host;
-    this.globalPort = port;
+  initialize(host: string, port: string | number): void {
+    this.host = host;
+    this.port = port;
   }
 
   connect(path: string, onMessage: (data: MessageBase) => void): Promise<WebSocketSession> {
-    this.host = WebSocketService.globalHost;
-    this.port = WebSocketService.globalPort;
     return new Promise((resolve, reject) => {
       const url = `ws://${this.host}:${this.port}/ws/${path}`;
       const websocket = new WebSocket(url);
@@ -51,16 +47,16 @@ export class WebSocketService {
     console.info('Disconnected from ' + this.host + ':' + this.port);
   }
   private onMessage(session: WebSocketSession, data: MessageBase): boolean {
-    if (data.Type === 'Debug') {
+    if (data.type === 'Debug') {
       console.debug((data as DebugRequest).Data);
       return true;
-    } else if (data.Type === 'Ping') {
+    } else if (data.type === 'Ping') {
       session.sendMessage({
         Type: 'Pong',
         Timestamp: new Date().getTime(),
       });
       return true;
-    } else if (data.Type === 'Pong') {
+    } else if (data.type === 'Pong') {
       console.debug(`Delay is ${new Date().getTime() - (data as PongResponse).Timestamp}`);
       return true;
     }
@@ -86,3 +82,5 @@ export class WebSocketSession {
     });
   }
 }
+
+export const websocket = new WebSocketService();

@@ -4,7 +4,6 @@ import { Slider } from './slider';
 import { Button } from './button';
 import { Axis } from './axis';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { ListEmulatorsResponse, rest, EmulatorResponse } from '../../client/rest';
 import { WebSocketService, WebSocketSession } from '../../client/websocket/websocket';
 import { Square } from './square';
 import { EventHolder } from '../../events/eventholder';
@@ -13,7 +12,7 @@ import { XboxFeedbackResponse } from '../../api/websocket/xbox/XboxFeedbackRespo
 import { TranslatedText } from '../TranslatedText';
 
 interface EmulationState {
-  emulators: ListEmulatorsResponse;
+  //emulators: ListEmulatorsResponse;
   loading: boolean;
 }
 
@@ -35,7 +34,7 @@ export class XboxEmulation extends React.Component<EmulationProps, EmulationStat
   constructor(props: Readonly<any>) {
     super(props);
     this.state = {
-      emulators: null,
+      //emulators: null,
       loading: true,
     };
   }
@@ -60,7 +59,7 @@ export class XboxEmulation extends React.Component<EmulationProps, EmulationStat
         document.addEventListener('touchcancel', this.touchCancel, false);
         this.setState((state, props) => {
           return {
-            emulators: state.emulators,
+           // emulators: state.emulators,
             loading: false,
           };
         });
@@ -88,7 +87,7 @@ export class XboxEmulation extends React.Component<EmulationProps, EmulationStat
   }
 
   private onData(data: MessageBase) {
-    if (data.Type === 'XboxFeedback') {
+    if (data.type === 'XboxFeedback') {
       const feedback = data as XboxFeedbackResponse;
       if (navigator.vibrate) {
         if (feedback.SmallForceFeedback > 0 || feedback.BigForceFeedback > 0) {

@@ -21,7 +21,7 @@ namespace XOutput.Rest.Notifications
         [Route("/api/notifications")]
         public ActionResult<IEnumerable<Notification>> ListNotifications()
         {
-            return notificationService.GetAll().Select(Create).ToList();
+            return notificationService.GetAll().Select(CreateNotification).ToList();
         }
 
         [HttpPut]
@@ -35,7 +35,7 @@ namespace XOutput.Rest.Notifications
             return NotFound();
         }
 
-        public static Notification Create(NotificationItem item)
+        private static Notification CreateNotification(NotificationItem item)
         {
             return new Notification
             {

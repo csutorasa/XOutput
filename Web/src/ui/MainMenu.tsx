@@ -1,9 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect, RouteChildrenProps, withRouter, RouteComponentProps } from 'react-router';
-import { DeviceSelector } from './emulation/deviceselector';
 import { XboxEmulation } from './emulation/xbox';
 import { Link } from 'react-router-dom';
-import { Controllers } from './controllers/controllers';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -20,15 +18,13 @@ import InputIcon from '@material-ui/icons/Input';
 import LanguageIcon from '@material-ui/icons/Language';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Inputs } from './input/inputs';
-import { InputDetails } from './input/details';
 import { Ds4Emulation } from './emulation/ds4';
 import { Styled, StyleGenerator } from '../utils';
 import Translation from '../translation/Translation';
 import { Notifications } from './notifications/Notifications';
 import { MainMenuListItem } from './MainMenuListItem';
-import { rest, Notification } from '../client/rest';
-import { Home } from './home/home';
+import { notificationClient } from '../client';
+import { Notification } from '../api';
 
 type ClassNames = 'menubarButton' | 'mainContent' | 'title' | 'drawerRoot' | 'drawerHeader' | 'placeholder';
 
@@ -84,7 +80,7 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
   }
 
   refreshDevices(): Promise<Notification[]> {
-    return rest.getNotifiations().then((notifications) => {
+    return notificationClient.getNotifications().then((notifications) => {
       this.setState({
         notificationCount: notifications.filter((n) => !n.acknowledged).length,
       });
@@ -166,13 +162,13 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
         <div className={classes.mainContent}>
           <Switch>
             <Route path="/" exact>
-              <Home></Home>
+              <div></div>
             </Route>
             <Route path="/controllers">
-              <Controllers></Controllers>
+              <div></div>
             </Route>
             <Route path="/devices">
-              <DeviceSelector></DeviceSelector>
+              <div></div>
             </Route>
             <Route
               path="/emulation/MicrosoftXbox360/:emulator"
@@ -187,11 +183,11 @@ class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
               )}
             />
             <Route path="/inputs" exact>
-              <Inputs></Inputs>
+              <div></div>
             </Route>
             <Route
               path="/inputs/:id"
-              component={(props: RouteChildrenProps<{ id: string }>) => <InputDetails id={props.match.params.id}></InputDetails>}
+              component={(props: RouteChildrenProps<{ id: string }>) => <div id={props.match.params.id}></div>}
             />
             <Route path="/notifications" exact>
               <Notifications></Notifications>

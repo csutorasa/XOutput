@@ -9,9 +9,10 @@ import InfoIcon from '@material-ui/icons/Info';
 import { Styled, StyleGenerator, Classes } from '../../utils';
 import Translation from '../../translation/Translation';
 import Async from '../components/Asnyc';
-import { rest, Notification } from '../../client/rest';
 import { Card, Button } from '@material-ui/core';
 import moment from 'moment';
+import { Notification } from '../../api';
+import { notificationClient } from '../../client';
 
 type ClassNames = 'card' | 'placeholder' | 'cancelIcon' | 'warningIcon' | 'infoIcon';
 
@@ -55,7 +56,7 @@ class NotificationsComponent extends React.Component<NotificationsProps, Notific
   }
 
   refreshDevices(): Promise<Notification[]> {
-    return rest.getNotifiations().then((notifications) => {
+    return notificationClient.getNotifications().then((notifications) => {
       this.setState({
         notifications,
       });
@@ -64,7 +65,7 @@ class NotificationsComponent extends React.Component<NotificationsProps, Notific
   }
 
   acknowledge(id: string) {
-    return rest.acknowledgeNotification(id).then(() => {
+    return notificationClient.acknowledge(id).then(() => {
       this.loading = this.refreshDevices();
       this.forceUpdate();
     });

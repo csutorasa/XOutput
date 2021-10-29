@@ -58,6 +58,14 @@ namespace XOutput.Rest
             }
         }
 
+        protected async Task GetResultAsync(Func<Task<HttpResponseMessage>> responseGetter, CancellationToken token)
+        {
+            using (var response = await responseGetter())
+            {
+                response.EnsureSuccessStatusCode();
+            }
+        }
+
         protected Task<T> GetAsync<T>(string path, CancellationToken token)
         {
             return GetResultAsync<T>(() => clientProvider.Client.GetAsync(path, token), token);
@@ -68,9 +76,29 @@ namespace XOutput.Rest
             return GetResultAsync<T>(() => clientProvider.Client.DeleteAsync(path, token), token);
         }
 
+        protected Task DeleteAsync(string path, CancellationToken token)
+        {
+            return GetResultAsync(() => clientProvider.Client.DeleteAsync(path, token), token);
+        }
+
         protected Task<T> PostAsync<T, R>(string path, R request, CancellationToken token)
         {
             return GetResultAsync<T>(() => clientProvider.Client.PostAsync(path, CreateContent(request), token), token);
+        }
+
+        protected Task<T> PostAsync<T>(string path, CancellationToken token)
+        {
+            return GetResultAsync<T>(() => clientProvider.Client.PostAsync(path, new ByteArrayContent(Array.Empty<byte>()), token), token);
+        }
+
+        protected Task PostAsync<R>(string path, R request, CancellationToken token)
+        {
+            return GetResultAsync(() => clientProvider.Client.PostAsync(path, CreateContent(request), token), token);
+        }
+
+        protected Task PostAsync(string path, CancellationToken token)
+        {
+            return GetResultAsync(() => clientProvider.Client.PostAsync(path, new ByteArrayContent(Array.Empty<byte>()), token), token);
         }
 
         protected Task<T> PatchAsync<T, R>(string path, R request, CancellationToken token)
@@ -78,9 +106,39 @@ namespace XOutput.Rest
             return GetResultAsync<T>(() => clientProvider.Client.PatchAsync(path, CreateContent(request), token), token);
         }
 
+        protected Task<T> PatchAsync<T>(string path, CancellationToken token)
+        {
+            return GetResultAsync<T>(() => clientProvider.Client.PatchAsync(path, new ByteArrayContent(Array.Empty<byte>()), token), token);
+        }
+
+        protected Task PatchAsync<R>(string path, R request, CancellationToken token)
+        {
+            return GetResultAsync(() => clientProvider.Client.PatchAsync(path, CreateContent(request), token), token);
+        }
+
+        protected Task PatchAsync(string path, CancellationToken token)
+        {
+            return GetResultAsync(() => clientProvider.Client.PatchAsync(path, new ByteArrayContent(Array.Empty<byte>()), token), token);
+        }
+
         protected Task<T> PutAsync<T, R>(string path, R request, CancellationToken token)
         {
             return GetResultAsync<T>(() => clientProvider.Client.PutAsync(path, CreateContent(request), token), token);
+        }
+
+        protected Task<T> PutAsync<T>(string path, CancellationToken token)
+        {
+            return GetResultAsync<T>(() => clientProvider.Client.PutAsync(path, new ByteArrayContent(Array.Empty<byte>()), token), token);
+        }
+
+        protected Task PutAsync<R>(string path, R request, CancellationToken token)
+        {
+            return GetResultAsync(() => clientProvider.Client.PutAsync(path, CreateContent(request), token), token);
+        }
+
+        protected Task PutAsync(string path, CancellationToken token)
+        {
+            return GetResultAsync(() => clientProvider.Client.PutAsync(path, new ByteArrayContent(Array.Empty<byte>()), token), token);
         }
     }
 }

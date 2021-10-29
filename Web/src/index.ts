@@ -2,15 +2,13 @@ import './index.scss';
 
 import { render } from 'react-dom';
 import { RootElement } from './ui/RootElement';
-import { WebSocketService } from './client/websocket/websocket';
-import { http } from './client/rest/http';
+import { http, websocket } from './client';
 import 'typeface-roboto';
 
 const host = window.location.hostname;
 const port = window.location.port;
 http.initialize(host, port);
-WebSocketService.initialize(host, port);
-// const websocket = new WebSocketService();
+websocket.initialize(host, port);
 
 window.onerror = (msg, url, line, col) => {
   /* if (websocket.isReady()) {

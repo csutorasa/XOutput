@@ -64,4 +64,3 @@ export class HttpService {
 }
 
 export const http = new HttpService();
-export default http;
