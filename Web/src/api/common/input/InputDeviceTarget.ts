@@ -1,5 +1,7 @@
+import { TargetTypes } from '../TargetTypes';
+
 export type InputDeviceTarget = {
-    id: number;
-    name: string;
-    type: string;
-}
+  id: number;
+  name: string;
+  type: TargetTypes;
+};

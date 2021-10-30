@@ -17,7 +17,7 @@ namespace XOutput.Websocket.Input
 
         public async Task ConnectAsync(InputDeviceDetailsRequest message)
         {
-            await ConnectAsync("InputDevice");
+            await base.ConnectAsync("InputDevice");
             await SendAsync(message);
         }
 

@@ -11,7 +11,7 @@ namespace XOutput.Websocket.Xbox
     class XboxWebSocketHandler : IWebSocketHandler
     {
         private static readonly string DeviceType = DeviceTypes.MicrosoftXbox360.ToString();
-        private static readonly Regex PathRegex = new Regex($"/ws/{DeviceType}/([A-Za-z]+)");
+        private static readonly Regex PathRegex = new Regex($"/websocket/{DeviceType}/([A-Za-z]+)");
         private readonly EmulatorService emulatorService;
         private readonly NetworkDeviceInfoService deviceInfoService;
 

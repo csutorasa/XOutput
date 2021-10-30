@@ -1,7 +1,7 @@
 import { MessageBase } from '../MessageBase';
 
 export interface XboxFeedbackResponse extends MessageBase<'XboxFeedback'> {
-  SmallForceFeedback: number;
-  BigForceFeedback: number;
-  LedNumber: number;
+  smallForceFeedback: number;
+  bigForceFeedback: number;
+  ledNumber: number;
 }

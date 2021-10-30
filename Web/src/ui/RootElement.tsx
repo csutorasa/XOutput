@@ -1,12 +1,13 @@
 import React from 'react';
-import green from '@material-ui/core/colors/green';
+import green from '@mui/material/colors/green';
 import { HashRouter } from 'react-router-dom';
-import { MainMenu } from './MainMenu';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core';
+import { Router } from './Router';
+import { createTheme, ThemeProvider } from '@mui/material';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-const productionTheme = createMuiTheme({});
+const productionTheme = createTheme({});
 
-const developmentTheme = createMuiTheme({
+const developmentTheme = createTheme({
   palette: {
     primary: green,
   },
@@ -14,10 +15,14 @@ const developmentTheme = createMuiTheme({
 
 const theme = process.env.NODE_ENV !== 'production' ? developmentTheme : productionTheme;
 
+const queryClient = new QueryClient();
+
 export const RootElement = (
   <HashRouter>
     <ThemeProvider theme={theme}>
-      <MainMenu></MainMenu>
+      <QueryClientProvider client={queryClient}>
+        <Router></Router>
+      </QueryClientProvider>
     </ThemeProvider>
   </HashRouter>
 );

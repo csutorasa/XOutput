@@ -1,5 +1,1 @@
-export type InputDeviceApi = 
-    | 'WindowsApi'
-    | 'DirectInput'
-    | 'RawInput'
-    | 'GamepadApi'
+export type InputDeviceApi = 'WindowsApi' | 'DirectInput' | 'RawInput' | 'GamepadApi';

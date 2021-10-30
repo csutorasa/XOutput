@@ -7,5 +7,9 @@ namespace XOutput.Websocket.Emulated
         public const string MessageType = "EmulatedControllerInputFeedback";
         public List<EmulatedControllerSourceValue> Sources { get; set; }
         public List<EmulatedControllerTargetValue> Targets { get; set; }
+        public EmulatedControllerInputResponse()
+        {
+            Type = MessageType;
+        }
     }
 }

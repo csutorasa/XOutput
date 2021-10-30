@@ -1,5 +1,5 @@
 export * from './http';
 
-export * from './help';
-export * from './input';
-export * from './notifications';
+export * from './help/InfoClient';
+export * from './input/InputsClient';
+export * from './notifications/NotificationClient';

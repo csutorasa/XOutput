@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using XOutput.DependencyInjection;
 using XOutput.Mapping.Controller;
-using XOutput.Mapping.Input;
 
 namespace XOutput.Websocket.Emulated
 {
     class EmulatedControllerFeedbackWebSocketHandler : IWebSocketHandler
     {
-        private static readonly Regex PathRegex = new Regex($"/ws/InputDevice/([-A-Za-z0-9]+)");
+        private static readonly Regex PathRegex = new Regex($"/websocket/InputDevice/([-A-Za-z0-9]+)");
         private readonly EmulatedControllers emulatedControllers;
 
         [ResolverMethod]

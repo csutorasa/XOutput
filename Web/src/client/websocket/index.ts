@@ -1,3 +1,4 @@
 export * from './websocket';
 
-export * from './input';
+export * from './input/InputDeviceClient';
+export * from './input/InputDeviceFeedbackClient';

@@ -17,7 +17,7 @@ namespace XOutput.Websocket.Input
 
         public bool CanHandle(HttpContext context)
         {
-            return context.Request.Path.Value == "/ws/InputDevice";
+            return context.Request.Path.Value == "/websocket/InputDevice";
         }
 
         public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)

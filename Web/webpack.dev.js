@@ -55,9 +55,10 @@ module.exports = {
   devServer: {
     port: 8080,
     static: path.join(__dirname, 'webapp'),
+    
     proxy: {
       '/api': 'http://localhost:8000',
-      '/ws': {
+      '/websocket': {
         target: 'ws://localhost:8000',
         ws: true,
       },

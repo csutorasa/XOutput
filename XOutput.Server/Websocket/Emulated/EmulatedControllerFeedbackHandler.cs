@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using XOutput.Mapping.Controller;
-using XOutput.Mapping.Input;
 using XOutput.Threading;
 
 namespace XOutput.Websocket.Emulated

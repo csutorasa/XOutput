@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using XOutput.Common;
 using XOutput.Emulation;
 using XOutput.Mapping.Input;
 using XOutput.Mapping.Mapper;

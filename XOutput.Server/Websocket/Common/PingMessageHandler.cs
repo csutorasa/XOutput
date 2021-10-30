@@ -26,9 +26,10 @@ namespace XOutput.Websocket.Common
         {
             try
             {
-                pingSenderFunction(new PingRequest {
+                var r = new PingRequest {
                     Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
-                });
+                };
+                pingSenderFunction(r);
             }
             catch (Exception ex)
             {
@@ -47,7 +48,7 @@ namespace XOutput.Websocket.Common
             if (message is PingRequest) {
                 pongSenderFunction(new PongResponse { Timestamp = (message as PingRequest).Timestamp });
             } else if (message is PongResponse) {
-                logger.Debug(() => $"Delay is {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - (message as PongResponse).Timestamp}");
+                logger.Debug(() => $"Delay is {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - (message as PongResponse).Timestamp} ms");
             }
         }
 

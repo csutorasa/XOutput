@@ -13,5 +13,9 @@ namespace XOutput.Websocket.Input
         public List<InputDeviceSource> Sources { get; set; }
         public List<InputDeviceTarget> Targets { get; set; }
         public string InputApi { get; set; }
+        public InputDeviceDetailsRequest()
+        {
+            Type = MessageType;
+        }
     }
 }

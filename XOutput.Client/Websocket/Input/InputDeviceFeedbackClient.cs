@@ -17,7 +17,7 @@ namespace XOutput.Websocket.Input
 
         public async Task ConnectAsync(string id)
         {
-            await ConnectAsync("InputDevice/" + id);
+            await base.ConnectAsync("InputDevice/" + id);
         }
 
         protected override void ProcessMessage(MessageBase message)

@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import ListItem from '@material-ui/core/ListItem';
+import ListItem from '@mui/material/ListItem';
 
 export type MainMenuListItemProps = RouteComponentProps & {
   onClick: () => void;

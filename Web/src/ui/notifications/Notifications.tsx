@@ -1,15 +1,16 @@
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
-import red from '@material-ui/core/colors/red';
-import yellow from '@material-ui/core/colors/yellow';
-import CancelIcon from '@material-ui/icons/Cancel';
-import WarningIcon from '@material-ui/icons/Warning';
-import InfoIcon from '@material-ui/icons/Info';
+import React, { ReactElement } from 'react';
+import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
+import Typography from '@mui/material/Typography';
+import withStyles from '@mui/styles/withStyles';
+import red from '@mui/material/colors/red';
+import yellow from '@mui/material/colors/yellow';
+import CancelIcon from '@mui/icons-material/Cancel';
+import WarningIcon from '@mui/icons-material/Warning';
+import InfoIcon from '@mui/icons-material/Info';
 import { Styled, StyleGenerator, Classes } from '../../utils';
 import Translation from '../../translation/Translation';
-import Async from '../components/Asnyc';
-import { Card, Button } from '@material-ui/core';
+import { Async } from '../components/Asnyc';
+import { Card, Button } from '@mui/material';
 import moment from 'moment';
 import { Notification } from '../../api';
 import { notificationClient } from '../../client';
@@ -37,41 +38,28 @@ const styles: StyleGenerator<ClassNames> = () => ({
   },
 });
 
-export interface NotificationsProps extends Styled<ClassNames> {}
+export type NotificationsProps = {};
 
-export interface NotificationsState {
-  notifications: Notification[];
-}
+type InternalNotificationsProps = Styled<ClassNames> & NotificationsProps;
 
-class NotificationsComponent extends React.Component<NotificationsProps, NotificationsState> {
-  state: NotificationsState = {
-    notifications: [],
-  };
+export const useNotificationsQuery = (): UseQueryResult<Notification[]> => {
+  return useQuery('get-notifications', () => notificationClient.getNotifications());
+};
+export const resetNotificationsQuery = (): Promise<void> => {
+  const client = useQueryClient();
+  return client.invalidateQueries('get-notifications');
+};
 
-  private loading: Promise<Notification[]>;
+const NotificationsComponent = ({ classes }: InternalNotificationsProps) => {
+  const { data: notifications, isLoading, isSuccess, error, refetch } = useNotificationsQuery();
 
-  componentDidMount() {
-    this.loading = this.refreshDevices();
-    this.forceUpdate();
-  }
-
-  refreshDevices(): Promise<Notification[]> {
-    return notificationClient.getNotifications().then((notifications) => {
-      this.setState({
-        notifications,
-      });
-      return notifications;
-    });
-  }
-
-  acknowledge(id: string) {
+  function acknowledge(id: string): Promise<void> {
     return notificationClient.acknowledge(id).then(() => {
-      this.loading = this.refreshDevices();
-      this.forceUpdate();
+      return refetch().then(() => null);
     });
   }
 
-  createIcon(level: string, classes: Classes<ClassNames>) {
+  function createIcon(level: string, classes: Classes<ClassNames>): ReactElement {
     switch (level) {
       case 'Error':
         return <CancelIcon className={classes.cancelIcon} />;
@@ -82,38 +70,37 @@ class NotificationsComponent extends React.Component<NotificationsProps, Notific
     }
   }
 
-  getTime(createdAt: string): string {
+  function getTime(createdAt: string): string {
     const d = moment(createdAt);
     return `${d.format('LLL')} (${d.fromNow()})`;
   }
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <>
-        <Typography variant="h3">{Translation.translate('Notifications')}</Typography>
-        <Async task={this.loading}>
-          {(notifications: Notification[]) =>
-            notifications.map((n) => (
+  return (
+    <>
+      <Typography variant="h3">{Translation.translate('Notifications')}</Typography>
+      <Async isLoading={isLoading} isSuccess={isSuccess} error={error}>
+        {() => (
+          <>
+            {notifications.map((n) => (
               <Card key={n.id} className={classes.card} style={{ display: 'flex' }}>
-                <div>{this.createIcon(n.level, classes)}</div>
+                <div>{createIcon(n.level, classes)}</div>
                 <div>
                   <Typography variant="body1">{Translation.translate(n.key, n.parameters)}</Typography>
-                  <Typography variant="body2">{this.getTime(n.createdAt)}</Typography>
+                  <Typography variant="body2">{getTime(n.createdAt)}</Typography>
                 </div>
                 <div className={classes.placeholder} />
                 {n.acknowledged ? null : (
-                  <Button variant="contained" color="primary" onClick={() => this.acknowledge(n.id)}>
+                  <Button variant="contained" color="primary" onClick={() => acknowledge(n.id)}>
                     {Translation.translate('Acknowledge')}
                   </Button>
                 )}
               </Card>
-            ))
-          }
-        </Async>
-      </>
-    );
-  }
-}
+            ))}
+          </>
+        )}
+      </Async>
+    </>
+  );
+};
 
 export const Notifications = withStyles(styles)(NotificationsComponent);

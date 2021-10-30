@@ -7,5 +7,9 @@ namespace XOutput.Websocket.Input
     {
         public const string MessageType = "InputDeviceFeedback";
         public List<InputDeviceTargetValue> Targets { get; set; }
+        public InputDeviceFeedbackResponse()
+        {
+            Type = MessageType;
+        }
     }
 }

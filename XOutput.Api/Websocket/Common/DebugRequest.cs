@@ -5,5 +5,9 @@
         public const string MessageType = "Debug";
 
         public string Data { get; set; }
+        public DebugRequest()
+        {
+            Type = MessageType;
+        }
     }
 }

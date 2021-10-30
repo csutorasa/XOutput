@@ -1,3 +1,3 @@
-export * from './help';
-export * from './input';
-export * from './notifications';
+export * from './help/Info';
+export * from './input/InputDeviceInfo';
+export * from './notifications/Notification';

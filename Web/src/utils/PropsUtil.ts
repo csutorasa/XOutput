@@ -1,5 +1,5 @@
-import { Theme } from '@material-ui/core/styles';
-import { Styles } from '@material-ui/core/styles/withStyles';
+import { Theme } from '@mui/material';
+import { Styles } from '@mui/styles/withStyles';
 
 export type StyleGenerator<T extends string> = Styles<Theme, any, T>;
 

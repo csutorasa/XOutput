@@ -1,4 +1,4 @@
 export type InputDeviceSourceValue = {
-    id: number;
-    value: number;
-}
+  id: number;
+  value: number;
+};

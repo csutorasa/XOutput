@@ -3,7 +3,7 @@ import { Dpad } from './dpad';
 import { Slider } from './slider';
 import { Button } from './button';
 import { Axis } from './axis';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 import { WebSocketService, WebSocketSession } from '../../client/websocket/websocket';
 import { Square } from './square';
 import { EventHolder } from '../../events/eventholder';
@@ -59,7 +59,7 @@ export class XboxEmulation extends React.Component<EmulationProps, EmulationStat
         document.addEventListener('touchcancel', this.touchCancel, false);
         this.setState((state, props) => {
           return {
-           // emulators: state.emulators,
+            // emulators: state.emulators,
             loading: false,
           };
         });
@@ -90,7 +90,7 @@ export class XboxEmulation extends React.Component<EmulationProps, EmulationStat
     if (data.type === 'XboxFeedback') {
       const feedback = data as XboxFeedbackResponse;
       if (navigator.vibrate) {
-        if (feedback.SmallForceFeedback > 0 || feedback.BigForceFeedback > 0) {
+        if (feedback.smallForceFeedback > 0 || feedback.bigForceFeedback > 0) {
           navigator.vibrate(60 * 60 * 1000);
         } else {
           navigator.vibrate(0);

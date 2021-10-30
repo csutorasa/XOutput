@@ -11,9 +11,9 @@ namespace XOutput.Serialization
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
 
-        public string GetString<T>(T message) where T: MessageBase
+        public string GetString(MessageBase message)
         {
-            return JsonSerializer.Serialize(message, serializerOptions);
+            return JsonSerializer.Serialize(message, message.GetType(), serializerOptions);
         }
 
         public void Write(MessageBase message, Stream output)

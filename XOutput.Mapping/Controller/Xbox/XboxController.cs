@@ -1,5 +1,4 @@
-﻿using XOutput.Common;
-using XOutput.Emulation;
+﻿using XOutput.Emulation;
 using XOutput.Emulation.Xbox;
 using XOutput.Mapping.Input;
 

@@ -1,3 +1,3 @@
 export type InfoResponse = {
-    version: string;
-}
+  version: string;
+};

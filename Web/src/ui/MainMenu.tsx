@@ -1,42 +1,31 @@
-import React from 'react';
-import { Switch, Route, Redirect, RouteChildrenProps, withRouter, RouteComponentProps } from 'react-router';
-import { XboxEmulation } from './emulation/xbox';
+import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Drawer from '@material-ui/core/Drawer';
-import Badge from '@material-ui/core/Badge';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import InputIcon from '@material-ui/icons/Input';
-import LanguageIcon from '@material-ui/icons/Language';
-import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
-import { Ds4Emulation } from './emulation/ds4';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Drawer from '@mui/material/Drawer';
+import Badge from '@mui/material/Badge';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import InputIcon from '@mui/icons-material/Input';
+import LanguageIcon from '@mui/icons-material/Language';
+import Typography from '@mui/material/Typography';
+import withStyles from '@mui/styles/withStyles';
 import { Styled, StyleGenerator } from '../utils';
-import Translation from '../translation/Translation';
-import { Notifications } from './notifications/Notifications';
 import { MainMenuListItem } from './MainMenuListItem';
 import { notificationClient } from '../client';
-import { Notification } from '../api';
+import Translation from '../translation/Translation';
 
-type ClassNames = 'menubarButton' | 'mainContent' | 'title' | 'drawerRoot' | 'drawerHeader' | 'placeholder';
+type ClassNames = 'menubarButton' | 'drawerRoot' | 'drawerHeader' | 'placeholder' | 'title';
 
 const styles: StyleGenerator<ClassNames> = (theme) => ({
   menubarButton: {
-    color: theme.palette.common.white,
-  },
-  mainContent: {
-    margin: '8px',
-  },
-  title: {
-    flexGrow: 1,
     color: theme.palette.common.white,
   },
   drawerRoot: {
@@ -51,156 +40,92 @@ const styles: StyleGenerator<ClassNames> = (theme) => ({
   placeholder: {
     flexGrow: 1,
   },
+  title: {
+    flexGrow: 1,
+    color: theme.palette.common.white,
+  },
 });
 
-export interface MainMenuProps extends Styled<ClassNames>, RouteComponentProps {}
+export type MainMenuProps = {};
 
-export interface MainMenuState {
-  menuOpen: boolean;
-  notificationCount: number;
-}
+export type InternalMainMenuProps = Styled<ClassNames> & MainMenuProps;
 
-class MainMenuComponent extends React.Component<MainMenuProps, MainMenuState> {
-  state: MainMenuState = {
-    menuOpen: false,
-    notificationCount: 0,
-  };
+const MainMenuComponent = ({ classes }: InternalMainMenuProps) => {
+  const [open, setOpen] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
 
-  componentDidMount() {
-    this.props.history.listen(() => {
-      this.refreshDevices();
+  useEffect(() => {
+    notificationClient.getNotifications().then((notifications) => {
+      setNotificationCount(notifications.filter((n) => !n.acknowledged).length);
     });
-    this.refreshDevices();
-  }
+  }, []);
 
-  changeMenu(open: boolean): void {
-    this.setState({
-      menuOpen: open,
-    });
-  }
-
-  refreshDevices(): Promise<Notification[]> {
-    return notificationClient.getNotifications().then((notifications) => {
-      this.setState({
-        notificationCount: notifications.filter((n) => !n.acknowledged).length,
-      });
-      return notifications;
-    });
-  }
-
-  render() {
-    const { classes, location } = this.props;
-    return (
-      <>
-        <Switch>
-          <Route path="/emulation" />
-          <Route>
-            <AppBar position="static">
-              <Toolbar>
-                <IconButton
-                  edge="start"
-                  className={classes.menubarButton}
-                  color="inherit"
-                  aria-label="menu"
-                  onClick={() => this.changeMenu(true)}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Link to="/" color="textPrimary">
-                  <Typography variant="h6" className={classes.title}>
-                    XOutput
-                  </Typography>
-                </Link>
-                <div className={classes.placeholder}></div>
-                <Link to="/notifications" color="textPrimary">
-                  <IconButton edge="start" className={classes.menubarButton} color="inherit" aria-label="menu">
-                    <Badge badgeContent={this.state.notificationCount} color="secondary">
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
-                </Link>
-              </Toolbar>
-            </AppBar>
-            <Drawer anchor="left" open={this.state.menuOpen} onClose={() => this.changeMenu(false)}>
-              <div className={classes.drawerRoot}>
-                <div className={classes.drawerHeader}>
-                  <Typography variant="h4">XOutput</Typography>
-                </div>
-                <List component="nav">
-                  <MainMenuListItem path="/controllers" onClick={() => this.changeMenu(false)}>
-                    <ListItemIcon>
-                      <SportsEsportsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={Translation.translate('ActiveControllers')} />
-                  </MainMenuListItem>
-                  <MainMenuListItem path="/inputs" onClick={() => this.changeMenu(false)}>
-                    <ListItemIcon>
-                      <InputIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={Translation.translate('InputDevices')} />
-                  </MainMenuListItem>
-                  <MainMenuListItem path="/devices" onClick={() => this.changeMenu(false)}>
-                    <ListItemIcon>
-                      <LanguageIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={Translation.translate('OnlineDevices')} />
-                  </MainMenuListItem>
-                </List>
-                <Divider />
-                <List component="nav">
-                  <MainMenuListItem path="/notifications" onClick={() => this.changeMenu(false)}>
-                    <ListItemIcon>
-                      <NotificationsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={Translation.translate('Notifications')} />
-                  </MainMenuListItem>
-                </List>
-              </div>
-            </Drawer>
-          </Route>
-        </Switch>
-        <div className={classes.mainContent}>
-          <Switch>
-            <Route path="/" exact>
-              <div></div>
-            </Route>
-            <Route path="/controllers">
-              <div></div>
-            </Route>
-            <Route path="/devices">
-              <div></div>
-            </Route>
-            <Route
-              path="/emulation/MicrosoftXbox360/:emulator"
-              component={(props: RouteChildrenProps<{ emulator: string }>) => (
-                <XboxEmulation deviceType="MicrosoftXbox360" emulator={props.match.params.emulator}></XboxEmulation>
-              )}
-            />
-            <Route
-              path="/emulation/SonyDualShock4/:emulator"
-              component={(props: RouteChildrenProps<{ emulator: string }>) => (
-                <Ds4Emulation deviceType="SonyDualShock4" emulator={props.match.params.emulator}></Ds4Emulation>
-              )}
-            />
-            <Route path="/inputs" exact>
-              <div></div>
-            </Route>
-            <Route
-              path="/inputs/:id"
-              component={(props: RouteChildrenProps<{ id: string }>) => <div id={props.match.params.id}></div>}
-            />
-            <Route path="/notifications" exact>
-              <Notifications></Notifications>
-            </Route>
-            <Route>
-              <Redirect to="/" />
-            </Route>
-          </Switch>
+  return (
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" className={classes.menubarButton} color="inherit" aria-label="menu" onClick={() => setOpen(true)}>
+            <MenuIcon />
+          </IconButton>
+          <Link to="/" color="textPrimary">
+            <Typography variant="h6" className={classes.title}>
+              XOutput
+            </Typography>
+          </Link>
+          <div className={classes.placeholder}></div>
+          <Link to="/notifications" color="textPrimary">
+            <IconButton edge="start" className={classes.menubarButton} color="inherit" aria-label="menu">
+              <Badge badgeContent={notificationCount} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </Link>
+        </Toolbar>
+      </AppBar>
+      <Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
+        <div className={classes.drawerRoot}>
+          <div className={classes.drawerHeader}>
+            <Typography variant="h4">XOutput</Typography>
+          </div>
+          <List component="nav">
+            <MainMenuListItem path="/controllers" onClick={() => setOpen(false)}>
+              <ListItemIcon>
+                <SportsEsportsIcon />
+              </ListItemIcon>
+              <ListItemText primary={Translation.translate('ActiveControllers')} />
+            </MainMenuListItem>
+            <MainMenuListItem path="/inputs" onClick={() => setOpen(false)}>
+              <ListItemIcon>
+                <InputIcon />
+              </ListItemIcon>
+              <ListItemText primary={Translation.translate('InputDevices')} />
+            </MainMenuListItem>
+            <MainMenuListItem path="/devices" onClick={() => setOpen(false)}>
+              <ListItemIcon>
+                <LanguageIcon />
+              </ListItemIcon>
+              <ListItemText primary={Translation.translate('OnlineDevices')} />
+            </MainMenuListItem>
+            <MainMenuListItem path="/inputreader" onClick={() => setOpen(false)}>
+              <ListItemIcon>
+                <LanguageIcon />
+              </ListItemIcon>
+              <ListItemText primary={Translation.translate('InputReader')} />
+            </MainMenuListItem>
+          </List>
+          <Divider />
+          <List component="nav">
+            <MainMenuListItem path="/notifications" onClick={() => setOpen(false)}>
+              <ListItemIcon>
+                <NotificationsIcon />
+              </ListItemIcon>
+              <ListItemText primary={Translation.translate('Notifications')} />
+            </MainMenuListItem>
+          </List>
         </div>
-      </>
-    );
-  }
-}
+      </Drawer>
+    </>
+  );
+};
 
 export const MainMenu = withRouter(withStyles(styles)(MainMenuComponent));
-export default MainMenu;

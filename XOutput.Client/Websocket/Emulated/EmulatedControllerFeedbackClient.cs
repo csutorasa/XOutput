@@ -17,7 +17,7 @@ namespace XOutput.Websocket.Emulated
 
         public async Task ConnectAsync(string id)
         {
-            await ConnectAsync("EmulatedConttroller/" + id);
+            await base.ConnectAsync("EmulatedConttroller/" + id);
         }
 
         protected override void ProcessMessage(MessageBase message)

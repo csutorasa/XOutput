@@ -1,7 +1,6 @@
 ﻿using NLog;
 using System;
 using System.Linq;
-using XOutput.Common.Input;
 using XOutput.Mapping.Input;
 using XOutput.Threading;
 

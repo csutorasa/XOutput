@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Grid from '@material-ui/core/Grid';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import StopIcon from '@material-ui/icons/Stop';
-import { withStyles, Theme } from '@material-ui/core';
-import { grey } from '@material-ui/core/colors';
+import Grid from '@mui/material/Grid';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import StopIcon from '@mui/icons-material/Stop';
+import withStyles from '@mui/styles/withStyles';
+import { grey } from '@mui/material/colors';
 import { StyleGenerator, Styled } from '../../utils';
 
 type ClassNames = 'container' | 'iconWrapper' | 'active';
