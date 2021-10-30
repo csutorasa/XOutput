@@ -8,5 +8,15 @@
   },
   "author": "Ármin Csutorás",
   "license": "MIT",
-  "workspaces": ["@xoutput/api", "@xoutput/client", "@xoutput/webapp"]
+  "workspaces": [
+    "@xoutput/api",
+    "@xoutput/client",
+    "@xoutput/webapp"
+  ],
+  "devDependencies": {
+    "husky": "^7.0.4"
+  },
+  "scripts": {
+    "prepare": "husky install"
+  }
 }

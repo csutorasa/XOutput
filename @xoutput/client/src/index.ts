@@ -6,4 +6,3 @@ export * from './rest/notifications/NotificationClient';
 export * from './websocket/websocket';
 export * from './websocket/input/InputDeviceClient';
 export * from './websocket/input/InputDeviceFeedbackClient';
-

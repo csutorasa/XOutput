@@ -7,6 +7,7 @@
     "start": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "prettier": "prettier -w src",
+    "lint-staged": "lint-staged.cmd",
     "test": "echo \"No test specified\""
   },
   "author": "Ármin Csutorás",
@@ -49,6 +50,6 @@
     "webpack-dev-server": "^4.3.1"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "prettier --write"
+    "src/**/*.{ts,tsx}": "prettier --write"
   }
 }
