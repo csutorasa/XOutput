@@ -4,26 +4,40 @@
   "description": "XOutput web UI",
   "private": true,
   "scripts": {
-    "dev": "webpack serve --config webpack.dev.js",
+    "start": "webpack serve --config webpack.dev.js",
     "install": "webpack --config webpack.prod.js",
-    "lint": "eslint --project .",
+    "prettier": "prettier -w src",
     "test": "echo \"No test specified\""
   },
   "author": "Ármin Csutorás",
   "license": "MIT",
+  "dependencies": {
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@mui/icons-material": "^5.0.5",
+    "@mui/material": "^5.0.6",
+    "@mui/styled-engine": "^5.0.2",
+    "@mui/styles": "^5.0.2",
+    "moment": "^2.29.1",
+    "qrcode": "^1.4.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-query": "^3.29.1",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.3.0",
+    "typeface-roboto": "1.1.13"
+  },
   "devDependencies": {
     "@types/qrcode": "^1.4.0",
     "@types/react": "^17.0.31",
     "@types/react-dom": "^17.0.10",
     "@types/react-router": "^5.1.17",
     "@types/react-router-dom": "^5.3.1",
-    "@typescript-eslint/eslint-plugin": "^5.1.0",
-    "@typescript-eslint/parser": "^5.1.0",
     "css-loader": "^6.4.0",
     "html-webpack-plugin": "^5.4.0",
     "lint-staged": "^11.2.3",
     "prettier": "^2.4.1",
-    "sass": "^1.43.3",
+    "sass": "^1.43.4",
     "sass-loader": "^12.2.0",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.2.6",
@@ -31,17 +45,6 @@
     "webpack": "^5.59.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.3.1"
-  },
-  "dependencies": {
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
-    "moment": "^2.29.1",
-    "qrcode": "^1.4.4",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-router": "^5.2.1",
-    "react-router-dom": "^5.3.0",
-    "typeface-roboto": "1.1.13"
   },
   "lint-staged": {
     "*.{ts,tsx}": "prettier --write"
