@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "CommonJS",
+    "jsx": "react",
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true ,
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": ["./dist", "node_modules"]
+}

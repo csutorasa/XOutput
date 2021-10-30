@@ -30,7 +30,7 @@ jobs:
     - name: Cache app
       uses: actions/cache@v2
       with:
-        key: app
+        key: app-${{ github.sha }}
         path: ./app
     - name: Clean
       run: dotnet clean --configuration Release && dotnet nuget locals all --clear
@@ -90,10 +90,10 @@ jobs:
     - name: Cache webapp
       uses: actions/cache@v2
       with:
-        key: webapp
-        path: ./Web/webapp
+        key: webapp-${{ github.sha }}
+        path: ./@xoutput/webapp/webapp
     - name: Build node
-      run: cd Web && npm install 
+      run: npm install && npm run build
       # && npm run lint
 
   create_package:
@@ -107,15 +107,15 @@ jobs:
     - name: Cache app
       uses: actions/cache@v2
       with:
-        key: app
+        key: app-${{ github.sha }}
         path: ./app
     - name: Cache webapp
       uses: actions/cache@v2
       with:
-        key: webapp
-        path: ./Web/webapp
+        key: webapp-${{ github.sha }}
+        path: ./@xoutput/webapp/webapp
     - name: Copy resources
-      run: move bin app\bin && move Web\webapp app\webapp
+      run: move bin app\bin && move @xoutput\webapp\webapp app\webapp
     - name: Create package
       uses: actions/upload-artifact@v2
       with:

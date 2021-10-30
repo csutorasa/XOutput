@@ -19,4 +19,4 @@ TestResults
 *Tests/coverage.*.opencover.xml
 
 # node modules
-Web/node_modules
+node_modules
