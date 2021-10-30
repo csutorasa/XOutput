@@ -1,5 +1,5 @@
 {
-  "name": "xoutput",
+  "name": "@xoutput/webapp",
   "version": "4.0.0",
   "description": "XOutput web UI",
   "private": true,
