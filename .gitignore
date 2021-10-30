@@ -7,8 +7,9 @@
 # Output
 */bin
 */obj
-Web/webapp/*
-!Web/webapp/favicon.ico
+@xoutput/*/dist
+@xoutput/webapp/webapp/*
+!@xoutput/webapp/webapp/favicon.ico
 
 # Nuget packages
 packages
