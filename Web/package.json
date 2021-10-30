@@ -28,7 +28,7 @@
     "typeface-roboto": "1.1.13"
   },
   "devDependencies": {
-    "@types/qrcode": "^1.4.0",
+    "@types/qrcode": "^1.4.1",
     "@types/react": "^17.0.31",
     "@types/react-dom": "^17.0.10",
     "@types/react-router": "^5.1.17",
