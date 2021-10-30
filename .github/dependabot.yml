@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "npm"
-    directory: "/Web"
+    directory: "/"
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"

@@ -132,7 +132,7 @@ Alternatively it can be started without admin access, but then when it tries to 
 ### Webapp
 
 The web application required Node 16 to build it, you can [download it](https://nodejs.org/en/download/).
-It can be found in the [web directory](./Web).
+It can be found in the [web directory](./@xoutput).
 
 ### Reader application
 
