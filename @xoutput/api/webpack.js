@@ -20,7 +20,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'lib'),
-    library: '@xoutput/client',
+    library: '@xoutput/api',
     libraryTarget: 'umd',
     filename: 'index.umd.js',
   },
