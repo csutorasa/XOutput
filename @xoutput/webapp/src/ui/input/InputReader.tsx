@@ -5,6 +5,7 @@ import { gamepadService } from '../../gamepad/GamepadService';
 import Translation from '../../translation/Translation';
 import { GamepadReader } from '../../gamepad/GamepadReader';
 import Button from '@mui/material/Button';
+import { Gamepad } from './Gamepad';
 
 export type InputReaderProps = {};
 
@@ -36,9 +37,7 @@ const InputReaderComponent = ({}: InputReaderProps) => {
       <Typography variant="h3">{Translation.translate('InputReader')}</Typography>
       <Alert severity="info">If you cannot see your controller, press a button or move an axis.</Alert>
       {gamepads.map((gamepad) => (
-        <div key={gamepad.gamepad.id}>
-          {gamepad.gamepad.id} <Button onClick={() => gamepad.start()}>Start</Button>
-        </div>
+        <Gamepad key={gamepad.gamepad.index} gamepad={gamepad} />
       ))}
     </>
   );

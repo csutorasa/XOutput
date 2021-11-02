@@ -14,7 +14,10 @@ export class GamepadReader {
 
   constructor(public gamepad: Gamepad) {}
 
-  start(intervalMs: number = 1): void {
+  start(intervalMs: number = 1): Promise<void> {
+    if (this.intervalId) {
+      return;
+    }
     const buttons = this.gamepad.buttons.map((_, i) => ({
       id: i,
       name: `B${i}`,
@@ -39,8 +42,12 @@ export class GamepadReader {
       targets,
       inputApi: 'GamepadApi',
     };
-    inputDeviceClient
-      .connect(details, (feedBack: InputDeviceFeedbackResponse) => {})
+    return inputDeviceClient
+      .connect(details, (feedBack: InputDeviceFeedbackResponse) => {
+        feedBack.targets.forEach((target) => {
+          // this.gamepad.hapticActuators[target.id] = target.value;
+        });
+      })
       .then((session) => {
         this.intervalId = setInterval(() => {
           const buttons = this.gamepad.buttons.map((button, i) => ({
@@ -57,6 +64,10 @@ export class GamepadReader {
           });
         }, intervalMs);
       });
+  }
+
+  isRunning(): boolean {
+    return !!this.intervalId;
   }
 
   stop(): void {

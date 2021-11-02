@@ -14,11 +14,11 @@ export class WebSocketService {
       const url = `ws://${this.host}:${this.port}/websocket/${path}`;
       const websocket = new WebSocket(url);
       let session: WebSocketSession;
-      let interval: NodeJS.Timeout;
+      let pingInterval: NodeJS.Timeout;
       websocket.onopen = (event) => {
-        session = new WebSocketSession(websocket, url);
+        session = new WebSocketSession(websocket);
         this.onOpen(event);
-        interval = setInterval(() => {
+        pingInterval = setInterval(() => {
           session.sendMessage({
             type: 'Ping',
             timestamp: new Date().getTime(),
@@ -32,7 +32,12 @@ export class WebSocketService {
           reject(event);
         }
       };
-      websocket.onclose = (event) => this.onClose(interval, event as CloseEvent);
+      websocket.onclose = (event) => {
+        this.onClose(pingInterval, event as CloseEvent);
+        if (!session) {
+          reject(event);
+        }
+      };
       websocket.onmessage = (event: MessageEvent) => {
         const data: MessageBase = JSON.parse(event.data);
         if (!this.onMessage(session, data)) {
@@ -73,7 +78,7 @@ export class WebSocketService {
 }
 
 export class WebSocketSession {
-  constructor(private websocket: WebSocket, private url: string) {}
+  constructor(private websocket: WebSocket) {}
   close(): void {
     this.websocket.close();
   }
