@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ES6",
     "module": "CommonJS",
     "sourceMap": true,
     "declaration": true,
-    "declarationDir": "./dist",
+    "declarationDir": "./lib",
     "strict": true,
     "strictNullChecks": false,
     "moduleResolution": "node",
     "esModuleInterop": true ,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["./dist", "node_modules"]
+  "exclude": ["./lib", "node_modules"]
 }

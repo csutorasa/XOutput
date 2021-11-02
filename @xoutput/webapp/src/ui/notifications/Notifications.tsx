@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
 import Typography from '@mui/material/Typography';
 import withStyles from '@mui/styles/withStyles';
 import red from '@mui/material/colors/red';
@@ -12,8 +11,8 @@ import Translation from '../../translation/Translation';
 import { Async } from '../components/Asnyc';
 import { Card, Button } from '@mui/material';
 import moment from 'moment';
-import { Notification } from '@xoutput/api';
 import { notificationClient } from '@xoutput/client';
+import { useNotificationsQuery } from '../../queries/useNotificationsQuery';
 
 type ClassNames = 'card' | 'placeholder' | 'cancelIcon' | 'warningIcon' | 'infoIcon';
 
@@ -41,14 +40,6 @@ const styles: StyleGenerator<ClassNames> = () => ({
 export type NotificationsProps = {};
 
 type InternalNotificationsProps = Styled<ClassNames> & NotificationsProps;
-
-export const useNotificationsQuery = (): UseQueryResult<Notification[]> => {
-  return useQuery('get-notifications', () => notificationClient.getNotifications());
-};
-export const resetNotificationsQuery = (): Promise<void> => {
-  const client = useQueryClient();
-  return client.invalidateQueries('get-notifications');
-};
 
 const NotificationsComponent = ({ classes }: InternalNotificationsProps) => {
   const { data: notifications, isLoading, isSuccess, error, refetch } = useNotificationsQuery();

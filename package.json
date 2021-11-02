@@ -2,6 +2,7 @@
   "name": "xoutput",
   "version": "4.0.0",
   "description": "XOutput",
+  "private": "true",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/csutorasa/XOutput.git"

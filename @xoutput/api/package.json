@@ -2,8 +2,12 @@
   "name": "@xoutput/api",
   "version": "4.0.0",
   "description": "XOutput TypeScript API",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.umd.js",
+  "browser": "lib/index.umd.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "webpack.cmd --config webpack.js",
     "prettier": "prettier.cmd -w src",

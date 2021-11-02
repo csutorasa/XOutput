@@ -19,8 +19,13 @@ module.exports = {
     ],
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'index.js',
+    path: resolve(__dirname, 'lib'),
+    library: '@xoutput/client',
+    libraryTarget: 'umd',
+    filename: 'index.umd.js',
+  },
+  optimization: {
+    minimize: false,
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.json'],

@@ -17,7 +17,7 @@ If you have any questions or feature requests feel free to create [Github Issue]
 
 Any contribution is welcome, open your [Pull request](https://github.com/csutorasa/XOutput/pulls).
 
-To join the discussion or just say hi in the [discord channel](https://discord.gg/Y628tcp).
+To join the discussion or just say hi, there is a [discord channel](https://discord.gg/Y628tcp).
 
 **This version is currently under development. Please use [3.x](https://github.com/csutorasa/XOutput/tree/3.x) version for stable features**
 
