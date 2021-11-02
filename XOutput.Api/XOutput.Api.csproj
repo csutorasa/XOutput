@@ -4,16 +4,23 @@
     <OutputType>library</OutputType>
     <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
     <RootNamespace>XOutput</RootNamespace>
-    <AssemblyName>XOutput.Api</AssemblyName>
     <Authors>Ármin Csutorás</Authors>
-    <Product>XOutput.Api</Product>
     <PackageId>XOutput.Api</PackageId>
-    <NeutralLanguage>en</NeutralLanguage>
-    <Description></Description>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <Title>XOutput API</Title>
+    <Description>This library contains the types for communication between the XOutput servers and the clients.</Description>
+    <PackageLicenseFile>content/LICENSE</PackageLicenseFile>
+    <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
     <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
     <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="../LICENSE" />
+    <Compile Remove="../LICENSE" />
+    <EmbeddedResource Remove="../LICENSE" />
+    <None Remove="../LICENSE" />
+  </ItemGroup>
 
 </Project>

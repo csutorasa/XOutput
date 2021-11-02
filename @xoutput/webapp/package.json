@@ -10,6 +10,8 @@
     "lint-staged": "lint-staged.cmd",
     "test": "echo \"No test specified\""
   },
+  "homepage": "https://github.com/csutorasa/XOutput#readme",
+  "url" : "https://github.com/csutorasa/XOutput/issues",
   "author": "Ármin Csutorás",
   "license": "MIT",
   "dependencies": {

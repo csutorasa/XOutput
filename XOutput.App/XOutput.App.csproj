@@ -6,17 +6,10 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <RootNamespace>XOutput.App</RootNamespace>
-    <AssemblyName>XOutput.App</AssemblyName>
     <Authors>Ármin Csutorás</Authors>
-    <Product>XOutput</Product>
-    <PackageId>XOutput</PackageId>
+    <PackageId>XOutput.App</PackageId>
     <NeutralLanguage>en</NeutralLanguage>
-    <Description></Description>
-    <Copyright>Copyright 2020</Copyright>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
+    <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

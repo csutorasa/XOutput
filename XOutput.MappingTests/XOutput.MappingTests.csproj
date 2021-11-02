@@ -4,6 +4,7 @@
     <IsPackable>false</IsPackable>
     <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
     <RootNamespace>XOutput.Devices</RootNamespace>
+    <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

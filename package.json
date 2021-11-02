@@ -2,11 +2,13 @@
   "name": "xoutput",
   "version": "4.0.0",
   "description": "XOutput",
-  "private": "true",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/csutorasa/XOutput.git"
   },
+  "homepage": "https://github.com/csutorasa/XOutput#readme",
+  "url" : "https://github.com/csutorasa/XOutput/issues",
   "author": "Ármin Csutorás",
   "license": "MIT",
   "workspaces": [

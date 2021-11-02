@@ -18,6 +18,9 @@
     "type": "git",
     "url": "git+https://github.com/csutorasa/XOutput.git"
   },
+  "keywords": ["XOutput"],
+  "homepage": "https://github.com/csutorasa/XOutput#readme",
+  "url" : "https://github.com/csutorasa/XOutput/issues",
   "author": "Ármin Csutorás",
   "license": "MIT",
   "dependencies": {

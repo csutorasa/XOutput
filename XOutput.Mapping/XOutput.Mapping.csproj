@@ -4,15 +4,8 @@
     <OutputType>library</OutputType>
     <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
     <RootNamespace>XOutput.Mapping</RootNamespace>
-    <AssemblyName>XOutput.Mapping</AssemblyName>
-    <Authors>Ármin Csutorás</Authors>
-    <Product>XOutput.Mapping</Product>
     <PackageId>XOutput.Mapping</PackageId>
-    <NeutralLanguage>en</NeutralLanguage>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
+    <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
   </PropertyGroup>
   
   <ItemGroup>

@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
-    <RootNamespace>XOutput.Api</RootNamespace>
+    <RootNamespace>XOutput</RootNamespace>
+    <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

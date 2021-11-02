@@ -4,21 +4,28 @@
     <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
     <OutputType>library</OutputType>
     <RootNamespace>XOutput</RootNamespace>
-    <AssemblyName>XOutput.Client</AssemblyName>
     <Authors>Ármin Csutorás</Authors>
-    <Product>XOutput.Client</Product>
     <PackageId>XOutput.Client</PackageId>
-    <NeutralLanguage>en</NeutralLanguage>
-    <Description></Description>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <Title>XOutput Client</Title>
+    <Description>This library contains the client logic for communication between XOutput servers and clients.</Description>
+    <PackageLicenseFile>content/LICENSE</PackageLicenseFile>
+    <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
     <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
     <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="../LICENSE" />
+    <Compile Remove="../LICENSE" />
+    <EmbeddedResource Remove="../LICENSE" />
+    <None Remove="../LICENSE" />
   </ItemGroup>
 
 </Project>
