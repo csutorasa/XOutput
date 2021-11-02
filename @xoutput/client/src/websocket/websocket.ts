@@ -15,9 +15,9 @@ export class WebSocketService {
       const websocket = new WebSocket(url);
       let session: WebSocketSession;
       let pingInterval: NodeJS.Timeout;
-      websocket.onopen = (event) => {
+      websocket.onopen = () => {
         session = new WebSocketSession(websocket);
-        this.onOpen(event);
+        this.onOpen();
         pingInterval = setInterval(() => {
           session.sendMessage({
             type: 'Ping',
@@ -33,7 +33,7 @@ export class WebSocketService {
         }
       };
       websocket.onclose = (event) => {
-        this.onClose(pingInterval, event as CloseEvent);
+        this.onClose(pingInterval);
         if (!session) {
           reject(event);
         }
@@ -46,14 +46,14 @@ export class WebSocketService {
       };
     });
   }
-  private onOpen(event: Event): void {
+  private onOpen(): void {
     console.info('Connected to ' + this.host + ':' + this.port);
   }
   private onError(event: Event): void {
     const message: string = (event as any).message;
     console.error(message);
   }
-  private onClose(interval: NodeJS.Timeout, event: CloseEvent): void {
+  private onClose(interval: NodeJS.Timeout): void {
     console.info('Disconnected from ' + this.host + ':' + this.port);
     if (interval) {
       clearInterval(interval);

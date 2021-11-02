@@ -1,7 +1,7 @@
 import React from 'react';
 
-export type InputsProps = {};
-
-const InputsComponent = ({}: InputsProps) => {};
+const InputsComponent = () => {
+  return <></>;
+};
 
 export const Inputs = InputsComponent;

@@ -46,7 +46,7 @@ export abstract class AbstractInputFlow<T> implements UIInputFlow {
   protected abstract fill(value: T): void;
   protected abstract sendValue(value: T): void;
 
-  protected getXRatio(event: UIInputEvent, inverted: boolean = false): number {
+  protected getXRatio(event: UIInputEvent, inverted = false): number {
     const element = this.element;
     let ratio;
     if (inverted) {

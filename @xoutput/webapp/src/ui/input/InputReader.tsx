@@ -4,12 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { gamepadService } from '../../gamepad/GamepadService';
 import Translation from '../../translation/Translation';
 import { GamepadReader } from '../../gamepad/GamepadReader';
-import Button from '@mui/material/Button';
 import { Gamepad } from './Gamepad';
 
-export type InputReaderProps = {};
-
-const InputReaderComponent = ({}: InputReaderProps) => {
+const InputReaderComponent = () => {
   if (!gamepadService.isAvailable()) {
     return (
       <>

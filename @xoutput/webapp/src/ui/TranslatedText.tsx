@@ -1,4 +1,4 @@
-import React, { ReactNode, Component, PropsWithChildren } from 'react';
+import React from 'react';
 import { Translation } from '../translation/Translation';
 
 export type TextTranslatedTextProps = {

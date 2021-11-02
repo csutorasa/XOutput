@@ -93,7 +93,7 @@ jobs:
         key: webapp-${{ github.sha }}
         path: ./@xoutput/webapp/webapp
     - name: Build node
-      run: npm install && npm run build --workspaces && npm run test --workspaces
+      run: npm install && npm run lint --workspaces && npm run build --workspaces && npm run test --workspaces
 
   create_package:
     runs-on: windows-latest

@@ -2,7 +2,7 @@ import React from 'react';
 import green from '@mui/material/colors/green';
 import { HashRouter } from 'react-router-dom';
 import { Router } from './Router';
-import { createTheme, ThemeProvider } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const productionTheme = createTheme({});

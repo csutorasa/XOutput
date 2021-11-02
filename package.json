@@ -17,7 +17,13 @@
     "@xoutput/webapp"
   ],
   "devDependencies": {
-    "husky": "^7.0.4"
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.26.1",
+    "husky": "^7.0.4",
+    "prettier": "^2.4.1"
   },
   "scripts": {
     "prepare": "husky install"

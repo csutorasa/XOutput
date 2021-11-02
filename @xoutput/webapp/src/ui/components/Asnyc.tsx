@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import { StyleGenerator, Styled } from '../../utils';

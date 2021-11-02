@@ -1,10 +1,4 @@
-import Typography from '@mui/material/Typography';
-import React, { useCallback, useEffect, useState } from 'react';
-import { GamepadReader } from '../../gamepad/GamepadReader';
-import Button from '@mui/material/Button';
-import { Card, CardActions, CardContent } from '@mui/material';
-import OpenWithIcon from '@mui/icons-material/OpenWith';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import React, { useEffect, useState } from 'react';
 
 export type GamepadValueProps = {
   index: number;

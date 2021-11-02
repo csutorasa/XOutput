@@ -12,12 +12,6 @@ http.initialize(host, port);
 websocket.initialize(host, port);
 gamepadService.start();
 
-window.onerror = (msg, url, line, col) => {
-  /* if (websocket.isReady()) {
-        websocket.sendDebug(`Error in ${url} at ${line}:${col} ${msg}`);
-    } */
-};
-
 function disableResize() {
   const meta = document.createElement('meta');
   meta.name = 'viewport';

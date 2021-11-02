@@ -6,15 +6,14 @@ import {
   SourceTypes,
   TargetTypes,
 } from '@xoutput/api';
-import { inputDeviceClient, websocket } from '@xoutput/client';
-import { EventEmitter } from '../utils/EventEmitter';
+import { inputDeviceClient } from '@xoutput/client';
 
 export class GamepadReader {
   private intervalId: NodeJS.Timeout;
 
   constructor(public gamepad: Gamepad) {}
 
-  start(intervalMs: number = 1): Promise<void> {
+  start(intervalMs = 1): Promise<void> {
     if (this.intervalId) {
       return;
     }
@@ -44,7 +43,7 @@ export class GamepadReader {
     };
     return inputDeviceClient
       .connect(details, (feedBack: InputDeviceFeedbackResponse) => {
-        feedBack.targets.forEach((target) => {
+        feedBack.targets.forEach(() => {
           // this.gamepad.hapticActuators[target.id] = target.value;
         });
       })
