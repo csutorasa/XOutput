@@ -1,4 +1,6 @@
 export * from './rest/http';
+export * from './rest/emulation/EmulatedControllersClient';
+export * from './rest/emulation/EmulationClient';
 export * from './rest/help/InfoClient';
 export * from './rest/input/InputsClient';
 export * from './rest/notifications/NotificationClient';

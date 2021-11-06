@@ -32,6 +32,7 @@ namespace XOutput.Rest.Emulation
             {
                 Id = d.Device.Id,
                 Address = d.IPAddress,
+                Name = d.Device.Id,
                 DeviceType = d.DeviceType.ToString(),
                 Emulator = d.Emulator.ToString(),
                 Active = true,
@@ -39,6 +40,7 @@ namespace XOutput.Rest.Emulation
             var mappedDevices = emulatedControllers.FindAll().Select(c => new ControllerInfo
             {
                 Id = c.Device.Id,
+                Name = c.Name,
                 DeviceType = c.Device == null ? null : c.Device.DeviceType.ToString(),
                 Emulator = c.Device == null ? null : c.Device.Emulator.ToString(),
                 Active = c.Device != null,

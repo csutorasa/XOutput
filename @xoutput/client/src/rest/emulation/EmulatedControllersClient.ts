@@ -1,7 +1,7 @@
 import { ControllerInfo, CreateControllerRequest } from '@xoutput/api';
 import { http } from '../http';
 
-export const emulatedContollersClient = {
+export const emulatedControllersClient = {
   getControllers() {
     return http.get<ControllerInfo[]>('/api/controllers');
   },
