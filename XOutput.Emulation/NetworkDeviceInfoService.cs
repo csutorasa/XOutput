@@ -19,11 +19,15 @@ namespace XOutput.Emulation
             connectedDevices.Add(deviceInfo);
         }
 
-        public void StopAndRemove(string id)
+        public bool StopAndRemove(string id)
         {
-            var device = connectedDevices.Where(di => di.Device.Id == id).First();
+            var device = connectedDevices.Where(di => di.Device.Id == id).FirstOrDefault();
+            if (device == null) {
+                return false;
+            }
             device.Device.Close();
             connectedDevices.Remove(device);
+            return true;
         }
 
         public IEnumerable<NetworkDeviceInfo> GetConnectedDevices() => connectedDevices.ToList();

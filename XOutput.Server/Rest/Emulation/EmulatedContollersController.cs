@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XOutput.Common;
 using XOutput.DependencyInjection;
 using XOutput.Emulation;
 using XOutput.Mapping.Controller;
-using XOutput.Rest.Devices;
 
 namespace XOutput.Rest.Emulation
 {
@@ -13,27 +14,29 @@ namespace XOutput.Rest.Emulation
     {
         private readonly NetworkDeviceInfoService networkDeviceInfoService;
         private readonly EmulatedControllers emulatedControllers;
+        private readonly EmulatorService emulatorService;
 
         [ResolverMethod]
-        public ControllersController(NetworkDeviceInfoService networkDeviceInfoService, EmulatedControllers emulatedControllers)
+        public ControllersController(NetworkDeviceInfoService networkDeviceInfoService, EmulatedControllers emulatedControllers, EmulatorService emulatorService)
         {
             this.networkDeviceInfoService = networkDeviceInfoService;
             this.emulatedControllers = emulatedControllers;
+            this.emulatorService = emulatorService;
         }
 
         [HttpGet]
         [Route("/api/controllers")]
-        public ActionResult<IEnumerable<DeviceInfo>> ListControllers()
+        public ActionResult<IEnumerable<ControllerInfo>> ListControllers()
         {
-            var networkDevices = networkDeviceInfoService.GetConnectedDevices().Select(d => new DeviceInfo
+            var networkDevices = networkDeviceInfoService.GetConnectedDevices().Select(d => new ControllerInfo
             {
                 Id = d.Device.Id,
                 Address = d.IPAddress,
                 DeviceType = d.DeviceType.ToString(),
-                Emulator = d.Emulator,
+                Emulator = d.Emulator.ToString(),
                 Active = true,
             });
-            var mappedDevices = emulatedControllers.FindAll().Select(c => new DeviceInfo
+            var mappedDevices = emulatedControllers.FindAll().Select(c => new ControllerInfo
             {
                 Id = c.Device.Id,
                 DeviceType = c.Device == null ? null : c.Device.DeviceType.ToString(),
@@ -43,13 +46,56 @@ namespace XOutput.Rest.Emulation
             return networkDevices.Concat(mappedDevices).ToList();
         }
 
+        [HttpPut]
+        [Route("/api/controllers")]
+        public ActionResult CreateController([FromBody] CreateControllerRequest request)
+        {
+            DeviceTypes deviceType;
+            if (!Enum.TryParse<DeviceTypes>(request.DeviceType, false, out deviceType)) {
+                return StatusCode(422, $"Failed to parse {request.DeviceType} into DeviceTypes.");
+            }
+            var mappedDevices = emulatedControllers.Create(Guid.NewGuid().ToString(), request.Name, deviceType);
+            return StatusCode(204);
+        }
+
+        [HttpPut]
+        [Route("/api/controllers/{id}/active")]
+        public ActionResult StartController(string id)
+        {
+            var controller = emulatedControllers.Find(id);
+            if (controller == null) {
+                return NotFound($"Cannot find controller with id {id}");
+            }
+            emulatedControllers.Start(controller);
+            return StatusCode(204);
+        }
+
+        [HttpDelete]
+        [Route("/api/controllers/{id}/active")]
+        public ActionResult StopController(string id)
+        {
+            var controller = emulatedControllers.Find(id);
+            if (controller == null) {
+                return NotFound($"Cannot find controller with id {id}");
+            }
+            emulatedControllers.Stop(controller);
+            return StatusCode(204);
+        }
+
         [HttpDelete]
         [Route("/api/controllers/{id}")]
-        public Task DeleteDevice(string id)
+        public ActionResult DeleteDevice(string id)
         {
-            networkDeviceInfoService.StopAndRemove(id);
-            Response.StatusCode = 204;
-            return Task.CompletedTask;
+            bool deleted = networkDeviceInfoService.StopAndRemove(id);
+            if (!deleted) {
+                var controller = emulatedControllers.Find(id);
+                if (controller == null) {
+                    return NotFound($"Cannot find controller with id {id}");
+                } else {
+                    emulatedControllers.Remove(controller);
+                }
+            }
+            return StatusCode(204);
         }
     }
 }

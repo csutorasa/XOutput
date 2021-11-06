@@ -11,7 +11,7 @@ namespace XOutput.Emulation.SCPToolkit
     {
         public bool Installed { get; private set; }
 
-        public string Name => Emulators.SCPToolkit.ToString();
+        public Emulators Emulator => Emulators.SCPToolkit;
 
         public IEnumerable<DeviceTypes> SupportedDeviceTypes { get; } = new DeviceTypes[] { DeviceTypes.MicrosoftXbox360 };
 

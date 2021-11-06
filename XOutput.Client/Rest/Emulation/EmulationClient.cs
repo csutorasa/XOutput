@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using XOutput.Rest.Devices;
 
 namespace XOutput.Rest.Emulation
 {
@@ -14,11 +13,6 @@ namespace XOutput.Rest.Emulation
         public Task<Dictionary<string, EmulatorResponse>> GetEmulators(int timeoutMillis = 1000)
         {
             return GetAsync<Dictionary<string, EmulatorResponse>>("/api/emulators", CreateToken(timeoutMillis));
-        }
-
-        public Task<IEnumerable<DeviceInfo>> GetControllers(int timeoutMillis = 1000)
-        {
-            return GetAsync<IEnumerable<DeviceInfo>>("/api/controllers", CreateToken(timeoutMillis));
         }
     }
 }

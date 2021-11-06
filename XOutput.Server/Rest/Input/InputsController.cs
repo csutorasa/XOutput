@@ -44,7 +44,7 @@ namespace XOutput.Rest.Input
         public ActionResult<InputDeviceInfo> GetInputDevice(string id)
         {
             var d = InputDevices.Find(id);
-            if (d == null) {                
+            if (d == null) {
                 return NotFound();
             }
             return new InputDeviceInfo {

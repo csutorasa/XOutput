@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -52,9 +53,16 @@ namespace XOutput.Rest
         {
             using (var response = await responseGetter())
             {
-                response.EnsureSuccessStatusCode();
                 var stream = await response.Content.ReadAsStreamAsync(token);
-                return await JsonSerializer.DeserializeAsync<T>(stream, serializerOptions, token);
+                if (response.IsSuccessStatusCode) {
+                    return await JsonSerializer.DeserializeAsync<T>(stream, serializerOptions, token);
+                } else {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(ms, token);
+                        throw new ClientHttpException(response.StatusCode, ms.ToArray());
+                    }
+                }
             }
         }
 

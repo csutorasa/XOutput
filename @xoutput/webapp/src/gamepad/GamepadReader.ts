@@ -8,6 +8,8 @@ import {
 } from '@xoutput/api';
 import { inputDeviceClient } from '@xoutput/client';
 
+const idPrefix = (Math.random() * 100_000_000 + 100_000_000).toString(36);
+
 export class GamepadReader {
   private intervalId: NodeJS.Timeout;
 
@@ -35,7 +37,7 @@ export class GamepadReader {
     }));
     const details: InputDeviceDetailsRequest = {
       type: InputDeviceDetailsRequestType,
-      id: `${this.gamepad.index}`,
+      id: `${idPrefix}-${this.gamepad.index}`,
       name: this.gamepad.id,
       sources,
       targets,

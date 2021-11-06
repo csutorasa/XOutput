@@ -1,6 +1,6 @@
-﻿namespace XOutput.Rest.Devices
+﻿namespace XOutput.Rest.Emulation
 {
-    public class DeviceInfo
+    public class ControllerInfo
     {
         public string Id { get; set; }
         public string Address { get; set; }

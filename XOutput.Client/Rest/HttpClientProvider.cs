@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 
 namespace XOutput.Rest
@@ -34,6 +35,16 @@ namespace XOutput.Rest
                 Client = new HttpClient();
             }
             Client.BaseAddress = baseAddress;
+        }
+    }
+
+    public class ClientHttpException : Exception {
+        public HttpStatusCode StatusCode { get; private set; }
+        public byte[] Content { get; private set; }
+
+        public ClientHttpException(HttpStatusCode statusCode, byte[] content) {
+            StatusCode = statusCode;
+            Content = content;
         }
     }
 }

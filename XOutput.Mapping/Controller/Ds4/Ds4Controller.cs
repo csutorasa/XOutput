@@ -14,7 +14,7 @@ namespace XOutput.Mapping.Controller.Ds4
             device = emulator.CreateDs4Device();
         }
         
-        public void Stop()
+        public override void Stop()
         {
             device.Close();
             device = null;

@@ -6,7 +6,7 @@ namespace XOutput.Emulation
     public interface IEmulator
     {
         bool Installed { get; }
-        string Name { get; }
+        Emulators Emulator { get; }
         IEnumerable<DeviceTypes> SupportedDeviceTypes { get; }
         void Close();
     }

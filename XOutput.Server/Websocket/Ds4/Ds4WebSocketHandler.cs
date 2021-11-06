@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using XOutput.Common;
@@ -31,7 +32,8 @@ namespace XOutput.Websocket.Ds4
         public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
             string emulatorName = PathRegex.Match(context.Request.Path.Value).Groups[1].Value;
-            var emulator = emulatorService.FindEmulator<IDs4Emulator>(DeviceTypes.SonyDualShock4, emulatorName);
+            Emulators emulatorType = Enum.Parse<Emulators>(emulatorName);
+            var emulator = emulatorService.FindEmulator<IDs4Emulator>(DeviceTypes.SonyDualShock4, emulatorType);
             var device = emulator.CreateDs4Device();
             DeviceDisconnectedEvent disconnectedEvent = (sender, args) => closeFunction();
             device.Closed += disconnectedEvent;
@@ -41,7 +43,7 @@ namespace XOutput.Websocket.Ds4
                 Device = device,
                 IPAddress = ip,
                 DeviceType = DeviceTypes.SonyDualShock4,
-                Emulator = emulator.Name,
+                Emulator = emulator.Emulator,
             });
             return new List<IMessageHandler>
             {

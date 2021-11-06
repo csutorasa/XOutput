@@ -49,6 +49,8 @@ namespace XOutput.Mapping.Controller
 
         protected abstract double GetDefaultValue(T input);
 
+        public abstract void Stop();
+
         public Dictionary<T, double> GetValues()
         {
             return Enum.GetValues<T>().ToDictionary((input) => input, (input) => GetValue(input));

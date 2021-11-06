@@ -10,6 +10,6 @@ namespace XOutput.Emulation
 
         public DeviceTypes DeviceType { get; set; }
 
-        public string Emulator { get; set; }
+        public Emulators Emulator { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace XOutput.Mapping.Controller.Xbox
             device = emulator.CreateXboxDevice();
         }
         
-        public void Stop()
+        public override void Stop()
         {
             device.Close();
             device = null;

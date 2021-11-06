@@ -6,6 +6,9 @@ export * from './common/input/InputDeviceApi';
 export * from './common/input/InputDeviceSource';
 export * from './common/input/InputDeviceTarget';
 
+export * from './rest/emulation/ControllerInfo';
+export * from './rest/emulation/CreateControllerRequest';
+export * from './rest/emulation/ListEmulatorsResponse';
 export * from './rest/help/Info';
 export * from './rest/input/InputDeviceInfo';
 export * from './rest/notifications/Notification';

@@ -10,5 +10,6 @@ namespace XOutput.Mapping.Controller
 
         Dictionary<string, double> GetSources();
         Dictionary<string, double> GetTargets();
+        void Stop();
     }
 }

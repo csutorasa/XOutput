@@ -22,7 +22,7 @@ namespace XOutput.Rest.Emulation
         {
             var emulators = emulatorService.GetEmulators();
 
-            return emulators.ToDictionary(e => e.Name, e => new EmulatorResponse
+            return emulators.ToDictionary(e => e.Emulator.ToString(), e => new EmulatorResponse
             {
                 Installed = e.Installed,
                 SupportedDeviceTypes = e.SupportedDeviceTypes.Select(x => x.ToString()).ToList()

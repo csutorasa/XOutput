@@ -13,7 +13,7 @@ namespace XOutput.Emulation.ViGEm
     {
         public bool Installed { get; private set; }
 
-        public string Name => Emulators.ViGEm.ToString();
+        public Emulators Emulator => Emulators.ViGEm;
 
         public IEnumerable<DeviceTypes> SupportedDeviceTypes { get; } = new DeviceTypes[] { DeviceTypes.MicrosoftXbox360, DeviceTypes.SonyDualShock4 };
 
