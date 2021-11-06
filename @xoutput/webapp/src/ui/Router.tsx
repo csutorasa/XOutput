@@ -43,28 +43,6 @@ const RouterComponent = ({ classes, match }: InternalRouterProps) => {
           <Route path="/" exact>
             <div></div>
           </Route>
-          <Route path="/controllers">
-            <div></div>
-          </Route>
-          <Route path="/devices">
-            <div></div>
-          </Route>
-          <Route
-            path="/emulation/MicrosoftXbox360/:emulator"
-            component={(props: RouteChildrenProps<{ emulator: string }>) => (
-              <XboxEmulation deviceType="MicrosoftXbox360" emulator={props.match.params.emulator}></XboxEmulation>
-            )}
-          />
-          <Route
-            path="/emulation/SonyDualShock4/:emulator"
-            component={(props: RouteChildrenProps<{ emulator: string }>) => (
-              <Ds4Emulation deviceType="SonyDualShock4" emulator={props.match.params.emulator}></Ds4Emulation>
-            )}
-          />
-          <Route path="/inputs" exact>
-            <div></div>
-          </Route>
-          <Route path="/inputs/:id" component={(props: RouteChildrenProps<{ id: string }>) => <div id={props.match.params.id}></div>} />
           <Route path="/inputreader" exact>
             <InputReader></InputReader>
           </Route>
