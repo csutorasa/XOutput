@@ -4,7 +4,7 @@ import { useControllersQuery } from '../../queries/useControllersQuery';
 import { Async } from '../components/Asnyc';
 
 const ControllersComponent = () => {
-  const { data: controllers, isLoading, isSuccess, error, refetch } = useControllersQuery();
+  const { data: controllers, isLoading, isSuccess, error } = useControllersQuery();
 
   return (
     <Async isLoading={isLoading} isSuccess={isSuccess} error={error}>

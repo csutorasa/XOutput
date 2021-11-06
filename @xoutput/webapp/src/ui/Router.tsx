@@ -8,6 +8,7 @@ import { Notifications } from './notifications/Notifications';
 import { MainMenu } from './MainMenu';
 import { InputReader } from './input/InputReader';
 import { Controllers } from './emulation/Controllers';
+import { Inputs } from './input/Inputs';
 
 type ClassNames = 'mainContent' | 'title';
 
@@ -43,6 +44,9 @@ const RouterComponent = ({ classes, match }: InternalRouterProps) => {
         <Switch>
           <Route path="/" exact>
             <div></div>
+          </Route>
+          <Route path="/inputs" exact>
+            <Inputs></Inputs>
           </Route>
           <Route path="/controllers" exact>
             <Controllers></Controllers>

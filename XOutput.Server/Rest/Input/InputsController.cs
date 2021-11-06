@@ -9,19 +9,19 @@ namespace XOutput.Rest.Input
 {
     public class InputsController : Controller
     {
-        private readonly InputDevices InputDevices;
+        private readonly InputDevices inputDevices;
 
         [ResolverMethod]
         public InputsController(InputDevices inputDeviceManager)
         {
-            this.InputDevices = inputDeviceManager;
+            this.inputDevices = inputDeviceManager;
         }
 
         [HttpGet]
         [Route("/api/inputs")]
         public ActionResult<IEnumerable<InputDeviceInfo>> ListInputDevices()
         {
-            return InputDevices.FindAll().Select(d => new InputDeviceInfo
+            return inputDevices.FindAll().Select(d => new InputDeviceInfo
             {
                 Id = d.Id,
                 Name = d.Name,
@@ -43,7 +43,7 @@ namespace XOutput.Rest.Input
         [Route("/api/inputs/{id}")]
         public ActionResult<InputDeviceInfo> GetInputDevice(string id)
         {
-            var d = InputDevices.Find(id);
+            var d = inputDevices.Find(id);
             if (d == null) {
                 return NotFound();
             }
