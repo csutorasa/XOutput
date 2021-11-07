@@ -27,6 +27,7 @@ module.exports = {
             {
                 "paths": ["@mui/material", "@mui/icons-material"]
             }
-        ]
+        ],
+        "react/prop-types": "off",
     }
 };

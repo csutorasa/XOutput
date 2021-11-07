@@ -1,14 +1,13 @@
-import React from 'react';
-import { Switch, Route, Redirect, RouteChildrenProps, withRouter, RouteComponentProps } from 'react-router';
-import { XboxEmulation } from './emulation/xbox';
+import React, { ReactElement } from 'react';
+import { Switch, Route, Redirect, withRouter, RouteComponentProps, useParams } from 'react-router';
 import withStyles from '@mui/styles/withStyles';
-import { Ds4Emulation } from './emulation/ds4';
 import { Styled, StyleGenerator } from '../utils';
 import { Notifications } from './notifications/Notifications';
 import { MainMenu } from './MainMenu';
 import { InputReader } from './input/InputReader';
 import { Controllers } from './emulation/Controllers';
-import { Inputs } from './input/Inputs';
+import { InputDevices } from './input/InputDevices';
+import { InputDevice } from './input/InputDevice';
 
 type ClassNames = 'mainContent' | 'title';
 
@@ -26,12 +25,16 @@ export type RouterProps = {};
 
 type InternalRouterProps = Styled<ClassNames> & RouteComponentProps & RouterProps;
 
-export interface MainMenuState {
-  menuOpen: boolean;
-  notificationCount: number;
-}
+type ReadParamsProps<T> = {
+  children: (data: T) => ReactElement;
+};
 
-const RouterComponent = ({ classes, match }: InternalRouterProps) => {
+const ReadParams = <T,>({ children }: ReadParamsProps<T>) => {
+  const params = useParams<T>();
+  return children(params);
+};
+
+const RouterComponent = ({ classes }: InternalRouterProps) => {
   return (
     <>
       <Switch>
@@ -46,7 +49,10 @@ const RouterComponent = ({ classes, match }: InternalRouterProps) => {
             <div></div>
           </Route>
           <Route path="/inputs" exact>
-            <Inputs></Inputs>
+            <InputDevices></InputDevices>
+          </Route>
+          <Route path="/inputs/:id">
+            <ReadParams>{({ id }: { id: string }) => <InputDevice id={id}></InputDevice>}</ReadParams>
           </Route>
           <Route path="/controllers" exact>
             <Controllers></Controllers>

@@ -6,12 +6,13 @@ import {
   SourceTypes,
   TargetTypes,
 } from '@xoutput/api';
-import { inputDeviceClient } from '@xoutput/client';
+import { inputDeviceClient, InputDeviceMessageSender, WebSocketSession } from '@xoutput/client';
 
-const idPrefix = (Math.random() * 100_000_000 + 100_000_000).toString(36);
+const idPrefix = Math.round(Math.random() * 900_000_000 + 100_000_000).toString(36);
 
 export class GamepadReader {
   private intervalId: NodeJS.Timeout;
+  private session: WebSocketSession<InputDeviceMessageSender>;
 
   constructor(public gamepad: Gamepad) {}
 
@@ -50,6 +51,7 @@ export class GamepadReader {
         });
       })
       .then((session) => {
+        this.session = session;
         this.intervalId = setInterval(() => {
           const buttons = this.gamepad.buttons.map((button, i) => ({
             id: i,
@@ -74,6 +76,9 @@ export class GamepadReader {
   stop(): void {
     if (this.intervalId) {
       clearInterval(this.intervalId);
+      this.session.close();
+      this.session = undefined;
+      this.intervalId = undefined;
     }
   }
 }

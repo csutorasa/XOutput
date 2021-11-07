@@ -19,6 +19,7 @@ namespace XOutput.Websocket.Input
             this.device = inputDevice;
             this.senderFunction = senderFunction;
             threadContext = ThreadCreator.CreateLoop($"{device.Id} input device report thread", SendFeedback, 20);
+            threadContext.Start();
         }
 
         public bool CanHandle(MessageBase message)

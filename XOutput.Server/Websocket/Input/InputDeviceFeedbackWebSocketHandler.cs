@@ -6,13 +6,13 @@ using XOutput.Mapping.Input;
 
 namespace XOutput.Websocket.Input
 {
-    class ControllerFeedbackWebSocketHandler : IWebSocketHandler
+    class InputDeviceFeedbackWebSocketHandler : IWebSocketHandler
     {
         private static readonly Regex PathRegex = new Regex($"/websocket/InputDevice/([-A-Za-z0-9]+)");
         private readonly InputDevices inputDevices;
 
         [ResolverMethod]
-        public ControllerFeedbackWebSocketHandler(InputDevices inputDevices)
+        public InputDeviceFeedbackWebSocketHandler(InputDevices inputDevices)
         {
             this.inputDevices = inputDevices;
         }

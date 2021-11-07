@@ -9,14 +9,14 @@ export class WebSocketService {
     this.port = port;
   }
 
-  connect(path: string, onMessage: (data: MessageBase) => void): Promise<WebSocketSession> {
+  connect(path: string, onMessage: (data: MessageBase) => void): Promise<WebSocketSessionImpl> {
     return new Promise((resolve, reject) => {
       const url = `ws://${this.host}:${this.port}/websocket/${path}`;
       const websocket = new WebSocket(url);
-      let session: WebSocketSession;
+      let session: WebSocketSessionImpl;
       let pingInterval: NodeJS.Timeout;
       websocket.onopen = () => {
-        session = new WebSocketSession(websocket);
+        session = new WebSocketSessionImpl(websocket);
         this.onOpen();
         pingInterval = setInterval(() => {
           session.sendMessage({
@@ -59,7 +59,7 @@ export class WebSocketService {
       clearInterval(interval);
     }
   }
-  private onMessage(session: WebSocketSession, data: MessageBase): boolean {
+  private onMessage(session: WebSocketSessionImpl, data: MessageBase): boolean {
     if (data.type === 'Debug') {
       console.debug((data as DebugRequest).data);
       return true;
@@ -77,7 +77,14 @@ export class WebSocketService {
   }
 }
 
-export class WebSocketSession {
+export interface WSSession {
+  close(): void;
+  isReady(): boolean;
+  sendMessage<T extends MessageBase>(obj: T): void;
+  sendDebug(text: string): void;
+}
+
+class WebSocketSessionImpl implements WSSession {
   constructor(private websocket: WebSocket) {}
   close(): void {
     this.websocket.close();
@@ -95,5 +102,7 @@ export class WebSocketSession {
     });
   }
 }
+
+export type WebSocketSession<T extends object = {}> = WSSession & T;
 
 export const websocket = new WebSocketService();

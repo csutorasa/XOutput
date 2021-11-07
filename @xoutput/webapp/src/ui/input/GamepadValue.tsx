@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 export type GamepadValueProps = {
   index: number;
-  type: 'button' | 'axis';
+  type: 'button' | 'axis' | 'slider' | 'dpad';
   valueGetter: () => number;
 };
 

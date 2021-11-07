@@ -45,7 +45,7 @@ namespace XOutput.Websocket
                 }
                 if (acceptedHandlers.Count > 1)
                 {
-                    logger.Error("Multiple handlers found for {0}", httpContext.Request.Path);
+                    logger.Error("Multiple handlers found for {0}: {1}", httpContext.Request.Path, string.Join(", ", acceptedHandlers.Select(handler => handler.GetType().FullName)));
                     httpContext.Response.StatusCode = 500;
                     return;
                 }

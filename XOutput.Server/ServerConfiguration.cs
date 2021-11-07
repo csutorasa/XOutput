@@ -22,6 +22,7 @@ namespace XOutput
                 { XboxInputRequest.MessageType,  typeof(XboxInputRequest) },
                 { Ds4InputRequest.MessageType,  typeof(Ds4InputRequest) },
                 { InputDeviceDetailsRequest.MessageType,  typeof(InputDeviceDetailsRequest) },
+                { InputDeviceInputRequest.MessageType,  typeof(InputDeviceInputRequest) },
             };
             return new MessageReader(deserializationMapping);
         }

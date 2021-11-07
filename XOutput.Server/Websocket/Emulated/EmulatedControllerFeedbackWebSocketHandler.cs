@@ -8,7 +8,7 @@ namespace XOutput.Websocket.Emulated
 {
     class EmulatedControllerFeedbackWebSocketHandler : IWebSocketHandler
     {
-        private static readonly Regex PathRegex = new Regex($"/websocket/InputDevice/([-A-Za-z0-9]+)");
+        private static readonly Regex PathRegex = new Regex($"/websocket/Controller/([-A-Za-z0-9]+)");
         private readonly EmulatedControllers emulatedControllers;
 
         [ResolverMethod]

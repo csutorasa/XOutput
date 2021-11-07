@@ -6,5 +6,5 @@ export type StyleGenerator<T extends string, P extends object = object> = Styles
 export type Classes<T extends string> = { [className in T]: string };
 
 export interface Styled<T extends string> {
-  classes?: Classes<T>;
+  classes: Classes<T>;
 }

@@ -4,7 +4,7 @@ import {
   InputDeviceFeedbackResponseType,
   InputDeviceInputRequest,
 } from '@xoutput/api';
-import { websocket } from '../websocket';
+import { websocket, WebSocketSession } from '../websocket';
 
 export type InputDeviceMessageSender = {
   sendInput: (input: InputDeviceInputRequest) => void;
@@ -14,7 +14,7 @@ export const inputDeviceClient = {
   connect(
     details: InputDeviceDetailsRequest,
     onFeedback: (feedback: InputDeviceFeedbackResponse) => void
-  ): Promise<InputDeviceMessageSender> {
+  ): Promise<WebSocketSession<InputDeviceMessageSender>> {
     return websocket
       .connect(`InputDevice`, (data) => {
         if (data.type === InputDeviceFeedbackResponseType) {
@@ -25,8 +25,12 @@ export const inputDeviceClient = {
         session.sendMessage(details);
         return session;
       })
-      .then((session) => ({
-        sendInput: (input: InputDeviceInputRequest) => session.sendMessage(input),
-      }));
+      .then(
+        (session) =>
+          ({
+            ...session,
+            sendInput: (input: InputDeviceInputRequest) => session.sendMessage(input),
+          } as WebSocketSession<InputDeviceMessageSender>)
+      );
   },
 };
