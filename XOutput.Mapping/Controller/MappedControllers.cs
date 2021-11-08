@@ -4,27 +4,26 @@ using System.Linq;
 using XOutput.Common;
 using XOutput.DependencyInjection;
 using XOutput.Emulation;
-using XOutput.Emulation.Xbox;
 using XOutput.Mapping.Controller.Ds4;
 using XOutput.Mapping.Controller.Xbox;
 
 namespace XOutput.Mapping.Controller
 {
-    public class EmulatedControllers
+    public class MappedControllers
     {
-        private readonly List<IEmulatedController> controllers = new List<IEmulatedController>();
+        private readonly List<IMappedController> controllers = new List<IMappedController>();
         private readonly EmulatorService emulatorService;
         private readonly object sync = new object();
 
         [ResolverMethod]
-        public EmulatedControllers(EmulatorService emulatorService)
+        public MappedControllers(EmulatorService emulatorService)
         {
             this.emulatorService = emulatorService;
         }
 
-        public IEmulatedController Create(string id, string name, DeviceTypes deviceType)
+        public IMappedController Create(string id, string name, DeviceTypes deviceType)
         {
-            IEmulatedController controller = deviceType switch {
+            IMappedController controller = deviceType switch {
                 DeviceTypes.MicrosoftXbox360 => new XboxController(),
                 DeviceTypes.SonyDualShock4 => new Ds4Controller(),
                 _ => throw new NotImplementedException($"Unknown device type {deviceType}"),
@@ -36,12 +35,12 @@ namespace XOutput.Mapping.Controller
             return controller;
         }
 
-        public IEmulatedController Find(string id)
+        public IMappedController Find(string id)
         {
             return controllers.FirstOrDefault(d => d.Id == id);
         }
 
-        public void Start(IEmulatedController controller)
+        public void Start(IMappedController controller)
         {
             switch (controller.Device.DeviceType) {
                 case DeviceTypes.MicrosoftXbox360:
@@ -55,17 +54,17 @@ namespace XOutput.Mapping.Controller
             }
         }
 
-        public void Stop(IEmulatedController controller)
+        public void Stop(IMappedController controller)
         {
             controller.Stop();
         }
 
-        public List<IEmulatedController> FindAll()
+        public List<IMappedController> FindAll()
         {
             return controllers.ToList();
         }
 
-        public bool Remove(IEmulatedController controller)
+        public bool Remove(IMappedController controller)
         {
             lock (sync)
             {

@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { emulatedControllersClient } from '@xoutput/client';
-import { ControllerInfo } from '@xoutput/api';
+import { EmulatedControllerInfo } from '@xoutput/api';
 
-export const useControllersQuery = (): UseQueryResult<ControllerInfo[]> => {
+export const useEmulatedControllersQuery = (): UseQueryResult<EmulatedControllerInfo[]> => {
   return useQuery('get-controllers', () => emulatedControllersClient.getControllers());
 };

@@ -1,5 +1,7 @@
 import { MessageBase } from '../MessageBase';
 
-export interface DebugRequest extends MessageBase<'Debug'> {
+export const DebugRequestType = 'Ping';
+
+export interface DebugRequest extends MessageBase<typeof DebugRequestType> {
   data: string;
 }

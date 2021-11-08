@@ -10,29 +10,14 @@ namespace XOutput.Rest.Emulation
 
         }
 
-        public Task<IEnumerable<ControllerInfo>> GetControllers(int timeoutMillis = 1000)
+        public Task<IEnumerable<EmulatedControllerInfo>> GetControllers(int timeoutMillis = 1000)
         {
-            return GetAsync<IEnumerable<ControllerInfo>>("/api/controllers", CreateToken(timeoutMillis));
-        }
-
-        public Task CreateController(CreateControllerRequest request, int timeoutMillis = 1000)
-        {
-            return PutAsync<CreateControllerRequest>("/api/controllers", request, CreateToken(timeoutMillis));
-        }
-
-        public Task StartController(string id, int timeoutMillis = 1000)
-        {
-            return PutAsync($"/api/controllers/{id}/active", CreateToken(timeoutMillis));
-        }
-
-        public Task StopController(string id, int timeoutMillis = 1000)
-        {
-            return DeleteAsync($"/api/controllers/{id}/active", CreateToken(timeoutMillis));
+            return GetAsync<IEnumerable<EmulatedControllerInfo>>("/api/emulated/controllers", CreateToken(timeoutMillis));
         }
 
         public Task DeleteController(string id, int timeoutMillis = 1000)
         {
-            return DeleteAsync($"/api/controllers/{id}", CreateToken(timeoutMillis));
+            return DeleteAsync($"/api/emulated/controllers/{id}", CreateToken(timeoutMillis));
         }
     }
 }

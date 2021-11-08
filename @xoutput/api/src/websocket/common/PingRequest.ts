@@ -1,5 +1,7 @@
 ﻿import { MessageBase } from '../MessageBase';
 
-export interface PingRequest extends MessageBase<'Ping'> {
+export const PingRequestType = 'Ping';
+
+export interface PingRequest extends MessageBase<typeof PingRequestType> {
   timestamp: number;
 }

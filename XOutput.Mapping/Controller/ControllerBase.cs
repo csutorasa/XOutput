@@ -7,7 +7,7 @@ using XOutput.Mapping.Mapper;
 
 namespace XOutput.Mapping.Controller
 {
-    public abstract class ControllerBase<T> : IEmulatedController where T : struct, Enum
+    public abstract class ControllerBase<T> : IMappedController where T : struct, Enum
     {
         public string Id { get; }
         public string Name { get; }

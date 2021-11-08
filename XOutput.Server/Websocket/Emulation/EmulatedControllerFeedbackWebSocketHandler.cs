@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using XOutput.DependencyInjection;
-using XOutput.Mapping.Input;
+using XOutput.Mapping.Controller;
 
-namespace XOutput.Websocket.Input
+namespace XOutput.Websocket.Emulation
 {
-    class InputDeviceFeedbackWebSocketHandler : IWebSocketHandler
+    class EmulatedControllerFeedbackWebSocketHandler : IWebSocketHandler
     {
-        private static readonly Regex PathRegex = new Regex($"{IWebSocketHandler.WebsocketBasePath}/InputDevice/([-A-Za-z0-9]+)");
-        private readonly InputDevices inputDevices;
+        private static readonly Regex PathRegex = new Regex($"{IWebSocketHandler.WebsocketBasePath}/EmulatedController/([-A-Za-z0-9]+)");
+        private readonly MappedControllers emulatedControllers;
 
         [ResolverMethod]
-        public InputDeviceFeedbackWebSocketHandler(InputDevices inputDevices)
+        public EmulatedControllerFeedbackWebSocketHandler(MappedControllers emulatedControllers)
         {
-            this.inputDevices = inputDevices;
+            this.emulatedControllers = emulatedControllers;
         }
 
         public bool CanHandle(HttpContext context)
@@ -25,10 +25,10 @@ namespace XOutput.Websocket.Input
         public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
             string id = PathRegex.Match(context.Request.Path.Value).Groups[1].Value;
-            var device = inputDevices.Find(id);
+            var emulatedController = emulatedControllers.Find(id);
             return new List<IMessageHandler>
             {
-                new InputDeviceFeedbackHandler(device, sendFunction.GetTyped<InputDeviceInputResponse>()),
+                new EmulatedControllerFeedbackHandler(emulatedController, sendFunction.GetTyped<ControllerInputResponse>()),
             };
         }
 

@@ -14,13 +14,13 @@ namespace XOutput.Websocket.Ds4
         private static readonly string DeviceType = DeviceTypes.SonyDualShock4.ToString();
         private static readonly Regex PathRegex = new Regex($"/websocket/{DeviceType}/([A-Za-z]+)");
         private readonly EmulatorService emulatorService;
-        private readonly NetworkDeviceInfoService deviceInfoService;
+        private readonly EmulatedControllersService emulatedControllersService;
 
         [ResolverMethod]
-        public Ds4WebSocketHandler(EmulatorService emulatorService, NetworkDeviceInfoService deviceInfoService)
+        public Ds4WebSocketHandler(EmulatorService emulatorService, EmulatedControllersService emulatedControllersService)
         {
             this.emulatorService = emulatorService;
-            this.deviceInfoService = deviceInfoService;
+            this.emulatedControllersService = emulatedControllersService;
         }
 
         public bool CanHandle(HttpContext context)
@@ -38,7 +38,7 @@ namespace XOutput.Websocket.Ds4
             DeviceDisconnectedEvent disconnectedEvent = (sender, args) => closeFunction();
             device.Closed += disconnectedEvent;
             var ip = context.Request.HttpContext.Connection.RemoteIpAddress?.ToString();
-            deviceInfoService.Add(new NetworkDeviceInfo
+            emulatedControllersService.Add(new NetworkDeviceInfo
             {
                 Device = device,
                 IPAddress = ip,
@@ -59,7 +59,7 @@ namespace XOutput.Websocket.Ds4
                 if (handler is Ds4InputRequestHandler)
                 {
                     var device = (handler as Ds4InputRequestHandler).device;
-                    deviceInfoService.StopAndRemove(device.Id);
+                    emulatedControllersService.StopAndRemove(device.Id);
                 }
                 handler.Close();
             }

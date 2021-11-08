@@ -16,7 +16,7 @@ namespace XOutput.Websocket.Ds4
 
         public async Task ConnectAsync(string emulatorName)
         {
-            await base.ConnectAsync($"ws/{DeviceTypes.SonyDualShock4.ToString()}/{emulatorName}");
+            await base.ConnectAsync($"{DeviceTypes.SonyDualShock4.ToString()}/{emulatorName}");
         }
 
         protected override void ProcessMessage(MessageBase message)
@@ -32,7 +32,7 @@ namespace XOutput.Websocket.Ds4
             }
         }
 
-        protected Task SendInputAsync(Ds4InputRequest message)
+        public Task SendInputAsync(Ds4InputRequest message)
         {
             return SendAsync(message);
         }

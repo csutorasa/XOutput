@@ -1,20 +1,11 @@
-import { ControllerInfo, CreateControllerRequest } from '@xoutput/api';
+import { EmulatedControllerInfo } from '@xoutput/api';
 import { http } from '../http';
 
 export const emulatedControllersClient = {
   getControllers() {
-    return http.get<ControllerInfo[]>('/api/controllers');
-  },
-  createController(request: CreateControllerRequest) {
-    return http.put<CreateControllerRequest>('/api/controllers', request);
-  },
-  startController(id: string) {
-    return http.put(`/api/controllers/${id}/active`);
-  },
-  stopController(id: string) {
-    return http.delete(`/api/controllers/${id}/active`);
+    return http.get<EmulatedControllerInfo[]>('/api/emulated/controllers');
   },
   deleteController(id: string) {
-    return http.delete(`/api/controllers/${id}`);
+    return http.delete(`/api/emulated/controllers/${id}`);
   },
 };

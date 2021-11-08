@@ -1,6 +1,8 @@
 import { MessageBase } from '../MessageBase';
 
-export interface XboxFeedbackResponse extends MessageBase<'XboxFeedback'> {
+export const XboxFeedbackResponseType = 'XboxFeedback';
+
+export interface XboxFeedbackResponse extends MessageBase<typeof XboxFeedbackResponseType> {
   smallForceFeedback: number;
   bigForceFeedback: number;
   ledNumber: number;

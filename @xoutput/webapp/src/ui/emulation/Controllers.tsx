@@ -1,10 +1,10 @@
 import Card from '@mui/material/Card';
 import React from 'react';
-import { useControllersQuery } from '../../queries/useControllersQuery';
+import { useEmulatedControllersQuery } from '../../queries/useEmulatedControllersQuery';
 import { Async } from '../components/Asnyc';
 
 const ControllersComponent = () => {
-  const { data: controllers, isLoading, isSuccess, error } = useControllersQuery();
+  const { data: controllers, isLoading, isSuccess, error } = useEmulatedControllersQuery();
 
   return (
     <Async isLoading={isLoading} isSuccess={isSuccess} error={error}>

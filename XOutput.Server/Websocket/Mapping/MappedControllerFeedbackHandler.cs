@@ -3,18 +3,19 @@ using System;
 using System.Linq;
 using XOutput.Mapping.Controller;
 using XOutput.Threading;
+using XOutput.Websocket.Emulation;
 
-namespace XOutput.Websocket.Emulated
+namespace XOutput.Websocket.Mapping
 {
-    class EmulatedControllerFeedbackHandler : IMessageHandler
+    class MappedControllerFeedbackHandler : IMessageHandler
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         
-        private readonly SenderFunction<EmulatedControllerInputResponse> senderFunction;
-        private IEmulatedController emulatedController;
+        private readonly SenderFunction<ControllerInputResponse> senderFunction;
+        private IMappedController emulatedController;
         private ThreadContext threadContext;
 
-        public EmulatedControllerFeedbackHandler(IEmulatedController emulatedController, SenderFunction<EmulatedControllerInputResponse> senderFunction)
+        public MappedControllerFeedbackHandler(IMappedController emulatedController, SenderFunction<ControllerInputResponse> senderFunction)
         {
             this.emulatedController = emulatedController;
             this.senderFunction = senderFunction;
@@ -33,13 +34,13 @@ namespace XOutput.Websocket.Emulated
 
         private void SendFeedback()
         {
-            senderFunction(new EmulatedControllerInputResponse
+            senderFunction(new ControllerInputResponse
             {
-                Sources = emulatedController.GetSources().Select(s => new EmulatedControllerSourceValue {
+                Sources = emulatedController.GetSources().Select(s => new ControllerSourceValue {
                     Id = s.Key,
                     Value = s.Value,
                 }).ToList(),
-                Targets = emulatedController.GetTargets().Select(t => new EmulatedControllerTargetValue {
+                Targets = emulatedController.GetTargets().Select(t => new ControllerTargetValue {
                     Id = t.Key,
                     Value = t.Value,
                 }).ToList(),

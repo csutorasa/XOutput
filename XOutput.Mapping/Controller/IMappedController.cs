@@ -3,7 +3,7 @@ using XOutput.Emulation;
 
 namespace XOutput.Mapping.Controller
 {
-    public interface IEmulatedController {
+    public interface IMappedController {
         string Id { get; }
         string Name { get; }
         IDevice Device { get; }

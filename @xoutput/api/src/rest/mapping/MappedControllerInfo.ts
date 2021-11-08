@@ -1,9 +1,8 @@
 import { Emulators } from '../../common/Emulators';
 import { DeviceTypes } from '../../common/DeviceTypes';
 
-export type ControllerInfo = {
+export type MappedControllerInfo = {
   id: string;
-  address?: string;
   name: string;
   deviceType: DeviceTypes;
   emulator: Emulators;

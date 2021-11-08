@@ -16,7 +16,7 @@ namespace XOutput.Websocket.Xbox
 
         public async Task ConnectAsync(Emulators emulator)
         {
-            await base.ConnectAsync($"ws/{DeviceTypes.MicrosoftXbox360.ToString()}/{emulator.ToString()}");
+            await base.ConnectAsync($"{DeviceTypes.MicrosoftXbox360.ToString()}/{emulator.ToString()}");
         }
 
         protected override void ProcessMessage(MessageBase message)
@@ -32,7 +32,7 @@ namespace XOutput.Websocket.Xbox
             }
         }
 
-        protected Task SendInputAsync(XboxInputRequest message)
+        public Task SendInputAsync(XboxInputRequest message)
         {
             return SendAsync(message);
         }

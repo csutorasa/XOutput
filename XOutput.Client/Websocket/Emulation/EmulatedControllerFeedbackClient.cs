@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using XOutput.Serialization;
 
-namespace XOutput.Websocket.Emulated
+namespace XOutput.Websocket.Emulation
 {
     public class EmulatedControllerFeedbackClient : WebsocketJsonClient
     {
@@ -17,18 +17,18 @@ namespace XOutput.Websocket.Emulated
 
         public async Task ConnectAsync(string id)
         {
-            await base.ConnectAsync("EmulatedConttroller/" + id);
+            await base.ConnectAsync("EmulatedController/" + id);
         }
 
         protected override void ProcessMessage(MessageBase message)
         {
-            if (message is EmulatedControllerInputResponse)
+            if (message is ControllerInputResponse)
             {
-                var feedbackMessage = message as EmulatedControllerInputResponse;
+                var feedbackMessage = message as ControllerInputResponse;
                 FeedbackReceived?.Invoke(this, new InputDeviceFeedbackReceivedEventArgs
                 {
-                    InputValues = feedbackMessage.Sources.Select(s => new EmulatedControllerSourceValue { Id = s.Id, Value = s.Value }).ToList(),
-                    ForceFeedbacks = feedbackMessage.Targets.Select(t => new EmulatedControllerTargetValue { Id = t.Id, Value = t.Value }).ToList(),
+                    InputValues = feedbackMessage.Sources.Select(s => new ControllerSourceValue { Id = s.Id, Value = s.Value }).ToList(),
+                    ForceFeedbacks = feedbackMessage.Targets.Select(t => new ControllerTargetValue { Id = t.Id, Value = t.Value }).ToList(),
                 });
             }
         }
@@ -38,7 +38,7 @@ namespace XOutput.Websocket.Emulated
 
     public class InputDeviceFeedbackReceivedEventArgs
     {
-        public List<EmulatedControllerSourceValue> InputValues { get; set; }
-        public List<EmulatedControllerTargetValue> ForceFeedbacks { get; set; }
+        public List<ControllerSourceValue> InputValues { get; set; }
+        public List<ControllerTargetValue> ForceFeedbacks { get; set; }
     }
 }

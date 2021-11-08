@@ -50,7 +50,7 @@ export class WebSocketService {
     console.info('Connected to ' + this.host + ':' + this.port);
   }
   private onError(event: Event): void {
-    const message: string = (event as any).message;
+    const message: string = (event as { message?: string }).message;
     console.error(message);
   }
   private onClose(interval: NodeJS.Timeout): void {

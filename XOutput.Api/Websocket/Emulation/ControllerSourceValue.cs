@@ -1,6 +1,6 @@
-namespace XOutput.Websocket.Emulated
+namespace XOutput.Websocket.Emulation
 {
-    public class EmulatedControllerTargetValue
+    public class ControllerSourceValue
     {
         public string Id { get; set; }
         public double Value { get; set; }

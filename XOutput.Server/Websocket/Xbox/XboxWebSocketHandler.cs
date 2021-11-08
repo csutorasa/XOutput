@@ -14,13 +14,13 @@ namespace XOutput.Websocket.Xbox
         private static readonly string DeviceType = DeviceTypes.MicrosoftXbox360.ToString();
         private static readonly Regex PathRegex = new Regex($"/websocket/{DeviceType}/([A-Za-z]+)");
         private readonly EmulatorService emulatorService;
-        private readonly NetworkDeviceInfoService deviceInfoService;
+        private readonly EmulatedControllersService emulatedControllersService;
 
         [ResolverMethod]
-        public XboxWebSocketHandler(EmulatorService emulatorService, NetworkDeviceInfoService deviceInfoService)
+        public XboxWebSocketHandler(EmulatorService emulatorService, EmulatedControllersService emulatedControllersService)
         {
             this.emulatorService = emulatorService;
-            this.deviceInfoService = deviceInfoService;
+            this.emulatedControllersService = emulatedControllersService;
         }
 
         public bool CanHandle(HttpContext context)
@@ -38,7 +38,7 @@ namespace XOutput.Websocket.Xbox
             DeviceDisconnectedEvent disconnectedEvent = (sender, args) => closeFunction();
             device.Closed += disconnectedEvent;
             var ip = context.Request.HttpContext.Connection.RemoteIpAddress?.ToString();
-            deviceInfoService.Add(new NetworkDeviceInfo
+            emulatedControllersService.Add(new NetworkDeviceInfo
             {
                 Device = device,
                 IPAddress = ip,
@@ -59,7 +59,7 @@ namespace XOutput.Websocket.Xbox
                 if (handler is XboxInputRequestHandler)
                 {
                     var device = (handler as XboxInputRequestHandler).device;
-                    deviceInfoService.StopAndRemove(device.Id);
+                    emulatedControllersService.StopAndRemove(device.Id);
                 }
                 handler.Close();
             }

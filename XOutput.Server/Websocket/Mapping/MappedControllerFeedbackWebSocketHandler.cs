@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using XOutput.DependencyInjection;
 using XOutput.Mapping.Controller;
+using XOutput.Websocket.Emulation;
 
-namespace XOutput.Websocket.Emulated
+namespace XOutput.Websocket.Mapping
 {
-    class EmulatedControllerFeedbackWebSocketHandler : IWebSocketHandler
+    class MappedControllerFeedbackWebSocketHandler : IWebSocketHandler
     {
-        private static readonly Regex PathRegex = new Regex($"/websocket/Controller/([-A-Za-z0-9]+)");
-        private readonly EmulatedControllers emulatedControllers;
+        private static readonly Regex PathRegex = new Regex($"{IWebSocketHandler.WebsocketBasePath}/MappedController/([-A-Za-z0-9]+)");
+        private readonly MappedControllers emulatedControllers;
 
         [ResolverMethod]
-        public EmulatedControllerFeedbackWebSocketHandler(EmulatedControllers emulatedControllers)
+        public MappedControllerFeedbackWebSocketHandler(MappedControllers emulatedControllers)
         {
             this.emulatedControllers = emulatedControllers;
         }
@@ -28,7 +29,7 @@ namespace XOutput.Websocket.Emulated
             var emulatedController = emulatedControllers.Find(id);
             return new List<IMessageHandler>
             {
-                new EmulatedControllerFeedbackHandler(emulatedController, sendFunction.GetTyped<EmulatedControllerInputResponse>()),
+                new MappedControllerFeedbackHandler(emulatedController, sendFunction.GetTyped<ControllerInputResponse>()),
             };
         }
 
