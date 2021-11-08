@@ -5,7 +5,8 @@ import { Styled, StyleGenerator } from '../utils';
 import { Notifications } from './notifications/Notifications';
 import { MainMenu } from './MainMenu';
 import { InputReader } from './input/InputReader';
-import { Controllers } from './emulation/Controllers';
+import { EmulatedControllers } from './emulation/EmulatedControllers';
+import { MappedControllers } from './mapping/MappedControllers';
 import { InputDevices } from './input/InputDevices';
 import { InputDevice } from './input/InputDevice';
 
@@ -54,8 +55,11 @@ const RouterComponent = ({ classes }: InternalRouterProps) => {
           <Route path="/inputs/:id">
             <ReadParams>{({ id }: { id: string }) => <InputDevice id={id}></InputDevice>}</ReadParams>
           </Route>
-          <Route path="/controllers" exact>
-            <Controllers></Controllers>
+          <Route path="/emulated/controllers" exact>
+            <EmulatedControllers></EmulatedControllers>
+          </Route>
+          <Route path="/emulated/controllers" exact>
+            <MappedControllers></MappedControllers>
           </Route>
           <Route path="/inputreader" exact>
             <InputReader></InputReader>

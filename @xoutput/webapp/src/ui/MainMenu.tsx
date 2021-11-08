@@ -88,7 +88,13 @@ const MainMenuComponent = ({ classes }: InternalMainMenuProps) => {
             <Typography variant="h4">XOutput</Typography>
           </div>
           <List component="nav">
-            <MainMenuListItem path="/controllers" onClick={() => setOpen(false)}>
+            <MainMenuListItem path="/emulated/controllers" onClick={() => setOpen(false)}>
+              <ListItemIcon>
+                <SportsEsportsIcon />
+              </ListItemIcon>
+              <ListItemText primary={Translation.translate('ActiveControllers')} />
+            </MainMenuListItem>
+            <MainMenuListItem path="/mapped/controllers" onClick={() => setOpen(false)}>
               <ListItemIcon>
                 <SportsEsportsIcon />
               </ListItemIcon>

@@ -3,7 +3,7 @@ import React from 'react';
 import { useEmulatedControllersQuery } from '../../queries/useEmulatedControllersQuery';
 import { Async } from '../components/Asnyc';
 
-const ControllersComponent = () => {
+const EmulatedControllersComponent = () => {
   const { data: controllers, isLoading, isSuccess, error } = useEmulatedControllersQuery();
 
   return (
@@ -21,4 +21,4 @@ const ControllersComponent = () => {
   );
 };
 
-export const Controllers = ControllersComponent;
+export const EmulatedControllers = EmulatedControllersComponent;
