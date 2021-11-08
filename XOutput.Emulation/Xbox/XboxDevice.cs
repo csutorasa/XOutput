@@ -11,7 +11,7 @@ namespace XOutput.Emulation.Xbox
         public abstract Emulators Emulator { get; }
 
         public event XboxFeedbackEvent FeedbackEvent;
-        public event DeviceDisconnectedEvent Closed;
+        public event DeviceDisconnectedEventHandler Closed;
 
         protected void InvokeFeedbackEvent(XboxFeedbackEventArgs args)
         {

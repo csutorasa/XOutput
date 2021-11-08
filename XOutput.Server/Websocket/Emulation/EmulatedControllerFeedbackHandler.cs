@@ -1,34 +1,18 @@
-﻿using NLog;
-using System;
-using System.Linq;
+﻿using System.Linq;
 using XOutput.Mapping.Controller;
 using XOutput.Threading;
 
 namespace XOutput.Websocket.Emulation
 {
-    class EmulatedControllerFeedbackHandler : IMessageHandler
+    class EmulatedControllerFeedbackHandler : MessageHandler
     {
-        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
-        
-        private readonly SenderFunction<ControllerInputResponse> senderFunction;
         private IMappedController emulatedController;
         private ThreadContext threadContext;
 
-        public EmulatedControllerFeedbackHandler(IMappedController emulatedController, SenderFunction<ControllerInputResponse> senderFunction)
+        public EmulatedControllerFeedbackHandler(CloseFunction closeFunction, SenderFunction senderFunction, IMappedController emulatedController) : base(closeFunction, senderFunction)
         {
             this.emulatedController = emulatedController;
-            this.senderFunction = senderFunction;
             threadContext = ThreadCreator.CreateLoop($"{emulatedController.Id} input device report thread", SendFeedback, 20);
-        }
-
-        public bool CanHandle(MessageBase message)
-        {
-            return false;
-        }
-
-        public void Handle(MessageBase message)
-        {
-            throw new NotImplementedException();
         }
 
         private void SendFeedback()
@@ -46,8 +30,9 @@ namespace XOutput.Websocket.Emulation
             });
         }
 
-        public void Close()
+        public override void Close()
         {
+            base.Close();
             threadContext.Cancel();
         }
     }

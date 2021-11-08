@@ -7,7 +7,6 @@ namespace XOutput.Websocket
     {
         public const string WebsocketBasePath = "/websocket";
         bool CanHandle(HttpContext context);
-        List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction);
-        void Close(IEnumerable<IMessageHandler> handlers);
+        IMessageHandler CreateHandler(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction);
     }
 }

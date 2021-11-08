@@ -10,7 +10,7 @@ namespace XOutput.Emulation.Ds4
         public abstract Emulators Emulator { get; }
 
         public event Ds4FeedbackEvent FeedbackEvent;
-        public event DeviceDisconnectedEvent Closed;
+        public event DeviceDisconnectedEventHandler Closed;
 
         protected void InvokeFeedbackEvent(Ds4FeedbackEventArgs args)
         {

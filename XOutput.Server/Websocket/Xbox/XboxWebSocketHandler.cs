@@ -29,13 +29,13 @@ namespace XOutput.Websocket.Xbox
             return PathRegex.IsMatch(path);
         }
 
-        public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
+        public IMessageHandler CreateHandler(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
             string emulatorName = PathRegex.Match(context.Request.Path.Value).Groups[1].Value;
             Emulators emulatorType = Enum.Parse<Emulators>(emulatorName);
             var emulator = emulatorService.FindEmulator<IXboxEmulator>(DeviceTypes.MicrosoftXbox360, emulatorType);
             var device = emulator.CreateXboxDevice();
-            DeviceDisconnectedEvent disconnectedEvent = (sender, args) => closeFunction();
+            DeviceDisconnectedEventHandler disconnectedEvent = (sender, args) => closeFunction();
             device.Closed += disconnectedEvent;
             var ip = context.Request.HttpContext.Connection.RemoteIpAddress?.ToString();
             emulatedControllersService.Add(new NetworkDeviceInfo
@@ -45,24 +45,7 @@ namespace XOutput.Websocket.Xbox
                 DeviceType = DeviceTypes.MicrosoftXbox360,
                 Emulator = emulator.Emulator,
             });
-            return new List<IMessageHandler>
-            {
-                new XboxFeedbackResponseHandler(device, sendFunction.GetTyped<XboxFeedbackResponse>()),
-                new XboxInputRequestHandler(device, disconnectedEvent),
-            };
-        }
-
-        public void Close(IEnumerable<IMessageHandler> handlers)
-        {
-            foreach (var handler in handlers)
-            {
-                if (handler is XboxInputRequestHandler)
-                {
-                    var device = (handler as XboxInputRequestHandler).device;
-                    emulatedControllersService.StopAndRemove(device.Id);
-                }
-                handler.Close();
-            }
+            return new XboxInputRequestHandler(closeFunction, sendFunction, device, emulatedControllersService, disconnectedEvent);
         }
     }
 }

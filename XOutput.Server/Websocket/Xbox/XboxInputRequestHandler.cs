@@ -3,23 +3,31 @@ using XOutput.Emulation.Xbox;
 
 namespace XOutput.Websocket.Xbox
 {
-    class XboxInputRequestHandler : IMessageHandler
+    class XboxInputRequestHandler : MessageHandler
     {
-        internal readonly XboxDevice device;
-        private readonly DeviceDisconnectedEvent disconnectedEventHandler;
+        private readonly XboxDevice device;
+        private readonly EmulatedControllersService emulatedControllersService;
+        private readonly DeviceDisconnectedEventHandler disconnectedEventHandler;
 
-        public XboxInputRequestHandler(XboxDevice device, DeviceDisconnectedEvent disconnectedEventHandler)
+        public XboxInputRequestHandler(CloseFunction closeFunction, SenderFunction senderFunction, XboxDevice device, EmulatedControllersService emulatedControllersService, DeviceDisconnectedEventHandler disconnectedEventHandler) : base(closeFunction, senderFunction)
         {
             this.device = device;
+            this.emulatedControllersService = emulatedControllersService;
             this.disconnectedEventHandler = disconnectedEventHandler;
+            device.FeedbackEvent += FeedbackEvent;
         }
 
-        public bool CanHandle(MessageBase message)
+        private void FeedbackEvent(object sender, XboxFeedbackEventArgs args)
         {
-            return message is XboxInputRequest;
+            senderFunction(new XboxFeedbackResponse
+            {
+                SmallForceFeedback = args.Small,
+                BigForceFeedback = args.Large,
+                LedNumber = args.LedNumber,
+            });
         }
 
-        public void Handle(MessageBase message)
+        protected override void HandleMessage(MessageBase message)
         {
             var inputMessage = message as XboxInputRequest;
             device.SendInput(new XboxInput
@@ -48,9 +56,12 @@ namespace XOutput.Websocket.Xbox
             });
         }
 
-        public void Close()
+        public override void Close()
         {
+            base.Close();
+            emulatedControllersService.StopAndRemove(device.Id);
             device.Closed -= disconnectedEventHandler;
+            device.FeedbackEvent -= FeedbackEvent;
             device.Close();
         }
     }

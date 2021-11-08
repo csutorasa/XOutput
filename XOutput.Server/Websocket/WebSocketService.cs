@@ -80,16 +80,11 @@ namespace XOutput.Websocket
         private async Task HandleWebSocketContextAsync(WebSocket ws, HttpContext httpContext, IWebSocketHandler handler, CancellationToken cancellationToken)
         {
             CloseFunction closeFunction = () => ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Done", CancellationToken.None);
-            List<IMessageHandler> messageHandlers;
+            SenderFunction sendFunction = (message) => WriteStringAsync(ws, messageWriter.GetString(message), cancellationToken);
+            IMessageHandler messageHandler;
             try
             {
-                SenderFunction sendFunction = (message) => WriteStringAsync(ws, messageWriter.GetString(message), cancellationToken);
-                var handlers = handler.CreateHandlers(httpContext, closeFunction, sendFunction);
-                var commonHandlers = new List<IMessageHandler> {
-                    new DebugRequestHandler(),
-                    new PingMessageHandler(sendFunction.GetTyped<PingRequest>(), sendFunction.GetTyped<PongResponse>(), closeFunction),
-                };
-                messageHandlers = handlers.Concat(commonHandlers).ToList();
+                messageHandler = handler.CreateHandler(httpContext, closeFunction, sendFunction);
             }
             catch (Exception e)
             {
@@ -105,33 +100,21 @@ namespace XOutput.Websocket
                 {
                     continue;
                 }
-                ProcessMessage(requestMessage, messageHandlers);
+                ProcessMessage(requestMessage, messageHandler);
             }
             if (ws.State == WebSocketState.Open)
             {
                 await closeFunction();
             }
-            handler.Close(messageHandlers);
+            messageHandler.Close();
         }
 
-        private void ProcessMessage(string requestMessage, List<IMessageHandler> messageHandlers)
+        private void ProcessMessage(string requestMessage, IMessageHandler messageHandler)
         {
             try
             {
                 var message = messageReader.ReadString(requestMessage);
-                var acceptedMessageHandlers = messageHandlers.Where(h => h.CanHandle(message)).ToList();
-                if (acceptedMessageHandlers.Count == 0)
-                {
-                    logger.Error("No handlers found for {0}", message.Type);
-                }
-                else if (acceptedMessageHandlers.Count == 1)
-                {
-                    acceptedMessageHandlers[0].Handle(message);
-                }
-                else
-                {
-                    logger.Error("Multiple handlers found for {0}", message.Type);
-                }
+                messageHandler.Handle(message);
             }
             catch (Exception e)
             {

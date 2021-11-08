@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using XOutput.DependencyInjection;
 using XOutput.Mapping.Input;
 
@@ -20,20 +19,9 @@ namespace XOutput.Websocket.Input
             return context.Request.Path.Value == $"{IWebSocketHandler.WebsocketBasePath}/InputDevice";
         }
 
-        public List<IMessageHandler> CreateHandlers(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
+        public IMessageHandler CreateHandler(HttpContext context, CloseFunction closeFunction, SenderFunction sendFunction)
         {
-            return new List<IMessageHandler>
-            {
-                new InputDeviceMessageHandler(inputDevices, sendFunction.GetTyped<InputDeviceFeedbackResponse>()),
-            };
-        }
-
-        public void Close(IEnumerable<IMessageHandler> handlers)
-        {
-            foreach (var handler in handlers)
-            {
-                handler.Close();
-            }
+            return new InputDeviceMessageHandler(closeFunction, sendFunction, inputDevices);
         }
     }
 }

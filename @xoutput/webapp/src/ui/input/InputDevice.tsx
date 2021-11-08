@@ -22,7 +22,6 @@ const InputDeviceComponent = ({ id }: InputDeviceProps) => {
         feedback.sources.forEach((s) => {
           data[s.id] = s.value;
         });
-        console.log(data);
       })
       .then((s) => {
         session = s;
