@@ -20,7 +20,7 @@
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.5",
     "@mui/material": "^5.0.6",
-    "@mui/styled-engine": "^5.0.2",
+    "@mui/styled-engine": "^5.4.1",
     "@mui/styles": "^5.0.2",
     "@xoutput/api": "file:../api",
     "@xoutput/client": "file:../client",
