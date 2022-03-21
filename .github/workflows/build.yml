@@ -28,7 +28,7 @@ jobs:
         distribution: 'zulu'
         java-version: '15'
     - name: Cache app
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: app-${{ github.sha }}
         path: ./app
@@ -88,7 +88,7 @@ jobs:
       with:
         node-version: '16'
     - name: Cache webapp
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: webapp-${{ github.sha }}
         path: ./@xoutput/webapp/webapp
@@ -104,12 +104,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Cache app
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: app-${{ github.sha }}
         path: ./app
     - name: Cache webapp
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: webapp-${{ github.sha }}
         path: ./@xoutput/webapp/webapp
