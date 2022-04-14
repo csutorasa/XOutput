@@ -47,7 +47,7 @@ namespace XOutput.Devices.Mapper
         /// </summary>
         public double Deadzone { get; set; }
         /// <summary>
-        /// Deadzone
+        /// Anti-Deadzone
         /// </summary>
         public double AntiDeadzone { get; set; }
 
