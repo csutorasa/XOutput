@@ -13,6 +13,7 @@
   "ControllerDisconnected": "{0} αποσυνδεδεμένο.",
   "DPad": "DPad",
   "Deadzone": "Νεκρή ζώνη",
+  "AntiDeadzone": "Αντι-Νεκρή ζώνη",
   "DiagnosticsMenu": "Διαγνωστικά",
   "DirectInput": "DirectInput",
   "Disable": "Απενεργοποίηση",

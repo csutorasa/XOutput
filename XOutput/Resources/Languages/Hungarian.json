@@ -13,6 +13,7 @@
   "ControllerDisconnected": "{0} eszközről lekapcsolódva.",
   "DPad": "DPad",
   "Deadzone": "Deadzone",
+  "AntiDeadzone": "Anti-Deadzone",
   "DiagnosticsMenu": "Diagnosztika",
   "DirectInput": "DirectInput",
   "Disable": "Kikapcsol",

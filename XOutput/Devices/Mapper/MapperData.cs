@@ -46,6 +46,10 @@ namespace XOutput.Devices.Mapper
         /// Deadzone
         /// </summary>
         public double Deadzone { get; set; }
+        /// <summary>
+        /// Deadzone
+        /// </summary>
+        public double AntiDeadzone { get; set; }
 
         InputSource source;
 
@@ -56,6 +60,7 @@ namespace XOutput.Devices.Mapper
             MinValue = 0;
             MaxValue = 0;
             Deadzone = 0;
+            AntiDeadzone = 0;
         }
 
         /// <summary>
@@ -73,13 +78,21 @@ namespace XOutput.Devices.Mapper
             }
             else
             {
-                var readvalue = value;
-                if (Math.Abs(value - 0.5) < Deadzone)
+                var readValue = value;
+                
+                if (Math.Abs(readValue - 0.5) < Deadzone)
                 {
-                    readvalue = 0.5;
+                    readValue = 0.5;
                 }
 
-                mappedValue = (readvalue - MinValue) / range;
+                if (AntiDeadzone != 0)
+                {
+                    var sign = readValue < 0.5 ? -1 : 1;
+                    readValue = (((((Math.Abs((readValue - 0.5) * 2)) * (1 - AntiDeadzone)) + AntiDeadzone) * sign) / 2) + 0.5;
+                }
+
+                mappedValue = (readValue - MinValue) / range;
+
                 if (mappedValue < 0)
                 {
                     mappedValue = 0;

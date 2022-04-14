@@ -13,6 +13,7 @@
   "ControllerDisconnected": "{0} fue desconectado.",
   "DPad": "DPad",
   "Deadzone": "Zona Muerta",
+  "Deadzone": "Anti-Zona Muerta",
   "DiagnosticsMenu": "Diagnósticos",
   "DirectInput": "DirectInput",
   "Disable": "Desactivado",

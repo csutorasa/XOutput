@@ -30,6 +30,7 @@
                 <ColumnDefinition Width="*" MinWidth="90"/>
                 <ColumnDefinition Width="*" MinWidth="90"/>
                 <ColumnDefinition Width="*" MinWidth="90"/>
+                <ColumnDefinition Width="*" MinWidth="90"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Margin="2" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Range'}"/>
@@ -45,7 +46,13 @@
                 <local:NumericTextBox VerticalAlignment="Center" Minimum="0" Maximum="50" Value="{Binding Model.Deadzone, Mode=TwoWay}"/>
                 <TextBlock VerticalAlignment="Center" Text="%"/>
             </StackPanel>
-            <Button Grid.Column="2" Margin="2" Click="InvertClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Invert'}"/>
+            <StackPanel Grid.Column="2" Margin="2" Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Text="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='AntiDeadzone'}"/>
+                <TextBlock VerticalAlignment="Center" Text=": "/>
+                <local:NumericTextBox VerticalAlignment="Center" Minimum="0" Maximum="100" Value="{Binding Model.AntiDeadzone, Mode=TwoWay}"/>
+                <TextBlock VerticalAlignment="Center" Text="%"/>
+            </StackPanel>
+            <Button Grid.Column="3" Margin="2" Click="InvertClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Invert'}"/>
         </Grid>
         <Button Grid.Column="3" Margin="2" Click="ConfigureClick" Content="{Binding LanguageModel.Data, Converter={StaticResource LanguageConverter}, ConverterParameter='Configure'}"/>
     </Grid>
