@@ -8,7 +8,7 @@
     "url": "git+https://github.com/csutorasa/XOutput.git"
   },
   "homepage": "https://github.com/csutorasa/XOutput#readme",
-  "url" : "https://github.com/csutorasa/XOutput/issues",
+  "url": "https://github.com/csutorasa/XOutput/issues",
   "author": "Ármin Csutorás",
   "license": "MIT",
   "workspaces": [
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
+    "concurrently": "^7.1.0",
     "eslint": "^8.13.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.29.4",
@@ -26,6 +27,7 @@
     "prettier": "^2.6.2"
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "watch": "concurrently \"npm run watch -w @xoutput/api\" \"npm run watch -w @xoutput/client\" \"npm run watch -w @xoutput/webapp\""
   }
 }

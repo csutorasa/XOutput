@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "start": "webpack serve --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "build": "webpack.cmd --config webpack.prod.js",
+    "watch": "webpack.cmd serve --config webpack.dev.js",
     "prettier": "prettier -w src",
     "lint-staged": "lint-staged.cmd",
     "lint": "eslint.cmd src",

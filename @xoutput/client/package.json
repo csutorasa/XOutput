@@ -9,7 +9,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "webpack.cmd --config webpack.js",
+    "build": "webpack.cmd --config webpack.prod.js",
+    "watch": "webpack.cmd --config webpack.dev.js --watch",
     "prettier": "prettier.cmd -w src",
     "lint-staged": "lint-staged.cmd",
     "lint": "eslint.cmd src",

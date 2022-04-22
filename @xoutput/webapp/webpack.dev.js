@@ -51,6 +51,15 @@ module.exports = {
   ],
   optimization: {
     minimize: false,
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all',
+        },
+      }
+    }
   },
   devServer: {
     port: 8080,

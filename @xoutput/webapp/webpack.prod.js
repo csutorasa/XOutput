@@ -4,7 +4,9 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   mode: 'production',
-  entry: path.resolve(__dirname, './src/index.ts'),
+  entry: {
+    webapp: path.resolve(__dirname, './src/index.ts'),
+  },
   module: {
     rules: [
       {
@@ -42,6 +44,15 @@ module.exports = {
   },
   optimization: {
     minimizer: [new TerserPlugin()],
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all',
+        },
+      }
+    }
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.json'],

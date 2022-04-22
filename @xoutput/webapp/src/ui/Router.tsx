@@ -58,7 +58,7 @@ const RouterComponent = ({ classes }: InternalRouterProps) => {
           <Route path="/emulated/controllers" exact>
             <EmulatedControllers></EmulatedControllers>
           </Route>
-          <Route path="/emulated/controllers" exact>
+          <Route path="/mapped/controllers" exact>
             <MappedControllers></MappedControllers>
           </Route>
           <Route path="/inputreader" exact>
