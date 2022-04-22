@@ -18,9 +18,9 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v2
       with:
         dotnet-version: '6.0.x'
     - uses: actions/setup-java@v2
@@ -28,7 +28,7 @@ jobs:
         distribution: 'zulu'
         java-version: '17'
     - name: Cache app
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: app-${{ github.sha }}
         path: ./app
@@ -82,13 +82,13 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Setup node
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
     - name: Cache webapp
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: webapp-${{ github.sha }}
         path: ./@xoutput/webapp/webapp
@@ -102,21 +102,21 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Cache app
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: app-${{ github.sha }}
         path: ./app
     - name: Cache webapp
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: webapp-${{ github.sha }}
         path: ./@xoutput/webapp/webapp
     - name: Copy resources
       run: move bin app\bin && move @xoutput\webapp\webapp app\webapp
     - name: Create package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: XOutput
         path: ./app/
