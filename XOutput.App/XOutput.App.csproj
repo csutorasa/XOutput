@@ -34,7 +34,7 @@
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
     <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
-    <PackageReference Include="Hardcodet.NotifyIcon.Wpf.NetCore" Version="1.0.18" />
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf.NetCore" Version="1.1.5" />
   </ItemGroup>
   
   <ItemGroup>
