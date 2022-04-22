@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
     <OutputType>library</OutputType>
     <RootNamespace>XOutput</RootNamespace>
     <Authors>Ármin Csutorás</Authors>
@@ -19,6 +19,14 @@
   <ItemGroup>
     <ProjectReference Include="..\XOutput.Core\XOutput.Core.csproj" />
     <ProjectReference Include="..\XOutput.Api\XOutput.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <Compile Remove="Rest\HttpJsonClient.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.1'">
+    <Compile Remove="Rest\HttpJsonClient_old.cs" />
   </ItemGroup>
 
   <ItemGroup>

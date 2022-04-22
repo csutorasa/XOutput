@@ -50,7 +50,7 @@ namespace XOutput.Websocket
                     return;
                 }
                 var acceptedHandler = acceptedHandlers[0];
-                var ws = await httpContext.WebSockets.AcceptWebSocketAsync(null).ConfigureAwait(false);
+                var ws = await httpContext.WebSockets.AcceptWebSocketAsync().ConfigureAwait(false);
                 if (ws == null)
                 {
                     return;

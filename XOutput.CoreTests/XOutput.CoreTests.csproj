@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>XOutput</RootNamespace>
     <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
   </PropertyGroup>

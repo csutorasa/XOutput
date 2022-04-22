@@ -2,8 +2,8 @@ name: Build XOutput
 
 env:
   VERSION: 4.0.0
-  SERVER_TARGET: 'netcoreapp5.0'
-  GUI_TARGET: 'net5.0-windows'
+  SERVER_TARGET: 'net6.0-windows'
+  GUI_TARGET: 'net6.0-windows'
   SONARCLOUD_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
 
 on:
@@ -22,11 +22,11 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '5.0.x'
+        dotnet-version: '6.0.x'
     - uses: actions/setup-java@v2
       with:
         distribution: 'zulu'
-        java-version: '15'
+        java-version: '17'
     - name: Cache app
       uses: actions/cache@v2
       with:

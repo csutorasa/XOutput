@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>library</OutputType>
-    <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <RootNamespace>XOutput.Mapping</RootNamespace>
     <PackageId>XOutput.Mapping</PackageId>
     <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
