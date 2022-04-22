@@ -3,13 +3,8 @@ import './index.scss';
 import { render } from 'react-dom';
 import { RootElement } from './ui/RootElement';
 import { gamepadService } from './gamepad/GamepadService';
-import { http, websocket } from '@xoutput/client';
 import 'typeface-roboto';
 
-const host = window.location.hostname;
-const port = window.location.port;
-http.initialize(host, port);
-websocket.initialize(host, port);
 gamepadService.start();
 
 function disableResize() {

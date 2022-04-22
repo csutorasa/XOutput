@@ -1,14 +1,6 @@
 export class HttpService {
-  private host: string;
-  private port: string;
-
-  initialize(host: string, port: string) {
-    this.host = host;
-    this.port = port;
-  }
-
   get<T>(path: string): Promise<T> {
-    return fetch(`http://${this.host}:${this.port}/api${path}`, {
+    return fetch(`/api${path}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -17,7 +9,7 @@ export class HttpService {
   }
 
   post<T>(path: string, body?: object): Promise<T> {
-    return fetch(`http://${this.host}:${this.port}/api${path}`, {
+    return fetch(`/api${path}`, {
       method: 'POST',
       body: body != null ? JSON.stringify(body) : null,
       headers: {
@@ -27,7 +19,7 @@ export class HttpService {
   }
 
   put<T>(path: string, body?: object): Promise<T> {
-    return fetch(`http://${this.host}:${this.port}/api${path}`, {
+    return fetch(`/api${path}`, {
       method: 'PUT',
       body: body != null ? JSON.stringify(body) : null,
       headers: {
@@ -37,7 +29,7 @@ export class HttpService {
   }
 
   delete<T>(path: string, body?: object): Promise<T> {
-    return fetch(`http://${this.host}:${this.port}/api${path}`, {
+    return fetch(`/api${path}`, {
       method: 'DELETE',
       body: body != null ? JSON.stringify(body) : null,
       headers: {
