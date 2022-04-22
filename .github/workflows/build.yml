@@ -116,7 +116,7 @@ jobs:
     - name: Copy resources
       run: move bin app\bin && move @xoutput\webapp\webapp app\webapp
     - name: Create package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: XOutput
         path: ./app/
