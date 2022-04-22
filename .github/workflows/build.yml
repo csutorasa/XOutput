@@ -2,7 +2,7 @@ name: Build XOutput
 
 env:
   VERSION: 4.0.0
-  SERVER_TARGET: 'net6.0-windows'
+  SERVER_TARGET: 'net6.0'
   GUI_TARGET: 'net6.0-windows'
   SONARCLOUD_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
 
