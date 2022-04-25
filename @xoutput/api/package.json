@@ -30,7 +30,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
-    "eslint": "^8.13.0",
+    "eslint": "^8.14.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.29.4",
     "lint-staged": "^12.4.0",
