@@ -13,6 +13,7 @@
   "ControllerDisconnected": "{0} is disconnected.",
   "DPad": "DPad",
   "Deadzone": "Deadzone",
+  "AntiDeadzone": "Anti-Deadzone",
   "DiagnosticsMenu": "Diagnostics",
   "DirectInput": "DirectInput",
   "Disable": "Disable",

@@ -74,6 +74,19 @@ namespace XOutput.UI
             }
         }
 
+        public decimal? AntiDeadzone
+        {
+            get => (decimal)mapperData.AntiDeadzone * 100;
+            set
+            {
+                if ((decimal)mapperData.AntiDeadzone != value)
+                {
+                    mapperData.AntiDeadzone = (double)(value ?? 100) / 100;
+                    OnPropertyChanged(nameof(AntiDeadzone));
+                }
+            }
+        }
+
         private Visibility configVisibility;
         public Visibility ConfigVisibility
         {

@@ -13,6 +13,7 @@
   "ControllerDisconnected": "Контроллер \"{0}\" отключен.",
   "DPad": "DPad",
   "Deadzone": "Мертвая зона",
+  "AntiDeadzone": "Anti-Мертвая зона",
   "DiagnosticsMenu": "Диагностика",
   "DirectInput": "DirectInput",
   "Disable": "Отключить",
