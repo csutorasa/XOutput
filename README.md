@@ -46,7 +46,7 @@ Install:
 -   Visual C++ Redistributable for Visual Studio 2015 32-bit
 -   Visual C++ Redistributable for Visual Studio 2015 64-bit
 -   all the drivers for your controllers
--   [.NET 5 ASP.NET and Desktop runtime](https://dotnet.microsoft.com/download)
+-   [.NET 6 ASP.NET and Desktop runtime](https://dotnet.microsoft.com/download)
 -   if you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
 ### Download XOutput
@@ -103,7 +103,7 @@ Manage process whitelist manually (use this method only, if you want to use HidG
 
 ## Developer Information
 
-The 4.x version backend is built with .NET 5, you will need to [download it](https://dotnet.microsoft.com/download).
+The 4.x version backend is built with .NET 6, you will need to [download it](https://dotnet.microsoft.com/download).
 
 | Action                         | Required dependency  |
 | ------------------------------ | -------------------- |
