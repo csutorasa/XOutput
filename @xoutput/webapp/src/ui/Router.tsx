@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Switch, Route, Redirect, withRouter, RouteComponentProps, useParams } from 'react-router';
+import { Route, Routes, useParams } from 'react-router';
 import withStyles from '@mui/styles/withStyles';
 import { Styled, StyleGenerator } from '../utils';
 import { Notifications } from './notifications/Notifications';
@@ -24,56 +24,55 @@ const styles: StyleGenerator<ClassNames> = (theme) => ({
 
 export type RouterProps = {};
 
-type InternalRouterProps = Styled<ClassNames> & RouteComponentProps & RouterProps;
+type InternalRouterProps = Styled<ClassNames> & RouterProps;
 
-type ReadParamsProps<T> = {
+type ParamType = string | Record<string, string | undefined>;
+
+type ReadParamsProps<T extends ParamType> = {
   children: (data: T) => ReactElement;
 };
 
-const ReadParams = <T,>({ children }: ReadParamsProps<T>) => {
-  const params = useParams<T>();
+const ReadParams = <T extends ParamType>({ children }: ReadParamsProps<T>) => {
+  const params: any = useParams<T>();
   return children(params);
 };
 
 const RouterComponent = ({ classes }: InternalRouterProps) => {
   return (
     <>
-      <Switch>
+      <Routes>
         <Route path="/emulation" />
         <Route>
           <MainMenu />
         </Route>
-      </Switch>
+      </Routes>
       <div className={classes.mainContent}>
-        <Switch>
-          <Route path="/" exact>
+        <Routes>
+          <Route path="/">
             <div></div>
           </Route>
-          <Route path="/inputs" exact>
+          <Route path="/inputs">
             <InputDevices></InputDevices>
           </Route>
           <Route path="/inputs/:id">
             <ReadParams>{({ id }: { id: string }) => <InputDevice id={id}></InputDevice>}</ReadParams>
           </Route>
-          <Route path="/emulated/controllers" exact>
+          <Route path="/emulated/controllers">
             <EmulatedControllers></EmulatedControllers>
           </Route>
-          <Route path="/mapped/controllers" exact>
+          <Route path="/mapped/controllers">
             <MappedControllers></MappedControllers>
           </Route>
-          <Route path="/inputreader" exact>
+          <Route path="/inputreader">
             <InputReader></InputReader>
           </Route>
-          <Route path="/notifications" exact>
+          <Route path="/notifications">
             <Notifications></Notifications>
           </Route>
-          <Route>
-            <Redirect to="/" />
-          </Route>
-        </Switch>
+        </Routes>
       </div>
     </>
   );
 };
 
-export const Router = withRouter(withStyles(styles)(RouterComponent));
+export const Router = withStyles(styles)(RouterComponent);

@@ -30,8 +30,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-query": "^3.39.2",
-    "react-router": "^5.3.1",
-    "react-router-dom": "^5.3.1",
+    "react-router": "^6.3.0",
+    "react-router-dom": "^6.3.0",
     "typeface-roboto": "1.1.13"
   },
   "devDependencies": {
