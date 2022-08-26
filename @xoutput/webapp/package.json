@@ -27,7 +27,7 @@
     "@xoutput/client": "file:../client",
     "moment": "^2.29.4",
     "qrcode": "^1.5.1",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-dom": "^17.0.2",
     "react-query": "^3.39.2",
     "react-router": "^5.3.1",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@types/qrcode": "^1.5.0",
-    "@types/react": "^17.0.44",
+    "@types/react": "^18.0.17",
     "@types/react-dom": "^17.0.14",
     "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.3",
