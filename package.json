@@ -19,11 +19,11 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
-    "concurrently": "^7.1.0",
+    "concurrently": "^7.3.0",
     "eslint": "^8.22.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.31.0",
-    "husky": "^7.0.4",
+    "husky": "^8.0.1",
     "prettier": "^2.7.1"
   },
   "scripts": {
