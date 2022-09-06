@@ -45,7 +45,7 @@
     "css-loader": "^6.7.1",
     "eslint": "^8.22.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-react": "^7.31.0",
+    "eslint-plugin-react": "^7.31.7",
     "html-webpack-plugin": "^5.5.0",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
