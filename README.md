@@ -7,9 +7,73 @@
 
 # XOutput
 
-If you have an older or not supported game controller (gamepad, wheel, joystick, etc.), but XBox 360 controllers are supported you can use this software and enjoy gaming with your controller.
 
-XOutput is a software that can convert DirectInput into XInput. DirectInput data is read and sent to a virtual XInput (Xbox 360 Controller) device. XInput is the new standard game controller input on windows, and DirectInput can no longer be used with Universal Windows Platform software, but with this tool you can use DirectInput devices as well.
+If you have an older or not supported game controller (gamepad, wheel, joystick, etc.),
+but XBox 360 controllers are supported you can use this software and enjoy gaming with your controller.
+
+XOutput is a software that can convert [DirectInput](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ee416842(v=vs.85)) into [XInput](https://docs.microsoft.com/en-us/windows/win32/xinput).
+DirectInput data is read and sent to a virtual XInput (Xbox 360 Controller) device.
+XInput is the new standard game controller input on windows, and DirectInput can no longer be used with [Universal Windows Platform](https://docs.microsoft.com/en-us/windows/uwp/) software, but with this tool you can use DirectInput devices as well.
+
+Problem visualisation
+
+```mermaid
+graph TD
+    subgraph XInput
+        X1(Xbox controller 1) -->|Read hardware input| XD[Xbox controller driver - xusb22.sys]
+        X2(Xbox controller 2) -->|Read hardware input| XD
+        XD -->|Read input| XR[XInput handler - xinput1_3.dll]
+    end
+    subgraph DirectInput
+        D1(fa:fa-gamepad Older controller) -->|Read hardware input| D1D[Controller driver]
+        D2(Joystick) -->|Read hardware input| D2D[Joystick driver]
+        D3(Gaming wheel) -->|Read hardware input| D3D[Gaming wheel driver]
+        D1D -->|Read input| DR[Direct input handler - dinput8.dll]
+        D2D -->|Read input| DR
+        D3D -->|Read input| DR
+    end
+    subgraph Games
+        XR -->|Read XInput| NG[Newer games]
+        XR -->|Read XInput| CG[Compatible games]
+        DR -->|Read DInput| CG[Compatible games]
+        DR -->|Read DInput| OG[Older games]
+    end
+```
+
+Offered solution
+
+```mermaid
+graph TD
+    subgraph XInput
+        X1(Xbox controller 1) -->|Read hardware input| XD[Xbox controller driver - xusb22.sys]
+        X2(Xbox controller 2) -->|Read hardware input| XD
+        XD -->|Read input| XR[XInput handler - xinput1_3.dll]
+    end
+    subgraph DirectInput
+        D1(fa:fa-gamepad Older controller) -->|Read hardware input| D1D[Controller driver]
+        D2(Joystick) -->|Read hardware input| D2D[Joystick driver]
+        D3(Gaming wheel) -->|Read hardware input| D3D[Gaming wheel driver]
+        D1D -->|Read input| DR[Direct input handler - dinput8.dll]
+        D2D -->|Read input| DR
+        D3D -->|Read input| DR
+    end
+    DR -->|Read DInput| XOA[XOutput.App]
+    subgraph Solution
+        DR -->|Read HTML5 gamepad API| BC[Chrome]
+        DR -->|Read HTML5 gamepad API| BF[Firefox]
+        BC -->|Sends input| XOS[XOutput.Server]
+        BF -->|Sends input| XOS[XOutput.Server]
+        XOA -->|Sends input| XOS[XOutput.Server]
+        XOS -->|Control emulation| V[ViGEm]
+    end
+    V -->|Emulate controller| XD
+    subgraph Games
+        XR -->|Read XInput| NG[Newer games]
+        XR -->|Read XInput| CG[Compatible games]
+        DR -->|Read DInput| CG[Compatible games]
+        DR -->|Read DInput| OG[Older games]
+    end
+```
 
 ## General information
 
@@ -75,7 +139,7 @@ Download the application:
 
 ## HidGuardian (exclusive mode)
 
--   Install [HidGuardian](https://forums.vigem.org/topic/271/hidguardian-v1-driver-installation).
+-   Install [HidGuardian](https://vigem.org/projects/HidGuardian/HidGuardian-Gen1-Installation/).
 
 Affected devices and whitelist can be managed by the application, but it needs administrator priviledges.
 
