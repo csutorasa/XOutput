@@ -7,9 +7,67 @@
 
 # XOutput
 
-If you have an older or not supported game controller (gamepad, wheel, joystick, etc.), but XBox 360 controllers are supported you can use this software and enjoy gaming with your controller.
+If you have an older or not supported game controller (gamepad, wheel, joystick, etc.),
+but XBox 360 controllers are supported you can use this software and enjoy gaming with your controller.
 
-XOutput is a software that can convert DirectInput into XInput. DirectInput data is read and sent to a virtual XInput (Xbox 360 Controller) device. XInput is the new standard game controller input on windows, and DirectInput can no longer be used with Universal Windows Platform software, but with this tool you can use DirectInput devices as well.
+XOutput is a software that can convert [DirectInput](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ee416842(v=vs.85)) into [XInput](https://docs.microsoft.com/en-us/windows/win32/xinput).
+DirectInput data is read and sent to a virtual XInput (Xbox 360 Controller) device.
+XInput is the new standard game controller input on windows, and DirectInput can no longer be used with [Universal Windows Platform](https://docs.microsoft.com/en-us/windows/uwp/) software, but with this tool you can use DirectInput devices as well.
+
+Problem visualisation
+
+```mermaid
+graph TD
+    subgraph XInput
+        X1(Xbox controller 1) -->|Read hardware input| XD[Xbox controller driver - xusb22.sys]
+        X2(Xbox controller 2) -->|Read hardware input| XD
+        XD -->|Read input| XR[XInput handler - xinput1_3.dll]
+    end
+    subgraph DirectInput
+        D1(fa:fa-gamepad Older controller) -->|Read hardware input| D1D[Controller driver]
+        D2(Joystick) -->|Read hardware input| D2D[Joystick driver]
+        D3(Gaming wheel) -->|Read hardware input| D3D[Gaming wheel driver]
+        D1D -->|Read input| DR[Direct input handler - dinput8.dll]
+        D2D -->|Read input| DR
+        D3D -->|Read input| DR
+    end
+    subgraph Games
+        XR -->|Read XInput| NG[Newer games]
+        XR -->|Read XInput| CG[Compatible games]
+        DR -->|Read DInput| CG[Compatible games]
+        DR -->|Read DInput| OG[Older games]
+    end
+```
+
+Offered solution
+
+```mermaid
+graph TD
+    subgraph XInput
+        X1(Xbox controller 1) -->|Read hardware input| XD[Xbox controller driver - xusb22.sys]
+        X2(Xbox controller 2) -->|Read hardware input| XD
+        XD -->|Read input| XR[XInput handler - xinput1_3.dll]
+    end
+    subgraph DirectInput
+        D1(fa:fa-gamepad Older controller) -->|Read hardware input| D1D[Controller driver]
+        D2(Joystick) -->|Read hardware input| D2D[Joystick driver]
+        D3(Gaming wheel) -->|Read hardware input| D3D[Gaming wheel driver]
+        D1D -->|Read input| DR[Direct input handler - dinput8.dll]
+        D2D -->|Read input| DR
+        D3D -->|Read input| DR
+    end
+    DR -->|Read DInput| XO[XOutput]
+    subgraph Solution
+        XO -->|Control emulation| V[ViGEm]
+    end
+    V -->|Emulate controller| XD
+    subgraph Games
+        XR -->|Read XInput| NG[Newer games]
+        XR -->|Read XInput| CG[Compatible games]
+        DR -->|Read DInput| CG[Compatible games]
+        DR -->|Read DInput| OG[Older games]
+    end
+```
 
 ## General information
 
@@ -34,7 +92,7 @@ This version is the stable version.
 
 Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, legacy)
 
-a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases) (recommended)
+a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases/latest) (recommended)
 
 b) Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
 
@@ -46,13 +104,12 @@ Install:
 -   Visual C++ Redistributable for Visual Studio 2015 32-bit
 -   Visual C++ Redistributable for Visual Studio 2015 64-bit
 -   all the drivers for your controllers
--   [.Net Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42642) if you do not have Windows 10
+-   [.Net Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42642) if you do not have Windows 10 or newer
 -   if you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
 ### Download XOutput
 
 -   Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
--   Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
 -   Unzip to any directory
 
 ## How to upgrade
@@ -60,9 +117,8 @@ Install:
 Download the application:
 
 -   Download the [latest stable release](https://github.com/csutorasa/XOutput/releases/latest)
--   Download the [latest development release](https://ci.appveyor.com/project/csutorasa/xoutput/build/artifacts), development release is not stable, should be used only to test new features and bugfixes before release
 -   Unzip to the same directory as before
--   Delete the old `settings.json` file before starting the application
+-   Delete the old `settings.json` file before starting the application and configure the controllers again
 
 ## How to use
 
@@ -76,23 +132,23 @@ Force feedback can be disabled for each device.
 
 ### Game controllers
 
-The available input devices are shown in the Game Controllers section. Choose a  device and click 'Edit'.
+The available input devices are shown in the Game Controllers section. Choose a device and click `Edit`.
 
 On the configuration screen there are 3 blocks. The left block shows the input, the right one shows the emulated output and in the middle is where the mapping can be set. For each output axis or button, you can choose from the input axes and buttons.
 
-1.  Press 'Configure All' to set the mapping all at once, or press 'Configure' on each field to set them individually.
+1.  Press `Configure All` to set the mapping all at once, or press `Configure` on each field to set them individually.
 2.  Press the button or move the axis from one end to the other.
 3.  Check your mapping comparing the input and output blocks.
 4.  If needed, you can apply deadzone values to axes. (more info below)
 5.  Close the configuration window
-6.  Save the settings using the 'File->Save' menu or the button located at the bottom right of the main window.
-7.  Select 'Start' on the device.
+6.  Save the settings using the `File->Save` menu or the button located at the bottom right of the main window.
+7.  Select `Start` on the device.
 
-You can check if it is working in the Windows settings, or just select 'File->Game controllers', that opens the Windows calibration for you. An Xbox gamepad should have appeared in the list.
+You can check if it is working in the Windows settings, or just select `File->Game controllers`, that opens the Windows calibration for you. An Xbox gamepad should have appeared in the list.
 
 ## HidGuardian (exclusive mode)
 
--   Install [HidGuardian](https://forums.vigem.org/topic/271/hidguardian-v1-driver-installation).
+-   Install [HidGuardian](https://vigem.org/projects/HidGuardian/HidGuardian-Gen1-Installation/).
 
 Affected devices and whitelist can be managed by the application, but it needs administrator priviledges.
 
