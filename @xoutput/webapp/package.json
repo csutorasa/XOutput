@@ -22,7 +22,7 @@
     "@mui/icons-material": "^5.10.2",
     "@mui/material": "^5.10.2",
     "@mui/styled-engine": "^5.10.2",
-    "@mui/styles": "^5.10.2",
+    "@mui/styles": "^5.10.10",
     "@xoutput/api": "file:../api",
     "@xoutput/client": "file:../client",
     "moment": "^2.29.4",
