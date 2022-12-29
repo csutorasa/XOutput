@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>library</OutputType>
-    <TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
     <RootNamespace>XOutput</RootNamespace>
     <Authors>Ármin Csutorás</Authors>
     <PackageId>XOutput.Api</PackageId>

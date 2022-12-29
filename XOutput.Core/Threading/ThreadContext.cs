@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace XOutput.Threading
             this.result = result;
         }
 
+        [SupportedOSPlatform("windows")]
         public ThreadContext SetApartmentState(ApartmentState state)
         {
             thread.SetApartmentState(state);

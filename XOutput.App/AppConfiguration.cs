@@ -1,4 +1,5 @@
-﻿using XOutput.DependencyInjection;
+﻿using XOutput.Configuration;
+using XOutput.DependencyInjection;
 using XOutput.Rest;
 using XOutput.Rest.Help;
 
@@ -10,6 +11,12 @@ namespace XOutput.App
         public static IHttpClientProvider HttpClientProvider()
         {
             return new DynamicHttpClientProvider();
+        }
+
+        [ResolverMethod]
+        public static RegistryModifierService GetRegistryModifierService()
+        {
+            return new RegistryModifierService();
         }
 
         [ResolverMethod]

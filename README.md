@@ -7,7 +7,6 @@
 
 # XOutput
 
-
 If you have an older or not supported game controller (gamepad, wheel, joystick, etc.),
 but XBox 360 controllers are supported you can use this software and enjoy gaming with your controller.
 
@@ -110,7 +109,7 @@ Install:
 -   Visual C++ Redistributable for Visual Studio 2015 32-bit
 -   Visual C++ Redistributable for Visual Studio 2015 64-bit
 -   all the drivers for your controllers
--   [.NET 6 ASP.NET and Desktop runtime](https://dotnet.microsoft.com/download)
+-   [.NET 7 ASP.NET and Desktop runtime](https://dotnet.microsoft.com/download)
 -   if you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).
 
 ### Download XOutput
@@ -167,7 +166,7 @@ Manage process whitelist manually (use this method only, if you want to use HidG
 
 ## Developer Information
 
-The 4.x version backend is built with .NET 6, you will need to [download it](https://dotnet.microsoft.com/download).
+The 4.x version backend is built with .NET 7, you will need to [download it](https://dotnet.microsoft.com/download).
 
 | Action                         | Required dependency  |
 | ------------------------------ | -------------------- |

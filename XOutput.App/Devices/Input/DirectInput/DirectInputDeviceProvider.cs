@@ -104,7 +104,7 @@ namespace XOutput.App.Devices.Input.DirectInput
             }
         }
 
-        [HandleProcessCorruptedStateExceptions, SecurityCritical]
+        [SecurityCritical]
         private IInputDevice CreateDevice(DeviceInstance deviceInstance, List<string> uniqueIds)
         {
             try

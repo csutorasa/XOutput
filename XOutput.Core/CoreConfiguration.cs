@@ -27,12 +27,6 @@ namespace XOutput
         }
 
         [ResolverMethod]
-        public static RegistryModifierService GetRegistryModifierService()
-        {
-            return new RegistryModifierService();
-        }
-
-        [ResolverMethod]
         public static IVersionGetter GetIVersionGetter()
         {
             return new GithubVersionGetter();

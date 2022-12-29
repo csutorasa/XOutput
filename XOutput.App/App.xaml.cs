@@ -75,7 +75,7 @@ namespace XOutput.App
             CheckUpdate(globalContext.Resolve<UpdateChecker>(), notificationService);
         }
 
-        [HandleProcessCorruptedStateExceptions, SecurityCritical]
+        [SecurityCritical]
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             UnhandledException(e.ExceptionObject as Exception, LogLevel.Error);
