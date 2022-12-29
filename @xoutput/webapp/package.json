@@ -17,7 +17,7 @@
   "author": "Ármin Csutorás",
   "license": "MIT",
   "dependencies": {
-    "@emotion/react": "^11.10.0",
+    "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.10.2",
     "@mui/material": "^5.10.2",
