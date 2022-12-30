@@ -17,8 +17,8 @@
     "@xoutput/webapp"
   ],
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.35.1",
-    "@typescript-eslint/parser": "^5.35.1",
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
+    "@typescript-eslint/parser": "^5.47.1",
     "concurrently": "^7.3.0",
     "eslint": "^8.22.0",
     "eslint-config-google": "^0.14.0",
