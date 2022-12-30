@@ -3,9 +3,9 @@ import { http } from '../http';
 
 export const emulatedControllersClient = {
   getControllers() {
-    return http.get<EmulatedControllerInfo[]>('/api/emulated/controllers');
+    return http.get<EmulatedControllerInfo[]>('/emulated/controllers');
   },
   deleteController(id: string) {
-    return http.delete(`/api/emulated/controllers/${id}`);
+    return http.delete(`/emulated/controllers/${id}`);
   },
 };

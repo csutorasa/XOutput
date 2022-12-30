@@ -1,20 +1,19 @@
 import React, { ReactNode } from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import ListItem from '@mui/material/ListItem';
+import { Link } from 'react-router-dom';
+import ListItemButton from '@mui/material/ListItemButton';
 
-export type MainMenuListItemProps = RouteComponentProps & {
+export type MainMenuListItemProps = {
   onClick: () => void;
   path: string;
   children: ReactNode;
 };
 
-const MainMenuListItemComponent = ({ location, path, onClick, children }: MainMenuListItemProps) => {
+const MainMenuListItemComponent = ({ path, onClick, children }: MainMenuListItemProps) => {
   return (
-    <ListItem button component={Link} to={path} onClick={() => (onClick ? onClick() : null)} selected={path === location.pathname}>
+    <ListItemButton component={Link} to={path} onClick={() => (onClick ? onClick() : null)} selected={path === location.pathname}>
       {children}
-    </ListItem>
+    </ListItemButton>
   );
 };
 
-export const MainMenuListItem = withRouter(MainMenuListItemComponent);
-export default MainMenuListItem;
+export const MainMenuListItem = MainMenuListItemComponent;

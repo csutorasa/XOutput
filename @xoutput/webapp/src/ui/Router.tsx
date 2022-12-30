@@ -42,33 +42,17 @@ const RouterComponent = ({ classes }: InternalRouterProps) => {
     <>
       <Routes>
         <Route path="/emulation" />
-        <Route>
-          <MainMenu />
-        </Route>
+        <Route path="*" element={<MainMenu />} />
       </Routes>
       <div className={classes.mainContent}>
         <Routes>
-          <Route path="/">
-            <div></div>
-          </Route>
-          <Route path="/inputs">
-            <InputDevices></InputDevices>
-          </Route>
-          <Route path="/inputs/:id">
-            <ReadParams>{({ id }: { id: string }) => <InputDevice id={id}></InputDevice>}</ReadParams>
-          </Route>
-          <Route path="/emulated/controllers">
-            <EmulatedControllers></EmulatedControllers>
-          </Route>
-          <Route path="/mapped/controllers">
-            <MappedControllers></MappedControllers>
-          </Route>
-          <Route path="/inputreader">
-            <InputReader></InputReader>
-          </Route>
-          <Route path="/notifications">
-            <Notifications></Notifications>
-          </Route>
+          <Route path="/" element={<>asd</>} />
+          <Route path="/inputs" element={<InputDevices />} />
+          <Route path="/inputs/:id" element={<ReadParams>{({ id }: { id: string }) => <InputDevice id={id}></InputDevice>}</ReadParams>} />
+          <Route path="/emulated/controllers" element={<EmulatedControllers />} />
+          <Route path="/mapped/controllers" element={<MappedControllers />} />
+          <Route path="/inputreader" element={<InputReader />} />
+          <Route path="/notifications" element={<Notifications />} />
         </Routes>
       </div>
     </>

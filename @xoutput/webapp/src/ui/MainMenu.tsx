@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -134,4 +133,4 @@ const MainMenuComponent = ({ classes }: InternalMainMenuProps) => {
   );
 };
 
-export const MainMenu = withRouter(withStyles(styles)(MainMenuComponent));
+export const MainMenu = withStyles(styles)(MainMenuComponent);
