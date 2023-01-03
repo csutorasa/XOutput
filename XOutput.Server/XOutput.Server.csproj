@@ -7,7 +7,7 @@
     <Authors>Ármin Csutorás</Authors>
     <PackageId>XOutput.Server</PackageId>
     <NeutralLanguage>en</NeutralLanguage>
-    <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
+    <Copyright>Copyright (c) 2023 Ármin Csutorás</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +17,6 @@
     <ProjectReference Include="..\XOutput.Mapping\XOutput.Mapping.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Nefarius.ViGEm.Client" Version="1.19.199" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 

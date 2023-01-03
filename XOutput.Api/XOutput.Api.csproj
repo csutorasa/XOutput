@@ -9,7 +9,7 @@
     <Title>XOutput API</Title>
     <Description>This library contains the types for communication between the XOutput servers and the clients.</Description>
     <PackageLicenseFile>content/LICENSE</PackageLicenseFile>
-    <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
+    <Copyright>Copyright (c) 2023 Ármin Csutorás</Copyright>
     <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
     <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

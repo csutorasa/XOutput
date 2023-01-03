@@ -5,7 +5,7 @@
     <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
     <RootNamespace>XOutput</RootNamespace>
     <PackageId>XOutput.Core</PackageId>
-    <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
+    <Copyright>Copyright (c) 2023 Ármin Csutorás</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

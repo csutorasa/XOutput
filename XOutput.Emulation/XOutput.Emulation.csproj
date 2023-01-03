@@ -5,7 +5,7 @@
     <TargetFrameworks>net7.0</TargetFrameworks>
     <RootNamespace>XOutput.Emulation</RootNamespace>
     <PackageId>XOutput.Emulation</PackageId>
-    <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
+    <Copyright>Copyright (c) 2023 Ármin Csutorás</Copyright>
   </PropertyGroup>
   
   <ItemGroup>

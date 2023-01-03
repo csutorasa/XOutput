@@ -9,7 +9,7 @@
     <Title>XOutput Client</Title>
     <Description>This library contains the client logic for communication between XOutput servers and clients.</Description>
     <PackageLicenseFile>content/LICENSE</PackageLicenseFile>
-    <Copyright>Copyright (c) 2021 Ármin Csutorás</Copyright>
+    <Copyright>Copyright (c) 2023 Ármin Csutorás</Copyright>
     <PackageProjectUrl>https://github.com/csutorasa/XOutput</PackageProjectUrl>
     <RepositoryUrl>https://github.com/csutorasa/XOutput</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
