@@ -22,7 +22,7 @@
     "concurrently": "^7.3.0",
     "eslint": "^8.22.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-react": "^7.31.0",
+    "eslint-plugin-react": "^7.31.11",
     "husky": "^8.0.1",
     "prettier": "^2.7.1"
   },
