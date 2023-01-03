@@ -9,7 +9,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Nefarius.ViGEm.Client" Version="1.19.199" />
+    <PackageReference Include="Nefarius.ViGEm.Client" Version="1.21.232" />
   </ItemGroup>
 
   <ItemGroup>
