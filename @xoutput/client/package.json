@@ -35,7 +35,7 @@
     "@typescript-eslint/parser": "^5.47.1",
     "eslint": "^8.30.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react": "^7.32.2",
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.1",
     "ts-loader": "^9.4.2",
