@@ -10,6 +10,7 @@ using XOutput.Devices;
 using XOutput.Devices.Input;
 using XOutput.Devices.Input.DirectInput;
 using XOutput.Devices.Mapper;
+using XOutput.Devices.XInput;
 using XOutput.Devices.XInput.SCPToolkit;
 using XOutput.Devices.XInput.Vigem;
 using XOutput.Diagnostics;
@@ -259,7 +260,8 @@ namespace XOutput.UI.Windows
 
         public void AddController(InputMapper mapper)
         {
-            var gameController = new GameController(mapper ?? settings.CreateMapper(Guid.NewGuid().ToString()));
+            var gameController =
+                new GameController(mapper ?? settings.CreateMapper(Guid.NewGuid().ToString()));
             Controllers.Instance.Add(gameController);
 
             var controllerView = new ControllerView(new ControllerViewModel(new ControllerModel(), gameController, Model.IsAdmin, log));

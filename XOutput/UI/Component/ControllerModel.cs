@@ -1,4 +1,7 @@
-﻿using System.Windows.Media;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Media;
 using XOutput.Devices;
 
 namespace XOutput.UI.Component
@@ -74,6 +77,22 @@ namespace XOutput.UI.Component
             }
         }
         public string DisplayName { get { return Controller.ToString(); } }
+
+        private int selectedOutputIndex;
+        public int SelectedOutputIndex
+        {
+            // get => OutputDevices.Instance.GetDevices().IndexOf(controller.XOutputInterface);
+            get => selectedOutputIndex;
+            set
+            {
+                if (selectedOutputIndex != value)
+                {
+                    selectedOutputIndex = value;
+                    OnPropertyChanged(nameof(SelectedOutputIndex));
+                }
+            }
+        }
+
 
         public void RefreshName()
         {

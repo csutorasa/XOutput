@@ -34,5 +34,14 @@ namespace XOutput.UI.Component
         {
             RemoveClicked?.Invoke(this);
         }
+
+        private void GroupSelect(object sender, RoutedEventArgs e)
+        {
+            // Get the selected index of the ComboBox
+            if (!(sender is ComboBox comboBox)) return;
+            var selectedIndex = comboBox.SelectedIndex;
+            viewModel.SetOutputDevice(selectedIndex);
+        }
+        
     }
 }

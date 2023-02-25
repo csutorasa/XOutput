@@ -35,30 +35,35 @@ namespace XOutput.Devices
         /// <summary>
         /// Gets if any XInput emulation is installed.
         /// </summary>
-        public bool HasXOutputInstalled => xOutputInterface != null;
+        public bool HasXOutputInstalled => XOutputInterface != null;
         /// <summary>
         /// Gets if force feedback is supported.
         /// </summary>
-        public bool ForceFeedbackSupported => xOutputInterface is VigemDevice;
+        public bool ForceFeedbackSupported => XOutputInterface is VigemDevice;
         /// <summary>
         /// Gets the force feedback device.
         /// </summary>
         public IInputDevice ForceFeedbackDevice { get; set; }
 
+        /// <summary>
+        /// Gets the output device associated with this controller.
+        /// </summary>
+        public IXOutputInterface XOutputInterface { get; set; }
+
         private static readonly ILogger logger = LoggerFactory.GetLogger(typeof(GameController));
 
         private readonly InputMapper mapper;
         private readonly XOutputDevice xInput;
-        private readonly IXOutputInterface xOutputInterface;
         private Thread thread;
         private bool running;
-        private int controllerCount = 0;
+        private int controllerCount = -1;
         private Nefarius.ViGEm.Client.Targets.IXbox360Controller controller;
 
         public GameController(InputMapper mapper)
         {
             this.mapper = mapper;
-            xOutputInterface = CreateXOutput();
+            var xOutputInterface = OutputDevices.Instance.GetDevices().ElementAtOrDefault(mapper.OutputDeviceIndex);
+            XOutputInterface = xOutputInterface;
             xInput = new XOutputDevice(mapper);
             if (!string.IsNullOrEmpty(mapper.ForceFeedbackDevice))
             {
@@ -69,25 +74,6 @@ namespace XOutput.Devices
                 }
             }
             running = false;
-        }
-
-        private IXOutputInterface CreateXOutput()
-        {
-            if (VigemDevice.IsAvailable())
-            {
-                logger.Info("ViGEm devices are used.");
-                return new VigemDevice();
-            }
-            else if (ScpDevice.IsAvailable())
-            {
-                logger.Warning("SCP Toolkit devices are used.");
-                return new ScpDevice();
-            }
-            else
-            {
-                logger.Error("Neither ViGEm nor SCP devices can be used.");
-                return null;
-            }
         }
 
         ~GameController()
@@ -102,7 +88,7 @@ namespace XOutput.Devices
         {
             Stop();
             xInput?.Dispose();
-            xOutputInterface?.Dispose();
+            XOutputInterface?.Dispose();
         }
 
         /// <summary>
@@ -114,34 +100,22 @@ namespace XOutput.Devices
             {
                 return 0;
             }
-            controllerCount = Controllers.Instance.GetId();
+            controllerCount = OutputDevices.Instance.GetDevices().IndexOf(XOutputInterface);
             if (controller != null)
             {
                 controller.FeedbackReceived -= ControllerFeedbackReceived;
             }
-            if (xOutputInterface.Unplug(controllerCount))
+            thread = new Thread(() => ReadAndReportValues(onStop));
+            running = true;
+            thread.Name = $"Emulated controller {controllerCount} output refresher";
+            thread.IsBackground = true;
+            thread.Start();
+            logger.Info($"Emulation started on {ToString()}.");
+            if (ForceFeedbackSupported)
             {
-                // Wait for unplugging
-                Thread.Sleep(10);
-            }
-            if (xOutputInterface.Plugin(controllerCount))
-            {
-                thread = new Thread(() => ReadAndReportValues(onStop));
-                running = true;
-                thread.Name = $"Emulated controller {controllerCount} output refresher";
-                thread.IsBackground = true;
-                thread.Start();
-                logger.Info($"Emulation started on {ToString()}.");
-                if (ForceFeedbackSupported)
-                {
-                    logger.Info($"Force feedback mapping is connected on {ToString()}.");
-                    controller = ((VigemDevice)xOutputInterface).GetController(controllerCount);
-                    controller.FeedbackReceived += ControllerFeedbackReceived;
-                }
-            }
-            else
-            {
-                resetId();
+                logger.Info($"Force feedback mapping is connected on {ToString()}.");
+                controller = ((VigemDevice)XOutputInterface).GetController(controllerCount);
+                controller.FeedbackReceived += ControllerFeedbackReceived;
             }
             return controllerCount;
         }
@@ -160,7 +134,6 @@ namespace XOutput.Devices
                     controller.FeedbackReceived -= ControllerFeedbackReceived;
                     logger.Info($"Force feedback mapping is disconnected on {ToString()}.");
                 }
-                xOutputInterface?.Unplug(controllerCount);
                 logger.Info($"Emulation stopped on {ToString()}.");
                 resetId();
                 thread?.Interrupt();
@@ -195,7 +168,7 @@ namespace XOutput.Devices
 
         private void XInputInputChanged(object sender, DeviceInputChangedEventArgs e)
         {
-            if (!xOutputInterface.Report(controllerCount, XInput.GetValues()))
+            if (!XOutputInterface.Report(controllerCount, XInput.GetValues()))
             {
                 Stop();
             }
@@ -208,10 +181,10 @@ namespace XOutput.Devices
 
         private void resetId()
         {
-            if (controllerCount != 0)
+            if (controllerCount > -1)
             {
                 Controllers.Instance.DisposeId(controllerCount);
-                controllerCount = 0;
+                controllerCount = -1;
             }
         }
     }

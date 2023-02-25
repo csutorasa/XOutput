@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Media;
 using System.Windows.Threading;
 using XOutput.Devices;
@@ -21,10 +24,17 @@ namespace XOutput.UI.Component
             Model.ButtonText = "Start";
             Model.Background = Brushes.White;
             Model.Controller.XInput.InputChanged += InputDevice_InputChanged;
+            Model.SelectedOutputIndex = OutputDevices.Instance.GetDevices().IndexOf(Model.Controller.XOutputInterface);
             timer.Interval = TimeSpan.FromMilliseconds(BackgroundDelayMS);
             timer.Tick += Timer_Tick;
+            
+            outputGroupItems = new List<string>(OutputDevices.MaxOutputDevices);
+            for (var i = 1; i <= OutputDevices.MaxOutputDevices; i++)
+            {
+                outputGroupItems.Add($"Controller {i}");
+            }
         }
-
+        
         public void Edit()
         {
             var controllerSettingsWindow = new ControllerSettingsWindow(new ControllerSettingsViewModel(new ControllerSettingsModel(), Model.Controller, isAdmin), Model.Controller);
@@ -48,19 +58,19 @@ namespace XOutput.UI.Component
         {
             if (!Model.Started)
             {
-                int controllerCount = 0;
+                int controllerCount = -1;
                 controllerCount = Model.Controller.Start(() =>
                 {
                     Model.ButtonText = "Start";
                     log?.Invoke(string.Format(LanguageModel.Instance.Translate("EmulationStopped"), Model.Controller.DisplayName));
                     Model.Started = false;
                 });
-                if (controllerCount != 0)
+                if (controllerCount > -1)
                 {
                     Model.ButtonText = "Stop";
                     log?.Invoke(string.Format(LanguageModel.Instance.Translate("EmulationStarted"), Model.Controller.DisplayName, controllerCount));
                 }
-                Model.Started = controllerCount != 0;
+                Model.Started = controllerCount > -1;
             }
         }
 
@@ -81,5 +91,17 @@ namespace XOutput.UI.Component
             timer.Stop();
             timer.Start();
         }
+
+        public void SetOutputDevice(int selectedIndex)
+        {
+            var outputDevices = OutputDevices.Instance.GetDevices();
+            Model.Controller.XOutputInterface =
+                outputDevices.ElementAtOrDefault(selectedIndex) ?? outputDevices.First();
+            Model.Controller.Mapper.OutputDeviceIndex = selectedIndex;
+            Model.SelectedOutputIndex = selectedIndex;
+        }
+        
+        private readonly List<string> outputGroupItems;
+        public List<string> OutputGroupItems => outputGroupItems;
     }
 }

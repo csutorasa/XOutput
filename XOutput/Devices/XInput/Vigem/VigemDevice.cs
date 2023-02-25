@@ -13,6 +13,8 @@ namespace XOutput.Devices.XInput.Vigem
     public sealed class VigemDevice : IXOutputInterface
     {
         private readonly ViGEmClient client;
+        
+        //There's really only one controller
         private readonly Dictionary<int, IXbox360Controller> controllers = new Dictionary<int, IXbox360Controller>();
         private readonly Dictionary<XInputTypes, VigemXbox360ButtonMapping> buttonMappings = new Dictionary<XInputTypes, VigemXbox360ButtonMapping>();
         private readonly Dictionary<XInputTypes, VigemXbox360AxisMapping> axisMappings = new Dictionary<XInputTypes, VigemXbox360AxisMapping>();

@@ -26,6 +26,10 @@ namespace XOutput.Devices.Mapper
         /// Id of the force feedback device.
         /// </summary>
         public string ForceFeedbackDevice { get; set; }
+        /// <summary>
+        /// Output device index
+        /// </summary>
+        public int OutputDeviceIndex { get; set; }
 
         public Dictionary<XInputTypes, MapperDataCollection> Mappings { get; set; }
 

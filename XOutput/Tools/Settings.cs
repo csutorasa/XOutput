@@ -86,6 +86,7 @@ namespace XOutput.Tools
                 mapper = new InputMapper();
                 mapper.Id = id;
                 mapper.Name = "Controller";
+                mapper.OutputDeviceIndex = 0;
                 foreach (var type in XInputHelper.Instance.Values)
                 {
                     mapper.SetMapping(type, new MapperDataCollection(new MapperData()));
