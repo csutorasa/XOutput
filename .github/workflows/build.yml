@@ -74,7 +74,7 @@ jobs:
         Move-Item XOutput.App\bin\Release\$env:GUI_TARGET\XOutput.App.runtimeconfig.json app\XOutput.App.runtimeconfig.json -Force
         Move-Item XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.dll app\SharpDX.dll -Force
         Move-Item XOutput.App\bin\Release\$env:GUI_TARGET\SharpDX.DirectInput.dll app\SharpDX.DirectInput.dll -Force
-        Move-Item XOutput.App\bin\Release\$env:GUI_TARGET\Hardcodet.NotifyIcon.Wpf app\Hardcodet.NotifyIcon.Wpf -Force
+        Move-Item XOutput.App\bin\Release\$env:GUI_TARGET\Hardcodet.NotifyIcon.Wpf.dll app\Hardcodet.NotifyIcon.Wpf.dll -Force
         Move-Item XOutput.App\bin\Release\$env:GUI_TARGET\HIDSharp.dll app\HIDSharp.dll -Force
 
   build_node:
