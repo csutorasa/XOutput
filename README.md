@@ -97,9 +97,10 @@ To join the discussion or just say hi, there is a [discord channel](https://disc
 
 Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, legacy)
 
-a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases) (recommended)
-
-b) Install [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) and all of its dependencies described [here](https://github.com/nefarius/ScpToolkit/blob/master/README.md#installation-requirements)
+| Software                                            | State                         | Download                                                            |
+| --------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------- |
+| [ViGEmBus](https://github.com/nefarius/ViGEmBus)    | Deprecated since Sep 8, 2023  | [ViGEmBus](https://github.com/nefarius/ViGEmBus/releases)           |
+| [ScpToolkit](https://github.com/nefarius/ScpServer) | Deprecated since Mar 20, 2023 | [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) |
 
 ### Install dependencies
 
@@ -136,9 +137,14 @@ Download the application:
 | Client            | Web controller | Web application that allows to emulate a device                                                                                 |
 | Client            | Web client     | Web application that uses the [Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API) |
 
-## HidGuardian (exclusive mode)
+## Hiding original input (exclusive mode)
 
--   Install [HidGuardian](https://vigem.org/projects/HidGuardian/HidGuardian-Gen1-Installation/).
+| Software                                               | State                         | Download                                                                                    |
+| ------------------------------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------- |
+| [HidHide](https://github.com/nefarius/hidhide)         | Active development            | [HidHide](https://github.com/nefarius/HidHide/releases)                                     |
+| [HidGuardian](https://github.com/nefarius/hidguardian) | Deprecated since Jul 27, 2023 | [HidGuardian](https://docs.nefarius.at/projects/HidGuardian/HidGuardian-Gen1-Installation/) |
+
+### HidGuardian
 
 Affected devices and whitelist can be managed by the application, but it needs administrator priviledges.
 
