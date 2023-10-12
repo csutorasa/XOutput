@@ -24,7 +24,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.31.0",
     "husky": "^8.0.1",
-    "prettier": "^2.7.1"
+    "prettier": "^3.0.3"
   },
   "scripts": {
     "prepare": "husky install",
