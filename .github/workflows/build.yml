@@ -86,14 +86,22 @@ jobs:
     - name: Setup node
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '20'
     - name: Cache webapp
       uses: actions/cache@v3
       with:
         key: webapp-${{ github.sha }}
         path: ./@xoutput/webapp/webapp
-    - name: Build node
-      run: npm install && npm run lint --workspaces && npm run build --workspaces && npm run test --workspaces
+    - name: Install pnpm
+      run: npm install --global pnpm
+    - name: Install dependencies
+      run: pnpm -r install
+    - name: Run lint
+      run: pnpm -r run lint
+    - name: Build webapp
+      run: pnpm -r run build
+    - name: Test webapp
+      run: pnpm -r test
 
   create_package:
     runs-on: windows-latest

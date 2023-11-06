@@ -24,11 +24,11 @@ dependencies:
     specifier: ^5.11.0
     version: 5.14.17(@types/react@17.0.69)(react@17.0.2)
   '@xoutput/api':
-    specifier: file:../api
-    version: file:../api
+    specifier: workspace:../api
+    version: link:../api
   '@xoutput/client':
-    specifier: file:../client
-    version: file:../client
+    specifier: workspace:../client
+    version: link:../client
   moment:
     specifier: ^2.29.4
     version: 2.29.4
@@ -4923,17 +4923,3 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
-
-  file:../api:
-    resolution: {directory: ../api, type: directory}
-    name: '@xoutput/api'
-    engines: {node: '>=20.0.0', npm: use-pnpm-instead, pnpm: '>=8.0.0'}
-    dev: false
-
-  file:../client:
-    resolution: {directory: ../client, type: directory}
-    name: '@xoutput/client'
-    engines: {node: '>=20.0.0', npm: use-pnpm-instead, pnpm: '>=8.0.0'}
-    dependencies:
-      '@xoutput/api': link:../api
-    dev: false

@@ -12,6 +12,7 @@
   "scripts": {
     "build": "tsc && vite build",
     "watch": "vite build --watch",
+    "lint": "eslint --ext js,ts,tsx src",
     "fix-format": "eslint --ext js,ts,tsx src --fix && prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "echo \"No test specified\""
   },

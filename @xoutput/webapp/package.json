@@ -7,6 +7,7 @@
     "start": "webpack serve --config webpack.dev.js",
     "build": "webpack.cmd --config webpack.prod.js",
     "watch": "webpack.cmd serve --config webpack.dev.js",
+    "lint-disabled": "eslint --ext js,ts,tsx src",
     "fix-format": "eslint --ext js,ts,tsx src --fix && prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "echo \"No test specified\""
   },
@@ -21,8 +22,8 @@
     "@mui/material": "^5.11.0",
     "@mui/styled-engine": "^5.11.0",
     "@mui/styles": "^5.11.0",
-    "@xoutput/api": "file:../api",
-    "@xoutput/client": "file:../client",
+    "@xoutput/api": "workspace:../api",
+    "@xoutput/client": "workspace:../client",
     "moment": "^2.29.4",
     "qrcode": "^1.5.1",
     "react": "^17.0.2",
