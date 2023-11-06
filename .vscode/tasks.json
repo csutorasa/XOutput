@@ -1,0 +1,68 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "dotnet-build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/XOutput.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "dotnet-watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/XOutput.sln"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "dotnet-format",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "format",
+                "--project",
+                "${workspaceFolder}/XOutput.sln"
+            ]
+        },
+        {
+            "label": "pnpm-install",
+            "command": "pnpm",
+            "type": "shell",
+            "args": [
+                "-r",
+                "install",
+            ]
+        },
+        {
+            "label": "pnpm-build",
+            "command": "pnpm",
+            "type": "shell",
+            "args": [
+                "-r",
+                "run",
+                "build"
+            ]
+        },
+        {
+            "label": "pnpm-format",
+            "command": "pnpm",
+            "type": "shell",
+            "args": [
+                "-r",
+                "run",
+                "fix-format"
+            ]
+        }
+    ]
+}

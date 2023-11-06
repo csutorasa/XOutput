@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "sourceMap": true,
-    "declaration": true,
-    "declarationDir": "./lib",
+    "target": "ES2021",
+    "module": "ES2020",
+    "lib": ["ES2021"],
+    "moduleResolution": "node",
+    "noEmit": true,
+
     "strict": true,
     "strictNullChecks": false,
-    "moduleResolution": "node",
-    "esModuleInterop": true ,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["./lib", "node_modules"]
+  "exclude": ["./lib", "node_modules"],
+  "include": ["src"]
 }

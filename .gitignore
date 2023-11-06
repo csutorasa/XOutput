@@ -1,7 +1,6 @@
 # IDE
 .vs
 */*.csproj.user
-.vscode
 .idea
 
 # Output

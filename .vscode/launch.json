@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch server",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnetbuild",
+            "program": "${workspaceFolder}/XOutput.Server/bin/Debug/net7.0/XOutput.Server.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/XOutput.Server",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        {
+            "name": "Launch app",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnetbuild",
+            "program": "${workspaceFolder}/XOutput.App/bin/Debug/net7.0-windows/XOutput.App.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/XOutput.App",
+            "stopAtEntry": false
+        }
+    ]
+}

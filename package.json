@@ -11,23 +11,9 @@
   "url": "https://github.com/csutorasa/XOutput/issues",
   "author": "Ármin Csutorás",
   "license": "MIT",
-  "workspaces": [
-    "@xoutput/api",
-    "@xoutput/client",
-    "@xoutput/webapp"
-  ],
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.47.1",
-    "@typescript-eslint/parser": "^5.47.1",
-    "concurrently": "^7.3.0",
-    "eslint": "^8.22.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-plugin-react": "^7.31.0",
-    "husky": "^8.0.1",
-    "prettier": "^2.7.1"
-  },
-  "scripts": {
-    "prepare": "husky install",
-    "watch": "concurrently \"npm run watch -w @xoutput/api\" \"npm run watch -w @xoutput/client\" \"npm run watch -w @xoutput/webapp\""
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": "use-pnpm-instead",
+    "pnpm": ">=8.0.0"
   }
 }

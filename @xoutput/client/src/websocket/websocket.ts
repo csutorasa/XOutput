@@ -6,7 +6,7 @@ export class WebSocketService {
       const url = `/websocket/${path}`;
       const websocket = new WebSocket(url);
       let session: WebSocketSessionImpl;
-      let pingInterval: NodeJS.Timeout;
+      let pingInterval: number;
       websocket.onopen = () => {
         session = new WebSocketSessionImpl(websocket);
         this.onOpen();
@@ -45,7 +45,7 @@ export class WebSocketService {
     const message: string = (event as { message?: string }).message;
     console.error(message);
   }
-  private onClose(interval: NodeJS.Timeout): void {
+  private onClose(interval: number): void {
     console.info('Disconnected websocket from host');
     if (interval) {
       clearInterval(interval);

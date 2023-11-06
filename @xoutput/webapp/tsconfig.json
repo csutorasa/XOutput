@@ -1,14 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "CommonJS",
+    "target": "ES2021",
+    "module": "ES2020",
+    "lib": ["ES2021", "DOM"],
+    "moduleResolution": "node",
+    //"noEmit": true,
     "jsx": "react",
-    "sourceMap": true,
+
     "strict": true,
     "strictNullChecks": false,
-    "moduleResolution": "node",
-    "esModuleInterop": true ,
-    "forceConsistentCasingInFileNames": true
+    //"noUnusedLocals": true,
+    //"noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "allowSyntheticDefaultImports": true
   },
-  "exclude": ["./dist", "node_modules"]
+  "exclude": ["./webapp", "node_modules"],
+  "include": ["src"]
 }
