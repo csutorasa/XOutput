@@ -95,11 +95,11 @@ jobs:
     - name: Install pnpm
       run: npm install --global pnpm
     - name: Install dependencies
-      run: pnpm -r install
+      run: pnpm -rinstall
     - name: Run lint
       run: pnpm -r run lint
     - name: Build webapp
-      run: pnpm -r run build
+      run: pnpm -r --workspace-concurrency 1 run build
     - name: Test webapp
       run: pnpm -r test
 
