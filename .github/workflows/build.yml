@@ -2,9 +2,6 @@ name: Build XOutput
 
 env:
   VERSION: 4.0.0
-  SERVER_TARGET: 'net7.0'
-  GUI_TARGET: 'net7.0-windows'
-  SONARCLOUD_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
 
 on:
   push:
@@ -15,6 +12,10 @@ on:
 jobs:
   build_net:
     runs-on: windows-latest
+    env:
+      SERVER_TARGET: 'net7.0'
+      GUI_TARGET: 'net7.0-windows'
+      SONARCLOUD_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
 
     steps:
     - name: Checkout
@@ -95,7 +96,7 @@ jobs:
     - name: Install pnpm
       run: npm install --global pnpm
     - name: Install dependencies
-      run: pnpm -rinstall
+      run: pnpm -r install
     - name: Run lint
       run: pnpm -r run lint
     - name: Build webapp
