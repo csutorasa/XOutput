@@ -17,9 +17,9 @@ class TranslationService {
 
   setLanguage(language: string) {
     if (language === 'Hungarian') {
-      this.data = hungarian.default;
+      this.data = hungarian.default as { [key: string]: string };
     } else {
-      this.data = english.default;
+      this.data = english.default as { [key: string]: string };
     }
   }
 
