@@ -5,73 +5,34 @@ using System.Runtime.InteropServices;
 
 namespace XOutput.App.Devices.Input.DirectInput.Native
 {
-    public static class DInput8
+    public class DInput8 : DllLibrary
     {
+        private delegate HResult DirectInput8CreateDelegate(IntPtr hinst, uint dwVersion, Guid riidltf, out IntPtr ppvOut, IntPtr punkOuter);
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr GetModuleHandle(string lpModuleName);
-
-        [DllImport("dinput8.dll", SetLastError = true)]
-        public static extern HResult DirectInput8Create(IntPtr hinst, uint dwVersion, Guid riidltf, out IntPtr ppvOut, IntPtr punkOuter);
-    }
-
-    public interface IDirectInput8W
-    {
-        object InitializeLifetimeService();
-        object GetLifetimeService();
-    }
-
-    public class ComObject
-    {
-        private readonly object nativeObject;
-        private readonly Type type;
-
-        public ComObject(IntPtr nativePointer)
+        public DInput8() : base("dinput8.dll")
         {
-            nativeObject = Marshal.GetObjectForIUnknown(nativePointer);
-            type = nativeObject.GetType();
+
         }
 
-        protected object ProxyToNative(string methodName, params object[] parameters)
-        {
-            return ProxyToNative(methodName, parameters.Select(p => p.GetType()).ToArray(), parameters);
-        }
-
-        protected object ProxyToNative(MethodBase methodInfo, params object[] parameters)
-        {
-            return ProxyToNative(methodInfo.Name, methodInfo.GetParameters().Select(p => p.ParameterType).ToArray(), parameters);
-        }
-
-        protected object ProxyToNative(string methodName, Type[] types, object[] parameters)
-        {
-            return type.GetMethod(methodName, types).Invoke(nativeObject, parameters);
+        public IDirectInput8 DirectInput8Create(IntPtr hinst) {
+            var directInput8Create = GetProcedure<DirectInput8CreateDelegate>("DirectInput8Create");
+            IntPtr value;
+            directInput8Create(hinst, 0x00000800, IID.IID_IDirectInput8W, out value, IntPtr.Zero);
+            //return (IDirectInput8)Marshal.GetObjectForIUnknown(value);
+            return null;
         }
     }
 
-    public class DirectInput8W  : ComObject
+    public interface IDirectInput8
     {
-        public DirectInput8W(IntPtr nativePointer) : base(nativePointer)
-        {
-
-        }
-
-        public object InitializeLifetimeService()
-        {
-            return ProxyToNative(MethodBase.GetCurrentMethod());
-        }
-
-        public object GetLifetimeService()
-        {
-            return ProxyToNative(MethodBase.GetCurrentMethod());
-        }
-    }
-
-    public class Test
-    {
-        public static HResult EnumDevices(DwDeviceType dwDevice, LpDiEnumDevicesCallback lpCallback, int pvRef, EnumDevicesFlags dwFlags)
-        {
-            return HResult.DI_OK;
-        }
+        HResult ConfigureDevices(DIConfigureDevicesCallback lpdiCallback, DiConfigureDevicesParams lpdiCDParams, uint dwFlags, IntPtr pvRefData);
+        HResult CreateDevice(Guid rguid, ref IntPtr lplpDirectInputDevice, IntPtr pUnkOuter);
+        HResult EnumDevices(uint dwDevType, DIConfigureDevicesCallback lpCallback, IntPtr pvRef, uint dwFlags);
+        HResult EnumDevicesBySemantics(string ptszUserName, DiActionFormat lpdiActionFormat, DiEnumDevicesBySemanticsCallback lpCallback, IntPtr pvRef, uint dwFlags);
+        HResult FindDevice(Guid rguidClass, string ptszName, Guid pguidInstance);
+        HResult GetDeviceStatus(Guid guid);
+        HResult Initialize(IntPtr hinst, uint dwVersion);
+        HResult RunControlPanel(IntPtr hwndOwner, uint dwFlags);
     }
 
     public static class IID
@@ -83,17 +44,31 @@ namespace XOutput.App.Devices.Input.DirectInput.Native
         public static readonly Guid IID_IDirectInput7W = new Guid("9a4cb685-236d-11d3-8e9d-00c04f6844ae");
         public static readonly Guid IID_IDirectInput8A = new Guid("bf798030-483a-4da2-aa99-5d64ed369700");
         public static readonly Guid IID_IDirectInput8W = new Guid("bf798031-483a-4da2-aa99-5d64ed369700");
-        public static readonly Guid TEST = new Guid("54d41081-dc15-4833-a41b-748f73a38179");
+        public static readonly Guid IID_IDirectInputDeviceA = new Guid("5944e680-c92e-11cf-bfc7-444553540000");
+        public static readonly Guid IID_IDirectInputDeviceW = new Guid("5944e681-c92e-11cf-bfc7-444553540000");
+        public static readonly Guid IID_IDirectInputDevice2A = new Guid("5944e682-c92e-11cf-bfc7-444553540000");
+        public static readonly Guid IID_IDirectInputDevice2W = new Guid("5944e683-c92e-11cf-bfc7-444553540000");
+        public static readonly Guid IID_IDirectInputDevice7A = new Guid("57d7c6bc-2356-11d3-8e9d-00c04f6844ae");
+        public static readonly Guid IID_IDirectInputDevice7W = new Guid("57d7c6bd-2356-11d3-8e9d-00c04f6844ae");
+        public static readonly Guid IID_IDirectInputDevice8A = new Guid("54d41080-dc15-4833-a41b-748f73a38179");
+        public static readonly Guid IID_IDirectInputDevice8W = new Guid("54d41081-dc15-4833-a41b-748f73a38179");
+        public static readonly Guid IID_IDirectInputEffect = new Guid("e7e1f7c0-88d2-11d0-9ad0-00a0c9a06e35");
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct LpDiConfigureDevicesCallback
+    public struct DiEnumDevicesBySemanticsCallback
+    {
+        
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    public struct DiConfigureDevicesParams
     {
 
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct LpDiActionFormat
+    public struct DiActionFormat
     {
         /*uint dwSize;
         uint dwActionSize;
@@ -111,12 +86,16 @@ namespace XOutput.App.Devices.Input.DirectInput.Native
         TCHAR tszActionMap[MAX_PATH];*/
     }
 
-    public struct LpDiDeviceInstance
+    public struct DiDeviceInstance
     {
 
     }
 
-    public delegate Bool LpDiEnumDevicesCallback(LpDiDeviceInstance lpddi, int pvRef);
+    public delegate Bool DIEnumDevicesCallback(DiDeviceInstance lpddi, int pvRef);
+
+    public delegate Bool DIEnumDevicesBySemanticsCallback(IntPtr lpddi, DiDeviceInstance lpdid, uint dwFlags, uint dwRemaining, IntPtr pvRef);
+
+    public delegate Bool DIConfigureDevicesCallback(IntPtr lpDDSTarget, IntPtr pvRef);
 
     public enum HResult : uint
     {
@@ -124,7 +103,7 @@ namespace XOutput.App.Devices.Input.DirectInput.Native
         DIERR_BETADIRECTINPUTVERSION,
         DIERR_OLDDIRECTINPUTVERSION,
         DIERR_INVALIDPARAM = 0x80070057,
-        DIERR_NOTINITIALIZED = 0,
+        //DIERR_NOTINITIALIZED = 0,
         DIERR_OUTOFMEMORY = 0x8007000E,
     }
 

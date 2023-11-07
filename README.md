@@ -24,12 +24,12 @@ To join the discussion or just say hi, there is a [discord channel](https://disc
 
 **This version is currently under development. Please use [3.x](https://github.com/csutorasa/XOutput/tree/3.x) version for stable features**
 
-| Version                                              | State                                   | Support                                  |
-| ---------------------------------------------------- | --------------------------------------- | ---------------------------------------- |
-| **[4.x](https://github.com/csutorasa/XOutput)**      | **Under development (no releases yet)** | **Active development with new features** |
-| [3.x](https://github.com/csutorasa/XOutput/tree/3.x) | Stable                                  | Bugfixes only                            |
-| 2.x                                                  | Old version (superseeded by 3.x)        | Expired at Mar 7 2018                    |
-| 1.x                                                  | Old version (superseeded by 3.x)        | Expired at Mar 7 2018                    |
+| Version                                              | State                                   | Support                           |
+| ---------------------------------------------------- | --------------------------------------- | --------------------------------- |
+| **[4.x](https://github.com/csutorasa/XOutput)**      | **Under development (no releases yet)** | **Development with new features** |
+| [3.x](https://github.com/csutorasa/XOutput/tree/3.x) | Stable                                  | Bugfixes only                     |
+| 2.x                                                  | Old version (superseeded by 3.x)        | Expired at Mar 7 2018             |
+| 1.x                                                  | Old version (superseeded by 3.x)        | Expired at Mar 7 2018             |
 
 ## How to install
 
@@ -39,7 +39,7 @@ Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, 
 
 | Software                                            | State                         | Download                                                            |
 | --------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------- |
-| [ViGEmBus](https://github.com/nefarius/ViGEmBus)    | Deprecated since Sep 8, 2023  | [ViGEmBus](https://github.com/nefarius/ViGEmBus/releases)           |
+| [ViGEmBus](https://github.com/nefarius/ViGEmBus)    | Deprecated since Nov 2, 2023  | [ViGEmBus](https://github.com/nefarius/ViGEmBus/releases)           |
 | [ScpToolkit](https://github.com/nefarius/ScpServer) | Deprecated since Mar 20, 2023 | [ScpToolkit](https://github.com/nefarius/ScpServer/releases/latest) |
 
 ### Install dependencies
@@ -47,8 +47,6 @@ Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, 
 Install:
 
 -   DirectX (any version that contains dinput8.dll)
--   Visual C++ Redistributable for Visual Studio 2015 32-bit
--   Visual C++ Redistributable for Visual Studio 2015 64-bit
 -   all the drivers for your controllers
 -   [.NET 7 ASP.NET and Desktop runtime](https://dotnet.microsoft.com/download)
 -   if you have issues, install the official [XBox 360 controller drivers](https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows).

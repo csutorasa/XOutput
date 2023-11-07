@@ -58,13 +58,12 @@ namespace XOutput.App.UI
             {
                 Show();
             }
-            IntPtr value;
-            var hinst = DInput8.GetModuleHandle(null);
-            var guid = IID.IID_IDirectInput8W;
-            var x = DInput8.DirectInput8Create(hinst, 0x00000800, guid, out value, IntPtr.Zero);
-            var err = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
-            var directInput8W = new DirectInput8W(value);
-            directInput8W.GetLifetimeService();
+            var hinst = WindowHandle.GetCurrentModuleHandle();
+            using(var dinput8 = new DInput8())
+            {
+                var directInput8 = dinput8.DirectInput8Create(hinst);
+                //var res = directInput8.CreateDevice(IntPtr.Zero, 0);
+            }
             inputDeviceManager.Start();
         }
 

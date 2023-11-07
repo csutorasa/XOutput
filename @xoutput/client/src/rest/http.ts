@@ -2,9 +2,6 @@ export class HttpService {
   get<T>(path: string): Promise<T> {
     return fetch(`/api${path}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
     }).then((r) => this.readBody(r, `/api${path}`));
   }
 
