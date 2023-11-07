@@ -2,56 +2,75 @@ import React, { Component } from 'react';
 import Grid from '@mui/material/Grid';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import StopIcon from '@mui/icons-material/Stop';
-import withStyles from '@mui/styles/withStyles';
 import { grey } from '@mui/material/colors';
-import { StyleGenerator, Styled } from '../../utils';
+import { styled } from '@mui/system';
 
-type ClassNames = 'container' | 'iconWrapper' | 'active';
+export type ArrowProps = {
+  active: boolean;
+  rotate: number;
+}
 
-const styles: StyleGenerator<ClassNames> = (theme) => ({
-  container: {
-    width: '83.75px',
-    margin: 'auto',
-  },
-  iconWrapper: {
-    textAlign: 'center',
-  },
-  active: {
+const Arrow = ({ active, rotate }: ArrowProps) => {
+  const ActiveIcon = styled(ArrowUpwardIcon)(({theme}) => ({
     backgroundColor: theme.palette.primary.main,
     borderRadius: '30px',
     color: grey[50],
-  },
-});
+  }));
 
-export interface DpadProps extends Styled<ClassNames> {
+  const Icon = active ? ActiveIcon : ArrowUpwardIcon;
+
+  return <Grid item xs={4} style={{textAlign: 'center'}}>
+    <Icon style={{ rotate: `${rotate}deg` }} />
+  </Grid>;
+}
+
+export type IdleProps = {
+  active: boolean;
+}
+
+const Idle = ({ active }: IdleProps) => {
+  const ActiveIcon = styled(StopIcon)(({theme}) => ({
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: '30px',
+    color: grey[50],
+  }));
+
+  const Icon = active ? ActiveIcon : ArrowUpwardIcon;
+
+  return <Grid item xs={4} style={{textAlign: 'center'}}>
+    <Icon />
+  </Grid>;
+}
+
+export type DpadProps = {
   up: number;
   down: number;
   left: number;
   right: number;
 }
 
-class DpadComponent extends Component<DpadProps> {
-  private getActiveIndex(): number {
-    if (this.props.up) {
-      if (this.props.left) {
+export const Dpad = (props: DpadProps) => {
+  const getActiveIndex = (): number => {
+    if (props.up) {
+      if (props.left) {
         return 1;
-      } else if (this.props.right) {
+      } else if (props.right) {
         return 3;
       } else {
         return 2;
       }
-    } else if (this.props.down) {
-      if (this.props.left) {
+    } else if (props.down) {
+      if (props.left) {
         return 7;
-      } else if (this.props.right) {
+      } else if (props.right) {
         return 9;
       } else {
         return 8;
       }
     } else {
-      if (this.props.left) {
+      if (props.left) {
         return 4;
-      } else if (this.props.right) {
+      } else if (props.right) {
         return 6;
       } else {
         return 5;
@@ -59,45 +78,19 @@ class DpadComponent extends Component<DpadProps> {
     }
   }
 
-  private getColor(themeClass: string, i: number): string {
-    return this.getActiveIndex() === i ? themeClass : '';
-  }
+  const activeIndex = getActiveIndex();
 
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Grid container className={classes.container}>
-        <Grid item xs={4} className={classes.iconWrapper}>
-          <ArrowUpwardIcon className={this.getColor(classes.active, 1)} style={{ rotate: '-45deg' }} />
-        </Grid>
-        <Grid item xs={4} className={classes.iconWrapper}>
-          <ArrowUpwardIcon className={this.getColor(classes.active, 2)} />
-        </Grid>
-        <Grid item xs={4} className={classes.iconWrapper}>
-          <ArrowUpwardIcon className={this.getColor(classes.active, 3)} style={{ rotate: '45deg' }} />
-        </Grid>
-        <Grid item xs={4} className={classes.iconWrapper}>
-          <ArrowUpwardIcon className={this.getColor(classes.active, 4)} style={{ rotate: '-90deg' }} />
-        </Grid>
-        <Grid item xs={4} className={classes.iconWrapper}>
-          <StopIcon className={this.getColor(classes.active, 5)} />
-        </Grid>
-        <Grid item xs={4} className={classes.iconWrapper}>
-          <ArrowUpwardIcon className={this.getColor(classes.active, 6)} style={{ rotate: '90deg' }} />
-        </Grid>
-        <Grid item xs={4} className={classes.iconWrapper}>
-          <ArrowUpwardIcon className={this.getColor(classes.active, 7)} style={{ rotate: '-135deg' }} />
-        </Grid>
-        <Grid item xs={4} className={classes.iconWrapper}>
-          <ArrowUpwardIcon className={this.getColor(classes.active, 8)} style={{ rotate: '180deg' }} />
-        </Grid>
-        <Grid item xs={4} className={classes.iconWrapper}>
-          <ArrowUpwardIcon className={this.getColor(classes.active, 9)} style={{ rotate: '135deg' }} />
-        </Grid>
-      </Grid>
-    );
-  }
+  return (
+    <Grid container style={{width: '83.75px', margin: 'auto' }}>
+      <Arrow active={activeIndex === 1} rotate={-45} />
+      <Arrow active={activeIndex === 2} rotate={0} />
+      <Arrow active={activeIndex === 3} rotate={45} />
+      <Arrow active={activeIndex === 4} rotate={-90} />
+      <Idle active={activeIndex === 5} />
+      <Arrow active={activeIndex === 6} rotate={90} />
+      <Arrow active={activeIndex === 7} rotate={-135} />
+      <Arrow active={activeIndex === 8} rotate={180} />
+      <Arrow active={activeIndex === 9} rotate={135} />
+    </Grid>
+  );
 }
-
-export const Dpad = withStyles(styles)(DpadComponent);

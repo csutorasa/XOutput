@@ -17,13 +17,12 @@ const theme = process.env.NODE_ENV !== 'production' ? developmentTheme : product
 
 const queryClient = new QueryClient();
 
-export const RootElement = (
+export const RootElement = () =>
   <HashRouter>
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <Router></Router>
       </QueryClientProvider>
     </ThemeProvider>
-  </HashRouter>
-);
+  </HashRouter>;
 export default RootElement;

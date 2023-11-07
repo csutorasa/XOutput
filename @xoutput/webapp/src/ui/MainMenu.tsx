@@ -15,41 +15,15 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import InputIcon from '@mui/icons-material/Input';
 import LanguageIcon from '@mui/icons-material/Language';
 import Typography from '@mui/material/Typography';
-import withStyles from '@mui/styles/withStyles';
-import { Styled, StyleGenerator } from '../utils';
+import { styled } from '@mui/system';
 import { MainMenuListItem } from './MainMenuListItem';
 import { notificationClient } from '@xoutput/client';
 import Translation from '../translation/Translation';
-
-type ClassNames = 'menubarButton' | 'drawerRoot' | 'drawerHeader' | 'placeholder' | 'title';
-
-const styles: StyleGenerator<ClassNames> = (theme) => ({
-  menubarButton: {
-    color: theme.palette.common.white,
-  },
-  drawerRoot: {
-    width: '360px',
-    maxWidth: '360px',
-  },
-  drawerHeader: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-    padding: '10px',
-  },
-  placeholder: {
-    flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-    color: theme.palette.common.white,
-  },
-});
+import { PlaceHolder } from './components/Placeholder';
 
 export type MainMenuProps = {};
 
-export type InternalMainMenuProps = Styled<ClassNames> & MainMenuProps;
-
-const MainMenuComponent = ({ classes }: InternalMainMenuProps) => {
+export const MainMenu = ({ }: MainMenuProps) => {
   const [open, setOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
 
@@ -59,33 +33,47 @@ const MainMenuComponent = ({ classes }: InternalMainMenuProps) => {
     });
   }, []);
 
+  const Title = styled(Typography)(({theme}) => ({
+    color: theme.palette.common.white,
+  }));
+
+  const MenubarButton = styled(IconButton)(({theme}) => ({
+    color: theme.palette.common.white,
+  }));
+
+  const DrawerHeader = styled('div')(({theme}) => ({
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+    padding: '10px',
+  }));
+
   return (
     <>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menubarButton} color="inherit" aria-label="menu" onClick={() => setOpen(true)}>
+          <MenubarButton edge="start" color="inherit" aria-label="menu" onClick={() => setOpen(true)}>
             <MenuIcon />
-          </IconButton>
+          </MenubarButton>
           <Link to="/" color="textPrimary">
-            <Typography variant="h6" className={classes.title}>
+            <Title variant="h6" style={{flexGrow: 1}}>
               XOutput
-            </Typography>
+            </Title>
           </Link>
-          <div className={classes.placeholder}></div>
+          <PlaceHolder />
           <Link to="/notifications" color="textPrimary">
-            <IconButton edge="start" className={classes.menubarButton} color="inherit" aria-label="menu">
+            <MenubarButton edge="start" color="inherit" aria-label="menu">
               <Badge badgeContent={notificationCount} color="secondary">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </MenubarButton>
           </Link>
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
-        <div className={classes.drawerRoot}>
-          <div className={classes.drawerHeader}>
+        <div style={{width: '360px',maxWidth: '360px'}}>
+          <DrawerHeader>
             <Typography variant="h4">XOutput</Typography>
-          </div>
+          </DrawerHeader>
           <List component="nav">
             <MainMenuListItem path="/emulated/controllers" onClick={() => setOpen(false)}>
               <ListItemIcon>
@@ -132,5 +120,3 @@ const MainMenuComponent = ({ classes }: InternalMainMenuProps) => {
     </>
   );
 };
-
-export const MainMenu = withStyles(styles)(MainMenuComponent);

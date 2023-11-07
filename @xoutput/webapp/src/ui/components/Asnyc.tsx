@@ -1,16 +1,6 @@
 import React, { ReactElement } from 'react';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
-import { StyleGenerator, Styled } from '../../utils';
-import { withStyles } from '@mui/styles';
-
-type ClassNames = 'centered';
-
-const styles: StyleGenerator<ClassNames> = () => ({
-  centered: {
-    textAlign: 'center',
-  },
-});
 
 export type AsyncProps = {
   isLoading: boolean;
@@ -20,12 +10,10 @@ export type AsyncProps = {
   size?: number | string;
 };
 
-type InternalAsyncProps = Styled<ClassNames> & AsyncProps;
-
-const AsyncComponent = ({ classes, size, isLoading, isSuccess, error, children }: InternalAsyncProps) => {
+export const Async = ({ size, isLoading, isSuccess, error, children }: AsyncProps) => {
   if (isLoading) {
     return (
-      <div className={classes.centered}>
+      <div style={{textAlign: 'center'}}>
         <CircularProgress size={size || '10rem'} />
       </div>
     );
@@ -36,5 +24,3 @@ const AsyncComponent = ({ classes, size, isLoading, isSuccess, error, children }
 
   return <Typography color="error">{error}</Typography>;
 };
-
-export const Async = withStyles(styles)(AsyncComponent);

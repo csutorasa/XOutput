@@ -7,6 +7,7 @@ export default defineConfig({
   build: {
     outDir: resolve(__dirname, 'webapp'),
     target: 'es2021',
+    sourcemap: true,
   },
   plugins: [react()],
   server: {
