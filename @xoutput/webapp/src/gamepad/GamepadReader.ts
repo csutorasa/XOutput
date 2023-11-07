@@ -16,7 +16,7 @@ export class GamepadReader {
 
   constructor(public gamepad: Gamepad) {}
 
-  start(intervalMs = 1): Promise<void> {
+  start(intervalMs = 10): Promise<void> {
     if (this.intervalId) {
       return;
     }
@@ -75,9 +75,9 @@ export class GamepadReader {
 
   stop(): void {
     if (this.intervalId) {
-      clearInterval(this.intervalId);
       this.session.close();
       this.session = undefined;
+      clearInterval(this.intervalId);
       this.intervalId = undefined;
     }
   }

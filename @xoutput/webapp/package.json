@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build": "tsc && vite build",
-    "watch": "vite dev",
+    "watch": "vite",
     "lint": "eslint",
     "fix-format": "eslint --fix && prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "echo \"No test specified\""
@@ -21,8 +21,8 @@
     "@mui/material": "^5.14.17",
     "@mui/styled-engine": "^5.14.17",
     "@mui/system": "^5.14.17",
-    "@xoutput/api": "workspace:../api",
-    "@xoutput/client": "workspace:../client",
+    "@xoutput/api": "workspace:*",
+    "@xoutput/client": "workspace:*",
     "moment": "^2.29.4",
     "qrcode": "^1.5.3",
     "react": "^18.2.0",

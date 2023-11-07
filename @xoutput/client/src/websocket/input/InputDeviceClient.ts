@@ -26,11 +26,11 @@ export const inputDeviceClient = {
         return session;
       })
       .then(
-        (session) =>
-          ({
-            ...session,
-            sendInput: (input: InputDeviceInputRequest) => session.sendMessage(input),
-          }) as WebSocketSession<InputDeviceMessageSender>
+        (session) => {
+          const enhancedSession = session as WebSocketSession<InputDeviceMessageSender>;
+          enhancedSession.sendInput = (input: InputDeviceInputRequest) => session.sendMessage(input);
+          return enhancedSession;
+        }
       );
   },
 };

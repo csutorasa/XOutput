@@ -24,7 +24,8 @@ const GamepadComponent = ({ gamepad }: GamepadProps) => {
         () => {
           setRunning(true);
         },
-        () => {
+        (err) => {
+          console.error(err);
           /*error handling*/
         }
       );

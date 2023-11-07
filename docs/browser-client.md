@@ -11,3 +11,17 @@ The web application requires Node 20 to build it, you can [download it](https://
 ```shell
 npm install --global pnpm
 ```
+
+Install dependencies and build the application.
+
+```shell
+pnpm --recursive install
+pnpm --recursive run build
+```
+
+For development, there is a development server and watch builds.
+
+```shell
+pnpm --recursive run watch
+```
+

@@ -28,7 +28,7 @@
   "author": "Ármin Csutorás",
   "license": "MIT",
   "dependencies": {
-    "@xoutput/api": "workspace:../api"
+    "@xoutput/api": "workspace:*"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.10.0",

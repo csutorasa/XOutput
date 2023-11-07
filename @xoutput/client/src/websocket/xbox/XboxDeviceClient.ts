@@ -14,11 +14,11 @@ export const xboxDeviceClient = {
         }
       })
       .then(
-        (session) =>
-          ({
-            ...session,
-            sendInput: (input: XboxInputRequest) => session.sendMessage(input),
-          }) as WebSocketSession<XboxInputMessageSender>
+        (session) => {
+          const enhancedSession = session as WebSocketSession<XboxInputMessageSender>;
+          enhancedSession.sendInput = (input: XboxInputRequest) => session.sendMessage(input);
+          return enhancedSession;
+        }
       );
   },
 };

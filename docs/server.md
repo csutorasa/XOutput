@@ -11,6 +11,11 @@ The 4.x version backend is built with .NET 7, you will need to [download it](htt
 
 However these runtimes and SDKs are cross platform the application is only compatible with Windows.
 
+```shell
+dotnet restore
+dotnet run
+```
+
 ## Server application
 
 The server application is responsible for:

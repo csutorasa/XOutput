@@ -6,7 +6,7 @@ settings:
 
 dependencies:
   '@xoutput/api':
-    specifier: workspace:../api
+    specifier: workspace:*
     version: link:../api
 
 devDependencies:

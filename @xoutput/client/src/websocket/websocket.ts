@@ -1,9 +1,9 @@
 import { DebugRequest, MessageBase, PongResponse } from '@xoutput/api';
 
 export class WebSocketService {
-  connect(path: string, onMessage: (data: MessageBase) => void): Promise<WebSocketSessionImpl> {
+  connect(path: string, onMessage: (data: MessageBase) => void): Promise<WSSession> {
     return new Promise((resolve, reject) => {
-      const url = `/websocket/${path}`;
+      const url = `ws://${location.host}/websocket/${path}`;
       const websocket = new WebSocket(url);
       let session: WebSocketSessionImpl;
       let pingInterval: number;

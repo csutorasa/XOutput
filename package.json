@@ -11,6 +11,9 @@
   "url": "https://github.com/csutorasa/XOutput/issues",
   "author": "Ármin Csutorás",
   "license": "MIT",
+  "scripts": {
+    "prdocution": "pnpm --recursive --workspace-concurrency=1 run build"
+  },
   "engines": {
     "node": ">=20.0.0",
     "npm": "use-pnpm-instead",

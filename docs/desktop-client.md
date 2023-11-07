@@ -9,7 +9,12 @@ The 4.x version client is built with .NET 7, you will need to [download it](http
 | Running the reader application | .NET Desktop Runtime |
 | Building the application       | SDK                  |
 
-However these runtimes and SDKs are cross platform the application is only compatible with Windows.
+The SDK is only compatible with Windows.
+
+```shell
+dotnet restore
+dotnet run
+```
 
 ### Reader application
 
