@@ -22,5 +22,5 @@ export const Async = ({ size, isLoading, isSuccess, error, children }: AsyncProp
     return children();
   }
 
-  return <Typography color="error">{error}</Typography>;
+  return <Typography color="error">{error?.toString()}</Typography>;
 };

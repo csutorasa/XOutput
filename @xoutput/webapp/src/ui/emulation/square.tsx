@@ -1,19 +1,14 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 
-export interface SquareProp {
+export type SquareProp = {
   style: CSSProperties;
+  children: ReactNode;
 }
 
-export class Square extends React.Component<SquareProp> {
-  constructor(props: Readonly<SquareProp>) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div className="square" style={this.props.style}>
-        {this.props.children}
-      </div>
-    );
-  }
+export const Square = ({ style, children }: SquareProp) => {
+  return (
+    <div className="square" style={style}>
+      {children}
+    </div>
+  );
 }
