@@ -30,7 +30,7 @@ export const inputDeviceClient = {
           ({
             ...session,
             sendInput: (input: InputDeviceInputRequest) => session.sendMessage(input),
-          } as WebSocketSession<InputDeviceMessageSender>)
+          }) as WebSocketSession<InputDeviceMessageSender>
       );
   },
 };

@@ -8,7 +8,12 @@ type AxisValue = { x: number; y: number };
 export class AxisFlow extends AbstractInputFlow<AxisValue> {
   private key: string;
 
-  constructor(communication: WebSocketSession, element: HTMLElement, input: string, private emulator: string) {
+  constructor(
+    communication: WebSocketSession,
+    element: HTMLElement,
+    input: string,
+    private emulator: string
+  ) {
     super(communication, element);
     this.key = input;
   }

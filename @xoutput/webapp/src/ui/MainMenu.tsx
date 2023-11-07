@@ -23,7 +23,7 @@ import { PlaceHolder } from './components/Placeholder';
 
 export type MainMenuProps = {};
 
-export const MainMenu = ({ }: MainMenuProps) => {
+export const MainMenu = ({}: MainMenuProps) => {
   const [open, setOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
 
@@ -33,15 +33,15 @@ export const MainMenu = ({ }: MainMenuProps) => {
     });
   }, []);
 
-  const Title = styled(Typography)(({theme}) => ({
+  const Title = styled(Typography)(({ theme }) => ({
     color: theme.palette.common.white,
   }));
 
-  const MenubarButton = styled(IconButton)(({theme}) => ({
+  const MenubarButton = styled(IconButton)(({ theme }) => ({
     color: theme.palette.common.white,
   }));
 
-  const DrawerHeader = styled('div')(({theme}) => ({
+  const DrawerHeader = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
     padding: '10px',
@@ -55,7 +55,7 @@ export const MainMenu = ({ }: MainMenuProps) => {
             <MenuIcon />
           </MenubarButton>
           <Link to="/" color="textPrimary">
-            <Title variant="h6" style={{flexGrow: 1}}>
+            <Title variant="h6" style={{ flexGrow: 1 }}>
               XOutput
             </Title>
           </Link>
@@ -70,7 +70,7 @@ export const MainMenu = ({ }: MainMenuProps) => {
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
-        <div style={{width: '360px',maxWidth: '360px'}}>
+        <div style={{ width: '360px', maxWidth: '360px' }}>
           <DrawerHeader>
             <Typography variant="h4">XOutput</Typography>
           </DrawerHeader>

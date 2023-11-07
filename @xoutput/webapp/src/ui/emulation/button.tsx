@@ -9,7 +9,12 @@ export class ButtonFlow extends AbstractInputFlow<ButtonValue> {
   private key: string;
   private fillContainer: HTMLElement;
 
-  constructor(communication: WebSocketSession, element: HTMLElement, input: string, private emulator: string) {
+  constructor(
+    communication: WebSocketSession,
+    element: HTMLElement,
+    input: string,
+    private emulator: string
+  ) {
     super(communication, element);
     this.key = input;
     if (this.key === 'L2' || this.key === 'R2') {

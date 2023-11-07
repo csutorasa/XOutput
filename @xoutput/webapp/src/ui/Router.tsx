@@ -21,7 +21,7 @@ const ReadParams = <T extends ParamType>({ children }: ReadParamsProps<T>) => {
   return children(params);
 };
 
-export const Router = ({ }: RouterProps) => {
+export const Router = ({}: RouterProps) => {
   return (
     <>
       <Routes>

@@ -7,7 +7,13 @@ import { ButtonFlow } from './button';
 export class SliderFlow extends AbstractInputFlow<number> {
   private key: string;
 
-  constructor(communication: WebSocketSession, element: HTMLElement, input: string, private inverted: boolean, private emulator: string) {
+  constructor(
+    communication: WebSocketSession,
+    element: HTMLElement,
+    input: string,
+    private inverted: boolean,
+    private emulator: string
+  ) {
     super(communication, element);
     this.key = input;
   }

@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc && vite build",
     "watch": "vite dev",
-    "lint-disabled": "eslint --ext js,ts,tsx src",
-    "fix-format": "eslint --ext js,ts,tsx src --fix && prettier --write \"src/**/*.{ts,tsx}\"",
+    "lint": "eslint",
+    "fix-format": "eslint --fix && prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "echo \"No test specified\""
   },
   "homepage": "https://github.com/csutorasa/XOutput#readme",
@@ -42,7 +42,6 @@
     "@typescript-eslint/parser": "^6.10.0",
     "@vitejs/plugin-react": "^4.1.1",
     "eslint": "^8.53.0",
-    "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.33.2",
     "prettier": "^3.0.3",
     "sass": "^1.69.5",

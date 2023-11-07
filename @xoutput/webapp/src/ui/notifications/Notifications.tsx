@@ -16,7 +16,7 @@ import { PlaceHolder } from '../components/Placeholder';
 
 export type NotificationsProps = {};
 
-export const Notifications = ({ }: NotificationsProps) => {
+export const Notifications = ({}: NotificationsProps) => {
   const { data: notifications, isLoading, isSuccess, error, refetch } = useNotificationsQuery();
 
   function acknowledge(id: string): Promise<void> {
@@ -28,9 +28,9 @@ export const Notifications = ({ }: NotificationsProps) => {
   function createIcon(level: string): ReactElement {
     switch (level) {
       case 'Error':
-        return <CancelIcon style={{ padding: '0 10px 0 0', color: red[500]}} />;
+        return <CancelIcon style={{ padding: '0 10px 0 0', color: red[500] }} />;
       case 'Warning':
-        return <WarningIcon style={{ padding: '0 10px 0 0', color: yellow[500]}} />;
+        return <WarningIcon style={{ padding: '0 10px 0 0', color: yellow[500] }} />;
       case 'Information':
         return <InfoIcon style={{ padding: '0 10px 0 0' }} />;
     }

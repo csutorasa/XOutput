@@ -18,7 +18,7 @@ export const xboxDeviceClient = {
           ({
             ...session,
             sendInput: (input: XboxInputRequest) => session.sendMessage(input),
-          } as WebSocketSession<XboxInputMessageSender>)
+          }) as WebSocketSession<XboxInputMessageSender>
       );
   },
 };

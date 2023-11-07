@@ -12,7 +12,10 @@ export interface UIInputFlow {
 export abstract class AbstractInputFlow<T> implements UIInputFlow {
   protected fillElement: HTMLElement;
 
-  protected constructor(protected communication: WebSocketSession, protected element: HTMLElement) {
+  protected constructor(
+    protected communication: WebSocketSession,
+    protected element: HTMLElement
+  ) {
     this.fillElement = element.querySelector('.fill');
   }
 

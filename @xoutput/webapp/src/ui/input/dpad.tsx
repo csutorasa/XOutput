@@ -8,10 +8,10 @@ import { styled } from '@mui/system';
 export type ArrowProps = {
   active: boolean;
   rotate: number;
-}
+};
 
 const Arrow = ({ active, rotate }: ArrowProps) => {
-  const ActiveIcon = styled(ArrowUpwardIcon)(({theme}) => ({
+  const ActiveIcon = styled(ArrowUpwardIcon)(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
     borderRadius: '30px',
     color: grey[50],
@@ -19,17 +19,19 @@ const Arrow = ({ active, rotate }: ArrowProps) => {
 
   const Icon = active ? ActiveIcon : ArrowUpwardIcon;
 
-  return <Grid item xs={4} style={{textAlign: 'center'}}>
-    <Icon style={{ rotate: `${rotate}deg` }} />
-  </Grid>;
-}
+  return (
+    <Grid item xs={4} style={{ textAlign: 'center' }}>
+      <Icon style={{ rotate: `${rotate}deg` }} />
+    </Grid>
+  );
+};
 
 export type IdleProps = {
   active: boolean;
-}
+};
 
 const Idle = ({ active }: IdleProps) => {
-  const ActiveIcon = styled(StopIcon)(({theme}) => ({
+  const ActiveIcon = styled(StopIcon)(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
     borderRadius: '30px',
     color: grey[50],
@@ -37,17 +39,19 @@ const Idle = ({ active }: IdleProps) => {
 
   const Icon = active ? ActiveIcon : ArrowUpwardIcon;
 
-  return <Grid item xs={4} style={{textAlign: 'center'}}>
-    <Icon />
-  </Grid>;
-}
+  return (
+    <Grid item xs={4} style={{ textAlign: 'center' }}>
+      <Icon />
+    </Grid>
+  );
+};
 
 export type DpadProps = {
   up: number;
   down: number;
   left: number;
   right: number;
-}
+};
 
 export const Dpad = (props: DpadProps) => {
   const getActiveIndex = (): number => {
@@ -76,12 +80,12 @@ export const Dpad = (props: DpadProps) => {
         return 5;
       }
     }
-  }
+  };
 
   const activeIndex = getActiveIndex();
 
   return (
-    <Grid container style={{width: '83.75px', margin: 'auto' }}>
+    <Grid container style={{ width: '83.75px', margin: 'auto' }}>
       <Arrow active={activeIndex === 1} rotate={-45} />
       <Arrow active={activeIndex === 2} rotate={0} />
       <Arrow active={activeIndex === 3} rotate={45} />
@@ -93,4 +97,4 @@ export const Dpad = (props: DpadProps) => {
       <Arrow active={activeIndex === 9} rotate={135} />
     </Grid>
   );
-}
+};

@@ -6,7 +6,11 @@ import { CommonProps } from './common';
 type DPadValue = { up: number; down: number; left: number; right: number };
 
 export class DPadFlow extends AbstractInputFlow<DPadValue> {
-  constructor(communication: WebSocketSession, element: HTMLElement, private emulator: string) {
+  constructor(
+    communication: WebSocketSession,
+    element: HTMLElement,
+    private emulator: string
+  ) {
     super(communication, element);
   }
   protected onStart(event: UIInputEvent): DPadValue {

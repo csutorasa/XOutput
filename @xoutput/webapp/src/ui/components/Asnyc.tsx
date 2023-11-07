@@ -13,7 +13,7 @@ export type AsyncProps = {
 export const Async = ({ size, isLoading, isSuccess, error, children }: AsyncProps) => {
   if (isLoading) {
     return (
-      <div style={{textAlign: 'center'}}>
+      <div style={{ textAlign: 'center' }}>
         <CircularProgress size={size || '10rem'} />
       </div>
     );

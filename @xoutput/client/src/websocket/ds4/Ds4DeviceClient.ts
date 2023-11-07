@@ -18,7 +18,7 @@ export const ds4DeviceClient = {
           ({
             ...session,
             sendInput: (input: Ds4InputRequest) => session.sendMessage(input),
-          } as WebSocketSession<Ds4InputMessageSender>)
+          }) as WebSocketSession<Ds4InputMessageSender>
       );
   },
 };
