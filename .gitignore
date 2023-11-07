@@ -8,8 +8,7 @@
 */obj
 @xoutput/*/dist
 @xoutput/*/lib
-@xoutput/webapp/webapp/*
-!@xoutput/webapp/webapp/favicon.ico
+@xoutput/webapp/webapp
 
 # Nuget packages
 packages

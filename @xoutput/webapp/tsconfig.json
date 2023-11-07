@@ -4,7 +4,7 @@
     "module": "ES2020",
     "lib": ["ES2021", "DOM"],
     "moduleResolution": "node",
-    //"noEmit": true,
+    "noEmit": true,
     "jsx": "react",
 
     "strict": true,
