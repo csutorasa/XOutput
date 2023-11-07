@@ -9,5 +9,19 @@
     <StackPanel>
         <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='WindowsApiKeyboard.Title'}" Margin="5"/>
         <CheckBox Content="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='WindowsApiKeyboard.Enabled'}" IsChecked="{Binding Model.Enabled}" Margin="5"/>
+        <ItemsControl ItemsSource="{Binding Model.PressedButtons}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="LightGray" BorderBrush="Black">
+                        <TextBlock Text="{Binding}" Margin="3" />
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </StackPanel>
 </Grid>

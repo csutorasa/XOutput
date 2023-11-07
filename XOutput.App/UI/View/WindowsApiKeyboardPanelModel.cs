@@ -1,4 +1,6 @@
-﻿using XOutput.DependencyInjection;
+﻿using System.Collections.ObjectModel;
+using XOutput.App.Devices.Input.Keyboard;
+using XOutput.DependencyInjection;
 
 namespace XOutput.App.UI.View
 {
@@ -17,6 +19,9 @@ namespace XOutput.App.UI.View
                 }
             }
         }
+
+        private readonly ObservableCollection<KeyboardButton> pressedButtons = new ObservableCollection<KeyboardButton>();
+        public ObservableCollection<KeyboardButton> PressedButtons => pressedButtons;
 
         [ResolverMethod]
         public WindowsApiKeyboardPanelModel()

@@ -19,6 +19,15 @@
                           Content="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='General.AutoConnect'}"/>
                 <Button Content="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='General.Connect'}"
                         HorizontalAlignment="Left" Click="Connect_Click" Width="150"/>
+                <TextBlock HorizontalAlignment="Left" Width="250">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource DynamicTranslator}">
+                            <Binding Path="Translation.Language" />
+                            <Binding Path="Model.ConnectionErrorMessage" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <TextBlock Text="{Binding Model.ServerVersion}" HorizontalAlignment="Left" Width="250"/>
             </StackPanel>
         </component:Titled>
     </StackPanel>

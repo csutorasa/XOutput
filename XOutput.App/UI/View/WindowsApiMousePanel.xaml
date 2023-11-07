@@ -4,10 +4,26 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local="clr-namespace:XOutput.App.UI.View"
+      xmlns:component="clr-namespace:XOutput.App.UI.Component"
       mc:Ignorable="d"
       d:DataContext="{d:DesignInstance local:WindowsApiMousePanelViewModel, IsDesignTimeCreatable=False}">
     <StackPanel>
         <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='WindowsApiMouse.Title'}" Margin="5"/>
         <CheckBox Content="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='WindowsApiMouse.Enabled'}" IsChecked="{Binding Model.Enabled}" Margin="5"/>
+        
+        <Grid>
+            <Path Stroke="Black" Fill="LightGray" Data="M 30,150 Q 10,150 10,110 Q 10,70 30,70 Q 50,70 50,110 Q 50,150 30,150" />
+            <Path Stroke="Black" Fill="LightGray" Data="M 25,240 Q 5,240 5,200 Q 5,160 25,160 Q 45,160 45,200 Q 45,240 25,240" />
+
+            <Path Visibility="{Binding Model.X2ButtonVisibility}" Stroke="Black" Fill="Red" Data="M 30,150 Q 10,150 10,110 Q 10,70 30,70 Q 50,70 50,110 Q 50,150 30,150" />
+            <Path Visibility="{Binding Model.X1ButtonVisibility}" Stroke="Black" Fill="Red" Data="M 25,240 Q 5,240 5,200 Q 5,160 25,160 Q 45,160 45,200 Q 45,240 25,240" />
+
+            <Path Stroke="Black" Fill="LightGray" Data="M 15,210 Q 15,10 115,10 L 165,10 Q 265,10 265,200 Q 265,410 165,410 L 115,410 Q 15,410, 15,210" />
+            <Path Stroke="Black" Fill="LightGray" Data="M 140,160 Q 120,160 120,110 Q 120,60 140,60 Q 160,60, 160,110 Q 160,160 140,160" />
+
+            <Path Visibility="{Binding Model.LeftButtonVisibility}" Stroke="Black" Fill="Red" Data="M 15,210 Q 15,10 115,10 L 115,10 L 115,190 L 15,210" />
+            <Path Visibility="{Binding Model.RightButtonVisibility}"  Stroke="Black" Fill="Red" Data="M 265,210 Q 265,10 165,10 L 165,10 L 165,190 L 265,210" />
+            <Path Visibility="{Binding Model.MiddleButtonVisibility}" Stroke="Black" Fill="Red" Data="M 140,160 Q 120,160 120,110 Q 120,60 140,60 Q 160,60, 160,110 Q 160,160 140,160" />
+        </Grid>
     </StackPanel>
 </Grid>

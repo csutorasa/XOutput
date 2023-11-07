@@ -12,7 +12,9 @@
 		"Language": "Nyelv",
 		"ServerUrl": "Server címe",
 		"AutoConnect": "Kapcsolódás a szerverhez induláskor",
-		"Connect": "Kapcsolódás"
+		"Connect": "Kapcsolódás",
+		"InvalidUriConnectionError": "Érvénytelen cím",
+		"FailedToConnectToServerError": "Nem sikerült kapcsolódni a szerverhez"
 	},
 	"WindowsApiMouse": {
 		"Title": "Windows API egér",

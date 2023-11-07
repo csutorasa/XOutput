@@ -6,6 +6,19 @@ using XOutput.DependencyInjection;
 
 namespace XOutput.App.UI.Converter
 {
+    /// <summary>
+    /// Converts a text based on the language, and updates when the language changes.
+    /// </summary>
+    /// <example>
+    /// <TextBlock>
+    ///     <TextBlock.Text>
+    ///         <MultiBinding Converter="{StaticResource DynamicTranslator}">
+    ///             <Binding Path="Translation.Language" />
+    ///             <Binding Path="Model.DynamicField" />
+    ///         </MultiBinding>
+    ///     </TextBox.Text>
+    /// </TextBox>
+    /// </example>
     public class DynamicTranslationConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows;
 using XOutput.App.Configuration;
 using XOutput.Configuration;
 using XOutput.DependencyInjection;
@@ -47,8 +48,28 @@ namespace XOutput.App.UI.View
 
         public async Task Connect()
         {
-            var uri = new Uri($"http://{Model.ServerUrl}/api/");
-            var x = await new InfoClient(new StaticHttpClientProvider(uri)).GetInfoAsync();
+            Model.ConnectionErrorMessage = "";
+            Model.ServerVersion = "";
+            Uri uri;
+            try 
+            {
+                uri = new Uri($"http://{Model.ServerUrl}/api/");
+            } 
+            catch (UriFormatException)
+            {
+                Model.ConnectionErrorMessage = "General.InvalidUriConnectionError";
+                return;
+            }
+            try 
+            {
+                var info = await new InfoClient(new StaticHttpClientProvider(uri)).GetInfoAsync();
+                Model.ServerVersion = info.Version;
+            } 
+            catch
+            {
+                Model.ConnectionErrorMessage = "General.FailedToConnectToServerError";
+                return;
+            }
             var appConfig = GetAppConfig();
             appConfig.AutoConnect = Model.AutoConnect;
             appConfig.ServerUrl = Model.ServerUrl;

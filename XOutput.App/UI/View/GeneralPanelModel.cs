@@ -22,6 +22,20 @@ namespace XOutput.App.UI.View
             }
         }
 
+        private string connectionErrorMessage;
+        public string ConnectionErrorMessage
+        {
+            get => connectionErrorMessage;
+            set
+            {
+                if (connectionErrorMessage != value)
+                {
+                    connectionErrorMessage = value;
+                    OnPropertyChanged(nameof(ConnectionErrorMessage));
+                }
+            }
+        }
+
         private string serverUrl;
         public string ServerUrl
         {
@@ -32,6 +46,20 @@ namespace XOutput.App.UI.View
                 {
                     serverUrl = value;
                     OnPropertyChanged(nameof(ServerUrl));
+                }
+            }
+        }
+
+        private string serverVersion;
+        public string ServerVersion
+        {
+            get => serverVersion;
+            set
+            {
+                if (serverVersion != value)
+                {
+                    serverVersion = value;
+                    OnPropertyChanged(nameof(ServerVersion));
                 }
             }
         }

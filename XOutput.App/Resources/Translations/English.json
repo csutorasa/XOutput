@@ -12,7 +12,9 @@
 		"Language": "Language",
 		"ServerUrl": "Server URL",
 		"AutoConnect": "Connect to server on start",
-		"Connect": "Connect"
+		"Connect": "Connect",
+		"InvalidUriConnectionError": "Invalid address",
+		"FailedToConnectToServerError": "Failed to connect to server"
 	},
 	"WindowsApiMouse": {
 		"Title": "Windows API mouse",

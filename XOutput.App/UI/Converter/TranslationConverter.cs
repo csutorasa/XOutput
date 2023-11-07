@@ -5,6 +5,12 @@ using XOutput.DependencyInjection;
 
 namespace XOutput.App.UI.Converter
 {
+    /// <summary>
+    /// Converts a text based on the language, and updates when the language changes.
+    /// </summary>
+    /// <example>
+    /// <TextBlock Text="{Binding Translation.Language, Converter={StaticResource Translator}, ConverterParameter='Test.Key' />
+    /// </example>
     public class TranslationConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
