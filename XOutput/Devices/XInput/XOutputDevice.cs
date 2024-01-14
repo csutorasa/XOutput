@@ -43,7 +43,6 @@ namespace XOutput.Devices.XInput
         private readonly InputMapper mapper;
         private readonly DPadDirection[] dPads = new DPadDirection[DPadCount];
         private readonly XOutputSource[] sources;
-        private readonly DeviceState state;
         private DeviceInputChangedEventArgs deviceInputChangedEventArgs;
 
         /// <summary>
@@ -55,7 +54,6 @@ namespace XOutput.Devices.XInput
         {
             this.mapper = mapper;
             sources = XInputHelper.Instance.GenerateSources();
-            state = new DeviceState(sources, DPadCount);
             deviceInputChangedEventArgs = new DeviceInputChangedEventArgs(this);
         }
 
@@ -108,7 +106,7 @@ namespace XOutput.Devices.XInput
         /// <returns>if the input was available</returns>
         public bool RefreshInput(bool force = false)
         {
-            state.ResetChanges();
+            DeviceState state = new DeviceState(sources, DPadCount);
             foreach (var s in sources)
             {
                 if (s.Refresh(mapper))
