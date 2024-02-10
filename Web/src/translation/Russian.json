@@ -1,0 +1,26 @@
+{
+    "ActiveControllers": "Активные геймпады",
+    "OnlineDevices": "Онлайн устройства",
+    "Notifications": "Уведомления",
+    "Share": "Поделиться",
+    "Fullscreen": "Полный экран",
+    "MicrosoftXbox360": "Microsoft Xbox 360",
+    "SonyDualShock4": "Sony Dualshock 4",
+    "WebDevice": "Веб-устройство",
+    "LocalDevice": "Локальное устройство",
+    "InputDevices": "Устройства ввода",
+    "Mouse": "Мышь",
+    "Keyboard": "Клавиатура",
+    "DPads": "DPads",
+    "DPad": "DPad",
+    "Axes": "Оси",
+    "Buttons": "Кнопки",
+    "Sliders": "Переключатели",
+    "ForceFeedbacks": "Обратная связь контроллера",
+    "Test": "Тест",
+    "BigMotor": "Большой вибромотор",
+    "SmallMotor": "Маленький вибромотор",
+    "input.forcefeedback.notimplemented": "Драйвер для устройства {0} поврежден или отсутствует",
+    "hidguardian.registry.noaccess": "Нет доступа к регистру HidGuardian для записи"
+
+}
