@@ -17,7 +17,7 @@
     <ProjectReference Include="..\XOutput.Mapping\XOutput.Mapping.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
   </ItemGroup>
 
   <PropertyGroup>
