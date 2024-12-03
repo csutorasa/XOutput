@@ -1,7 +1,6 @@
 ![Build XOutput](https://github.com/csutorasa/XOutput/workflows/Build%20XOutput/badge.svg?branch=3.x)
 [![Github All Releases](https://img.shields.io/github/downloads/csutorasa/XOutput/total.svg)](https://github.com/csutorasa/XOutput/releases/)
 [![Download XOutput](https://img.shields.io/sourceforge/dt/xoutput.svg)](https://sourceforge.net/projects/xoutput/files/latest/download)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/csutorasa)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=XOutput&metric=alert_status)](https://sonarcloud.io/dashboard?id=XOutput)
 [![Discord](https://img.shields.io/discord/673150216169455637?label=Discord&logo=Discord)](https://discord.gg/Y628tcp)
 
@@ -71,26 +70,22 @@ graph TD
 
 ## General information
 
-If you have any questions or feature requests feel free to create [Github Issue](https://github.com/csutorasa/XOutput/issues).
-
-Any contribution is welcome, open your [Pull request](https://github.com/csutorasa/XOutput/pulls).
-
 To join the discussion or just say hi in the [discord channel](https://discord.gg/Y628tcp).
 
-This version is the stable version.
+**This application is deprecated as the emulation softwares it used are no longer supported.**
 
-| Version                                                  | State                               | Support                              |
-| -------------------------------------------------------- | ----------------------------------- | ------------------------------------ |
-| [4.x](https://github.com/csutorasa/XOutput)              | Under development (no releases yet) | Active development with new features |
-| **[3.x](https://github.com/csutorasa/XOutput/tree/3.x)** | **Stable**                          | **Bugfixes only**                    |
-| 2.x                                                      | Old version (superseeded by 3.x)    | Expired at Mar 7 2018                |
-| 1.x                                                      | Old version (superseeded by 3.x)    | Expired at Mar 7 2018                |
+| Version                                                  | State                            | Support               |
+| -------------------------------------------------------- | -------------------------------- | --------------------- |
+| [4.x](https://github.com/csutorasa/XOutput)              | No releases                      | Unreleased            |
+| **[3.x](https://github.com/csutorasa/XOutput/tree/3.x)** | **Unsupported**                  | Expired at Dec 3 2024 |
+| 2.x                                                      | Old version (superseeded by 3.x) | Expired at Mar 7 2018 |
+| 1.x                                                      | Old version (superseeded by 3.x) | Expired at Mar 7 2018 |
 
 ## How to install
 
 ### Install emulation software
 
-Install one of the two libraries. ViGEm (preferred) or SCPToolkit (unsupported, legacy)
+Install one of the two libraries. ViGEm (unsupported) or SCPToolkit (unsupported)
 
 a) Install [VIGEm framework](https://github.com/ViGEm/ViGEmBus/releases/latest) (recommended)
 
